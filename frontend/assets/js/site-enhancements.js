@@ -2691,4 +2691,187 @@
 
   window.showGuestRestrictionModal = showGuestRestrictionModal;
 
+  // ── PREMIUM PRICING COMING SOON POPUP MODAL ──
+  function showPricingComingSoonModal() {
+    let modal = document.getElementById('pricingComingSoonModal');
+    if (modal) {
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('open'), 10);
+      return;
+    }
+
+    const modalStyle = document.createElement('style');
+    modalStyle.textContent = `
+      #pricingComingSoonModal {
+        position: fixed; inset: 0;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        display: none; align-items: center; justify-content: center;
+        z-index: 99999; opacity: 0;
+        transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 20px;
+      }
+      #pricingComingSoonModal.open {
+        display: flex;
+        opacity: 1;
+      }
+      html[data-theme="dark"] #pricingComingSoonModal {
+        background: rgba(8, 12, 24, 0.8);
+      }
+      #pricingComingSoonModal .modal {
+        background: var(--surface, #ffffff);
+        border: 1px solid var(--border, #e2e8f0);
+        border-radius: 20px; padding: 36px;
+        width: 100%; max-width: 480px;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+        transform: scale(0.95);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      #pricingComingSoonModal.open .modal {
+        transform: scale(1);
+      }
+      html[data-theme="dark"] #pricingComingSoonModal .modal {
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+        background: rgba(15, 23, 42, 0.95);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+      #pricingComingSoonModal .modal-close {
+        position: absolute; top: 16px; right: 16px;
+        font-size: 1rem; color: var(--text3, #94a3b8);
+        cursor: pointer; transition: all 0.18s;
+        width: 32px; height: 32px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%; border: none; background: transparent;
+      }
+      #pricingComingSoonModal .modal-close:hover {
+        color: var(--text, #0f172a);
+        background: var(--bg3, #f1f5f9);
+      }
+      html[data-theme="dark"] #pricingComingSoonModal .modal-close:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: #ffffff;
+      }
+      #pricingComingSoonModal .modal-icon-wrapper {
+        width: 60px; height: 60px;
+        background: rgba(59, 130, 246, 0.08);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 20px;
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+      }
+      html[data-theme="dark"] #pricingComingSoonModal .modal-icon-wrapper {
+        background: rgba(200, 255, 0, 0.06);
+        border-color: rgba(200, 255, 0, 0.25);
+        box-shadow: 0 0 20px rgba(200, 255, 0, 0.15);
+      }
+      #pricingComingSoonModal .modal-title {
+        font-family: var(--font, 'Outfit', sans-serif);
+        font-size: 1.6rem; font-weight: 800;
+        color: var(--text, #0f172a);
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, #3b82f6, #10b981);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      #pricingComingSoonModal .modal-badge {
+        display: inline-block;
+        font-family: var(--mono, monospace);
+        font-size: 0.6rem; font-weight: 700;
+        color: #3b82f6;
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        padding: 3px 12px; border-radius: 100px;
+        text-transform: uppercase; letter-spacing: 0.1em;
+        margin-bottom: 20px;
+      }
+      html[data-theme="dark"] #pricingComingSoonModal .modal-badge {
+        color: #c8ff00;
+        background: rgba(200, 255, 0, 0.08);
+        border-color: rgba(200, 255, 0, 0.2);
+      }
+      #pricingComingSoonModal .modal-sub {
+        font-family: var(--font, 'Outfit', sans-serif);
+        font-size: 0.95rem; color: var(--text2, #475569);
+        line-height: 1.6; margin-bottom: 28px;
+      }
+      html[data-theme="dark"] #pricingComingSoonModal .modal-sub {
+        color: #94a3b8;
+      }
+      #pricingComingSoonModal .btn-primary {
+        background: #1e40af;
+        color: #ffffff !important;
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
+        width: 100%; min-height: 46px;
+        border-radius: 10px; font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer; transition: all 0.2s ease; border: 1px solid transparent;
+      }
+      #pricingComingSoonModal .btn-primary:hover {
+        background: #1e3a8a;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(30, 64, 175, 0.3);
+      }
+      html[data-theme="dark"] #pricingComingSoonModal .btn-primary {
+        background: #c8ff00;
+        color: #0a0a0a !important;
+        box-shadow: 0 4px 12px rgba(200, 255, 0, 0.25);
+      }
+      html[data-theme="dark"] #pricingComingSoonModal .btn-primary:hover {
+        background: #c8ff00;
+        opacity: 0.95;
+        box-shadow: 0 6px 16px rgba(200, 255, 0, 0.4);
+      }
+    `;
+    document.head.appendChild(modalStyle);
+
+    modal = document.createElement('div');
+    modal.id = 'pricingComingSoonModal';
+    modal.innerHTML = `
+      <div class="modal">
+        <button class="modal-close" onclick="window.closePricingModal()">✕</button>
+        <div class="modal-icon-wrapper">
+          <span style="font-size: 1.8rem; filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.4));">👑</span>
+        </div>
+        <div class="modal-title">Pricing Coming Soon</div>
+        <div class="modal-badge">Free Beta Testing Phase</div>
+        <p class="modal-sub">
+          CYPR premium subscription plans are currently under development. To support our starting community, <b>all advanced scanners and security checks are 100% free and unlimited</b> during this beta testing period!
+        </p>
+        <button class="btn btn-primary" onclick="window.closePricingModal()">Start Scanning — Free</button>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('open'), 10);
+  }
+
+  window.closePricingModal = function() {
+    const modal = document.getElementById('pricingComingSoonModal');
+    if (modal) {
+      modal.classList.remove('open');
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 250);
+    }
+  };
+
+  window.showPricingComingSoonModal = showPricingComingSoonModal;
+
+  // Intercept all pricing link clicks globally
+  document.addEventListener('click', (e) => {
+    const target = e.target.closest('a');
+    if (target && target.getAttribute('href') === 'pricing.html') {
+      e.preventDefault();
+      e.stopPropagation();
+      showPricingComingSoonModal();
+    }
+  });
+
 })();
