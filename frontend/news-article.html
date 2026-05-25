@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="assets/js/config.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI News Article - CyberMitra</title>
+  <meta name="description" content="CyberMitra AI-generated cybersecurity news article summary with source attribution.">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/site-enhancements.js"></script>
+</head>
+<body class="grid-bg">
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<nav class="navbar marketing-nav">
+  <a href="index.html" class="nav-logo">Cyber<span>Mitra</span></a>
+  <nav>
+    <a href="tools.html">Tools</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="cyber-news.html" class="active">Cyber News</a>
+    <a href="aboutus.html">About Us</a>
+    <a href="contactus.html">Contact</a>
+  </nav>
+  <div class="nav-actions">
+    <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
+    <a href="signup.html" class="btn btn-accent btn-sm">Get Started</a>
+  </div>
+</nav>
+
+<main class="page-wrapper marketing-page">
+  <div class="breadcrumb"><a href="cyber-news.html">Cyber News</a><span>/</span><span class="breadcrumb-current">AI Article</span></div>
+
+  <article class="marketing-section" style="border-top:0;padding-top:24px;">
+    <div class="news-modal-media" id="articleMedia" style="border-radius:16px;border:1px solid var(--border);margin-bottom:28px;"></div>
+    <div class="news-meta-row" id="articleMeta"></div>
+    <h1 id="articleTitle" style="font-size:clamp(2rem,5vw,4.6rem);line-height:1.02;letter-spacing:0;margin:18px 0;">Loading CyberMitra AI article...</h1>
+    <p id="articleLead" class="about-copy" style="max-width:860px;font-size:1.08rem;"></p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 34px;">
+      <a class="btn btn-accent" href="#" target="_blank" rel="noopener" id="originalLink">Visit Original Site</a>
+      <a class="btn btn-ghost" href="cyber-news.html">Back to News</a>
+    </div>
+
+    <div class="ai-summary-box" style="margin-bottom:28px;">
+      <div class="ai-summary-title">CyberMitra AI Article</div>
+      <div class="news-article-copy" id="articleBody">Generating article from RSS context...</div>
+    </div>
+
+    <div class="news-disclaimer">This page is an AI-generated summary article based on RSS/feed metadata and available excerpt/content. Original reporting belongs to the credited publisher and author.</div>
+  </article>
+</main>
+
+<footer class="footer">
+  <div class="footer-logo">CyberMitra</div>
+  <div class="footer-links">
+    <a href="tools.html">Tools</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="cyber-news.html">Cyber News</a>
+    <a href="aboutus.html">About Us</a>
+  </div>
+  <div class="footer-copy">© 2026 CyberMitra. Built to protect.</div>
+</footer>
+
+<script>
+const API_BASE = window.CYBERMITRA_API_BASE || (window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '';
+const feeds = [
+  { name: 'The Hacker News', tag: 'News', url: 'https://feeds.feedburner.com/TheHackersNews' },
+  { name: 'BleepingComputer', tag: 'News', url: 'https://www.bleepingcomputer.com/feed/' },
+  { name: 'KrebsOnSecurity', tag: 'Cybercrime', url: 'https://krebsonsecurity.com/feed/' },
+  { name: 'CISA Alerts', tag: 'Advisory', url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml' },
+  { name: 'NIST Cybersecurity', tag: 'Research', url: 'https://www.nist.gov/news-events/cybersecurity/rss.xml' },
+  { name: 'Sophos News', tag: 'Operations', url: 'https://news.sophos.com/en-us/category/security-operations/feed/' }
+];
+
+const articleMedia = document.getElementById('articleMedia');
+const articleMeta = document.getElementById('articleMeta');
+const articleTitle = document.getElementById('articleTitle');
+const articleLead = document.getElementById('articleLead');
+const articleBody = document.getElementById('articleBody');
+const originalLink = document.getElementById('originalLink');
+
+function stripHtml(value = '') {
+  const div = document.createElement('div');
+  div.innerHTML = value;
+  return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
+}
+
+function escapeHtml(value = '') {
+  const div = document.createElement('div');
+  div.textContent = value;
+  return div.innerHTML;
+}
+
+function formatDate(value) {
+  const date = new Date(value);
+  if (!value || Number.isNaN(date.getTime())) return 'Latest';
+  return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function normalizeItem(item, feed) {
+  const content = stripHtml(item.content || item.description || item.summary || '');
+  return {
+    source: feed.name,
+    tag: feed.tag,
+    title: stripHtml(item.title || 'Untitled cyber update'),
+    link: item.link || item.guid || '#',
+    date: item.pubDate || item.isoDate || item.published || item.updated || '',
+    author: stripHtml(item.author || item.creator || item['dc:creator'] || feed.name),
+    image: item.thumbnail || item.enclosure?.link || item.enclosure?.url || item.image || item.image_url || '',
+    content
+  };
+}
+
+async function fetchViaRss2Json(feed) {
+  const endpoint = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
+  const response = await fetch(endpoint);
+  if (!response.ok) throw new Error(`Unable to read ${feed.name}`);
+  const data = await response.json();
+  if (!Array.isArray(data.items)) throw new Error(`No articles found for ${feed.name}`);
+  return data.items.slice(0, 8).map(item => normalizeItem(item, feed));
+}
+
+async function fetchViaAllOrigins(feed) {
+  const endpoint = `https://api.allorigins.win/raw?url=${encodeURIComponent(feed.url)}`;
+  const response = await fetch(endpoint);
+  if (!response.ok) throw new Error(`Unable to read ${feed.name}`);
+  const xmlText = await response.text();
+  const xml = new DOMParser().parseFromString(xmlText, 'application/xml');
+  return [...xml.querySelectorAll('item, entry')].slice(0, 8).map(node => normalizeItem({
+    title: node.querySelector('title')?.textContent,
+    link: node.querySelector('link')?.getAttribute('href') || node.querySelector('link')?.textContent,
+    pubDate: node.querySelector('pubDate, published, updated')?.textContent,
+    description: node.querySelector('description, summary')?.textContent,
+    content: node.getElementsByTagName('content:encoded')[0]?.textContent || node.querySelector('content')?.textContent,
+    author: node.querySelector('author')?.textContent || node.getElementsByTagName('dc:creator')[0]?.textContent,
+    thumbnail: node.getElementsByTagName('media:thumbnail')[0]?.getAttribute('url') || node.getElementsByTagName('media:content')[0]?.getAttribute('url') || node.querySelector('enclosure')?.getAttribute('url')
+  }, feed));
+}
+
+async function loadFeed(feed) {
+  try { return await fetchViaRss2Json(feed); }
+  catch (error) { return fetchViaAllOrigins(feed); }
+}
+
+function localArticle(item) {
+  const clean = item.content || item.title;
+  const sentences = clean.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
+  const intro = sentences.slice(0, 2).join(' ') || `${item.title} is a cybersecurity update from ${item.source}.`;
+  const impact = sentences.slice(2, 5).join(' ') || 'The story matters because it may affect how users, teams, or defenders understand current cyber risk.';
+  const action = 'For users, the practical takeaway is to verify links, keep software updated, avoid rushed decisions, and follow official remediation guidance when a vulnerability or advisory is involved.';
+  return `${intro}\n\n${impact}\n\n${action}\n\nCyberMitra recommends reading the original source for full reporting, technical details, and publisher updates.`;
+}
+
+async function generateAiArticle(item) {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2800);
+    const response = await fetch(`${API_BASE}/api/ai/news-article`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mode: 'ai_news_article_summary',
+        instruction: 'Write an original summarized article in prose. Do not reproduce full copyrighted text verbatim. Include cybersecurity impact and user takeaway.',
+        title: item.title,
+        source: item.source,
+        author: item.author,
+        publishedAt: item.date,
+        url: item.link,
+        content: item.content
+      }),
+      signal: controller.signal
+    });
+    clearTimeout(timeout);
+    if (!response.ok) throw new Error('AI article endpoint unavailable');
+    const data = await response.json();
+    return data.article || data.summary || localArticle(item);
+  } catch (error) {
+    return localArticle(item);
+  }
+}
+
+function renderArticleText(text) {
+  articleBody.innerHTML = text.split(/\n{2,}/).map(p => `<p>${escapeHtml(p)}</p>`).join('');
+}
+
+async function initArticle() {
+  const targetUrl = new URLSearchParams(location.search).get('url');
+  if (!targetUrl) {
+    articleTitle.textContent = 'No article selected';
+    articleBody.textContent = 'Go back to Cyber News and choose an article.';
+    return;
+  }
+
+  const settled = await Promise.allSettled(feeds.map(loadFeed));
+  const items = settled.filter(r => r.status === 'fulfilled').flatMap(r => r.value);
+  const item = items.find(entry => entry.link === targetUrl || decodeURIComponent(entry.link) === decodeURIComponent(targetUrl));
+
+  if (!item) {
+    articleTitle.textContent = 'Article not found';
+    articleBody.textContent = 'This RSS item may have moved or expired. Please go back and refresh the news feed.';
+    originalLink.href = targetUrl;
+    return;
+  }
+
+  document.title = `${item.title} - CyberMitra`;
+  articleMedia.innerHTML = item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" onerror="this.src='assets/default-news.jpg'; this.onerror=null;">` : '<img src="assets/default-news.jpg" alt="CyberMitra News">';
+  articleMeta.innerHTML = `<span class="badge badge-green">${escapeHtml(item.source)}</span><span class="badge muted">Author: ${escapeHtml(item.author || item.source)}</span><span class="badge muted">${formatDate(item.date)}</span>`;
+  articleTitle.textContent = item.title;
+  articleLead.textContent = item.content ? stripHtml(item.content).slice(0, 260) + (item.content.length > 260 ? '...' : '') : `AI-generated summary article from ${item.source}.`;
+  originalLink.href = item.link;
+  renderArticleText(await generateAiArticle(item));
+}
+
+initArticle();
+</script>
+</body>
+</html>

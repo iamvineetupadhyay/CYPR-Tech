@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="assets/js/config.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Settings — CyberMitra</title>
+<script src="assets/js/site-enhancements.js"></script>
+<meta name="description" content="Get in touch with the CyberMitra team. Report bugs, request features, or ask security questions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════
+   ROOT TOKENS  (matches dashboard.html)
+═══════════════════════════ */
+:root {
+  --bg:        #ffffff;
+  --bg2:       #f8fafc;
+  --bg3:       #f1f5f9;
+  --bg4:       #e2e8f0;
+  --card:      #ffffff;
+  --card2:     #f8fafc;
+  --border:    #e2e8f0;
+  --border2:   #cbd5e1;
+  --lime:      #1e40af;
+  --lime2:     #3b82f6;
+  --lime-dim:  rgba(30, 64, 175, 0.08);
+  --lime-glow: rgba(30, 64, 175, 0.15);
+  --red:       #ef4444;
+  --red-dim:   rgba(239, 68, 68, 0.10);
+  --amber:     #f59e0b;
+  --text:      #0f172a;
+  --text2:     #475569;
+  --text3:     #94a3b8;
+  --sidebar-w: 200px;
+  --topbar-h:  60px;
+  --font:      'Outfit', sans-serif;
+  --mono:      'JetBrains Mono', monospace;
+  --r:         14px;
+  --r-sm:      10px;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { -webkit-text-size-adjust:100%; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+a { text-decoration:none; color:inherit; }
+button { font-family:inherit; cursor:pointer; border:none; background:none; }
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
+
+@keyframes pulse    { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes fadeUp   { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+@keyframes slideIn  { from{opacity:0;transform:translateY(8px)}  to{opacity:1;transform:translateY(0)} }
+
+/* ═══════════════════════════
+   LAYOUT SHELL
+═══════════════════════════ */
+.shell { display:flex; min-height:100vh; }
+
+/* ═══════════════════════════
+   SIDEBAR
+═══════════════════════════ */
+.sidebar {
+  width:var(--sidebar-w); flex-shrink:0; background:var(--bg2);
+  border-right:1px solid var(--border); display:flex; flex-direction:column;
+  position:fixed; top:0; left:0; bottom:0; z-index:200; transition:transform .3s ease;
+}
+.sb-logo {
+  padding:20px 20px 18px; display:flex; align-items:center; gap:9px;
+  border-bottom:1px solid var(--border); text-decoration:none;
+}
+.sb-logo-icon {
+  width:30px; height:30px; background:var(--lime); border-radius:7px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.sb-logo-icon svg { width:16px; height:16px; color:#0a0a0a; }
+.sb-logo-text { font-size:1.05rem; font-weight:800; letter-spacing:.02em; color:var(--text); }
+.sb-nav { flex:1; padding:14px 10px; display:flex; flex-direction:column; gap:2px; overflow-y:auto; }
+.sb-item {
+  display:flex; align-items:center; gap:11px; padding:10px 12px;
+  border-radius:var(--r-sm); font-size:.875rem; font-weight:500;
+  color:var(--text3); cursor:pointer; transition:all .18s;
+  border:1px solid transparent; text-decoration:none;
+}
+.sb-item svg { width:17px; height:17px; flex-shrink:0; transition:color .18s; }
+.sb-item:hover { color:var(--text2); background:var(--bg3); }
+.sb-item.active { color:var(--text); background:rgba(200,255,0,0.08); border-color:rgba(200,255,0,0.15); }
+.sb-item.active svg { color:var(--lime); }
+.sb-item.active span { color:var(--lime); }
+.sb-bottom { padding:10px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:2px; }
+.sb-logout {
+  display:flex; align-items:center; gap:11px; padding:10px 12px;
+  border-radius:var(--r-sm); font-size:.875rem; font-weight:500;
+  color:var(--text3); cursor:pointer; transition:all .18s;
+}
+.sb-logout:hover { color:var(--red); background:var(--red-dim); }
+.sb-logout svg { width:17px; height:17px; }
+
+.sb-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:199; }
+.sb-overlay.open { display:block; }
+
+/* ═══════════════════════════
+   MAIN AREA
+═══════════════════════════ */
+.main-area { flex:1; margin-left:var(--sidebar-w); display:flex; flex-direction:column; min-height:100vh; }
+
+/* ═══════════════════════════
+   TOPBAR
+═══════════════════════════ */
+.topbar {
+  height:var(--topbar-h); background:rgba(10,10,10,.85);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 28px; position:sticky; top:0; z-index:100;
+}
+.tb-left { display:flex; align-items:center; gap:14px; }
+.tb-hamburger {
+  display:none; flex-direction:column; gap:4px;
+  width:32px; height:32px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:7px; padding:8px; cursor:pointer;
+}
+.tb-hamburger span { display:block; width:100%; height:2px; background:var(--text2); border-radius:2px; }
+.tb-breadcrumb { display:flex; align-items:center; gap:7px; font-size:.82rem; color:var(--text3); font-family:var(--mono); }
+.tb-breadcrumb .sep { color:var(--border2); }
+.tb-breadcrumb .current { color:var(--text2); }
+.tb-right { display:flex; align-items:center; gap:12px; }
+.tb-secure-pill {
+  display:flex; align-items:center; gap:7px; padding:6px 14px;
+  background:rgba(200,255,0,.07); border:1px solid rgba(200,255,0,.2);
+  border-radius:100px; font-family:var(--mono); font-size:.65rem;
+  font-weight:500; color:var(--lime); letter-spacing:.04em; text-transform:uppercase;
+}
+.tb-secure-dot { width:6px; height:6px; border-radius:50%; background:var(--lime); animation:pulse 2s ease-in-out infinite; }
+.tb-bell {
+  position:relative; width:34px; height:34px; background:var(--bg3);
+  border:1px solid var(--border); border-radius:9px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; transition:border-color .18s;
+}
+.tb-bell:hover { border-color:var(--border2); }
+.tb-bell svg { width:16px; height:16px; color:var(--text2); }
+.tb-bell-badge { position:absolute; top:6px; right:6px; width:7px; height:7px; border-radius:50%; background:var(--red); border:1.5px solid var(--bg); }
+.tb-user {
+  display:flex; align-items:center; gap:10px; padding:5px 5px 5px 12px;
+  background:var(--bg3); border:1px solid var(--border); border-radius:100px;
+  cursor:pointer; transition:border-color .18s;
+}
+.tb-user:hover { border-color:var(--border2); }
+.tb-user-info { text-align:right; }
+.tb-user-name { font-size:.82rem; font-weight:600; line-height:1.2; }
+.tb-user-plan { font-family:var(--mono); font-size:.6rem; color:var(--text3); }
+.tb-avatar {
+  width:32px; height:32px; border-radius:50%;
+  background:linear-gradient(135deg, var(--lime), #44ff88);
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:.88rem; color:#0a0a0a;
+  overflow:hidden; flex-shrink:0; border:1.5px solid rgba(200,255,0,.3);
+}
+
+/* ═══════════════════════════
+   PAGE CONTENT
+═══════════════════════════ */
+.page-content { flex:1; padding:28px 28px 48px; overflow-y:auto; }
+
+/* ── Page header ── */
+.page-header { margin-bottom:32px; animation:fadeUp .5s ease forwards; }
+.page-tag {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:.62rem; text-transform:uppercase;
+  letter-spacing:.12em; color:var(--lime);
+  background:var(--lime-dim); border:1px solid rgba(200,255,0,.2);
+  padding:4px 12px; border-radius:100px; margin-bottom:14px;
+}
+.page-header h1 { font-size:1.9rem; font-weight:800; letter-spacing:-.02em; line-height:1.1; margin-bottom:8px; }
+.page-header p  { font-size:.9rem; color:var(--text2); line-height:1.65; max-width:520px; }
+
+/* ── Contact grid ── */
+.contact-grid {
+  display:grid; grid-template-columns:1fr 380px; gap:20px; align-items:start;
+}
+
+/* ── Card base ── */
+.card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:var(--r); padding:24px;
+}
+.card-title { font-size:.78rem; font-weight:600; color:var(--text2); margin-bottom:20px; letter-spacing:.02em; }
+
+/* ── Form styles ── */
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-group { display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
+.input-label { font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); }
+.input-field {
+  width:100%; background:var(--bg3); border:1px solid var(--border);
+  border-radius:9px; padding:10px 13px; font-family:var(--font);
+  font-size:.875rem; color:var(--text); outline:none; transition:border-color .18s;
+  -webkit-appearance:none;
+}
+.input-field:focus { border-color:var(--lime); box-shadow:0 0 0 3px rgba(200,255,0,.07); }
+.input-field::placeholder { color:var(--text3); }
+
+textarea.input-field { resize:vertical; min-height:130px; line-height:1.6; }
+
+select.input-field {
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555555' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 14px center; cursor:pointer;
+}
+select.input-field option { background:var(--bg3); color:var(--text); }
+
+.char-counter { font-family:var(--mono); font-size:.62rem; color:var(--text3); text-align:right; margin-top:-10px; margin-bottom:14px; }
+.char-counter.near { color:var(--amber); }
+.char-counter.over  { color:var(--red); }
+
+.response-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:5px 14px; background:var(--lime-dim);
+  border:1px solid rgba(200,255,0,.2); border-radius:100px;
+  font-family:var(--mono); font-size:.65rem; color:var(--lime);
+  margin-bottom:22px; letter-spacing:.04em;
+}
+.response-badge::before {
+  content:''; width:6px; height:6px; border-radius:50%;
+  background:var(--lime); animation:pulse 2s ease-in-out infinite;
+}
+
+.btn-submit {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  width:100%; padding:13px 28px; margin-top:6px;
+  background:var(--lime); color:#0a0a0a;
+  border-radius:100px; font-family:var(--font); font-size:.88rem; font-weight:700;
+  transition:all .2s; position:relative; overflow:hidden;
+}
+.btn-submit::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+  transform:translateX(-100%); transition:transform .5s;
+}
+.btn-submit:hover { background:#ddff22; box-shadow:0 0 24px var(--lime-glow); transform:translateY(-1px); }
+.btn-submit:hover::after { transform:translateX(100%); }
+
+/* ── Form error ── */
+.alert-error {
+  display:flex; align-items:center; gap:8px; padding:10px 14px;
+  background:var(--red-dim); border:1px solid rgba(255,68,68,.25);
+  border-radius:var(--r-sm); font-size:.82rem; color:var(--red);
+}
+
+/* ── Success view ── */
+.form-success {
+  display:none; flex-direction:column; align-items:center;
+  text-align:center; padding:48px 24px; gap:16px; animation:slideIn .4s ease;
+}
+.success-icon {
+  width:64px; height:64px; border-radius:50%;
+  background:rgba(200,255,0,.1); border:1px solid rgba(200,255,0,.3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.8rem; color:var(--lime);
+}
+.form-success h3 { font-size:1.3rem; font-weight:700; color:var(--lime); }
+.form-success p  { color:var(--text2); font-size:.875rem; max-width:300px; line-height:1.65; }
+.btn-secondary {
+  display:inline-flex; align-items:center; gap:7px; padding:10px 22px;
+  background:var(--bg3); border:1px solid var(--border2);
+  border-radius:100px; font-size:.85rem; font-weight:600; color:var(--text2);
+  transition:all .18s; margin-top:4px;
+}
+.btn-secondary:hover { border-color:var(--lime); color:var(--lime); }
+
+/* ── Contact cards ── */
+.contact-card {
+  display:flex; align-items:flex-start; gap:14px; padding:16px;
+  background:var(--bg3); border:1px solid var(--border);
+  border-radius:var(--r-sm); transition:all .18s; text-decoration:none;
+}
+.contact-card:hover { border-color:var(--border2); transform:translateX(3px); }
+.contact-card-icon {
+  width:38px; height:38px; border-radius:9px;
+  display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0;
+}
+.contact-card-body h4 { font-size:.85rem; font-weight:600; color:var(--text); margin-bottom:2px; }
+.contact-card-body p  { font-family:var(--mono); font-size:.72rem; color:var(--text3); }
+.contact-card-body span { font-size:.75rem; color:var(--text3); display:block; margin-top:2px; }
+
+/* ── Info panel ── */
+.info-panel { background:var(--card); border:1px solid var(--border); border-radius:var(--r); padding:20px; }
+.info-panel h3 { font-size:.9rem; font-weight:700; margin-bottom:14px; color:var(--text); }
+
+/* ── FAQ ── */
+.faq-item { border:1px solid var(--border); border-radius:var(--r-sm); overflow:hidden; margin-bottom:8px; transition:border-color .2s; }
+.faq-item.open { border-color:rgba(200,255,0,.3); }
+.faq-question {
+  width:100%; display:flex; align-items:center; justify-content:space-between;
+  padding:14px 16px; background:var(--bg3); border:none; cursor:pointer;
+  text-align:left; color:var(--text2); font-family:var(--font);
+  font-size:.855rem; font-weight:500; gap:12px; transition:all .18s;
+}
+.faq-question:hover { color:var(--text); background:var(--bg4); }
+.faq-chevron { flex-shrink:0; width:15px; height:15px; color:var(--text3); transition:transform .3s; }
+.faq-item.open .faq-chevron { transform:rotate(180deg); color:var(--lime); }
+.faq-answer {
+  max-height:0; overflow:hidden;
+  transition:max-height .35s ease, padding .3s;
+  padding:0 16px; font-size:.845rem; color:var(--text2);
+  line-height:1.7; background:var(--bg3);
+}
+.faq-item.open .faq-answer { max-height:200px; padding:12px 16px; }
+
+/* ── Footer ── */
+.site-footer {
+  border-top:1px solid var(--border); padding:20px 28px;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:12px;
+  font-family:var(--mono); font-size:.65rem; color:var(--text3);
+}
+.footer-logo { font-weight:700; color:var(--text2); letter-spacing:.03em; }
+.footer-links { display:flex; gap:20px; }
+.footer-links a { color:var(--text3); transition:color .18s; }
+.footer-links a:hover { color:var(--lime); }
+
+/* ── Animations ── */
+.fu { animation:fadeUp .5s ease forwards; }
+.d1 { animation-delay:.05s; opacity:0; }
+.d2 { animation-delay:.12s; opacity:0; }
+.d3 { animation-delay:.18s; opacity:0; }
+
+/* ── Responsive ── */
+@media(max-width:1100px) { .contact-grid { grid-template-columns:1fr; } }
+@media(max-width:900px) {
+  :root { --sidebar-w:0px; }
+  .sidebar { transform:translateX(-100%); --sidebar-w:200px; width:200px; }
+  .sidebar.open { transform:translateX(0); }
+  .sb-overlay.open { display:block; }
+  .main-area { margin-left:0; }
+  .tb-hamburger { display:flex; }
+}
+@media(max-width:640px) {
+  .page-content { padding:20px 16px 40px; }
+  .topbar { padding:0 16px; }
+  .tb-breadcrumb { display:none; }
+  .tb-secure-pill span { display:none; }
+  .tb-secure-pill { padding:6px 10px; }
+  .tb-user-info { display:none; }
+  .form-row { grid-template-columns:1fr; }
+}
+
+/* Modal overlay styling for confirm dialogs */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open {
+  display: flex;
+}
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 92vh;
+  overflow-y: auto;
+  animation: slideIn 0.25s ease;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 1.1rem;
+  color: var(--text3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.18s;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.modal-close:hover {
+  color: var(--text);
+  background: var(--bg3);
+}
+.modal-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.modal-sub {
+  font-size: 0.85rem;
+  color: var(--text2);
+  margin-bottom: 20px;
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+
+<div class="shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar" id="sidebar">
+    <a href="index.html" class="sb-logo"><div class="sb-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="sb-logo-text">CyberMitra</span></a>
+    <nav class="sb-nav">
+      <a class="sb-item" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Home</span></a>
+      <a class="sb-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Dashboard</span></a>
+      <a class="sb-item" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Security Tools</span></a>
+      <a class="sb-item" href="url-check.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>URL Scanner</span></a>
+      <a class="sb-item" href="password-check.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Password Check</span></a>
+      <a class="sb-item" href="malwareanalysis.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Malware Scanner</span></a>
+      <a class="sb-item" href="activity-logs.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Activity Logs</span></a>
+      <a class="sb-item" href="#" onclick="showToast('Vault — Coming Soon')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Family Vault</span></a>
+    </nav>
+    <div class="sb-bottom">
+      <a class="sb-item active" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span>Settings</span></a>
+      <a class="sb-logout" href="login.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Secure Log Out</span></a>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN AREA ═══ -->
+  <div class="main-area">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="tb-left">
+        <button class="tb-hamburger" onclick="toggleSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="tb-breadcrumb">
+          <span>Account</span>
+          <span class="sep">›</span>
+          <span class="current">Contact & Settings</span>
+        </div>
+      </div>
+      <div class="tb-right">
+        <div class="tb-secure-pill">
+          <div class="tb-secure-dot"></div>
+          <span>System Secure</span>
+        </div>
+        <div class="tb-bell" onclick="showToast('No new alerts')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="tb-bell-badge"></div>
+        </div>
+        <div class="tb-user" onclick="showToast('Profile — go to Dashboard')">
+          <div class="tb-user-info">
+            <div class="tb-user-name">Vineet Kumar</div>
+            <div class="tb-user-plan">Pro Plan</div>
+          </div>
+          <div class="tb-avatar">V</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <div class="page-content">
+
+      <!-- Page Header -->
+      <div class="page-header fu d1">
+        <div class="page-tag" id="settingsPageTag">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          Manage Account
+        </div>
+        <h1 id="settingsPageTitle">Account Settings</h1>
+        <p id="settingsPageDesc">Customize your profile information, select a premium robot bottts avatar, and manage your cyber security settings.</p>
+      </div>
+
+      <!-- Settings Tabs Switcher -->
+      <div class="cm-settings-tabs fu d2">
+        <button class="cm-settings-tab-btn active" id="profileTabBtn" onclick="switchTab('profile')">Profile Settings</button>
+        <button class="cm-settings-tab-btn" id="securityTabBtn" onclick="switchTab('security')">Security & Danger Zone</button>
+        <button class="cm-settings-tab-btn" id="supportTabBtn" onclick="switchTab('support')">Help & Support</button>
+      </div>
+
+      <!-- TAB 1: PROFILE SETTINGS -->
+      <div id="profileSettingsView" class="fu d2" style="display: block;">
+        <div class="card">
+          <div class="card-title">Edit Profile Information</div>
+          <form id="profileForm" onsubmit="handleProfileSubmit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="input-label">Full Name</label>
+                <input type="text" class="input-field" id="profileName" placeholder="e.g. Vineet Kumar" required>
+              </div>
+              <div class="form-group">
+                <label class="input-label">Email Address</label>
+                <input type="email" class="input-field" id="profileEmail" placeholder="you@example.com" required>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label class="input-label">Mobile Number</label>
+                <input type="tel" class="input-field" id="profileMobile" placeholder="e.g. +91 9876543210">
+              </div>
+              <div class="form-group">
+                <label class="input-label">Security Health Index (Safe Score)</label>
+                <input type="text" class="input-field" id="profileScore" disabled style="opacity: 0.7; cursor: not-allowed; font-family: var(--mono);">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="input-label">Bio / Headline</label>
+              <textarea class="input-field" id="profileBio" placeholder="Introduce yourself (e.g. Security Analyst, Cyber Enthusiast)..." maxlength="200" style="min-height: 80px;"></textarea>
+              <div class="char-counter" id="bioCounter">0 / 200</div>
+            </div>
+
+            <div class="form-group" style="margin-top: 10px;">
+              <label class="input-label">Select Cyber Bottts Avatar</label>
+              <div class="avatar-grid" id="avatarGrid">
+                <!-- Clickable premium bottts avatars generated dynamically -->
+              </div>
+            </div>
+
+            <div id="profileError" style="display:none; margin-bottom:12px;"></div>
+
+            <button type="submit" class="btn-submit" id="saveProfileBtn" style="margin-top: 20px; max-width: 280px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Save Profile Settings
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- TAB 2: SECURITY & DANGER ZONE -->
+      <div id="securitySettingsView" class="fu d2" style="display: none;">
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          
+          <!-- Card 1: Change Password -->
+          <div class="card">
+            <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Change Account Password
+            </div>
+            <form id="changePasswordForm" onsubmit="handleChangePassword(event)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="input-label">Current Password</label>
+                  <input type="password" class="input-field" id="currentPassword" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                  <label class="input-label">New Password (Min. 8 characters)</label>
+                  <input type="password" class="input-field" id="newPassword" placeholder="••••••••" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="input-label">Confirm New Password</label>
+                <input type="password" class="input-field" id="confirmNewPassword" placeholder="••••••••" required>
+              </div>
+              <div id="passwordChangeError" style="display:none; margin-bottom:12px;"></div>
+              <button type="submit" class="btn-submit" id="updatePasswordBtn" style="margin-top: 10px; max-width: 280px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Update Password
+              </button>
+            </form>
+          </div>
+
+          <!-- Card 2: Danger Zone -->
+          <div class="card" style="border: 1.5px solid rgba(239, 68, 68, 0.25); background: rgba(239, 68, 68, 0.02);">
+            <div class="card-title" style="color: var(--red); display: flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              Danger Zone
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text2); margin-bottom: 20px; line-height: 1.5;">
+              Actions performed in this section are highly sensitive. Please proceed with caution.
+            </p>
+            
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              
+              <!-- Action Row 1: Deactivate -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r-sm); flex-wrap: wrap; gap: 12px;">
+                <div style="flex: 1; min-width: 250px;">
+                  <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 4px;">Deactivate Account</h4>
+                  <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.4;">Temporarily disable your profile and paused activity logs. You can reactivate anytime by logging back in.</p>
+                </div>
+                <button onclick="openDeactivateModal()" style="background: var(--amber); color: #0a0a0a; border-radius: 100px; padding: 8px 18px; font-weight: 700; font-size: 0.8rem; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15); transition: all 0.2s;" onmouseover="this.style.background='#d97706'" onmouseout="this.style.background='var(--amber)'">Deactivate Account</button>
+              </div>
+
+              <!-- Action Row 2: Delete -->
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r-sm); flex-wrap: wrap; gap: 12px;">
+                <div style="flex: 1; min-width: 250px;">
+                  <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--red); margin-bottom: 4px;">Delete Account Permanently</h4>
+                  <p style="font-size: 0.78rem; color: var(--text2); line-height: 1.4;">Permanently delete your profile, credentials, active alerts, malware scan logs, and all historical scan records. This action is irreversible.</p>
+                </div>
+                <button onclick="openDeleteModal()" style="background: var(--red); color: white; border-radius: 100px; padding: 8px 18px; font-weight: 700; font-size: 0.8rem; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2); transition: all 0.2s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='var(--red)'">Delete Account</button>
+              </div>
+
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- TAB 3: HELP & SUPPORT -->
+      <div id="supportSettingsView" class="fu d2" style="display: none;">
+        <!-- Contact Grid -->
+        <div class="contact-grid">
+
+          <!-- LEFT: Form -->
+          <div>
+            <div class="card">
+              <div class="card-title">Send a Support Ticket</div>
+
+              <!-- Form view -->
+              <div id="formView">
+                <div class="response-badge">Avg. response within 24 hours</div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="input-label">First Name</label>
+                    <input type="text" class="input-field" id="firstName" placeholder="Pintu" autocomplete="given-name">
+                  </div>
+                  <div class="form-group">
+                    <label class="input-label">Last Name</label>
+                    <input type="text" class="input-field" id="lastName" placeholder="Kumar" autocomplete="family-name">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="input-label">Email Address</label>
+                  <input type="email" class="input-field" id="email" placeholder="you@example.com" autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                  <label class="input-label">Subject</label>
+                  <select class="input-field" id="subject">
+                    <option value="" disabled selected>Select a topic…</option>
+                    <option value="bug">🐛 Bug Report</option>
+                    <option value="feature">💡 Feature Request</option>
+                    <option value="security">🔐 Security Concern</option>
+                    <option value="collab">🤝 Collaboration</option>
+                    <option value="other">💬 General Inquiry</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="input-label">Message</label>
+                  <textarea class="input-field" id="message" placeholder="Describe your issue or idea in detail…" maxlength="1000"></textarea>
+                </div>
+                <div class="char-counter" id="charCounter">0 / 1000</div>
+
+                <div id="formError" style="display:none; margin-bottom:12px;"></div>
+
+                <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  Send Message
+                </button>
+              </div>
+
+              <!-- Success view -->
+              <div class="form-success" id="successView">
+                <div class="success-icon">✓</div>
+                <h3>Message Sent!</h3>
+                <p>Thanks for reaching out. We'll get back to you within 24 hours.</p>
+                <button class="btn-secondary" onclick="resetForm()">Send Another Message</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Info -->
+          <div style="display:flex; flex-direction:column; gap:16px;">
+
+            <!-- Contact channels -->
+            <div class="info-panel">
+              <h3>Reach Us Directly</h3>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+
+                <a href="mailto:iec.vineet@gmail.com" class="contact-card">
+                  <div class="contact-card-icon" style="background:rgba(0,212,255,.08); border:1px solid rgba(0,212,255,.15);">📧</div>
+                  <div class="contact-card-body">
+                    <h4>Email</h4>
+                    <p>iec.vineet@gmail.com</p>
+                    <span>Best for detailed queries</span>
+                  </div>
+                </a>
+
+                <a href="https://github.com/iamvineetupadhyay/CyberMitra" target="_blank" rel="noopener" class="contact-card">
+                  <div class="contact-card-icon" style="background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--text2)"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                  </div>
+                  <div class="contact-card-body">
+                    <h4>GitHub</h4>
+                    <p>iamvineetupadhyay/CyberMitra</p>
+                    <span>Issues & contributions</span>
+                  </div>
+                </a>
+
+                <a href="https://twitter.com/cybermitra" target="_blank" rel="noopener" class="contact-card">
+                  <div class="contact-card-icon" style="background:rgba(29,161,242,.08); border:1px solid rgba(29,161,242,.15);">𝕏</div>
+                  <div class="contact-card-body">
+                    <h4>Twitter / X</h4>
+                    <p>@cybermitra</p>
+                    <span>Quick updates & announcements</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="info-panel">
+              <h3>Common Questions</h3>
+
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                  Is my data stored when I scan a URL?
+                  <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="faq-answer">No. URLs are sent to our backend for live analysis and are never stored in any database. VirusTotal receives the URL as part of its API contract.</div>
+              </div>
+
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                  Why does the backend sometimes go offline?
+                  <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="faq-answer">CyberMitra runs on Render's free tier, which spins down after inactivity. The first request after a cold start may take 20–30 seconds.</div>
+              </div>
+
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                  Can I report a false positive result?
+                  <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="faq-answer">Yes! Use the form and select "Bug Report". Include the URL and the result you received. We'll investigate promptly.</div>
+              </div>
+
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                  Is CyberMitra open source?
+                  <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <div class="faq-answer">The frontend is open source and the backend source is available on GitHub. Contributions and suggestions are always welcome via issues or pull requests.</div>
+              </div>
+
+            </div>
+
+          </div>
+        </div><!-- /contact-grid -->
+      </div>
+
+    </div><!-- /page-content -->
+
+   <!-- FOOTER -->
+ <footer class="site-footer">
+    <span class="footer-logo">CyberMitra</span>
+    <div class="footer-links">
+      <a href="home.html">Home</a>
+      <a href="home.html">Tools</a>
+      <a href="contactus.html">Contact</a>
+      <a href="pricing.html">Pricing</a>
+    </div>
+    <span>© 2025 CyberMitra · Built to protect.</span>
+  </footer>
+
+  </div><!-- /main-area -->
+</div><!-- /shell -->
+
+<!-- ═══ DEACTIVATE ACCOUNT CONFIRMATION MODAL ═══ -->
+<div class="modal-overlay" id="deactivateModalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeDeactivateModal()">✕</button>
+    <div class="modal-title" style="color: var(--amber); font-weight: 700;">Deactivate Account?</div>
+    <p class="modal-sub" style="margin-bottom: 18px; line-height: 1.5;">This will temporarily disable your account. You can reactivate it at any time by signing back in with your username and password.</p>
+    
+    <div class="form-group" style="margin-bottom: 18px;">
+      <label class="input-label">Confirm Your Password</label>
+      <input type="password" class="input-field" id="deactivatePassword" placeholder="Enter password to confirm" required>
+    </div>
+    
+    <div id="deactivateError" style="display:none; margin-bottom:12px;"></div>
+    
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+      <button class="btn-secondary" onclick="closeDeactivateModal()" style="margin: 0; padding: 8px 18px; border-radius: 100px;">Cancel</button>
+      <button id="confirmDeactivateBtn" class="btn-submit" onclick="confirmDeactivate()" style="background: var(--amber); color: #0a0a0a; border-radius: 100px; padding: 8px 18px; font-weight: 700; font-size: 0.82rem; transition: all 0.2s; max-width: 140px; margin-top: 0;">Deactivate</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DELETE ACCOUNT CONFIRMATION MODAL ═══ -->
+<div class="modal-overlay" id="deleteModalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeDeleteModal()">✕</button>
+    <div class="modal-title" style="color: var(--red); font-weight: 700;">Permanently Delete Account?</div>
+    <p class="modal-sub" style="margin-bottom: 18px; line-height: 1.5; color: var(--red);">WARNING: This action is completely irreversible. All your historical logs, scanned files, activity logs, active subscription attributes, and credentials will be permanently erased.</p>
+    
+    <div class="form-group" style="margin-bottom: 14px;">
+      <label class="input-label">Type "DELETE" to confirm</label>
+      <input type="text" class="input-field" id="deleteConfirmText" placeholder="Type DELETE" required style="text-transform: uppercase;">
+    </div>
+    
+    <div class="form-group" style="margin-bottom: 18px;">
+      <label class="input-label">Confirm Your Password</label>
+      <input type="password" class="input-field" id="deletePassword" placeholder="Enter password to confirm" required>
+    </div>
+    
+    <div id="deleteError" style="display:none; margin-bottom:12px;"></div>
+    
+    <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+      <button class="btn-secondary" onclick="closeDeleteModal()" style="margin: 0; padding: 8px 18px; border-radius: 100px;">Cancel</button>
+      <button id="confirmDeleteBtn" class="btn-submit" onclick="confirmDelete()" style="background: var(--red); color: white; border-radius: 100px; padding: 8px 18px; font-weight: 700; font-size: 0.82rem; transition: all 0.2s; max-width: 180px; margin-top: 0;">Delete Permanently</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+const API_BASE = window.CYBERMITRA_API_BASE || (window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '';
+const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId') || localStorage.getItem('cm_user_id');
+
+let selectedAvatarUrl = '';
+
+window.addEventListener('DOMContentLoaded', () => {
+  if (userId) {
+    fetchProfile();
+  } else {
+    // If guest somehow accesses settings, redirect to login
+    window.location.href = 'login.html';
+  }
+
+  // Handle hash deep-linking for tabs
+  if (window.location.hash === '#support') {
+    switchTab('support');
+  } else if (window.location.hash === '#security') {
+    switchTab('security');
+  }
+});
+
+// Switch Settings Tabs
+function switchTab(tab) {
+  const profileView = document.getElementById('profileSettingsView');
+  const securityView = document.getElementById('securitySettingsView');
+  const supportView = document.getElementById('supportSettingsView');
+  const profileBtn = document.getElementById('profileTabBtn');
+  const securityBtn = document.getElementById('securityTabBtn');
+  const supportBtn = document.getElementById('supportTabBtn');
+  
+  const tag = document.getElementById('settingsPageTag');
+  const title = document.getElementById('settingsPageTitle');
+  const desc = document.getElementById('settingsPageDesc');
+
+  if (tab === 'profile') {
+    profileView.style.display = 'block';
+    securityView.style.display = 'none';
+    supportView.style.display = 'none';
+    profileBtn.classList.add('active');
+    securityBtn.classList.remove('active');
+    supportBtn.classList.remove('active');
+    window.location.hash = '';
+
+    tag.innerHTML = `
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      Manage Account
+    `;
+    title.textContent = 'Account Settings';
+    desc.textContent = 'Customize your profile information, select a premium robot bottts avatar, and manage your cyber security settings.';
+  } else if (tab === 'security') {
+    profileView.style.display = 'none';
+    securityView.style.display = 'block';
+    supportView.style.display = 'none';
+    profileBtn.classList.remove('active');
+    securityBtn.classList.add('active');
+    supportBtn.classList.remove('active');
+    window.location.hash = 'security';
+
+    tag.innerHTML = `
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Account Security
+    `;
+    title.textContent = 'Security & Danger Zone';
+    desc.textContent = 'Change your password, temporarily deactivate your account, or permanently delete your account and all its data.';
+  } else {
+    profileView.style.display = 'none';
+    securityView.style.display = 'none';
+    supportView.style.display = 'block';
+    profileBtn.classList.remove('active');
+    securityBtn.classList.remove('active');
+    supportBtn.classList.add('active');
+    window.location.hash = 'support';
+
+    tag.innerHTML = `
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.61 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+      Get In Touch
+    `;
+    title.textContent = 'Contact & Support';
+    desc.textContent = 'Have a question, a bug report, or want to collaborate? We\'re always happy to hear from you.';
+  }
+}
+
+// Fetch Profile Data from backend
+async function fetchProfile() {
+  try {
+    const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/profile`);
+    if (!response.ok) return;
+    
+    const d = await response.json();
+    const name = d.name || 'User';
+    const email = d.email || '';
+    const mobile = d.mobile || '';
+    const bio = d.bio || '';
+    const score = d.safeScore != null ? d.safeScore : '—';
+    const avatarSrc = d.avatarSrc || d.profilePicUrl || '';
+
+    // Populate Fields
+    document.getElementById('profileName').value = name;
+    document.getElementById('profileEmail').value = email;
+    document.getElementById('profileMobile').value = mobile;
+    document.getElementById('profileBio').value = bio;
+    document.getElementById('profileScore').value = `${score} / 100`;
+
+    document.getElementById('bioCounter').textContent = `${bio.length} / 200`;
+
+    const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    const tbAvatarEl = document.getElementById('tbAvatar');
+    if (tbAvatarEl) {
+      if (avatarSrc) {
+        tbAvatarEl.innerHTML = `<img src="${avatarSrc}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      } else {
+        tbAvatarEl.textContent = init;
+      }
+    }
+    const sbAvatarEl = document.getElementById('sbAvatar');
+    if (sbAvatarEl) {
+      if (avatarSrc) {
+        sbAvatarEl.innerHTML = `<img src="${avatarSrc}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      } else {
+        sbAvatarEl.textContent = init;
+      }
+    }
+
+    // Populate Dicebear Robot Grid
+    initAvatarGrid(avatarSrc);
+  } catch (err) {
+    console.error("Failed to load user profile details:", err);
+  }
+}
+
+// Dynamically draw the 8 bottts seed options
+function initAvatarGrid(currentAvatarSrc) {
+  const grid = document.getElementById('avatarGrid');
+  grid.innerHTML = '';
+
+  for (let i = 1; i <= 8; i++) {
+    const seed = `cybermitra${i}`;
+    const src = `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`;
+    
+    const opt = document.createElement('div');
+    opt.className = 'avatar-option';
+    if (currentAvatarSrc === src || (!currentAvatarSrc && i === 1)) {
+      opt.classList.add('selected');
+      selectedAvatarUrl = src;
+    }
+    
+    opt.innerHTML = `<img src="${src}" alt="Robot Bot ${i}">`;
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.avatar-option').forEach(el => el.classList.remove('selected'));
+      opt.classList.add('selected');
+      selectedAvatarUrl = src;
+    });
+    grid.appendChild(opt);
+  }
+}
+
+// Form text character counters
+const bioInput = document.getElementById('profileBio');
+bioInput.addEventListener('input', () => {
+  const len = bioInput.value.length;
+  document.getElementById('bioCounter').textContent = `${len} / 200`;
+});
+
+// Update Profile PUT Submit
+async function handleProfileSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById('profileName').value.trim();
+  const email = document.getElementById('profileEmail').value.trim();
+  const mobile = document.getElementById('profileMobile').value.trim();
+  const bio = document.getElementById('profileBio').value.trim();
+  const errEl = document.getElementById('profileError');
+  const btn = document.getElementById('saveProfileBtn');
+
+  if (!name) return showProfileError('Name field is required.');
+  if (!email) return showProfileError('Email address is required.');
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Saving…`;
+
+  try {
+    const payload = {
+      name,
+      email,
+      mobile,
+      bio,
+      avatarSrc: selectedAvatarUrl,
+      profilePicUrl: selectedAvatarUrl
+    };
+
+    const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/update`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      showToast('⚙️ Profile updated successfully!');
+      
+      // Update DOM components in real-time instantly without refresh
+      const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+      
+      // Save directly to localStorage cache for real-time sync across pages
+      localStorage.setItem('cm_user_name', name);
+      localStorage.setItem('cm_user_email', email);
+      localStorage.setItem('cm_user_initials', init);
+      if (selectedAvatarUrl) {
+        localStorage.setItem('cm_user_avatar', selectedAvatarUrl);
+      } else {
+        localStorage.removeItem('cm_user_avatar');
+      }
+      
+      // Sidebar hooks
+      const sbNameEl = document.getElementById('sbName');
+      if (sbNameEl) sbNameEl.textContent = name;
+      const sbAvatarEl = document.getElementById('sbAvatar');
+      if (sbAvatarEl) {
+        if (selectedAvatarUrl) {
+          sbAvatarEl.innerHTML = `<img src="${selectedAvatarUrl}" alt="Avatar">`;
+        } else {
+          sbAvatarEl.textContent = init;
+        }
+      }
+
+      // Topbar hooks
+      const tbNameEl = document.getElementById('tbName');
+      if (tbNameEl) tbNameEl.textContent = name;
+      const tbAvatarEl = document.getElementById('tbAvatar');
+      if (tbAvatarEl) {
+        if (selectedAvatarUrl) {
+          tbAvatarEl.innerHTML = `<img src="${selectedAvatarUrl}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        } else {
+          tbAvatarEl.textContent = init;
+        }
+      }
+
+      // Dropdown hooks
+      const ddNameEl = document.getElementById('ddName');
+      const ddEmailEl = document.getElementById('ddEmail');
+      if (ddNameEl) ddNameEl.textContent = name;
+      if (ddEmailEl) ddEmailEl.textContent = email;
+
+      const ddAvatarEl = document.querySelector('.tb-user .cm-avatar-small');
+      if (ddAvatarEl && selectedAvatarUrl) {
+        ddAvatarEl.innerHTML = `<img src="${selectedAvatarUrl}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+      }
+    } else {
+      const txt = await response.text();
+      showProfileError(txt || 'Failed to update profile settings.');
+    }
+  } catch (err) {
+    console.error(err);
+    showProfileError('Network error occurred while updating profile.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Save Profile Settings`;
+  }
+}
+
+function showProfileError(msg) {
+  const el = document.getElementById('profileError');
+  el.innerHTML = `<div class="alert-error" style="margin-top: 10px;"><span>⚠</span> ${msg}</div>`;
+  el.style.display = 'block';
+}
+
+// ── CHANGE PASSWORD HANDLER ────────────────────────────────────────────────
+async function handleChangePassword(e) {
+  e.preventDefault();
+  const currentPassword = document.getElementById('currentPassword').value;
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+  const errEl = document.getElementById('passwordChangeError');
+  const btn = document.getElementById('updatePasswordBtn');
+
+  if (newPassword !== confirmNewPassword) {
+    return showPasswordChangeError('Confirm password does not match new password.');
+  }
+  if (newPassword.length < 8) {
+    return showPasswordChangeError('New password must be at least 8 characters long.');
+  }
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Updating…`;
+
+  try {
+    const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/change-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword, newPassword })
+    });
+
+    if (response.ok) {
+      showToast('🔑 Password changed successfully!');
+      document.getElementById('changePasswordForm').reset();
+    } else {
+      const txt = await response.text();
+      showPasswordChangeError(txt || 'Failed to update password.');
+    }
+  } catch (err) {
+    console.error(err);
+    showPasswordChangeError('Network error occurred while changing password.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Update Password`;
+  }
+}
+
+function showPasswordChangeError(msg) {
+  const el = document.getElementById('passwordChangeError');
+  el.innerHTML = `<div class="alert-error" style="margin-top: 10px;"><span>⚠</span> ${msg}</div>`;
+  el.style.display = 'block';
+}
+
+// ── DEACTIVATE ACCOUNT HANDLERS ────────────────────────────────────────────
+function openDeactivateModal() {
+  document.getElementById('deactivatePassword').value = '';
+  document.getElementById('deactivateError').style.display = 'none';
+  document.getElementById('deactivateModalOverlay').classList.add('open');
+}
+
+function closeDeactivateModal() {
+  document.getElementById('deactivateModalOverlay').classList.remove('open');
+}
+
+async function confirmDeactivate() {
+  const password = document.getElementById('deactivatePassword').value;
+  const errEl = document.getElementById('deactivateError');
+  const btn = document.getElementById('confirmDeactivateBtn');
+
+  if (!password) {
+    return showDeactivateError('Please enter your password.');
+  }
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Deactivating…';
+
+  try {
+    const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/deactivate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    });
+
+    if (response.ok) {
+      showToast('🔒 Account deactivated successfully.');
+      closeDeactivateModal();
+      // Clear localStorage and redirect to login
+      localStorage.clear();
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1500);
+    } else {
+      const txt = await response.text();
+      showDeactivateError(txt || 'Failed to deactivate account.');
+    }
+  } catch (err) {
+    console.error(err);
+    showDeactivateError('Network error occurred during deactivation.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Deactivate';
+  }
+}
+
+function showDeactivateError(msg) {
+  const el = document.getElementById('deactivateError');
+  el.innerHTML = `<div class="alert-error" style="margin-top: 10px;"><span>⚠</span> ${msg}</div>`;
+  el.style.display = 'block';
+}
+
+// ── DELETE ACCOUNT HANDLERS ────────────────────────────────────────────────
+function openDeleteModal() {
+  document.getElementById('deleteConfirmText').value = '';
+  document.getElementById('deletePassword').value = '';
+  document.getElementById('deleteError').style.display = 'none';
+  document.getElementById('deleteModalOverlay').classList.add('open');
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModalOverlay').classList.remove('open');
+}
+
+async function confirmDelete() {
+  const confirmText = document.getElementById('deleteConfirmText').value.trim();
+  const password = document.getElementById('deletePassword').value;
+  const errEl = document.getElementById('deleteError');
+  const btn = document.getElementById('confirmDeleteBtn');
+
+  if (confirmText !== 'DELETE') {
+    return showDeleteError('You must type the word "DELETE" to confirm.');
+  }
+  if (!password) {
+    return showDeleteError('Please enter your password.');
+  }
+
+  errEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Deleting…';
+
+  try {
+    const url = `${API_BASE}/api/user/${encodeURIComponent(userId)}/delete?password=${encodeURIComponent(password)}&confirmText=${encodeURIComponent(confirmText)}`;
+    const response = await fetch(url, {
+      method: 'DELETE'
+    });
+
+    if (response.ok) {
+      showToast('👋 Account deleted successfully. Goodbye!');
+      closeDeleteModal();
+      localStorage.clear();
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 2000);
+    } else {
+      const txt = await response.text();
+      showDeleteError(txt || 'Failed to delete account.');
+    }
+  } catch (err) {
+    console.error(err);
+    showDeleteError('Network error occurred during account deletion.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Delete Permanently';
+  }
+}
+
+function showDeleteError(msg) {
+  const el = document.getElementById('deleteError');
+  el.innerHTML = `<div class="alert-error" style="margin-top: 10px;"><span>⚠</span> ${msg}</div>`;
+  el.style.display = 'block';
+}
+
+
+/* ══ Sidebar ══ */
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sbOverlay');
+  if (sidebar) sidebar.classList.toggle('open');
+  if (overlay) overlay.classList.toggle('open');
+}
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sbOverlay');
+  if (sidebar) sidebar.classList.remove('open');
+  if (overlay) overlay.classList.remove('open');
+}
+
+/* ══ Toast ══ */
+function showToast(msg) {
+  const existing = document.querySelector('.cm-toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.className = 'cm-toast';
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--lime);border-radius:100px;padding:10px 22px;font-family:\'JetBrains Mono\',monospace;font-size:.78rem;color:var(--lime);z-index:99999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px var(--lime-glow);';
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2400);
+}
+
+/* ══ Help Ticket & support script blocks ══ */
+const msgEl = document.getElementById('message');
+const counterEl = document.getElementById('charCounter');
+msgEl.addEventListener('input', () => {
+  const len = msgEl.value.length;
+  counterEl.textContent = `${len} / 1000`;
+  counterEl.className = 'char-counter' + (len > 900 ? ' over' : len > 750 ? ' near' : '');
+});
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+async function handleSubmit() {
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName  = document.getElementById('lastName').value.trim();
+  const email     = document.getElementById('email').value.trim();
+  const subject   = document.getElementById('subject').value;
+  const message   = document.getElementById('message').value.trim();
+  const errEl     = document.getElementById('formError');
+
+  if (!firstName || !lastName) return showFormError('Please enter your full name.');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showFormError('Please enter a valid email address.');
+  if (!subject) return showFormError('Please select a subject.');
+  if (!message || message.length < 10) return showFormError('Message must be at least 10 characters.');
+
+  errEl.style.display = 'none';
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Sending…`;
+
+  try {
+    const response = await fetch(`${API_BASE}/api/user/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, email, subject, message })
+    });
+
+    if (response.ok) {
+      document.getElementById('formView').style.display = 'none';
+      document.getElementById('successView').style.display = 'flex';
+      showToast('📨 Support ticket submitted successfully!');
+    } else {
+      const txt = await response.text();
+      showFormError(txt || 'Failed to submit support ticket.');
+    }
+  } catch (err) {
+    console.error(err);
+    showFormError('Network error occurred while submitting ticket.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message`;
+  }
+}
+
+function showFormError(msg) {
+  const el = document.getElementById('formError');
+  el.innerHTML = `<div class="alert-error"><span>⚠</span> ${msg}</div>`;
+  el.style.display = 'block';
+}
+
+function resetForm() {
+  ['firstName','lastName','email','message'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('subject').value = '';
+  counterEl.textContent = '0 / 1000';
+  counterEl.className = 'char-counter';
+  document.getElementById('formError').style.display = 'none';
+  document.getElementById('formView').style.display = 'block';
+  document.getElementById('successView').style.display = 'none';
+}
+</script>
+</body>
+</html>

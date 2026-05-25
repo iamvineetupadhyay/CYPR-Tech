@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="assets/js/config.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Phishing Checker — CyberMitra</title>
+  <script src="assets/js/site-enhancements.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg2: #f8fafc;
+      --bg3: #f1f5f9;
+      --bg4: #e2e8f0;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --border2: #cbd5e1;
+      --lime: #1e40af;
+      --lime-dim: rgba(30, 64, 175, 0.08);
+      --red: #ef4444;
+      --red-dim: rgba(239, 68, 68, 0.10);
+      --amber: #f59e0b;
+      --blue: #3b82f6;
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --sidebar-w: 210px;
+      --topbar-h: 54px;
+      --font: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --r: 12px;
+      --r-sm: 8px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    ::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 2px;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .4
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .fu {
+      animation: fadeUp .45s ease forwards;
+    }
+
+    .d1 {
+      animation-delay: .04s;
+      opacity: 0;
+    }
+
+    .d2 {
+      animation-delay: .1s;
+      opacity: 0;
+    }
+
+    .d3 {
+      animation-delay: .16s;
+      opacity: 0;
+    }
+
+    /* ═══ SIDEBAR ═══ */
+    .shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 200;
+      transition: transform .3s ease;
+    }
+
+    .sb-logo {
+      padding: 20px 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sb-logo-icon {
+      width: 30px;
+      height: 30px;
+      background: var(--lime);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sb-logo-icon svg {
+      width: 16px;
+      height: 16px;
+      color: #0a0a0a;
+    }
+
+    .sb-logo-text {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .sb-nav {
+      flex: 1;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow-y: auto;
+    }
+
+    .sb-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 12px;
+      border-radius: var(--r-sm);
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text3);
+      transition: all .18s;
+      border: 1px solid transparent;
+    }
+
+    .sb-item svg {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+    }
+
+    .sb-item:hover {
+      color: var(--text2);
+      background: var(--bg3);
+    }
+
+    .sb-item.active {
+      color: var(--text);
+      background: rgba(200, 255, 0, .08);
+      border-color: rgba(200, 255, 0, .15);
+    }
+
+    .sb-item.active svg {
+      color: var(--lime);
+    }
+
+    .sb-item.active span {
+      color: var(--lime);
+    }
+
+    .sb-bottom {
+      padding: 10px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sb-logout {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 12px;
+      border-radius: var(--r-sm);
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text3);
+      transition: all .18s;
+    }
+
+    .sb-logout:hover {
+      color: var(--red);
+      background: var(--red-dim);
+    }
+
+    .sb-logout svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .sb-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      z-index: 199;
+    }
+
+    .sb-overlay.open {
+      display: block;
+    }
+
+    /* ═══ MAIN ═══ */
+    .main-area {
+      flex: 1;
+      margin-left: var(--sidebar-w);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: var(--topbar-h);
+      background: rgba(10, 10, 10, .9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .tb-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tb-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      width: 30px;
+      height: 30px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px;
+      cursor: pointer;
+    }
+
+    .tb-hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text2);
+      border-radius: 2px;
+    }
+
+    .tb-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: .82rem;
+      color: var(--text3);
+      font-family: var(--mono);
+    }
+
+    .tb-breadcrumb .sep {
+      color: var(--border2);
+    }
+
+    .tb-breadcrumb .current {
+      color: var(--text2);
+    }
+
+    .tb-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tb-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: rgba(200, 255, 0, .07);
+      border: 1px solid rgba(200, 255, 0, .18);
+      border-radius: 100px;
+      font-family: var(--mono);
+      font-size: .6rem;
+      font-weight: 600;
+      color: var(--lime);
+      text-transform: uppercase;
+    }
+
+    .tb-pill-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--lime);
+      animation: pulse 2s infinite;
+    }
+
+    .tb-bell {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .tb-bell svg {
+      width: 14px;
+      height: 14px;
+      color: var(--text2);
+    }
+
+    .tb-bell-dot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+      border: 1.5px solid var(--bg);
+    }
+
+    .tb-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 4px 4px 10px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      cursor: pointer;
+    }
+
+    .tb-user-name {
+      font-size: .78rem;
+      font-weight: 600;
+    }
+
+    .tb-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--lime), #44ff88);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: .8rem;
+      color: #0a0a0a;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(200, 255, 0, .3);
+    }
+
+    /* ═══ PAGE ═══ */
+    .page-content {
+      flex: 1;
+      padding: 24px 24px 40px;
+    }
+
+    .page-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: .55rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--lime);
+      background: var(--lime-dim);
+      border: 1px solid rgba(200, 255, 0, .2);
+      padding: 3px 10px;
+      border-radius: 100px;
+      margin-bottom: 10px;
+    }
+
+    .page-header h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .page-header p {
+      font-size: .85rem;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    /* ── Tool Layout ── */
+    .tool-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 22px;
+    }
+
+    .card-title {
+      font-family: var(--mono);
+      font-size: .6rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--text3);
+      margin-bottom: 16px;
+    }
+
+    .input-label {
+      font-family: var(--mono);
+      font-size: .58rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--text3);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input-field {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 13px;
+      font-family: var(--font);
+      font-size: .875rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color .18s;
+    }
+
+    .input-field:focus {
+      border-color: var(--lime);
+      box-shadow: 0 0 0 3px rgba(200, 255, 0, .07);
+    }
+
+    .input-field::placeholder {
+      color: var(--text3);
+    }
+
+    .scan-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .scan-row .input-field {
+      flex: 1;
+    }
+
+    .btn-scan {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: var(--lime);
+      color: #0a0a0a;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: .82rem;
+      transition: all .2s;
+      flex-shrink: 0;
+    }
+
+    .btn-scan:hover {
+      background: #ddff22;
+      box-shadow: 0 0 16px rgba(200, 255, 0, .25);
+    }
+
+    .btn-scan svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ── Advanced AI Scan Toggle ── */
+    .scan-toggle-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .scan-toggle-label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .scan-toggle-title {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: #e2e8f0;
+      text-transform: uppercase;
+    }
+
+    .scan-toggle-sub {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: #94a3b8;
+      letter-spacing: 0.02em;
+    }
+
+    /* Switch track */
+    .scan-toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .scan-toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+
+    /* Slider track */
+    .scan-slider {
+      position: absolute;
+      inset: 0;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 999px;
+      transition: background 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    /* Slider thumb */
+    .scan-slider::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #64748b;
+      border-radius: 50%;
+      transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    }
+
+    /* ON state */
+    .scan-toggle-switch input:checked+.scan-slider {
+      background: #c8ff00;
+      border-color: #c8ff00;
+      box-shadow: 0 0 10px rgba(200, 255, 0, 0.45), 0 0 20px rgba(200, 255, 0, 0.2);
+    }
+
+    .scan-toggle-switch input:checked+.scan-slider::before {
+      transform: translateX(20px) translateY(-50%);
+      background: #0f172a;
+    }
+
+    /* Focus ring for accessibility */
+    .scan-toggle-switch input:focus-visible+.scan-slider {
+      outline: 2px solid #c8ff00;
+      outline-offset: 2px;
+    }
+
+    /* ── Results ── */
+    .result-box {
+      margin-top: 16px;
+    }
+
+    .result-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 18px;
+      animation: fadeUp .3s ease;
+    }
+
+    .result-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .status-badge {
+      font-family: var(--mono);
+      font-size: .6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    .badge-safe {
+      color: var(--bg) !important;
+      background: var(--green) !important;
+    }
+
+    .badge-suspicious {
+      color: #0a0a0a;
+      background: var(--amber);
+    }
+
+    .badge-phishing {
+      color: #fff;
+      background: var(--red);
+    }
+
+    .result-url {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--text3);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .reason-list {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .reason-list h4 {
+      font-size: .82rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--amber);
+    }
+
+    .reason-list ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .reason-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: .78rem;
+      color: var(--text2);
+    }
+
+    .reason-list li span {
+      color: var(--amber);
+    }
+
+    .vt-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .vt-stat {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .vt-num {
+      font-family: var(--mono);
+      font-size: 1.4rem;
+      font-weight: 800;
+      display: block;
+      line-height: 1;
+    }
+
+    .vt-label {
+      font-family: var(--mono);
+      font-size: .55rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--text3);
+      margin-top: 4px;
+      display: block;
+    }
+
+    .vt-stat.harmless .vt-num {
+      color: var(--green) !important;
+    }
+
+    .vt-stat.suspicious .vt-num {
+      color: var(--amber);
+    }
+
+    .vt-stat.malicious .vt-num {
+      color: var(--red);
+    }
+
+    /* ── Loading & Error ── */
+    .loading-state {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px;
+      font-size: .85rem;
+      color: var(--text2);
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--border2);
+      border-top-color: var(--lime);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      flex-shrink: 0;
+    }
+
+    .alert-error {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      background: var(--red-dim);
+      border: 1px solid rgba(255, 68, 68, .25);
+      border-radius: var(--r-sm);
+      font-size: .82rem;
+      color: var(--red);
+    }
+
+    /* ── Example URLs ── */
+    .example-url {
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--green) !important;
+      cursor: pointer;
+      transition: color .18s;
+    }
+
+    .example-url:hover {
+      color: #ddff22;
+    }
+
+    /* ── Recent scans list ── */
+    .recent-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+    }
+
+    .recent-url {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--text2);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 260px;
+    }
+
+    .recent-badge {
+      font-family: var(--mono);
+      font-size: .55rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    /* ── Info panels ── */
+    .info-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .info-panel h3 {
+      font-size: .88rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .tip-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tip-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: .78rem;
+      color: var(--text2);
+      line-height: 1.55;
+    }
+
+    .tip-icon {
+      font-size: .9rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 4px 0;
+    }
+
+    .step-num {
+      font-family: var(--mono);
+      font-size: .62rem;
+      color: var(--lime);
+      background: var(--lime-dim);
+      border: 1px solid rgba(200, 255, 0, .2);
+      border-radius: 4px;
+      padding: 2px 7px;
+      flex-shrink: 0;
+    }
+
+    .step-text {
+      font-size: .78rem;
+      color: var(--text2);
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: .6rem;
+      color: var(--text3);
+    }
+
+    .footer-logo {
+      font-weight: 700;
+      color: var(--text2);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .footer-links a {
+      color: var(--text3);
+      transition: color .18s;
+    }
+
+    .footer-links a:hover {
+      color: var(--lime);
+    }
+
+    /* ── Responsive ── */
+    @media(max-width:1100px) {
+      .tool-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width:900px) {
+      :root {
+        --sidebar-w: 0px;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+        --sidebar-w: 210px;
+        width: 210px;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main-area {
+        margin-left: 0;
+      }
+
+      .tb-hamburger {
+        display: flex;
+      }
+    }
+
+    @media(max-width:640px) {
+      .page-content {
+        padding: 18px 14px 36px;
+      }
+
+      .topbar {
+        padding: 0 14px;
+      }
+
+      .tb-breadcrumb {
+        display: none;
+      }
+
+      .tb-pill span {
+        display: none;
+      }
+
+      .tb-user-name {
+        display: none;
+      }
+
+      .vt-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <a href="index.html" class="sb-logo">
+        <div class="sb-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg></div><span class="sb-logo-text">CyberMitra</span>
+      </a>
+      <nav class="sb-nav">
+        <a class="sb-item" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+          </svg><span>Home</span></a>
+        <a class="sb-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+          </svg><span>Dashboard</span></a>
+        <a class="sb-item" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg><span>Security Tools</span></a>
+        <a class="sb-item active" href="url-check.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg><span>URL Scanner</span></a>
+        <a class="sb-item" href="password-check.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg><span>Password Check</span></a>
+        <a class="sb-item" href="malwareanalysis.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg><span>Malware Scanner</span></a>
+        <a class="sb-item" href="activity-logs.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg><span>Activity Logs</span></a>
+        <a class="sb-item" href="#" onclick="showToast('Vault — Coming Soon')"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg><span>Family Vault</span></a>
+      </nav>
+      <div class="sb-bottom">
+        <a class="sb-item" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+          </svg><span>Settings</span></a>
+        <a class="sb-logout" href="login.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg><span>Secure Log Out</span></a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-area">
+      <header class="topbar">
+        <div class="tb-left">
+          <button class="tb-hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+          <div class="tb-breadcrumb"><span>Security Tools</span><span class="sep">›</span><span class="current">URL
+              Phishing Checker</span></div>
+        </div>
+        <div class="tb-right">
+          <div class="tb-bell" onclick="showToast('No new alerts')"><svg viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <div class="tb-bell-dot"></div>
+          </div>
+          <a class="tb-user" href="dashboard.html"><span class="tb-user-name" id="tbName">—</span>
+            <div class="tb-avatar" id="tbAvatar">?</div>
+          </a>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- Header -->
+        <div class="page-header fu d1">
+          <div class="page-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="10"
+              height="10">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>Threat Detection</div>
+          <h1>URL Phishing Checker</h1>
+          <p>Scan any URL against 70+ antivirus and threat intelligence engines. Get instant safe/suspicious/phishing
+            verdicts.</p>
+        </div>
+
+        <div class="tool-layout">
+          <!-- LEFT: Tool -->
+          <div>
+            <div class="card fu d2">
+              <div class="card-title">Target URL</div>
+              <div class="scan-row">
+                <input id="urlInput" type="text" class="input-field" placeholder="https://suspicious-site.com">
+                <button id="scanBtn" class="btn-scan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" width="14" height="14">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                  </svg>Scan</button>
+              </div>
+
+              <!-- Advanced Scan Toggle -->
+              <div class="scan-toggle-wrapper">
+                <div class="scan-toggle-label">
+                  <span class="scan-toggle-title">Advanced Scan</span>
+                  <span class="scan-toggle-sub">(Uses 1 Credit)</span>
+                </div>
+                <label class="scan-toggle-switch" for="scanModeToggle" aria-label="Toggle Advanced AI Scan">
+                  <input type="checkbox" id="scanModeToggle" />
+                  <span class="scan-slider"></span>
+                </label>
+              </div>
+              <div style="margin-top:10px;display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--text3);">
+                Examples:
+                <span class="example-url">https://google.com</span>
+                <span class="example-url">http://free-prize-winner.tk</span>
+              </div>
+
+              <div id="result" class="result-box"></div>
+            </div>
+
+            <!-- Recent scans -->
+            <div style="margin-top:14px;" class="fu d3">
+              <div
+                style="font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text3);margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                Recent Scans<span style="flex:1;height:1px;background:var(--border);"></span></div>
+              <div id="recent-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Info -->
+          <div class="fu d3">
+
+            <div class="info-panel">
+              <h3>How It Works</h3>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div class="step-row"><span class="step-num">01</span><span class="step-text">URL is normalized and
+                    submitted to our backend</span></div>
+                <div class="step-row"><span class="step-num">02</span><span class="step-text">Checked against heuristic
+                    rules (IP URLs, suspicious TLDs, etc.)</span></div>
+                <div class="step-row"><span class="step-num">03</span><span class="step-text">Cross-referenced with
+                    VirusTotal (70+ AV engines)</span></div>
+                <div class="step-row"><span class="step-num">04</span><span class="step-text">Verdict returned: Safe /
+                    Suspicious / Phishing</span></div>
+              </div>
+            </div>
+
+            <div class="info-panel">
+              <h3>Safety Checklist</h3>
+              <ul class="tip-list">
+                <li><span class="tip-icon">⚠</span>Hover over links before clicking — check where they actually go.</li>
+                <li><span class="tip-icon">🔒</span>Always verify HTTPS. An SSL certificate doesn't guarantee safety.
+                </li>
+                <li><span class="tip-icon">🔤</span>Watch for typosquatting — "paypa1.com" instead of "paypal.com".</li>
+                <li><span class="tip-icon">🚫</span>Avoid downloading files from untrusted or unverified URLs.</li>
+                <li><span class="tip-icon">📧</span>Phishing links often arrive via email. Scan before you click.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="site-footer">
+        <span class="footer-logo">CyberMitra</span>
+        <div class="footer-links"><a href="dashboard.html">Dashboard</a><a href="home.html">Tools</a><a
+            href="contactus.html">Contact</a><a href="https://github.com/iamvineetupadhyay/CyberMitra"
+            target="_blank">GitHub</a></div>
+        <span>© 2025 CyberMitra · Built to protect.</span>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId');
+    window.addEventListener('load', () => {
+      if (userId) fetchProfile();
+    });
+    async function fetchProfile() { try { const r = await fetch(`${window.CYBERMITRA_API_BASE}/api/user/${userId}/profile`); if (!r.ok) return; const d = await r.json(); const name = d.name || 'User'; const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2); document.getElementById('tbName').textContent = name; const avatarHtml = (d.avatarSrc || d.profilePicUrl) ? `<img src="${d.avatarSrc || d.profilePicUrl}" style="width:100%;height:100%;object-fit:cover;">` : init; document.getElementById('tbAvatar').innerHTML = avatarHtml; document.getElementById('sbName').textContent = name; document.getElementById('sbAvatar').innerHTML = avatarHtml; if (d.safeScore != null) document.getElementById('sbScore').textContent = d.safeScore; } catch (e) { } }
+
+    // Example URLs
+    document.querySelectorAll('.example-url').forEach(el => {
+      el.addEventListener('click', () => { document.getElementById('urlInput').value = el.textContent.trim(); });
+    });
+
+    // Scan logic
+    const recentScans = [];
+    document.getElementById("scanBtn").addEventListener("click", scan);
+    document.getElementById("urlInput").addEventListener("keydown", e => { if (e.key === 'Enter') scan(); });
+
+    async function scan() {
+      if (!userId) {
+        window.showGuestRestrictionModal();
+        return;
+      }
+      const urlInput = document.getElementById("urlInput");
+      const url = urlInput.value.trim();
+      const result = document.getElementById("result");
+
+      // 1. Toggle ki value yahan pakdo
+      const isAdvanced = document.getElementById('scanModeToggle').checked;
+
+      if (!url) {
+        result.innerHTML = `<div class="alert-error"><span>❗</span> Please enter a valid URL to scan.</div>`;
+        return;
+      }
+
+      result.innerHTML = `<div class="loading-state"><div class="spinner"></div><span>Scanning <code style="color:var(--lime)">${url}</code>…</span></div>`;
+
+      try {
+        // 2. IMPORTANT: URL ko localhost:8080 karo taaki tumhara DB update ho
+        const response = await fetch((window.CYBERMITRA_API_BASE || "http://localhost:8080") + "/api/phish-check", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // 3. Backend ko toggle aur userId bhejo
+          body: JSON.stringify({
+            url: url,
+            isAdvanced: isAdvanced,
+            userId: userId
+          })
+        });
+
+        const data = await response.json();
+
+        // 4. CHECK: Agar backend ne credit limit error bheji hai
+        if (data.status && data.status.includes("Error")) {
+          result.innerHTML = `<div class="alert-error"><span>❌</span> ${data.status}</div>`;
+          showToast("Credit limit reached!");
+          return;
+        }
+
+        const isSafe = data.status.includes('Safe') || data.status.includes('Clean') || data.status.includes('Verified') || data.status.includes('Harmless');
+        const isSuspicious = data.status.includes('Suspicious') || data.status.includes('Warning');
+        const badgeClass = isSafe ? 'badge-safe' : isSuspicious ? 'badge-suspicious' : 'badge-phishing';
+        const statusIcon = isSafe ? '✓' : '⚠';
+
+        let html = `<div class="result-card"><div class="result-header"><span class="status-badge ${badgeClass}">${statusIcon} ${data.status}</span><span class="result-url">${data.url}</span></div>`;
+
+        // VAJRA Engine Reasons
+        if (data.reasons?.length > 0) {
+          html += `<div class="reason-list"><h4>Security Insights</h4><ul>${data.reasons.map(r => `<li><span>⚑</span>${r}</li>`).join('')}</ul></div>`;
+        }
+
+        // VirusTotal Display (Sirf tab dikhega jab toggle ON tha)
+        if (data.virusTotal) {
+          const v = data.virusTotal;
+          html += `<div><div style="font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:16px;margin-bottom:8px;">VirusTotal Results</div><div class="vt-grid"><div class="vt-stat harmless"><span class="vt-num">${v.harmless || 0}</span><span class="vt-label">Harmless</span></div><div class="vt-stat malicious"><span class="vt-num">${v.malicious || 0}</span><span class="vt-label">Malicious</span></div></div></div>`;
+        }
+
+        html += `</div>`;
+        result.innerHTML = html;
+
+        // Recent scans update
+        recentScans.unshift({ url, status: data.status, badgeClass });
+        if (recentScans.length > 5) recentScans.pop();
+        renderRecent();
+
+        // Credit update hone ke baad profile reload karo taaki sidebar mein credits dikhen
+        fetchProfile();
+
+      } catch (err) {
+        console.error(err);
+        result.innerHTML = `<div class="alert-error"><span>⚡</span> Backend not reachable (Localhost:8080). Make sure Spring Boot is running.</div>`;
+      }
+    }
+
+    function renderRecent() {
+      document.getElementById('recent-list').innerHTML = recentScans.map(s => `<div class="recent-item"><span class="recent-url">${s.url}</span><span class="recent-badge ${s.badgeClass}" style="font-size:.55rem;padding:3px 8px;">${s.status}</span></div>`).join('');
+    }
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sbOverlay').classList.toggle('open'); }
+    function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sbOverlay').classList.remove('open'); }
+    function showToast(msg) { const e = document.querySelector('.cm-toast'); if (e) e.remove(); const t = document.createElement('div'); t.className = 'cm-toast'; t.textContent = msg; t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#161616;border:1px solid #c8ff00;border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:#c8ff00;z-index:999;white-space:nowrap;pointer-events:none;'; document.body.appendChild(t); setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400); }
+  </script>
+  <script src="notifications.js"></script>
+</body>
+
+</html>

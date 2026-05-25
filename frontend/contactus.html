@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="assets/js/config.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberMitra — Your Cyber Guardian</title>
+<script src="assets/js/site-enhancements.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#ffffff;--bg2:#f8fafc;--bg3:#f1f5f9;--bg4:#e2e8f0;
+  --card:#ffffff;--border:#e2e8f0;--border2:#cbd5e1;
+  --lime:#1e40af;--lime2:#3b82f6;--lime-dim:rgba(30,64,175,0.08);--lime-glow:rgba(30, 64, 175, 0.15);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.10);
+  --amber:#f59e0b;--cyan:#3b82f6;--cyan-dim:rgba(30,64,175,0.08);
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
+  --font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;
+  --r:14px;--r-sm:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes scanline{0%{transform:translateY(-100%)}100%{transform:translateY(400%)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── NAV ── */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:64px;
+  background:rgba(10,10,10,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo-icon{width:32px;height:32px;background:var(--lime);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.nav-logo-icon svg{width:17px;height:17px;color:#0a0a0a;}
+.nav-logo-text{font-size:1.1rem;font-weight:800;letter-spacing:.02em;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{font-size:.85rem;font-weight:500;color:var(--text2);transition:color .18s;}
+.nav-links a:hover{color:var(--lime);}
+.nav-pill{
+  display:flex;align-items:center;gap:7px;padding:8px 18px;
+  background:var(--lime);color:#0a0a0a;border-radius:100px;
+  font-size:.82rem;font-weight:700;transition:all .2s;
+}
+.nav-pill:hover{background:#ddff22;box-shadow:0 0 20px var(--lime-glow);}
+.nav-secure{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:.62rem;color:var(--lime);padding:6px 14px;background:var(--lime-dim);border:1px solid rgba(200,255,0,.2);border-radius:100px;}
+.nav-secure-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2s ease-in-out infinite;}
+
+/* ── SECTION BASE ── */
+.section{padding:120px 24px 80px;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.section-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.14em;
+  color:var(--lime);background:var(--lime-dim);border:1px solid rgba(200,255,0,.2);
+  padding:4px 12px;border-radius:100px;margin-bottom:14px;
+}
+.section-title{font-size:2rem;font-weight:800;letter-spacing:-.02em;margin-bottom:10px;}
+.section-sub{color:var(--text2);font-size:.95rem;line-height:1.65;max-width:520px;}
+
+/* ── CONTACT SECTION ── */
+.contact-grid{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px;}
+.card-title{font-size:.75rem;font-weight:600;color:var(--text2);margin-bottom:20px;letter-spacing:.04em;text-transform:uppercase;font-family:var(--mono);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-group{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
+.input-label{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);}
+.input-field{
+  width:100%;background:var(--bg3);border:1px solid var(--border);
+  border-radius:9px;padding:10px 13px;font-family:var(--font);
+  font-size:.875rem;color:var(--text);outline:none;transition:border-color .18s;
+}
+.input-field:focus{border-color:var(--lime);box-shadow:0 0 0 3px rgba(200,255,0,.06);}
+.input-field::placeholder{color:var(--text3);}
+textarea.input-field{resize:vertical;min-height:120px;line-height:1.6;}
+select.input-field{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer;}
+select.input-field option{background:var(--bg3);color:var(--text);}
+.response-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;background:var(--lime-dim);border:1px solid rgba(200,255,0,.2);border-radius:100px;font-family:var(--mono);font-size:.62rem;color:var(--lime);margin-bottom:20px;letter-spacing:.04em;}
+.response-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2s ease-in-out infinite;}
+.btn-submit{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:12px 28px;margin-top:4px;
+  background:var(--lime);color:#0a0a0a;border-radius:100px;
+  font-weight:700;font-size:.88rem;transition:all .2s;
+}
+.btn-submit:hover{background:#ddff22;box-shadow:0 0 24px var(--lime-glow);transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.5;pointer-events:none;}
+.alert-error{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--red-dim);border:1px solid rgba(255,68,68,.25);border-radius:var(--r-sm);font-size:.82rem;color:var(--red);margin-bottom:12px;}
+.form-success{display:none;flex-direction:column;align-items:center;text-align:center;padding:48px 24px;gap:14px;}
+.success-icon{width:60px;height:60px;border-radius:50%;background:rgba(200,255,0,.1);border:1px solid rgba(200,255,0,.3);display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:var(--lime);}
+.form-success h3{font-size:1.2rem;font-weight:700;color:var(--lime);}
+.form-success p{color:var(--text2);font-size:.875rem;max-width:280px;line-height:1.65;}
+.btn-secondary{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;background:var(--bg3);border:1px solid var(--border2);border-radius:100px;font-size:.82rem;font-weight:600;color:var(--text2);transition:all .18s;margin-top:4px;}
+.btn-secondary:hover{border-color:var(--lime);color:var(--lime);}
+
+/* contact cards */
+.contact-card{display:flex;align-items:flex-start;gap:14px;padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);transition:all .18s;text-decoration:none;margin-bottom:8px;}
+.contact-card:hover{border-color:var(--border2);transform:translateX(3px);}
+.cc-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.cc-body h4{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:2px;}
+.cc-body p{font-family:var(--mono);font-size:.7rem;color:var(--text3);}
+.cc-body span{font-size:.74rem;color:var(--text3);display:block;margin-top:2px;}
+
+/* faq */
+.faq-item{border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;margin-bottom:8px;transition:border-color .2s;}
+.faq-item.open{border-color:rgba(200,255,0,.3);}
+.faq-question{width:100%;display:flex;align-items:center;justify-content:space-between;padding:13px 15px;background:var(--bg3);border:none;cursor:pointer;text-align:left;color:var(--text2);font-family:var(--font);font-size:.84rem;font-weight:500;gap:10px;transition:all .18s;}
+.faq-question:hover{color:var(--text);}
+.faq-chevron{flex-shrink:0;width:14px;height:14px;color:var(--text3);transition:transform .3s;}
+.faq-item.open .faq-chevron{transform:rotate(180deg);color:var(--lime);}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s;padding:0 15px;font-size:.84rem;color:var(--text2);line-height:1.7;background:var(--bg3);}
+.faq-item.open .faq-answer{max-height:180px;padding:10px 15px;}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:24px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:.62rem;color:var(--text3);}
+.footer-logo{font-weight:700;color:var(--text2);letter-spacing:.03em;}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{color:var(--text3);transition:color .18s;}
+.footer-links a:hover{color:var(--lime);}
+
+@media(max-width:900px){
+  .navbar{padding:0 20px;}
+  .nav-links{display:none;}
+  .contact-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+}
+@media(max-width:640px){
+  .section{padding:100px 16px 60px;}
+  footer{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <span class="nav-logo-text">CyberMitra</span>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="nav-secure">
+      <div class="nav-secure-dot"></div>
+      <span>Protected</span>
+    </div>
+     <a href="login.html" class="nav-pill">Log In </a>
+    <a href="signup.html" class="nav-pill">Create Account </a>
+  </div>
+</nav>
+
+<!-- CONTACT SECTION -->
+<main class="page-wrapper marketing-page">
+<section class="section" id="contact">
+  <div class="section-inner">
+    <div style="margin-bottom:36px;">
+      <div class="section-tag">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.61 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+        Get In Touch
+      </div>
+      <h2 class="section-title">Contact Us</h2>
+      <p class="section-sub">Bug report, feature idea, ya collaboration? Hum sunne ke liye hamesha ready hain.</p>
+    </div>
+
+    <div class="contact-grid">
+      <!-- Form -->
+      <div class="card">
+        <div class="card-title">Send a Message</div>
+        <div id="formView">
+          <div class="response-badge">Avg. response within 24 hours</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="input-label">First Name</label>
+              <input type="text" class="input-field" id="firstName" placeholder="Pintu">
+            </div>
+            <div class="form-group">
+              <label class="input-label">Last Name</label>
+              <input type="text" class="input-field" id="lastName" placeholder="Kumar">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="input-label">Email Address</label>
+            <input type="email" class="input-field" id="email" placeholder="you@example.com">
+          </div>
+          <div class="form-group">
+            <label class="input-label">Subject</label>
+            <select class="input-field" id="subject">
+              <option value="" disabled selected>Select a topic…</option>
+              <option value="bug">🐛 Bug Report</option>
+              <option value="feature">💡 Feature Request</option>
+              <option value="security">🔐 Security Concern</option>
+              <option value="collab">🤝 Collaboration</option>
+              <option value="other">💬 General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="input-label">Message</label>
+            <textarea class="input-field" id="message" placeholder="Describe your issue or idea…" maxlength="1000"></textarea>
+          </div>
+          <div id="formError"></div>
+          <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Send Message
+          </button>
+        </div>
+        <div class="form-success" id="successView">
+          <div class="success-icon">✓</div>
+          <h3>Message Sent!</h3>
+          <p>Thanks! We'll get back to you within 24 hours.</p>
+          <button class="btn-secondary" onclick="resetForm()">Send Another</button>
+        </div>
+      </div>
+
+      <!-- Right info -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card">
+          <div class="card-title">Reach Us Directly</div>
+          <a href="mailto:iec.vineet@gmail.com" class="contact-card">
+            <div class="cc-icon" style="background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.15);">📧</div>
+            <div class="cc-body"><h4>Email</h4><p>iec.vineet@gmail.com</p><span>Best for detailed queries</span></div>
+          </a>
+          <a href="https://github.com/iamvineetupadhyay/CyberMitra" target="_blank" class="contact-card">
+            <div class="cc-icon" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--text2)"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            </div>
+            <div class="cc-body"><h4>GitHub</h4><p>iamvineetupadhyay/CyberMitra</p><span>Issues & contributions</span></div>
+          </a>
+        </div>
+        <div class="card">
+          <div class="card-title">Common Questions</div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Is my data stored when I scan a URL?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="faq-answer">Nahi. URLs sirf live analysis ke liye bheje jaate hain, kisi database mein store nahi hote.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              AI Guard kab available hoga?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="faq-answer">RAG model training chal rahi hai. Logged-in users ke liye dashboard par sabse pehle launch hoga. Stay tuned!</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              Is CyberMitra open source?
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="faq-answer">Frontend open source hai. GitHub pe issues aur pull requests welcome hain.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">CyberMitra</span>
+  <div class="footer-links">
+    <a href="pricing.html">Pricing</a>
+    <a href="cyber-news.html">Cyber News</a>
+    <a href="aboutus.html">About Us</a>
+    <a href="https://github.com/iamvineetupadhyay/CyberMitra" target="_blank">GitHub</a>
+  </div>
+  <span>© 2025 CyberMitra · Built to protect.</span>
+</footer>
+
+<script>
+const API_BASE = window.CYBERMITRA_API_BASE || (window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '';
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+async function handleSubmit() {
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const subject = document.getElementById('subject').value;
+  const message = document.getElementById('message').value.trim();
+  const errEl = document.getElementById('formError');
+  errEl.innerHTML = '';
+
+  if (!firstName || !lastName) return showErr('Please enter your full name.');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showErr('Please enter a valid email address.');
+  if (!subject) return showErr('Please select a subject.');
+  if (!message || message.length < 10) return showErr('Message must be at least 10 characters.');
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Sending…`;
+
+  try {
+    const response = await fetch(`${API_BASE}/api/user/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, email, subject, message })
+    });
+
+    if (response.ok) {
+      document.getElementById('formView').style.display = 'none';
+      const sv = document.getElementById('successView');
+      sv.style.display = 'flex';
+    } else {
+      const txt = await response.text();
+      showErr(txt || 'Failed to send message.');
+    }
+  } catch (err) {
+    console.error(err);
+    showErr('Network error occurred while sending message.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Message`;
+  }
+}
+
+function showErr(msg) {
+  document.getElementById('formError').innerHTML = `<div class="alert-error"><span>⚠</span> ${msg}</div>`;
+}
+
+function resetForm() {
+  ['firstName','lastName','email','message'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('subject').value = '';
+  document.getElementById('formError').innerHTML = '';
+  document.getElementById('formView').style.display = 'block';
+  document.getElementById('successView').style.display = 'none';
+}
+
+const style = document.createElement('style');
+style.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(style);
+</script>
+</body>
+</html>
