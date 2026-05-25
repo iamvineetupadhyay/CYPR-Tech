@@ -1245,8 +1245,9 @@
           return;
         }
 
-        const isSafe = data.status.includes('Safe') || data.status.includes('Clean') || data.status.includes('Verified') || data.status.includes('Harmless');
-        const isSuspicious = data.status.includes('Suspicious') || data.status.includes('Warning');
+        const statusLc = data.status.toLowerCase();
+        const isSafe = statusLc.includes('safe') || statusLc.includes('clean') || statusLc.includes('verified') || statusLc.includes('harmless') || statusLc.includes('secure');
+        const isSuspicious = statusLc.includes('suspicious') || statusLc.includes('warning');
         const badgeClass = isSafe ? 'badge-safe' : isSuspicious ? 'badge-suspicious' : 'badge-phishing';
         const statusIcon = isSafe ? '✓' : '⚠';
 

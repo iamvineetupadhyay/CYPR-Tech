@@ -89,7 +89,10 @@ public class PhishingController {
         String dbResult;
         if (reportedInFeed) { status = "Reported phishing (Global Feed)"; dbResult = "Risky"; }
         else if (vtMalicious) { status = "VirusTotal: Flagged as Malicious"; dbResult = "Risky"; }
-        else if (!engineResult.riskTier().equals("LOW")) { status = engineResult.summary(); dbResult = "Risky"; }
+        else if (engineResult.riskTier().equals("CRITICAL") || engineResult.riskTier().equals("HIGH") || engineResult.riskTier().equals("MEDIUM")) { 
+            status = engineResult.summary(); 
+            dbResult = "Risky"; 
+        }
         else { status = "Secure (Verified by VAJRA Engine)"; dbResult = "Secure"; }
 
         // --- STEP 6: Save History ---

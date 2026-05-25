@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#ffffff;--bg2:#f8fafc;--bg3:#f1f5f9;--bg4:#e2e8f0;--card:#ffffff;--card2:#f8fafc;--border:#e2e8f0;--border2:#cbd5e1;--lime:#1e40af;--lime2:#3b82f6;--lime-dim:rgba(30,64,175,0.08);--lime-glow:rgba(30,64,175,0.15);--red:#ef4444;--red-dim:rgba(239,68,68,0.10);--amber:#f59e0b;--amber-dim:rgba(245,158,11,0.08);--blue:#3b82f6;--text:#0f172a;--text2:#475569;--text3:#94a3b8;--sidebar-w:210px;--topbar-h:54px;--font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;--r:14px;--r-sm:8px;}
+:root{--bg:#ffffff;--bg2:#f8fafc;--bg3:#f1f5f9;--bg4:#e2e8f0;--card:#ffffff;--card2:#f8fafc;--border:#e2e8f0;--border2:#cbd5e1;--lime:#1e40af;--lime2:#3b82f6;--lime-dim:rgba(30,64,175,0.08);--lime-glow:rgba(30,64,175,0.15);--red:#ef4444;--red-dim:rgba(239,68,68,0.10);--amber:#f59e0b;--amber-dim:rgba(245,158,11,0.08);--blue:#3b82f6;--green:#10b981;--green-dim:rgba(16,185,129,0.08);--text:#0f172a;--text2:#475569;--text3:#94a3b8;--sidebar-w:210px;--topbar-h:54px;--font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;--r:14px;--r-sm:8px;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
 a{text-decoration:none;color:inherit;}button{font-family:inherit;cursor:pointer;border:none;background:none;}
@@ -502,7 +502,7 @@ a{text-decoration:none;color:inherit;}button{font-family:inherit;cursor:pointer;
 </div><!-- /shell -->
 
 <script>
-const API = window.CYBERMITRA_API_BASE || (window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '/api';
+const API = (window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '/api';
 const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId') || localStorage.getItem('cm_user_id');
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -686,7 +686,16 @@ async function fetchProfileAndActivity() {
           }
         }
       } else {
-        document.querySelector('.hero-sub').innerHTML = `Your digital perimeter is <b style="color:var(--green)">secure</b>. No critical vulnerabilities detected. Safe Score calculated at <b>${calculatedScore} pts</b> — perform more scans to maintain high rating.`;
+        let statusColor = 'var(--green)';
+        let statusWord = 'secure';
+        if (calculatedScore < 50) {
+          statusColor = 'var(--red)';
+          statusWord = 'vulnerable';
+        } else if (calculatedScore < 80) {
+          statusColor = 'var(--amber)';
+          statusWord = 'at risk';
+        }
+        document.querySelector('.hero-sub').innerHTML = `Your digital perimeter is <b style="color:${statusColor}">${statusWord}</b>. No critical vulnerabilities detected. Safe Score calculated at <b>${calculatedScore} pts</b> — keep it up.`;
       }
     }
   } catch (err) {
