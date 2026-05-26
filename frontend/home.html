@@ -502,7 +502,7 @@ a{text-decoration:none;color:inherit;}button{font-family:inherit;cursor:pointer;
 </div><!-- /shell -->
 
 <script>
-const API = (window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '/api';
+const API = (window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api';
 const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId') || localStorage.getItem('cm_user_id');
 
 window.addEventListener('DOMContentLoaded', () => {

@@ -248,7 +248,7 @@ async function handleLogin() {
     // ... loading UI code ...
 
     try {
-        const response = await fetch((window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '/api/user/login', {
+        const response = await fetch((window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api/user/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             // Dhyan se dekho: 'identifier' key likhna zaroori hai

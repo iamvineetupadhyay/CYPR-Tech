@@ -576,7 +576,7 @@ function animCount(el, target, suffix='', duration=2000) {
 async function loadRealTimeStats() {
     try {
         // Backend API Call
-        const response = await fetch((window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '/api/stats/global');
+        const response = await fetch((window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api/stats/global');
         if (response.ok) {
             const data = await response.json();
             

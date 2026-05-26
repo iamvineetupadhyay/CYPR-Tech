@@ -7,7 +7,7 @@
     // REPLACE THIS URL WITH YOUR AWS EC2 BACKEND PUBLIC IP / DOMAIN NAME (e.g. 'http://13.234.56.78:8080')
     const AWS_PRODUCTION_API = 'https://cypr-api.duckdns.org';
     
-    window.CYBERMITRA_API_BASE = isLocalDev ? 'http://localhost:8080' : AWS_PRODUCTION_API;
+    window.CYBERMITRA_API_BASE = '';
 
     // GLOBAL FETCH INTERCEPTOR FOR SECURITY HARDENING
     const originalFetch = window.fetch;

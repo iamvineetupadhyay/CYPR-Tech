@@ -26,7 +26,7 @@
 
   async function fetchUserNotifications(userId) {
     try {
-      const apiBase = window.CYBERMITRA_API_BASE || 'http://localhost:8080';
+      const apiBase = window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '';
       const res = await fetch(`${apiBase}/api/user/${userId}/activity`);
       if (res.ok) {
         const activities = await res.json();

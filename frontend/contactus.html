@@ -284,7 +284,7 @@ footer{border-top:1px solid var(--border);padding:24px 40px;display:flex;align-i
 </footer>
 
 <script>
-const API_BASE = window.CYBERMITRA_API_BASE || (window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '';
+const API_BASE = window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '';
 
 function toggleFaq(btn) {
   const item = btn.closest('.faq-item');

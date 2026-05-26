@@ -3,7 +3,7 @@
   const savedTheme = localStorage.getItem('cm_theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
 
-  const API_BASE = window.CYBERMITRA_API_BASE || 'http://localhost:8080';
+  const API_BASE = window.CYBERMITRA_API_BASE || '';
 
   // Inject Refined Premium Styles
   const style = document.createElement('style');

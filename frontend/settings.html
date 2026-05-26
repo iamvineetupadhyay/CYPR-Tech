@@ -820,7 +820,7 @@ select.input-field option { background:var(--bg3); color:var(--text); }
 
 <!-- SCRIPTS -->
 <script>
-const API_BASE = window.CYBERMITRA_API_BASE || (window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '';
+const API_BASE = window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '';
 const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId') || localStorage.getItem('cm_user_id');
 
 let selectedAvatarUrl = '';

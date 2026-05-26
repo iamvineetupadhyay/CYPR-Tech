@@ -1224,8 +1224,8 @@
       result.innerHTML = `<div class="loading-state"><div class="spinner"></div><span>Scanning <code style="color:var(--lime)">${url}</code>…</span></div>`;
 
       try {
-        // 2. IMPORTANT: URL ko localhost:8080 karo taaki tumhara DB update ho
-        const response = await fetch((window.CYBERMITRA_API_BASE || "http://localhost:8080") + "/api/phish-check", {
+        // 2. IMPORTANT: Request is routed via Vercel rewrites to backend EC2 server
+        const response = await fetch((window.CYBERMITRA_API_BASE || "") + "/api/phish-check", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           // 3. Backend ko toggle aur userId bhejo
@@ -1277,7 +1277,7 @@
 
       } catch (err) {
         console.error(err);
-        result.innerHTML = `<div class="alert-error"><span>⚡</span> Backend not reachable (Localhost:8080). Make sure Spring Boot is running.</div>`;
+        result.innerHTML = `<div class="alert-error"><span>⚡</span> Backend not reachable. Please make sure the service is online.</div>`;
       }
     }
 

@@ -746,7 +746,7 @@
             }
 
             try {
-                const response = await fetch((window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '/api/user/register', {
+                const response = await fetch((window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api/user/register', {
                     method: 'POST',
                     body: formData // No headers needed for FormData
                 });

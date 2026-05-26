@@ -63,7 +63,7 @@
 </footer>
 
 <script>
-const API_BASE = window.CYBERMITRA_API_BASE || (window.CYBERMITRA_API_BASE || 'http://localhost:8080') + '';
+const API_BASE = window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '';
 const feeds = [
   { name: 'The Hacker News', tag: 'News', url: 'https://feeds.feedburner.com/TheHackersNews' },
   { name: 'BleepingComputer', tag: 'News', url: 'https://www.bleepingcomputer.com/feed/' },
