@@ -189,7 +189,7 @@ public class EmailAuthController {
     // ── RESET PASSWORD (CONFIRM PASSWORD CHANGE) ENDPOINT ────────────────────
 
     @PostMapping("/reset-password")
-    @Transactional 
+    @Transactional
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> payload) {
         String token = payload.get("token");
         String newPassword = payload.get("newPassword");
