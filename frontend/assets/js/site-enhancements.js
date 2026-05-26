@@ -1795,6 +1795,16 @@
     const bottomTier = document.createElement('div');
     bottomTier.className = 'cm-bottom-tier';
 
+    const userId = readUserId();
+    const settingsTabHtml = userId ? `
+      <a href="settings.html" class="cm-nav-tab ${isActive('settings.html')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
+    ` : '';
+
+    const mobileSettingsLinkHtml = userId ? `<a href="settings.html" class="${isActive('settings.html')}">Settings</a>` : '';
+
     const navTabs = document.createElement('div');
     navTabs.className = 'cm-nav-tabs';
     navTabs.innerHTML = `
@@ -1818,6 +1828,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         Contact
       </a>
+      ${settingsTabHtml}
     `;
     bottomTier.appendChild(navTabs);
     bottomTier.appendChild(hamBtn);
@@ -1849,6 +1860,7 @@
         <a href="cyber-news.html" class="${isActive('cyber-news.html')}">Cyber News</a>
         <a href="aboutus.html" class="${isActive('aboutus.html')}">About Us</a>
         <a href="contactus.html" class="${isActive('contactus.html')}">Contact</a>
+        ${mobileSettingsLinkHtml}
       </div>
       <div class="cm-mobile-actions"></div>
     `;
