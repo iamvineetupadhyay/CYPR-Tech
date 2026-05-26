@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root {
+    body.premium-dashboard {
       /* LIGHT THEME VARIABLES (Premium Corporate Slate) */
       --bg: #f8fafc;
       --bg2: #f1f5f9;
@@ -47,9 +47,12 @@
       --r-sm: 10px;
       --shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
       --glow-color: rgba(59, 130, 246, 0.15);
+      
+      background: var(--bg) !important;
+      color: var(--text) !important;
     }
 
-    html[data-theme="dark"] {
+    html[data-theme="dark"] body.premium-dashboard {
       /* DARK THEME VARIABLES (Futuristic Cyberpunk Command Center) */
       --bg: #030712;
       --bg2: #080f25;
@@ -78,6 +81,8 @@
       
       --shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
       --glow-color: rgba(59, 130, 246, 0.35);
+      
+      background: radial-gradient(circle at top right, #080f25 0%, #030712 100%) !important;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -160,7 +165,19 @@
       border-radius: 100px;
     }
     .hero h1 { font-size: 2.2rem; font-weight: 900; line-height: 1.15; margin-bottom: 8px; letter-spacing: -.02em; }
-    .hero h1 span { background: linear-gradient(135deg, var(--lime), var(--lime2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero h1 span {
+      background: linear-gradient(135deg, #7c3aed, #2563eb, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+    html[data-theme="dark"] body.premium-dashboard .hero h1 span {
+      background: linear-gradient(135deg, #a78bfa, #3b82f6, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     .hero-sub { font-size: 0.9rem; color: var(--text2); line-height: 1.6; max-width: 520px; }
     
     /* Hexagon Holographic Shield */
@@ -328,6 +345,11 @@
     .threat-avatar.warning { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.15); }
     
     .threat-info-pane { flex: 1; min-width: 0; }
+    .threat-meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .threat-badge { font-family: var(--mono); font-size: 0.55rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; line-height: 1.2; }
+    .threat-badge.critical { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.15); }
+    .threat-badge.warning { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.15); }
+    .threat-time { font-family: var(--mono); font-size: 0.6rem; color: var(--text3); }
     .threat-info-pane h4 { font-size: 0.8rem; font-weight: 700; margin-bottom: 3px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .threat-info-pane p { font-size: 0.7rem; color: var(--text2); line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     
@@ -344,7 +366,7 @@
     }
     .scan-table-head {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 28px;
+      grid-template-columns: 2fr 1.2fr 1fr 1.2fr 24px;
       padding: 0 10px 8px;
       border-bottom: 1px solid var(--border);
       margin-bottom: 8px;
@@ -355,7 +377,7 @@
     .scan-table-list { display: flex; flex-direction: column; gap: 6px; }
     .scan-table-row {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 28px;
+      grid-template-columns: 2fr 1.2fr 1fr 1.2fr 24px;
       align-items: center;
       padding: 10px;
       border: 1px solid var(--border);
@@ -368,6 +390,10 @@
     .scan-table-row .scan-url { font-family: var(--mono); font-size: 0.7rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     
     .scan-table-row .scan-status { font-size: 0.72rem; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .scan-status.safe { color: var(--green); }
+    .scan-status.weak { color: var(--amber); }
+    .scan-status.phishing { color: var(--red); }
+    
     .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
     .status-dot.safe { background: var(--green); filter: drop-shadow(0 0 2px var(--green)); }
     .status-dot.weak { background: var(--amber); filter: drop-shadow(0 0 2px var(--amber)); }
@@ -536,15 +562,15 @@
       .scanners-grid { grid-template-columns: 1fr; }
       .stats-strip { grid-template-columns: repeat(2, 1fr); }
       .bottom-split-row { grid-template-columns: 1fr; }
-      .scan-table-row, .scan-table-head { grid-template-columns: 1.5fr 1fr 28px; }
-      .scan-table-row .scan-time, .scan-table-head span:nth-child(3) { display: none; }
+      .scan-table-row, .scan-table-head { grid-template-columns: 1.8fr 1.2fr 1fr 24px; }
+      .scan-table-row .scan-time, .scan-table-head span:nth-child(4) { display: none; }
     }
     @media(max-width: 480px) {
       .stats-strip { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body>
+<body class="premium-dashboard">
 <div class="shell">
   <div class="main-area">
     <!-- PAGE CONTENT -->
@@ -658,8 +684,12 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </div>
                 <div class="threat-info-pane">
+                  <div class="threat-meta-row">
+                    <span class="threat-badge critical">CRITICAL</span>
+                    <span class="threat-time">2 hours ago</span>
+                  </div>
                   <h4>Active Phishing Campaign Targeting Indian Users</h4>
-                  <p>Multiple phishing kits detected targeting Indian banking users via fake domains.</p>
+                  <p>Multiple phishing kits detected targeting Indian banking users via fake portals.</p>
                 </div>
                 <a href="cyber-news.html" class="threat-details-link">
                   View Details
@@ -671,12 +701,22 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
                 </div>
                 <div class="threat-info-pane">
+                  <div class="threat-meta-row">
+                    <span class="threat-badge warning">HIGH</span>
+                    <span class="threat-time">5 hours ago</span>
+                  </div>
                   <h4>Malware Distribution via SEO Poisoning</h4>
-                  <p>Malicious sites ranking on search engines distributing info-stealer payloads.</p>
+                  <p>Malicious sites ranking on Google distributing info-stealer payloads.</p>
                 </div>
                 <a href="cyber-news.html" class="threat-details-link">
                   View Details
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+              <div style="margin-top: 14px; display: flex; justify-content: flex-start;">
+                <a href="cyber-news.html" class="threat-details-link" style="font-size: 0.72rem; gap: 6px;">
+                  View All Threats
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 12px; height: 12px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
               </div>
             </div>
@@ -691,26 +731,26 @@
                 <a href="activity-logs.html" class="threat-details-link">View All</a>
               </div>
               <div class="scan-table-head">
-                <span>URL</span><span>Status</span><span>Score</span><span>Time</span>
+                <span>URL</span><span>Status</span><span>Score</span><span>Time</span><span></span>
               </div>
               <div class="scan-table-list" id="recentScansList">
                 <div class="scan-table-row">
                   <span class="scan-url">https://example.com/login</span>
-                  <span class="scan-status"><span class="status-dot safe"></span>Clean</span>
+                  <span class="scan-status safe"><span class="status-dot safe"></span>Clean</span>
                   <span class="scan-score safe">85/100</span>
                   <span class="scan-time">10m ago</span>
                   <span class="scan-action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
                 </div>
                 <div class="scan-table-row">
                   <span class="scan-url">https://secure-pay.net/verify</span>
-                  <span class="scan-status"><span class="status-dot weak"></span>Warning</span>
+                  <span class="scan-status weak"><span class="status-dot weak"></span>Warning</span>
                   <span class="scan-score weak">45/100</span>
                   <span class="scan-time">1h ago</span>
                   <span class="scan-action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
                 </div>
                 <div class="scan-table-row">
                   <span class="scan-url">https://malicious-link.xyz</span>
-                  <span class="scan-status"><span class="status-dot phishing"></span>Malicious</span>
+                  <span class="scan-status phishing"><span class="status-dot phishing"></span>Malicious</span>
                   <span class="scan-score phishing">10/100</span>
                   <span class="scan-time">3h ago</span>
                   <span class="scan-action-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:10px;height:10px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
@@ -735,8 +775,16 @@
             <!-- Semi Circle Gauge -->
             <div class="gauge-container">
               <svg viewBox="0 0 100 60" class="score-gauge-svg">
+                <defs>
+                  <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ef4444" />     <!-- Red -->
+                    <stop offset="35%" stop-color="#fbbf24" />    <!-- Amber/Yellow -->
+                    <stop offset="75%" stop-color="#10b981" />    <!-- Green -->
+                    <stop offset="100%" stop-color="#3b82f6" />   <!-- Blue -->
+                  </linearGradient>
+                </defs>
                 <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="var(--bg3)" stroke-width="8" stroke-linecap="round" />
-                <path id="gaugeCircleFill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="var(--lime)" stroke-width="8" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220" style="transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);" />
+                <path id="gaugeCircleFill" d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="url(#gaugeGrad)" stroke-width="8" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220" style="transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1);" />
               </svg>
               <div class="gauge-center">
                 <span class="gauge-num" id="gaugeScoreNum">—</span>
@@ -1113,16 +1161,30 @@ async function fetchThreatIntel() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
         <div class="threat-info-pane">
+          <div class="threat-meta-row">
+            <span class="threat-badge ${sevClass}">${sev}</span>
+            <span class="threat-time">${timeStr}</span>
+          </div>
           <h4>${item.title}</h4>
           <p>${shortDesc}</p>
         </div>
         <span class="threat-details-link">
-          View
+          View Details
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </span>
       `;
       threatCard.appendChild(div);
     });
+
+    const viewAllBtn = document.createElement('div');
+    viewAllBtn.style.cssText = 'margin-top: 14px; display: flex; justify-content: flex-start;';
+    viewAllBtn.innerHTML = `
+      <a href="cyber-news.html" class="threat-details-link" style="font-size: 0.72rem; gap: 6px;">
+        View All Threats
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 12px; height: 12px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    `;
+    threatCard.appendChild(viewAllBtn);
   } catch (err) {
     console.warn("CISA RSS Advisories Scrape failed, holding default placeholders:", err);
   }

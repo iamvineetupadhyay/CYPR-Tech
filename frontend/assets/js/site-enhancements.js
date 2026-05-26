@@ -55,44 +55,44 @@
     html[data-theme="dark"] {
       --logo-fill: #00FF66; /* Exact bright Neon Green */
       --logo-glow-color: rgba(0, 255, 102, 0.4);
-      --bg: #0a0a0a;
+      --bg: #030712;
 
-      --bg2: #0f0f0f;
-      --bg3: #141414;
-      --bg4: #1a1a1a;
-      --surface: #111111;
-      --surface2: #161616;
-      --surface3: #1a1a1a;
-      --card: #111111;
-      --card2: #161616;
-      --border: #1f1f1f;
-      --border2: #2a2a2a;
-      --border-bright: #3a3a3a;
-      --accent: #c8ff00; /* Neon cyberpunk lime */
-      --accent2: #aaff00;
+      --bg2: #080f25;
+      --bg3: #111e3b;
+      --bg4: #1e293b;
+      --surface: rgba(8, 15, 37, 0.65);
+      --surface2: rgba(12, 22, 52, 0.85);
+      --surface3: #111e3b;
+      --card: rgba(8, 15, 37, 0.65);
+      --card2: rgba(12, 22, 52, 0.85);
+      --border: #111e3b;
+      --border2: #1e3a8a;
+      --border-bright: #1e3a8a;
+      --accent: #3b82f6; /* Premium Cobalt Blue */
+      --accent2: #60a5fa;
       --accent3: #ff4444;
-      --accent-dim: rgba(200, 255, 0, 0.10);
-      --lime: #c8ff00;
-      --lime2: #aaff00;
-      --lime-dim: rgba(200, 255, 0, 0.10);
-      --lime-glow: rgba(200, 255, 0, 0.25);
-      --green: #c8ff00;
-      --green-dim: rgba(200, 255, 0, 0.10);
-      --red: #ff4444;
-      --red-dim: rgba(255, 68, 68, 0.12);
-      --amber: #ffaa00;
-      --amber-dim: rgba(255, 170, 0, 0.12);
-      --warn: #ffaa00;
-      --warn-dim: rgba(255, 170, 0, 0.12);
-      --blue: #64b4ff;
-      --text: #f2f2f2;
-      --text2: #888888;
-      --text3: #555555;
-      --text-dim: #888888;
-      --text-muted: #555555;
-      --shadow: rgba(0, 0, 0, 0.5);
-      --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
-      --nav-bg: rgba(10, 10, 10, 0.88);
+      --accent-dim: rgba(59, 130, 246, 0.12);
+      --lime: #3b82f6;
+      --lime2: #60a5fa;
+      --lime-dim: rgba(59, 130, 246, 0.12);
+      --lime-glow: rgba(59, 130, 246, 0.25);
+      --green: #34d399;
+      --green-dim: rgba(52, 211, 153, 0.1);
+      --red: #f87171;
+      --red-dim: rgba(248, 113, 113, 0.1);
+      --amber: #fbbf24;
+      --amber-dim: rgba(251, 191, 36, 0.1);
+      --warn: #fbbf24;
+      --warn-dim: rgba(251, 191, 36, 0.1);
+      --blue: #60a5fa;
+      --text: #f3f4f6;
+      --text2: #9ca3af;
+      --text3: #6b7280;
+      --text-dim: #9ca3af;
+      --text-muted: #6b7280;
+      --shadow: rgba(0, 0, 0, 0.45);
+      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.45);
+      --nav-bg: rgba(3, 7, 18, 0.85);
     }
 
     body {
