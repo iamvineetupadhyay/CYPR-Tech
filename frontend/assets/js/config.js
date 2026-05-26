@@ -4,18 +4,26 @@
 (function() {
     const isLocalDev = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
     
-    // REPLACE THIS URL WITH YOUR AWS EC2 BACKEND PUBLIC IP / DOMAIN NAME (e.g. 'http://13.234.56.78:8080')
+    // 🔥 Tumhara valid AWS Production API URL
     const AWS_PRODUCTION_API = 'https://cypr-api.duckdns.org';
+    const LOCAL_API = 'http://localhost:8080';
     
-    window.CYBERMITRA_API_BASE = '';
+    // 🔗 Dynamically set base URL based on environment so requests go to the right server!
+    window.CYBERMITRA_API_BASE = isLocalDev ? LOCAL_API : AWS_PRODUCTION_API;
 
     // GLOBAL FETCH INTERCEPTOR FOR SECURITY HARDENING
     const originalFetch = window.fetch;
     window.fetch = async function(resource, config = {}) {
-        const resourceUrl = typeof resource === 'string' ? resource : (resource instanceof URL ? resource.toString() : '');
+        let resourceUrl = typeof resource === 'string' ? resource : (resource instanceof URL ? resource.toString() : '');
+        
+        // 🛠️ FIX: Agar request short path '/api/' se shuru ho rahi hai, toh uske aage hamara correct Base URL jodd do!
+        if (resourceUrl.startsWith('/api/')) {
+            resource = window.CYBERMITRA_API_BASE + resourceUrl;
+            resourceUrl = resource;
+        }
         
         // If request goes to our Spring Boot backend
-        if (resourceUrl.startsWith(window.CYBERMITRA_API_BASE) || resourceUrl.startsWith('/api/')) {
+        if (resourceUrl.startsWith(window.CYBERMITRA_API_BASE)) {
             const token = localStorage.getItem('cm_session_token');
             if (token) {
                 if (!config.headers) {
