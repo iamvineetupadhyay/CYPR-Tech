@@ -1,5 +1,6 @@
 package com.cypr.controller;
 
+import org.springframework.transaction.annotation.Transactional;
 import com.cypr.entity.User;
 import com.cypr.entity.VerificationToken;
 import com.cypr.entity.PasswordResetToken;
@@ -53,6 +54,7 @@ public class EmailAuthController {
     // ── EMAIL VERIFICATION ENDPOINT ───────────────────────────────────────────
 
     @GetMapping("/verify")
+    @Transactional
     public ResponseEntity<?> verifyEmail(@RequestParam("token") String token) {
         String tokenHash = hashToken(token);
         Optional<VerificationToken> tokenOpt = verificationTokenRepository.findByTokenHash(tokenHash);
@@ -187,6 +189,7 @@ public class EmailAuthController {
     // ── RESET PASSWORD (CONFIRM PASSWORD CHANGE) ENDPOINT ────────────────────
 
     @PostMapping("/reset-password")
+    @Transactional 
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> payload) {
         String token = payload.get("token");
         String newPassword = payload.get("newPassword");
