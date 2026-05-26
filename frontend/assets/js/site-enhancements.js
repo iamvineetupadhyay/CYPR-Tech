@@ -3071,9 +3071,14 @@
     enhanceLogo();
 
     const userId = readUserId();
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const authPages = ['login.html', 'signup.html', 'forgotpassword.html'];
+    const isAuthPage = authPages.some(page => currentPage.includes(page));
 
-    enhancePublicHeader();
-    enhancePublicFooter();
+    if (!isAuthPage) {
+      enhancePublicHeader();
+      enhancePublicFooter();
+    }
 
     // Instantly paint cached values on initial load to eliminate initials flashing or avatar desync
     if (userId) {
@@ -3084,6 +3089,7 @@
     checkLogoutAlert();
 
     // Hydrate notification bell if dashboard layout is active
+    const isDashboard = document.querySelector('.sidebar') || document.querySelector('.topbar') || document.querySelector('.sb-nav') || document.querySelector('.shell');
     if (isDashboard) {
       if (typeof window.initializeNotifications === 'function') {
         window.initializeNotifications();
