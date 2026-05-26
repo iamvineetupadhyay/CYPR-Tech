@@ -556,19 +556,41 @@
       .tips-card { margin-top: 0; }
       .dashboard-right-pane { gap: 20px; }
     }
+    @media(max-width: 900px) {
+      .bottom-split-row { grid-template-columns: 1fr !important; }
+      .scanners-grid { grid-template-columns: 1fr 1fr !important; }
+    }
     @media(max-width: 768px) {
-      .dashboard-layout { padding: 16px; }
-      .hero h1 { font-size: 1.8rem; }
-      .scanners-grid { grid-template-columns: 1fr; }
-      .stats-strip { grid-template-columns: repeat(2, 1fr); }
-      .bottom-split-row { grid-template-columns: 1fr; }
-      .scan-table-row, .scan-table-head { grid-template-columns: 1.8fr 1.2fr 1fr 24px; }
-      .scan-table-row .scan-time, .scan-table-head span:nth-child(4) { display: none; }
+      .dashboard-layout { padding: 14px 16px !important; gap: 14px !important; }
+      .hero h1 { font-size: 1.75rem !important; }
+      .hero-sub { font-size: 0.84rem !important; }
+      .hero-quote-row { flex-direction: column !important; padding: 18px !important; gap: 14px !important; }
+      .hex-shield-container { display: none !important; }
+      .quote-card { max-width: 100% !important; width: 100% !important; }
+      .scanners-grid { grid-template-columns: 1fr !important; }
+      .stats-strip { grid-template-columns: repeat(2, 1fr) !important; }
+      .bottom-split-row { grid-template-columns: 1fr !important; }
+      .scan-table-row, .scan-table-head { grid-template-columns: 1.8fr 1.2fr 1fr 24px !important; }
+      .scan-table-row .scan-time, .scan-table-head span:nth-child(4) { display: none !important; }
+      .site-footer { padding: 18px 16px !important; flex-direction: column; text-align: center; gap: 8px !important; }
+      .footer-links { justify-content: center; }
     }
     @media(max-width: 480px) {
-      .stats-strip { grid-template-columns: 1fr; }
+      .dashboard-layout { padding: 10px 12px !important; }
+      .stats-strip { grid-template-columns: 1fr !important; }
+      .hero h1 { font-size: 1.5rem !important; }
+      .hero-quote-row { padding: 14px !important; }
+      .stat-block { padding: 14px 16px !important; }
+      .threat-item-row { flex-direction: column !important; gap: 8px !important; align-items: flex-start !important; }
+      .threat-details-link { align-self: flex-end; }
+      .scan-table-row, .scan-table-head { grid-template-columns: 1fr 1fr 1fr !important; }
+    }
+    @media(max-width: 360px) {
+      .hero h1 { font-size: 1.35rem !important; }
+      .stat-num { font-size: 1.4rem !important; }
     }
   </style>
+
 </head>
 <body class="premium-dashboard">
 <div class="shell">

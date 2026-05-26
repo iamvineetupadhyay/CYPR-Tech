@@ -2269,4 +2269,474 @@ html {
     gap: 12px !important;
     width: 100% !important;
   }
-}
+}
+
+/* ══════════════════════════════════════════════════════════
+   GLOBAL RESPONSIVE SYSTEM — All Pages
+   Breakpoints: 1200px | 1024px | 768px | 480px | 360px
+══════════════════════════════════════════════════════════ */
+
+/* ── 1200px: Wide tablet / small laptops ── */
+@media (max-width: 1200px) {
+  /* Tool pages: collapse sidebar panel */
+  .tool-page,
+  .contact-grid {
+    grid-template-columns: 1fr 300px;
+    gap: 18px;
+  }
+
+  /* Home dashboard layout */
+  .dashboard-layout {
+    grid-template-columns: 1fr 300px !important;
+    padding: 20px 24px !important;
+  }
+
+  /* Activity logs grid */
+  .log-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── 1024px: Tablets landscape ── */
+@media (max-width: 1024px) {
+  /* Tool pages: stack to single column */
+  .tool-page,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Home page: dashboard to single col */
+  .dashboard-layout {
+    grid-template-columns: 1fr !important;
+    padding: 16px 20px !important;
+  }
+
+  /* home.html scanners grid */
+  .scanners-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* home.html bottom split */
+  .bottom-split-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* home.html stats strip */
+  .stats-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Global features/service/testi grids */
+  .service-grid,
+  .features-grid,
+  .testi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Settings page: collapse multi-col grid */
+  .settings-grid,
+  .s-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* page-wrapper narrower */
+  .page-wrapper {
+    padding: 24px 20px 56px;
+  }
+
+  /* Form grids */
+  .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .fg.full {
+    grid-column: 1 !important;
+  }
+}
+
+/* ── 768px: Tablets portrait / large mobile ── */
+@media (max-width: 768px) {
+  /* Global hamburger */
+  .hamburger {
+    display: flex !important;
+  }
+  .navbar nav,
+  .nav-links,
+  .nav-actions {
+    display: none !important;
+  }
+
+  /* Status bar text truncation */
+  .status-bar {
+    font-size: 0.6rem;
+    padding: 8px 16px;
+  }
+
+  /* Page wrapper */
+  .page-wrapper {
+    padding: 16px 16px 48px;
+  }
+
+  /* home.html dashboard */
+  .dashboard-layout {
+    gap: 14px !important;
+    padding: 14px 16px !important;
+  }
+
+  .hero-quote-row {
+    flex-direction: column !important;
+    padding: 20px !important;
+    gap: 16px !important;
+  }
+
+  .hex-shield-container {
+    display: none !important;
+  }
+
+  .quote-card {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .hero h1,
+  .hero-left h1 {
+    font-size: 1.7rem !important;
+    line-height: 1.2 !important;
+  }
+
+  /* scanners grid → 1 col on phones */
+  .scanners-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* stats strip → 2 col */
+  .stats-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* home.html bottom split → 1 col */
+  .bottom-split-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Right sidebar panel (score/info) → full width */
+  .dashboard-right-pane {
+    width: 100% !important;
+  }
+
+  /* URL check / password / malware tool layouts */
+  .tool-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* scan-row → vertical stack */
+  .scan-row {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .scan-row .btn-scan,
+  .scan-row .btn-primary {
+    width: 100% !important;
+    justify-content: center;
+  }
+
+  /* VT result grid */
+  .vt-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Activity logs: hide time col on small screens */
+  .log-time-col {
+    display: none !important;
+  }
+
+  /* Features grid */
+  .service-grid,
+  .features-grid,
+  .testi-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Auth pages */
+  .auth-split {
+    grid-template-columns: 1fr !important;
+  }
+  .auth-left {
+    display: none !important;
+  }
+  .auth-right {
+    min-height: 100vh !important;
+  }
+
+  /* Settings tabs → horizontal scroll */
+  .settings-tabs,
+  .s-tabs {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .settings-tabs::-webkit-scrollbar,
+  .s-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Pricing cards */
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  /* Contact */
+  .contact-section {
+    flex-direction: column !important;
+  }
+
+  /* Score ring — scale down */
+  .score-ring-wrap {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .score-ring-wrap svg {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  .score-number {
+    font-size: 3rem !important;
+  }
+
+  /* Section padding */
+  .section {
+    padding: 56px 20px !important;
+  }
+  .score-section,
+  .cta-section {
+    padding: 56px 20px !important;
+  }
+
+  /* How-grid */
+  .how-grid,
+  .score-showcase {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  /* Footer */
+  .footer {
+    flex-direction: column !important;
+    text-align: center;
+    padding: 24px 16px !important;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Malware analysis result grid */
+  .malware-grid,
+  .analysis-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Cyber news / article */
+  .news-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Dashboard stat tiles */
+  .stat-tiles {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .top-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── 480px: Mobile phones ── */
+@media (max-width: 480px) {
+  /* Typography scale-down */
+  h1 {
+    font-size: clamp(1.5rem, 6vw, 2rem) !important;
+  }
+
+  /* stats strip → 1 col */
+  .stats-strip {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* stat tiles → 1 col */
+  .stat-tiles {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* VT stats → 1 col */
+  .vt-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Hero stats → vertical */
+  .hero-stats {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .hero-stat {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  .hero-stat:last-child {
+    border-bottom: none !important;
+  }
+
+  /* Buttons full-width in actions rows */
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .hero-actions .btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Card padding reduce */
+  .glass-card,
+  .card,
+  .info-panel {
+    padding: 16px !important;
+  }
+
+  /* Modal full-width */
+  .modal {
+    padding: 20px 16px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Toast position */
+  .cm-toast,
+  .toast {
+    bottom: 16px !important;
+    width: calc(100% - 32px) !important;
+    left: 16px !important;
+    transform: none !important;
+    text-align: center;
+  }
+
+  /* home.html hero */
+  .hero-quote-row {
+    padding: 16px !important;
+  }
+
+  /* Settings page fields */
+  .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Page content padding */
+  .page-content,
+  .page-wrapper {
+    padding: 12px 12px 40px !important;
+  }
+
+  /* Section headings */
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  /* Score ring on mobile */
+  .score-ring-wrap {
+    width: 160px !important;
+    height: 160px !important;
+  }
+  .score-ring-wrap svg {
+    width: 160px !important;
+    height: 160px !important;
+  }
+
+  /* Malware / activity table rows */
+  .log-row,
+  .activity-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+
+  /* Scan result header */
+  .result-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* Navbar padding */
+  .navbar {
+    padding: 0 14px !important;
+  }
+}
+
+/* ── 360px: Very small phones ── */
+@media (max-width: 360px) {
+  h1 {
+    font-size: 1.4rem !important;
+  }
+
+  .btn {
+    font-size: 0.78rem !important;
+    padding: 10px 16px !important;
+    min-height: 40px !important;
+  }
+
+  .page-content,
+  .page-wrapper {
+    padding: 10px 10px 36px !important;
+  }
+
+  .glass-card,
+  .card,
+  .info-panel {
+    padding: 12px !important;
+    border-radius: 10px !important;
+  }
+
+  .stat-block {
+    padding: 14px 16px !important;
+  }
+}
+
+/* ══ TOUCH DEVICE ENHANCEMENTS ══ */
+@media (hover: none) and (pointer: coarse) {
+  /* Increase tap targets */
+  .btn,
+  .nav-links a,
+  .mobile-nav a,
+  .sb-item,
+  .tool-card,
+  .t7-item,
+  .scan-row,
+  .threat-item-row,
+  .threat-item {
+    min-height: 44px;
+  }
+
+  /* Remove hover effects that look odd on touch */
+  .tool-card:hover,
+  .glass-card:hover,
+  .t7-item:hover,
+  .qa-card:hover {
+    transform: none !important;
+  }
+
+  /* Prevent double-tap zoom on buttons */
+  button, a {
+    touch-action: manipulation;
+  }
+}
+
