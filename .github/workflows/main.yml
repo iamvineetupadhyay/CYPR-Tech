@@ -3,7 +3,7 @@ name: Automated Deployment to AWS EC2
 on:
   push:
     branches:
-      - main  # Jab bhi main branch par push hoga, ye active hoga
+      - main
 
 jobs:
   deploy:
