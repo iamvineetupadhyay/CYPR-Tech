@@ -1201,8 +1201,8 @@
         padding: 6px !important;
       }
       
-      /* Hide all desktop actions and clutter in the top tier on mobile */
-      .cm-right-group > *:not(.cm-theme-toggle) {
+      /* Hide all desktop actions and clutter in the top tier on mobile, keeping theme toggle and alerts bell visible */
+      .cm-right-group > *:not(.cm-theme-toggle):not(#alertsBellTrigger) {
         display: none !important;
       }
       .cm-left-group > *:not(.cm-nav-logo) {
