@@ -1903,7 +1903,6 @@
     `;
     toggleBtn.addEventListener('click', toggleThemeAction);
 
-    const userId = readUserId();
     if (!userId) {
       // Guest state
       rightGroup.innerHTML = `
