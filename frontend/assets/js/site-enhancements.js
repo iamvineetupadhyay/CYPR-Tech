@@ -296,76 +296,306 @@
     .cm-logo-slot span{color:var(--lime) !important;font:800 .68rem 'JetBrains Mono',monospace;letter-spacing:.04em}
     .nav-logo::before, .logo::before, .auth-brand::before { display: none !important; }
 
-    /* ── REFINED GLASS NAVBAR ── */
+    /* ── REDESIGNED GITHUB-STYLE TWO-TIER NAVBAR ── */
     .navbar {
-      display: flex !important;
-      justify-content: space-between !important;
-      align-items: center !important;
-      padding: 0 40px !important;
-      background: var(--bg) !important;
-      border-bottom: 1px solid var(--border) !important;
-      box-shadow: var(--shadow-lg) !important;
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      z-index: 999 !important;
-      height: 64px !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
+      display: none !important; /* Hide old navbar completely in favor of modern cm-header */
     }
-    
-    .cm-nav-container {
+    .cm-header-container {
       display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 999;
+      background: var(--nav-bg) !important;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
       width: 100%;
+      box-sizing: border-box;
+    }
+    .cm-top-tier {
+      display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      height: 52px;
+      padding: 0 24px;
+      gap: 16px;
     }
-
+    .cm-left-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
     .cm-nav-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      font-size: 1.15rem;
+      gap: 8px;
+      text-decoration: none !important;
+    }
+    .cm-context-path {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+    .cm-context-path .sep {
+      color: var(--text3);
+      font-weight: 300;
+    }
+    .cm-context-path .repo {
+      font-weight: 700;
       color: var(--text);
     }
-    .cm-nav-logo span {
+    
+    .cm-nav-search-container {
+      position: relative;
+      width: 100%;
+      max-width: 280px;
+      display: flex;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+    .cm-nav-search-container input {
+      width: 100%;
+      background: var(--bg3) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 6px !important;
+      padding: 6px 12px 6px 30px !important;
+      font-family: var(--font-mono, monospace) !important;
+      font-size: 0.72rem !important;
+      color: var(--text) !important;
+      outline: none !important;
+      transition: all 0.2s ease !important;
+    }
+    .cm-nav-search-container input:focus {
+      border-color: var(--lime) !important;
+      box-shadow: 0 0 0 3px var(--lime-glow) !important;
+      background: var(--bg) !important;
+    }
+    .cm-nav-search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      color: var(--text3);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cm-nav-search-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    .cm-nav-search-kbd {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--mono, monospace);
+      font-size: 0.55rem;
+      color: var(--text3);
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      padding: 1px 5px;
+      border-radius: 3px;
+      pointer-events: none;
+    }
+    
+    .cm-right-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .cm-icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid var(--border) !important;
+      background: var(--bg2) !important;
+      color: var(--text2) !important;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+      padding: 0 !important;
+    }
+    .cm-icon-btn:hover {
+      color: var(--lime) !important;
+      border-color: var(--lime) !important;
+      background: var(--lime-dim) !important;
+    }
+    .cm-icon-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+    }
+    .cm-icon-badge {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent3, var(--red));
+      border: 1px solid var(--bg);
+    }
+    
+    /* Plus Quick Action Dropdown */
+    .cm-plus-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .cm-plus-trigger {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid var(--border) !important;
+      background: var(--bg2) !important;
+      color: var(--text2) !important;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+      padding: 0 !important;
+    }
+    .cm-plus-trigger:hover {
+      color: var(--lime) !important;
+      border-color: var(--lime) !important;
+      background: var(--lime-dim) !important;
+    }
+    .cm-plus-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 220px;
+      background: var(--bg2) !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow: var(--shadow-lg) !important;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 9999;
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .cm-plus-menu.open {
+      display: flex;
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .cm-plus-header {
+      font-family: var(--mono, monospace);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text3);
+      padding: 6px 10px 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+      text-align: left;
+    }
+    .cm-plus-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      color: var(--text2) !important;
+      text-decoration: none !important;
+      transition: all 0.15s ease;
+      cursor: pointer;
+      text-align: left;
+    }
+    .cm-plus-item:hover {
+      background: var(--bg3) !important;
+      color: var(--lime) !important;
+    }
+    .cm-plus-item svg {
+      width: 14px;
+      height: 14px;
+      color: var(--text3);
+    }
+    .cm-plus-item:hover svg {
       color: var(--lime);
     }
     
-    .cm-nav-links {
+    /* Second Tier (Sub-navigation tabs bar) */
+    .cm-bottom-tier {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-left: auto;
+      height: 38px;
+      border-top: 1px solid var(--border);
+      background: var(--bg) !important;
+      padding: 0 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
-    .cm-nav-links a {
-      color: var(--text2);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid transparent;
+    .cm-bottom-tier::-webkit-scrollbar {
+      display: none;
+    }
+    .cm-nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 100%;
+    }
+    .cm-nav-tab {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 100%;
+      padding: 0 8px;
+      color: var(--text2) !important;
+      font-family: var(--font);
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-decoration: none !important;
+      border-bottom: 2px solid transparent;
       transition: all 0.2s ease;
+      white-space: nowrap;
+      cursor: pointer;
     }
-    .cm-nav-links a:hover, .cm-nav-links a.active {
+    .cm-nav-tab svg {
+      width: 14px;
+      height: 14px;
+      color: var(--text3);
+      transition: color 0.2s ease;
+    }
+    .cm-nav-tab:hover {
+      color: var(--text) !important;
+    }
+    .cm-nav-tab:hover svg {
+      color: var(--text2);
+    }
+    .cm-nav-tab.active {
+      color: var(--text) !important;
+      font-weight: 600;
+      border-bottom-color: var(--lime) !important;
+    }
+    .cm-nav-tab.active svg {
       color: var(--lime) !important;
-      border-color: var(--border2) !important;
-      background: var(--bg3) !important;
     }
     
-    .cm-nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-left: 20px;
-    }
-    
-    /* Premium Interactive Elements */
+    /* Interactive Pills */
     .cm-promo-pill {
       display: inline-flex;
       align-items: center;
@@ -444,8 +674,8 @@
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      min-height: 34px;
-      padding: 7px 14px;
+      min-height: 32px;
+      padding: 6px 12px;
       border: 1px solid var(--lime-glow) !important;
       border-radius: 999px;
       background: var(--lime-dim) !important;
@@ -493,8 +723,8 @@
       align-items: center;
     }
     .cm-avatar-small {
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--lime), var(--lime2)) !important;
       display: flex;
@@ -537,6 +767,7 @@
       padding: 10px 12px;
       border-bottom: 1px solid var(--border) !important;
       margin-bottom: 4px;
+      text-align: left;
     }
     .cm-dropdown-header .name {
       font-weight: 700;
@@ -590,15 +821,16 @@
     .cm-hamburger-btn {
       display: none;
       flex-direction: column;
-      gap: 5px;
-      width: 36px;
-      height: 36px;
-      background: var(--bg) !important;
+      gap: 4px;
+      width: 34px;
+      height: 34px;
+      background: var(--bg2) !important;
       border: 1px solid var(--border) !important;
-      border-radius: 8px;
-      padding: 9px;
+      border-radius: 6px;
+      padding: 8px;
       cursor: pointer;
       justify-content: center;
+      box-sizing: border-box;
     }
     .cm-hamburger-btn span {
       display: block;
@@ -609,22 +841,22 @@
       transition: all 0.25s ease;
     }
     .cm-hamburger-btn.open span:nth-child(1) {
-      transform: translateY(7px) rotate(45deg);
+      transform: translateY(6px) rotate(45deg);
     }
     .cm-hamburger-btn.open span:nth-child(2) {
       opacity: 0;
     }
     .cm-hamburger-btn.open span:nth-child(3) {
-      transform: translateY(-7px) rotate(-45deg);
+      transform: translateY(-6px) rotate(-45deg);
     }
 
     /* Mobile Drawer */
     .cm-mobile-drawer {
       position: fixed;
-      top: 64px;
+      top: 52px;
       left: 0;
       right: 0;
-      height: calc(100vh - 64px);
+      height: calc(100vh - 52px);
       background: var(--bg2) !important;
       backdrop-filter: blur(20px);
       border-top: 1px solid var(--border) !important;
@@ -658,6 +890,7 @@
       border: 1px solid transparent;
       transition: all 0.2s;
       text-decoration: none !important;
+      text-align: left;
     }
     .cm-mobile-links a:hover, .cm-mobile-links a.active {
       color: var(--lime) !important;
@@ -672,6 +905,129 @@
       padding-bottom: 40px;
       border-top: 1px solid var(--border) !important;
       padding-top: 20px;
+    }
+
+    /* ── PREMIUM site-footer & footer Overhaul ── */
+    .site-footer, .footer {
+      border-top: 1px solid var(--border) !important;
+      background: var(--bg2) !important;
+      padding: 60px 40px 30px !important;
+      font-family: var(--font, sans-serif);
+      color: var(--text2) !important;
+      box-sizing: border-box !important;
+      width: 100% !important;
+    }
+    .cm-footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+      margin-bottom: 40px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+    }
+    .cm-footer-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cm-footer-col h3 {
+      font-family: var(--mono, monospace);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .cm-footer-col p {
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--text2);
+    }
+    .cm-footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cm-footer-links a {
+      font-size: 0.8rem;
+      color: var(--text2) !important;
+      text-decoration: none !important;
+      transition: color 0.15s ease;
+      width: fit-content;
+    }
+    .cm-footer-links a:hover {
+      color: var(--lime) !important;
+    }
+    .cm-footer-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .cm-footer-badge-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono, monospace);
+      font-size: 0.65rem;
+      color: var(--text3);
+    }
+    .cm-footer-badge-item svg {
+      width: 14px;
+      height: 14px;
+      color: var(--text3);
+    }
+    .cm-footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .cm-footer-copy {
+      font-size: 0.75rem;
+      color: var(--text3);
+    }
+    .cm-footer-socials {
+      display: flex;
+      gap: 16px;
+    }
+    .cm-footer-socials a {
+      color: var(--text3) !important;
+      transition: color 0.15s ease;
+    }
+    .cm-footer-socials a:hover {
+      color: var(--lime) !important;
+    }
+    .cm-footer-socials a svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+    @media (max-width: 900px) {
+      .cm-footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+    }
+    @media (max-width: 600px) {
+      .cm-footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .cm-footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+      }
     }
 
     /* ── SIDEBAR PROFILE CARD ── */
@@ -1344,16 +1700,35 @@
     });
   }
 
-  // Dynamic public header implementation
+  // Dynamic public header implementation (GitHub-Style Two-Tier Navbar)
   async function enhancePublicHeader() {
     const navbar = document.querySelector('.navbar');
-    if (!navbar || document.querySelector('.cm-nav-container')) return;
+    if (!navbar) return;
 
-    // Build perfect structural container
-    const navContainer = document.createElement('div');
-    navContainer.className = 'cm-nav-container';
+    // Check if we already injected our header wrapper
+    let headerContainer = document.querySelector('.cm-header-container');
+    if (headerContainer) return;
 
-    // Logo Block
+    // Build the dynamic header wrapper
+    headerContainer = document.createElement('div');
+    headerContainer.className = 'cm-header-container';
+
+    // ── Tier 1: Control Bar ──
+    const topTier = document.createElement('div');
+    topTier.className = 'cm-top-tier';
+
+    // Left Identity
+    const leftGroup = document.createElement('div');
+    leftGroup.className = 'cm-left-group';
+
+    // Hamburger Mobile Button
+    const hamBtn = document.createElement('button');
+    hamBtn.className = 'cm-hamburger-btn';
+    hamBtn.setAttribute('aria-label', 'Toggle Navigation');
+    hamBtn.innerHTML = '<span></span><span></span><span></span>';
+    leftGroup.appendChild(hamBtn);
+
+    // Brand logo link
     const logoLink = document.createElement('a');
     logoLink.href = readUserId() ? 'home.html' : 'index.html';
     logoLink.className = 'cm-nav-logo';
@@ -1361,37 +1736,73 @@
       <span class="cm-logo-slot">
         <img src="assets/logo.png" alt="CM" onerror="const s=document.createElement('span');s.textContent='CM';this.replaceWith(s);">
       </span>
-      Cyber<span>Mitra</span>
     `;
-    navContainer.appendChild(logoLink);
+    leftGroup.appendChild(logoLink);
 
-    // Links Block
-    const linksDiv = document.createElement('div');
-    linksDiv.className = 'cm-nav-links';
-    linksDiv.innerHTML = `
-      <a href="tools.html" class="${isActive('tools.html')}">Tools</a>
-      <a href="pricing.html" class="${isActive('pricing.html')}">Pricing</a>
-      <a href="cyber-news.html" class="${isActive('cyber-news.html')}">Cyber News</a>
-      <a href="aboutus.html" class="${isActive('aboutus.html')}">About Us</a>
-      <a href="contactus.html" class="${isActive('contactus.html')}">Contact</a>
+    // Workspace repo-style path breadcrumb context
+    const contextPath = document.createElement('div');
+    contextPath.className = 'cm-context-path';
+    contextPath.innerHTML = `<span class="sep">iamvineetupadhyay</span><span class="sep">/</span><span class="repo">CYPR</span>`;
+    leftGroup.appendChild(contextPath);
+
+    topTier.appendChild(leftGroup);
+
+    // Center Search box
+    const searchContainer = document.createElement('div');
+    searchContainer.className = 'cm-nav-search-container';
+    searchContainer.innerHTML = `
+      <span class="cm-nav-search-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </span>
+      <input id="searchBox" placeholder="Type / to search..." autocomplete="off">
+      <div class="cm-nav-search-kbd">/</div>
     `;
-    navContainer.appendChild(linksDiv);
+    topTier.appendChild(searchContainer);
 
-    // Actions Block
-    const actionsDiv = document.createElement('div');
-    actionsDiv.className = 'cm-nav-actions';
-    navContainer.appendChild(actionsDiv);
+    // Right Actions Block
+    const rightGroup = document.createElement('div');
+    rightGroup.className = 'cm-right-group';
+    topTier.appendChild(rightGroup);
 
-    // Hamburger Menu Button
-    const hamBtn = document.createElement('button');
-    hamBtn.className = 'cm-hamburger-btn';
-    hamBtn.setAttribute('aria-label', 'Toggle Navigation');
-    hamBtn.innerHTML = '<span></span><span></span><span></span>';
-    navContainer.appendChild(hamBtn);
+    headerContainer.appendChild(topTier);
 
-    // Clear and swap
-    navbar.innerHTML = '';
-    navbar.appendChild(navContainer);
+    // ── Tier 2: Tabs Sub-Navigation Bar ──
+    const bottomTier = document.createElement('div');
+    bottomTier.className = 'cm-bottom-tier';
+
+    const navTabs = document.createElement('div');
+    navTabs.className = 'cm-nav-tabs';
+    navTabs.innerHTML = `
+      <a href="tools.html" class="cm-nav-tab ${isActive('tools.html')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Tools
+      </a>
+      <a href="pricing.html" class="cm-nav-tab ${isActive('pricing.html')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 8v8m-4-4h8"/></svg>
+        Pricing
+      </a>
+      <a href="cyber-news.html" class="cm-nav-tab ${isActive('cyber-news.html')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M16 8h2m-2 4h2M6 8h6v8H6z"/></svg>
+        Cyber News
+      </a>
+      <a href="aboutus.html" class="cm-nav-tab ${isActive('aboutus.html')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+        About Us
+      </a>
+      <a href="contactus.html" class="cm-nav-tab ${isActive('contactus.html')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Contact
+      </a>
+    `;
+    bottomTier.appendChild(navTabs);
+    headerContainer.appendChild(bottomTier);
+
+    // Swap and hide static navbar
+    navbar.style.display = 'none';
+    navbar.parentNode.insertBefore(headerContainer, navbar);
+
+    // Apply offset margin to the page layout so that content starts below the 90px header
+    document.body.style.paddingTop = '90px';
 
     // Build Mobile Drawer
     let drawer = document.querySelector('.cm-mobile-drawer');
@@ -1400,7 +1811,6 @@
       drawer.className = 'cm-mobile-drawer';
       document.body.appendChild(drawer);
     }
-    
     drawer.innerHTML = `
       <div class="cm-mobile-links">
         <a href="tools.html" class="${isActive('tools.html')}">Tools</a>
@@ -1414,38 +1824,103 @@
 
     const mobActions = drawer.querySelector('.cm-mobile-actions');
 
-    // Toggle event
-    hamBtn.addEventListener('click', () => {
+    // Toggle drawer event
+    hamBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
       hamBtn.classList.toggle('open');
       drawer.classList.toggle('open');
     });
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-      if (!navbar.contains(e.target) && !drawer.contains(e.target)) {
+      if (!headerContainer.contains(e.target) && !drawer.contains(e.target)) {
         hamBtn.classList.remove('open');
         drawer.classList.remove('open');
       }
     });
 
+    // Setup global keystroke listener to trigger focus on Searchbox
+    document.addEventListener('keydown', (e) => {
+      const searchBox = document.getElementById('searchBox');
+      if (searchBox && e.key === '/' && document.activeElement !== searchBox && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        e.preventDefault();
+        searchBox.focus();
+        searchBox.select();
+      }
+    });
+
+    // Inject dynamic Theme Toggle into top tier
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'cm-theme-toggle';
+    toggleBtn.setAttribute('aria-label', 'Toggle Theme');
+    toggleBtn.type = 'button';
+    toggleBtn.innerHTML = `
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    `;
+    toggleBtn.addEventListener('click', toggleThemeAction);
+
     const userId = readUserId();
     if (!userId) {
       // Guest state
-      actionsDiv.innerHTML = `
+      rightGroup.innerHTML = `
         <a href="signup.html" class="cm-promo-pill">🎁 50 Free Credits</a>
         <a href="login.html" class="cm-btn-ghost">Sign In</a>
         <a href="signup.html" class="cm-btn-accent">Get Started</a>
       `;
+      rightGroup.appendChild(toggleBtn);
+
       mobActions.innerHTML = `
-        <a href="signup.html" class="cm-promo-pill" style="justify-content:center">🎁 Get 50 Free Credits</a>
-        <a href="login.html" class="cm-btn-ghost" style="width:100%">Sign In</a>
+        <a href="signup.html" class="cm-promo-pill" style="justify-content:center;margin-bottom:8px;">🎁 Get 50 Free Credits</a>
+        <a href="login.html" class="cm-btn-ghost" style="width:100%;margin-bottom:8px;">Sign In</a>
         <a href="signup.html" class="cm-btn-accent" style="width:100%">Get Started</a>
       `;
+      
+      const mobToggleBtn = document.createElement('button');
+      mobToggleBtn.className = 'cm-theme-toggle';
+      mobToggleBtn.setAttribute('aria-label', 'Toggle Theme');
+      mobToggleBtn.type = 'button';
+      mobToggleBtn.innerHTML = toggleBtn.innerHTML;
+      mobToggleBtn.addEventListener('click', toggleThemeAction);
+      mobActions.appendChild(mobToggleBtn);
     } else {
       // Logged in state
-      actionsDiv.innerHTML = `
+      rightGroup.innerHTML = `
+        <!-- Plus Dropdown -->
+        <div class="cm-plus-dropdown">
+          <button class="cm-plus-trigger" id="plusDropdownTrigger" title="Quick Scan">+</button>
+          <div class="cm-plus-menu" id="plusDropdownMenu">
+            <div class="cm-plus-header">Quick Analysis</div>
+            <a href="url-check.html" class="cm-plus-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              Scan URL Phishing
+            </a>
+            <a href="password-check.html" class="cm-plus-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              Test Password Strength
+            </a>
+            <a href="malwareanalysis.html" class="cm-plus-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Analyze Malware File
+            </a>
+          </div>
+        </div>
+
+        <!-- Book Resources Link -->
+        <a href="cyber-news.html" class="cm-icon-btn" title="Advisories & News">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </a>
+
+        <!-- Alerts Bell -->
+        <button class="cm-icon-btn" id="alertsBellTrigger" title="No Alerts">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="cm-icon-badge"></div>
+        </button>
+
         <span class="cm-credit-pill">Credits: ...</span>
         <a href="dashboard.html" class="cm-btn-accent">Dashboard</a>
+
+        <!-- User profile avatar dropdown -->
         <div class="cm-user-menu">
           <div class="cm-user-trigger">
             <div class="cm-avatar-small">?</div>
@@ -1463,19 +1938,48 @@
         </div>
       `;
 
+      rightGroup.insertBefore(toggleBtn, rightGroup.querySelector('.cm-credit-pill'));
+
       mobActions.innerHTML = `
         <div style="display:flex;align-items:center;justify-content:space-between;padding:12px;background:rgba(255,255,255,0.02);border-radius:100px;border:1px solid rgba(255,255,255,0.06);margin-bottom:8px;">
           <span class="cm-credit-pill" style="min-height:30px">Credits: ...</span>
           <span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;margin-right:8px;">Logged In</span>
         </div>
-        <a href="dashboard.html" class="cm-btn-accent" style="width:100%">Dashboard</a>
-        <a href="settings.html" class="cm-btn-ghost" style="width:100%">Settings</a>
+        <a href="dashboard.html" class="cm-btn-accent" style="width:100%;margin-bottom:8px;">Dashboard</a>
+        <a href="settings.html" class="cm-btn-ghost" style="width:100%;margin-bottom:8px;">Settings</a>
         <a href="#" class="cm-btn-ghost logout" style="width:100%;color:#ff5555;border-color:rgba(255,85,85,0.2)">🔒 Sign Out</a>
       `;
 
-      // Set up drop down click trigger
-      const trigger = actionsDiv.querySelector('.cm-user-trigger');
-      const menu = actionsDiv.querySelector('.cm-dropdown-menu');
+      const mobToggleBtn = document.createElement('button');
+      mobToggleBtn.className = 'cm-theme-toggle';
+      mobToggleBtn.setAttribute('aria-label', 'Toggle Theme');
+      mobToggleBtn.type = 'button';
+      mobToggleBtn.innerHTML = toggleBtn.innerHTML;
+      mobToggleBtn.addEventListener('click', toggleThemeAction);
+      mobActions.appendChild(mobToggleBtn);
+
+      // Plus dropdown trigger binding
+      const plusTrigger = rightGroup.querySelector('#plusDropdownTrigger');
+      const plusMenu = rightGroup.querySelector('#plusDropdownMenu');
+      if (plusTrigger && plusMenu) {
+        plusTrigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          plusMenu.classList.toggle('open');
+        });
+        document.addEventListener('click', () => plusMenu.classList.remove('open'));
+      }
+
+      // Alerts bell toast alert
+      const bell = rightGroup.querySelector('#alertsBellTrigger');
+      if (bell) {
+        bell.addEventListener('click', () => {
+          showToast('🔔 Perimeter Secure: 0 active threat alerts.');
+        });
+      }
+
+      // User profile trigger dropdown binding
+      const trigger = rightGroup.querySelector('.cm-user-trigger');
+      const menu = rightGroup.querySelector('.cm-dropdown-menu');
       if (trigger && menu) {
         trigger.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -1484,8 +1988,8 @@
         document.addEventListener('click', () => menu.classList.remove('open'));
       }
 
-      // Bind dynamic logouts
-      [actionsDiv, mobActions].forEach(container => {
+      // Logout triggers
+      [rightGroup, mobActions].forEach(container => {
         const loBtn = container.querySelector('.logout');
         if (loBtn) loBtn.addEventListener('click', handleSignOut);
       });
@@ -1523,9 +2027,9 @@
           });
 
           // Update profile dropdown elements
-          const nameEl = actionsDiv.querySelector('.cm-dropdown-header .name');
-          const emailEl = actionsDiv.querySelector('.cm-dropdown-header .email');
-          const avatarEl = actionsDiv.querySelector('.cm-avatar-small');
+          const nameEl = rightGroup.querySelector('.cm-dropdown-header .name');
+          const emailEl = rightGroup.querySelector('.cm-dropdown-header .email');
+          const avatarEl = rightGroup.querySelector('.cm-avatar-small');
 
           if (nameEl) nameEl.textContent = name;
           if (emailEl) emailEl.textContent = email;
@@ -1545,30 +2049,89 @@
       }
     }
 
-    // Inject Theme Toggle into public navbar and drawer
-    if (!document.querySelector('.navbar .cm-theme-toggle')) {
-      const toggleBtn = document.createElement('button');
-      toggleBtn.className = 'cm-theme-toggle';
-      toggleBtn.setAttribute('aria-label', 'Toggle Theme');
-      toggleBtn.type = 'button';
-      toggleBtn.innerHTML = `
-        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-      `;
-      toggleBtn.addEventListener('click', toggleThemeAction);
-      
-      const userTrigger = actionsDiv.querySelector('.cm-user-menu');
-      if (userTrigger) actionsDiv.insertBefore(toggleBtn, userTrigger);
-      else actionsDiv.appendChild(toggleBtn);
+    // Set up search box spotlight hooks inside navbar
+    setupSpotlightSearch();
+  }
 
-      const mobToggleBtn = document.createElement('button');
-      mobToggleBtn.className = 'cm-theme-toggle';
-      mobToggleBtn.setAttribute('aria-label', 'Toggle Theme');
-      mobToggleBtn.type = 'button';
-      mobToggleBtn.innerHTML = toggleBtn.innerHTML;
-      mobToggleBtn.addEventListener('click', toggleThemeAction);
-      mobActions.appendChild(mobToggleBtn);
-    }
+  // Dynamic premium footer implementation
+  function enhancePublicFooter() {
+    const footerEl = document.querySelector('.site-footer') || document.querySelector('.footer') || document.querySelector('footer');
+    if (!footerEl || document.querySelector('.cm-footer-grid')) return;
+
+    // Define partners SVG logos
+    const virusTotalLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
+    const githubLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`;
+    const postgresLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>`;
+    const renderLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+
+    const container = document.createElement('div');
+    container.style.width = '100%';
+
+    container.innerHTML = `
+      <div class="cm-footer-grid">
+        <!-- Col 1: Logo & Partner Integrations -->
+        <div class="cm-footer-col">
+          <div class="footer-logo" style="margin-bottom:8px;font-weight:900;letter-spacing:1px;font-size:1.1rem;color:var(--text);">CYPR</div>
+          <p>Enterprise-grade cybersecurity monitoring, password analytics, and live phishing threat detection vectors.</p>
+          <div class="cm-footer-badges">
+            <div class="cm-footer-badge-item">
+              ${virusTotalLogo} Powered by VirusTotal
+            </div>
+            <div class="cm-footer-badge-item">
+              ${postgresLogo} Secured by AWS RDS
+            </div>
+            <div class="cm-footer-badge-item">
+              ${renderLogo} Hosted on Render Cloud
+            </div>
+          </div>
+        </div>
+
+        <!-- Col 2: Sitemap Navigation -->
+        <div class="cm-footer-col">
+          <h3>Sitemap</h3>
+          <div class="cm-footer-links">
+            <a href="tools.html">Security Tools</a>
+            <a href="pricing.html">Subscription Pricing</a>
+            <a href="cyber-news.html">Real-Time Threat Intel</a>
+            <a href="aboutus.html">Our Mission & Team</a>
+            <a href="contactus.html">Submit Help Request</a>
+          </div>
+        </div>
+
+        <!-- Col 3: Portal Actions -->
+        <div class="cm-footer-col">
+          <h3>Resources</h3>
+          <div class="cm-footer-links">
+            <a href="dashboard.html">User Dashboard</a>
+            <a href="settings.html">Account Settings</a>
+            <a href="login.html">Secure Login</a>
+            <a href="signup.html">Create Free Profile</a>
+          </div>
+        </div>
+
+        <!-- Col 4: Compliance & Badges -->
+        <div class="cm-footer-col">
+          <h3>Trust & Compliance</h3>
+          <p>Threat heuristics engine matches active OWASP standards and undergoes daily integrity vulnerability validation.</p>
+          <div class="cm-footer-badge-item" style="color:var(--green);font-weight:700;">
+            ✓ Heuristics Engine Compliant
+          </div>
+        </div>
+      </div>
+
+      <div class="cm-footer-bottom">
+        <div class="cm-footer-copy">© 2026 CYPR Platform. Built to protect digital identities. All rights reserved.</div>
+        <div class="cm-footer-socials">
+          <a href="https://github.com/iamvineetupadhyay/CyberMitra" target="_blank" aria-label="GitHub">
+            ${githubLogo}
+          </a>
+        </div>
+      </div>
+    `;
+
+    footerEl.innerHTML = '';
+    footerEl.className = 'site-footer';
+    footerEl.appendChild(container);
   }
 
   // Helper: Sync VirusTotal scan mode toggle with topbar engine indicator
@@ -2485,6 +3048,7 @@
       enhanceDashboardUI();
     } else {
       enhancePublicHeader();
+      enhancePublicFooter();
     }
 
     // Instantly paint cached values on initial load to eliminate initials flashing or avatar desync

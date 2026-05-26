@@ -1,577 +1,325 @@
-<div align="center">
+# 🛡️ Cypr (CyberMitra) — Enterprise Cybersecurity Platform & Core VAJRA Engine
 
-<img src="https://img.shields.io/badge/CYPR-CyberMitra-c8ff00?style=for-the-badge&labelColor=0a0a0a&color=c8ff00" alt="Cypr" height="40"/>
+[![Java Version](https://img.shields.io/badge/Java-17-orange.svg?style=for-the-badge&logo=openjdk)](https://adoptium.net/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.0-brightgreen.svg?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
+[![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg?style=for-the-badge&logo=docker)](https://www.docker.com/)
+[![AWS Deployment](https://img.shields.io/badge/AWS-EC2%20%2B%20RDS-orange.svg?style=for-the-badge&logo=amazon-aws)](https://aws.amazon.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-# 🛡️ CYPR — Enterprise Cybersecurity & Threat Intelligence Platform
-
-### *"Invisible Defense. Absolute Control."*
-
-**A high-performance, production-grade cybersecurity platform built specifically to protect B2C users and B2B SMEs from modern phishing, malware, and social engineering threats.**  
-Powered by a Spring Boot 3.3.0 Java core, a premium Cyberpunk-themed frontend client, and the proprietary **VAJRA Heuristic Detection Engine v5** — operating with local, privacy-first, zero-external-API heuristics.
-
----
-
-[![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://adoptium.net/)
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.0-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
-[![HTML5/CSS3](https://img.shields.io/badge/HTML5/CSS3-Premium_SOC-E34F26?style=for-the-badge&logo=html5&logoColor=white)]()
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18_RDS-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
-[![AWS](https://img.shields.io/badge/AWS-EC2_+_RDS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
-[![License](https://img.shields.io/badge/License-MIT-c8ff00?style=for-the-badge)](LICENSE)
-
-</div>
+> **"Invisible Defense. Absolute Control."**  
+> A production-grade, India-focused cybersecurity SaaS platform designed to protect everyday B2C users and B2B SMEs from digital threats. Built with a Next.js 14 frontend, a high-performance Java Spring Boot backend, and a proprietary 16-signal heuristic detection engine.
 
 ---
 
 ## 📋 Table of Contents
-- [🎯 Project Vision](#-project-vision)
-- [🏗️ Platform Architecture](#️-platform-architecture)
-- [🔄 Core Data Flow Engine](#-core-data-flow-engine)
-- [🗂️ Detailed Project Hierarchy](#️-detailed-project-hierarchy)
-  - [Backend Java Module](#1-backend-java-module)
-  - [Frontend Client Module](#2-frontend-client-module)
-- [🪓 The VAJRA Detection Engine v5](#-the-vajra-detection-engine-v5)
-  - [16-Heuristic Signal Suite](#16-heuristic-signal-suite)
-  - [Dynamic BrandRegistry System](#1-dynamic-brandregistry-thread-safe-runtime)
-  - [UrlExpander Loop-Safe Resolver](#2-urlexpander-loop-safe-blindspot-resolver)
-  - [Subdomain Whitelisting Framework](#3-intelligent-subdomain-whitelisting)
-  - [Sigmoid Normalized Risk Model](#sigmoid-normalized-risk-scoring)
-- [✨ Key Platform Modules](#-key-platform-modules)
-- [🔌 REST API Specifications](#-rest-api-specifications)
-- [📦 Local Environment Setup](#-local-environment-setup)
-- [🐳 AWS Production Infrastructure & Docker](#-aws-production-infrastructure--docker)
-- [🗃️ JPA Entity & PostgreSQL Schema](#-jpa-entity--postgresql-schema)
-- [🔬 The Debugging Chronicles](#-the-debugging-chronicles)
-- [📱 Android Native App Specs](#-android-native-app-specs)
-- [👤 Developer Profile](#-developer-profile)
+
+1. [Project Vision & Overview](#-project-vision--overview)
+2. [Platform Architecture](#-platform-architecture)
+3. [Core Technical & Feature Engineering](#-core-technical--feature-engineering)
+4. [The VAJRA Detection Engine (v5)](#-the-vajra-detection-engine-v5)
+5. [The Debugging Chronicles (Architectural Bugs Squashed)](#-the-debugging-chronicles-architectural-bugs-squashed)
+6. [AWS Infrastructure & Production Deployment](#-aws-infrastructure--production-deployment)
+7. [Frontend Development Journey & Next.js Migration](#-frontend-development-journey--next-js-migration)
+8. [Android Native Mobile App Specification](#-android-native-mobile-app-specification)
+9. [Complete Codebase File Structure](#-complete-codebase-file-structure)
+10. [API Reference & Telemetry Specifications](#-api-reference--telemetry-specifications)
+11. [Developer Profile & Placement Credentials](#-developer-profile--placement-credentials)
 
 ---
 
-## 🎯 Project Vision
+## 🎯 Project Vision & Overview
 
-**CYPR (CyberMitra)** — translating to *"Cyber Friend"* in Hindi/Sanskrit — is engineered specifically to democratize high-grade threat protection for individuals and small businesses in the rapidly digitizing Indian market. 
+**Cypr (CyberMitra)**—meaning *"Cyber Friend"* in Hindi/Sanskrit—is engineered to serve as a complete, privacy-first cybersecurity ecosystem for the Indian digital market. The platform focuses on local threat parsing and zero-knowledge privacy standards to ensure client-side telemetry protection.
 
-Traditional platforms suffer from critical structural issues:
-* **External API Dependency**: Many security scanners relay user URLs to public servers (like Google Safe Browsing or VirusTotal), leaking private browsing habits. **CYPR executes 100% of its heuristic checks locally and in-memory.**
-* **Local Context Blindspot**: Global anti-phishing platforms do not parse specific Indian threat vectors (e.g., typosquatting of UPI apps like PhonePe, Paytm, BHIM, or rapid-delivery startups like Blinkit, Zepto, Swiggy, and Blinkit clones). **CYPR features a dynamic, locally managed Brand Registry.**
-* **Compute-Resource Starvation**: High-grade enterprise models are expensive. CYPR uses optimized mathematical algorithms (Levenshtein matrices, Shannon entropy, N-grams) optimized to run on standard cost-effective virtual machines (t2/t3.micro instances).
+### Product Roadmap Phases
+```
+Phase 1 (Active)  ──► Unified Security SaaS Web Platform
+Phase 2 (Planned) ──► Cross-Browser Security Extension (Chrome, Firefox, Brave, Edge)
+Phase 3 (Planned) ──► Cypr Mobile Authenticator & Device Safety Application (Android)
+Phase 4 (Future)  ──► Privacy-first Chromium-based Secure Browser
+```
 
 ---
 
 ## 🏗️ Platform Architecture
 
-The platform separates compute operations from persistent database layers, utilizing stateless controllers and optimized background thread executors.
-
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                          CLIENT LAYER                               │
-│  HTML5/CSS3/JS Web Interface  ───────────────  Android Mobile Client│
-└───────────────────────────────┬─────────────────────────────────────┘
-                                │  Secure HTTPS / REST API
-┌───────────────────────────────▼─────────────────────────────────────┐
-│                     SECURITY INTERCEPTOR LAYER                      │
-│             Cloudflare Turnstile Captcha API Validation             │
-│      JWT (JSON Web Token) Stateless Authentication Verification    │
-└───────────────────────────────┬─────────────────────────────────────┘
-                                │
-┌───────────────────────────────▼─────────────────────────────────────┐
-│               SPRING BOOT APPLICATION SERVER (EC2)                  │
-│  ┌───────────────────────┐  ┌────────────────────────────────────┐  │
-│  │   REST Controllers    │  │       Business Services            │  │
-│  │  • AuthController     │  │  • UserService (Credits / Profile) │  │
-│  │  • PhishingController   │  │  • StatsService (Dashboard Metrics)│  │
-│  │  • StatsController    │  │  • MalwareScanService (Local check)│  │
-│  └──────────┬────────────┘  └─────────────────┬──────────────────┘  │
-│             │                                 │                     │
-│  ┌──────────▼─────────────────────────────────▼──────────────────┐  │
-│  │                     VAJRA DETECTION ENGINE v5                 │  │
-│  │  • PhishingDetectionEngine (16-Signal Pipeline)               │  │
-│  │  • BrandRegistry (Thread-safe Runtime Singleton)              │  │
-│  │  • UrlExpander (Manual HEAD Connection Follower)              │  │
-│  └──────────┬─────────────────────────────────┬──────────────────┘  │
-│             │                                 │                     │
-│  ┌──────────▼─────────────────────┐ ┌─────────▼──────────────────┐  │
-│  │     EXTERNAL SCAN ENGINES      │ │    ALERTS INTEGRATIONS     │  │
-│  │  VirusTotal v3 REST API Client │ │ Brevo Transactional Email  │  │
-│  └────────────────────────────────┘ └────────────────────────────┘  │
-└───────────────────────────────┬─────────────────────────────────────┘
-                                │  Hibernate ORM (JPA Data Access)
-┌───────────────────────────────▼─────────────────────────────────────┐
-│                  PERSISTENT STORAGE LAYER (AWS RDS)                 │
-│      PostgreSQL DB — Users / ScanHistory / SecurityAlerts / Logs    │
-└─────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## 🔄 Core Data Flow Engine
-
-Below is the complete end-to-end data lifecycle of a URL scanned on the CYPR Platform.
+The platform decouples compute resources from persistent storage using a modern, scalable, and highly available architecture deployed on AWS.
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor User as Client (Web/Mobile)
-    participant Auth as JWT & Captcha Interceptor
-    participant Ctrl as PhishingController
-    participant Engine as VAJRA Engine v5
-    participant VT as VirusTotal API (Optional)
-    participant DB as PostgreSQL (Hibernate)
-    participant Email as Brevo Mail Engine
+graph TD
+    %% Clients
+    A[Next.js 14 Web App / HTML5 Static] -->|HTTPS REST API| B[API Gateway / Spring Boot Application]
+    M[Android Mobile Client] -->|HTTPS REST API| B
 
-    User->>Auth: POST /api/phish-check {url: "..."}
-    Note over Auth: Validate Turnstile Token &<br/>Verify Bearer Token
-    Auth-->>User: [FAIL] Return 401 Unauthorized / 403 Forbidden
-    Auth->>Ctrl: Forward Clean Authorized Request
+    %% Security Gateway Layer
+    B -->|Turnstile Captcha Verification| C{Cloudflare Verification}
+    C -->|Success| D[Security Controllers]
+
+    %% Internal Processing Modules
+    D -->|In-Memory Analytics| E[VAJRA Engine v5]
+    E -->|Heuristics, Entropy, N-Gram| E
     
-    rect rgb(20, 20, 20)
-        Note over Ctrl, Engine: Compute Phase: Local Zero-API Analysis
-        Ctrl->>Engine: scanUrl(rawUrl)
-        Engine->>Engine: Pre-process: Normalize NFKC Unicode Homoglyphs
-        Engine->>Engine: Check Brand Registry & whitelist (IND-3)
-        Engine->>Engine: Run 16 Heuristic Signals in Parallel
-    end
+    %% External API Orchestrations
+    E -->|Advanced Engine Scans| F[VirusTotal 70+ Anti-Virus Engines API]
+    D -->|Transactional Security Alerts| G[Brevo Email Gateway API]
 
-    alt Heuristic Score is MEDIUM (Ambiguous)
-        Engine->>VT: Fetch Scan Report (Consensus verification)
-        VT-->>Engine: Return 70+ Anti-Virus Engine Verdicts
-    end
+    %% Storage Decoupling
+    D -->|ORM Hibernate Mapping| H[(AWS RDS PostgreSQL Database)]
+    E -->|Thread-Safe Dynamic Sync| I[BrandRegistry Singleton]
+    E -->|Redirect Hops Tracking| J[URL Expander Connection]
 
-    Engine->>Engine: Sigmoid Normalization (Compress to 0 - 100)
-    Engine-->>Ctrl: Return Complete ScanResponse DTO
-    
-    rect rgb(20, 20, 20)
-        Note over Ctrl, DB: Persistence & Async Operations
-        Ctrl->>DB: Save ScanHistory & Telemetry JSON
-        
-        alt Score is CRITICAL (Severity >= 90)
-            Ctrl->>Email: Async Send Alert Notification
-            Email-->>User: Deliver Security Alert Inbox Notification
-        end
-    end
-
-    Ctrl-->>User: Return 200 OK with formatted JSON Results
+    classDef accent fill:#c8ff00,stroke:#000,stroke-width:2px,color:#000;
+    classDef dark fill:#111,stroke:#c8ff00,stroke-width:1px,color:#fff;
+    class A,M,B,E,H accent;
+    class F,G,I,J,C dark;
 ```
 
 ---
 
-## 🗂️ Detailed Project Hierarchy
+## 🛠️ Core Technical & Feature Engineering
 
-### 1. Backend Java Module
-The directory follows standard enterprise Maven standards.
+Building **Cypr** required deep integration of high-performance backend patterns, real-time thread safety, and modern security protocols.
 
-```
-c:\Users\vinee\projects\CYPR\backend/
-├── src/
-│   └── main/
-│       ├── java/com/cypr/
-│       │   ├── CyprApplication.java               # Platform Bootstrap Loader Class
-│       │   │
-│       │   ├── config/                            # Core Framework Configurations
-│       │   │   ├── AsyncConfig.java               # Configures ThreadPoolTaskExecutor for async task execution
-│       │   │   ├── AuthInterceptor.java           # Extracts, decodes, and validates stateless Bearer JWTs
-│       │   │   ├── DatabaseInitializer.java       # Startup service seeding local database structures
-│       │   │   ├── JwtUtil.java                   # Cryptographic signing and parsing of JSON Web Tokens
-│       │   │   ├── SecurityConfig.java            # Standard SecurityFilterChain bypass rules and password encoder (BCrypt)
-│       │   │   └── WebConfig.java                 # Configures global CORS parameters allowing cross-origin requests
-│       │   │
-│       │   ├── controller/                        # REST Controllers (Mapping API Endpoints)
-│       │   │   ├── EmailAuthController.java       # Handles OTP validation, password resets, and verification cycles
-│       │   │   ├── AdminController.java           # Controls runtime BrandRegistry modifications (Admin Only)
-│       │   │   ├── MalwareScanController.java     # Endpoint for scanning files and analyzing byte streams
-│       │   │   ├── PasswordController.java        # Interface for analyzing password entropy metrics
-│       │   │   ├── PhishingController.java        # core scanner endpoint `/api/phish-check`
-│       │   │   ├── StatsController.java           # Feeds dynamic metrics to the NexusSec Dashboard
-│       │   │   └── UserController.java            # Manages user accounts, profile details, and dynamic custom avatars
-│       │   │
-│       │   ├── engine/                            # Threat Detection Heuristics
-│       │   │   ├── MalwareHeuristicsEngine.java   # Byte signature and structural anomalies scanner
-│       │   │   └── PhishingDetectionEngine.java   # VAJRA Engine: Shannon entropy, homoglyph normalization, Levenshtein
-│       │   │
-│       │   ├── entity/                            # JPA Database Tables mapping PostgreSQL Schema
-│       │   │   ├── User.java                      # Profile table (Hashed passwords, roles, daily credits)
-│       │   │   ├── SecurityAlert.java             # Telemetry table mapping historical threat detections
-│       │   │   ├── ScanHistory.java               # Audit logs tracking each URL checked
-│       │   │   ├── EmailLog.java                  # Logging history for transactional email notifications
-│       │   │   ├── VerificationToken.java         # Secure tokens utilized in verification emails
-│       │   │   └── PasswordResetToken.java        # Expirable tokens to secure user account recovery
-│       │   │
-│       │   ├── model/                             # Data Transfer Objects (DTOs)
-│       │   │   ├── MalwareScanRequest.java        # Holds target payload parameters
-│       │   │   ├── MalwareScanResult.java         # Holds heuristic report parameters
-│       │   │   └── MalwareScanLog.java            # Mapped JPA representation for disk audits
-│       │   │
-│       │   ├── repository/                        # JPA Repositories (Database CRUD Mappings)
-│       │   │   ├── UserRepository.java
-│       │   │   ├── ScanRepository.java            # Performs queries on rolling history items
-│       │   │   ├── SecurityAlertRepository.java   # Mapped alerts database query logic
-│       │   │   ├── EmailLogRepository.java
-│       │   │   ├── VerificationTokenRepository.java
-│       │   │   └── PasswordResetTokenRepository.java
-│       │   │
-│       │   ├── scheduler/                         # Background Automation Modules
-│       │   │   └── CreditResetScheduler.java      # Cron-based service automatically resetting daily API limit quotas
-│       │   │
-│       │   └── service/                           # Business Logic & Integrations
-│       │       ├── AntiAbuseService.java          # Controls stateless IP-based rate limiting
-│       │       ├── CaptchaService.java            # Cloudflare Turnstile token validation client
-│       │       ├── EmailService.java              # Brevo transactional email sender implementation
-│       │       ├── MalwareScanService.java        # Core logic for analyzing threat payloads
-│       │       ├── PhishingListService.java       # Local memory manager for malicious domain lists
-│       │       ├── StatsService.java              # Feeds profile telemetry aggregates
-│       │       └── VirusTotalService.java         # Standard VirusTotal REST API integration client
-│       │
-│       └── resources/
-│           └── application.properties             # Global property overrides, DB connections, and API keys
-```
-
-### 2. Frontend Client Module
-A responsive single-page visual dashboard interacting dynamically with the Spring Boot REST backend.
-
-```
-c:\Users\vinee\projects\CYPR\frontend/
-├── index.html                                     # Public marketing landing page & feature map
-├── signup.html                                    # Premium unified signup screen with turnstile captcha
-├── login.html                                     # Secured user login interface
-├── forgotpassword.html                            # Account recovery view (links with REST recovery APIs)
-├── home.html                                      # Post-authentication index showing active stats
-├── dashboard.html                                 # NexusSec Security Command Center interface
-├── url-check.html                                 # Core URL scanner view showing detailed VAJRA signal charts
-├── password-check.html                            # Password strength analyzer displaying entropy gauges
-├── malwareanalysis.html                           # File upload heuristics and scanner panel
-├── activity-logs.html                             # Heatmap visualization & detailed threat history list
-├── settings.html                                  # Profile editing, credential updates, and avatar selector
-├── tools.html                                     # Comprehensive list of available modules
-├── pricing.html                                   # Platform pricing plans view (includes "Free Beta" warning)
-│
-├── assets/
-│   ├── favicon.png                                # CYPR dynamic favicon
-│   ├── logo.png                                   # Platform logo
-│   │
-│   ├── css/
-│   │   └── style.css                              # Core stylesheet defining HSL dark-mode values & transitions
-│   │
-│   └── js/
-│       ├── config.js                              # Switchboard automatically routing between Local and Production APIs
-│       └── site-enhancements.js                   # Handles themes, user dropdowns, dynamic sidebars, and modals
-```
+* **Real-time Threat Intelligence Pipeline:** Built a dynamic synchronization service that downloads malicious domain blocklists from global feeds (`Phishing.army`, `OpenPhish`), parsing and indexing over **143,150+ malicious domains** in-memory at startup.
+* **Sigmoid-Normalized Security Scoring:** The detection algorithms generate a composite, sigmoid-based risk score (0 to 100) mapped to five clean threat levels: `SAFE`, `LOW`, `MEDIUM`, `HIGH`, and `CRITICAL`.
+* **Database Schema Evolution:** Configured a resilient relational schema mapping via Hibernate ORM where legacy database columns automatically evolved into large-capacity `TEXT` formats to seamlessly support deep-nested JSON payloads from threat logs (e.g., `device_info`, `detected_threats`).
+* **Secure Enterprise Integrity:** Integrated **Cloudflare Turnstile Captcha Verification** at the API gateway layer to mitigate botnets and distributed credential stuffing, alongside **Brevo Transactional Email Engine** for decoupled, automated alert notifications.
 
 ---
 
-## 🪓 The VAJRA Detection Engine v5
+## 🪓 The VAJRA Detection Engine (v5)
 
-The **VAJRA (Various Attack Junction & Reconnaissance Algorithm)** engine is designed to parse URLs locally, achieving high accuracy without network latency or external database hops.
-
-### 16-Heuristic Signal Suite
+The **VAJRA Engine (Various Attack Junction & Reconnaissance Algorithm)** is Cypr's proprietary, zero-external-API threat detection system. It executes 16 independent algorithmic signals locally to catch phishing vectors without leaking user browsing behavior.
 
 ```
- #   HEURISTIC SIGNAL              DETECTION TECHNIQUE & GOAL                           WEIGHT (0-50)
-─────────────────────────────────────────────────────────────────────────────────────────────────────
- 01  Shannon Entropy               Identifies algorithmic labels (Domain Generation Algorithms)    30
- 02  N-Gram Language Model         Separates randomly-typed strings from dictionary words          28
- 03  Consonant–Vowel Ratio         Flags unpronounceable domains typical of throwaway setups        22
- 04  Levenshtein Distance          Flags near-matches to registered brands (e.g. `paypa1`)          40
- 05  Combo-Squatting               Checks for high-risk combinations (`paypal-login`, `free-gift`)  38
- 06  Unicode Homoglyphs            Normalizes IDN confusable attacks (e.g. Cyrillic `а` as Latin `a`)45
- 07  Subdomain Brand Abuse         Flags brand keywords embedded inside subdomains                  45
- 08  Structural Anomalies          Evaluates excessive folder depth, character counts, @ usage      45
- 09  Malicious Path Vectors        Flags typical exploit paths (`/wp-admin`, `/etc/passwd`)          35
- 10  TLD Abuse Coefficients        Scores domains against known malware TLD tables (.tk, .cc)       35
- 11  IP-as-Host                    Identifies raw IP addresses attempting to bypass DNS check       38
- 12  Active Payload Schemes        Intercepts active executions (`javascript:`, `data:`, `vbscript:`)50
- 13  Double URL Encoding           De-obfuscates percent-encoded characters used to bypass WAFs    40
- 14  Shortener Redirection         Flags masking domains (`bit.ly`, `tinyurl.com`, `t.co`)          20
- 15  Right-to-Left Override         Flags invisible RTL overrides (U+202E) reversing extensions       45
- 16  Port Anomaly Detection        Flags scans targeting dangerous listener ports (:4444, :8080)    25
-─────────────────────────────────────────────────────────────────────────────────────────────────────
+SIGNAL MAP                                              MAX SCORE
+─────────────────────────────────────────────────────────────────
+01. Shannon Entropy          DGA / random-label              30
+02. N-Gram Language Model    real word vs. gibberish          28
+03. Consonant-Vowel Ratio    unpronounceable = generated      22
+04. Levenshtein Typosquat    paypa1, g00gle, rn→m             40
+05. Combo-Squatting          paypal-secure-update.com         38
+06. Unicode NFKC Homoglyph   full confusable normalisation    45
+07. Subdomain Brand Abuse    paypal.com.evil.xyz              45
+08. URL Structural Signals   @, depth, length, params         45
+09. Malicious Path Patterns  /wp-login, /admin, redirects     35
+10. High-Risk TLD Scoring    weighted abuse table             35
+11. IP-as-Host               bypasses DNS reputation          38
+12. Scheme Abuse             data:, javascript:, vbscript:    50
+13. Hex/Percent Obfuscation  %2e, %40, double-encoding        40
+14. URL Shortener Masking    bit.ly, tinyurl, t.co            20
+15. Reversed/Inverted Brand  lapyap.com, U+202E RTL           45
+16. Port Anomaly             :8080, :4444, non-std ports      25
+                                                    TOTAL MAX: 581
 ```
 
-> [!NOTE]
-> The cumulative weight totals `581`. Instead of returning raw scores, the engine normalizes the sum into a smooth `0–100` range using an optimized sigmoid function.
+### Key Engineering Features in VAJRA v5:
+
+#### 1. Dynamic `BrandRegistry` (Thread-Safe)
+In legacy versions, brands were static and hardcoded. VAJRA v5 introduces a singleton registry powered by a **thread-safe `ConcurrentHashMap` set**. This allows admins to add/remove monitored brands (like Zepto, Blinkit, and new digital banking apps) at runtime via REST endpoints (`POST /api/admin/brands`) without needing to restart the application.
+
+#### 2. Redirection `UrlExpander` (Shortener Blindspot Resolution)
+Attackers hide malware targets behind shortened URLs (`bit.ly/xyz`). The `UrlExpander` intercepts shortened URLs on known domains, sends a lightweight, non-blocking **HTTP HEAD request**, and follows the redirection chain through manual status checking (manual 3xx handling, max 5 hops with loop protection) to extract and deep-scan the final destination URL.
+
+#### 3. Subdomain Whitelisting (`[IND-3]`)
+Avoids false positives for complex corporate structures (e.g., `internal.dev.legacy.amazon.com`). By mapping official brand-to-registrable-domain rules (e.g., `amazon.com`), subdomain checks are immediately bypassed if the parent registrable domain matches an officially verified whitelist.
 
 ---
 
-### 1. Dynamic `BrandRegistry` (Thread-Safe Runtime)
-Unlike standard security tools that hardcode monitored brands, VAJRA v5 features a completely dynamic registry. Admin controllers can register new targets (e.g., rapid commerce brands like Blinkit, Zepto, or bank apps) on the fly without system downtime.
+## 🪓 The Debugging Chronicles (Architectural Bugs Squashed)
 
+The development and deployment cycle of Cypr required rigorous local and remote debugging to transition the codebase into a clean, public-ready enterprise system.
+
+### 1. Javac Version Incompatibility & Lombok Target Alignment
+* **The Bug:** Compilation in IntelliJ crashed with a fatal `java.lang.ExceptionInInitializerError` inside the compiler's internal `com.sun.tools.javac.code.TypeTag` class.
+* **The Cause:** IntelliJ was compiling the project using a newly installed **`javac 24.0.2`**, whereas the Lombok version resolved from Spring Boot's parent version was `1.18.32`. Lombok modifies ASTs using internal compiler APIs, and `1.18.32` lacked support for Java 24 internals.
+* **The Architectural Fix:** Upgraded Lombok explicitly in `pom.xml` to **`1.18.34`** (enabling compatibility with Java 22, 23, and 24 compilers). Aligned IntelliJ's Project SDK, Modules, and Compiler settings back to **JDK 17** to match the target environment. The application now compiles flawlessly.
+
+### 2. Database Connection Metadata Starvation (SQL Dialect Issue)
+* **The Bug:** During application boot, Hibernate threw: `Unable to create requested service [JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata`.
+* **The Cause:** The application was configured to connect to PostgreSQL on port `5432`. However, the local active PostgreSQL 18 service (`postgresql-x64-18`) was installed and listening on port **`5433`**. Because port `5432` was unreachable, the connection failed, and Hibernate could not query the database metadata to resolve the SQL Dialect.
+* **The Architectural Fix:** Corrected the default datasource URL port in the properties fallback configuration to `5433` (`jdbc:postgresql://localhost:5433/cypr`). Added dynamic fallback properties so it connects locally by default but overrides automatically in production.
+
+### 3. Cleaning Up Emojis & Hinglish Comments for Public Release
+* **The Bug:** The codebase contained informal logger emojis (`🚀`, `⏳`, `⚠`, `✔`, `📧`) and mixed Hinglish comments (e.g., *"sig14 ke baad analyze() FINAL URL fetch karta hai"*).
+* **The Architectural Fix:** Performed a comprehensive code sweep. Removed all decorative console drawings and emojis, replacing them with standard, clean log formats. Translated all informal developer comments to professional, enterprise-grade English engineering documentation.
+
+### 4. Target Leakage & Build Pollution
+* **The Bug:** No `.gitignore` file existed, posing a risk of pushing the compiled `/target` directory (containing binaries) and `.idea/` editor folders to the public GitHub repo.
+* **The Architectural Fix:** Designed and deployed a robust Maven `.gitignore` file, keeping the Git index clean and ensuring zero telemetry or editor environment configurations are committed.
+
+---
+
+## 🌐 AWS Infrastructure & Production Deployment
+
+The backend application runs inside an isolated, containerized production environment deployed on an **AWS EC2 Ubuntu 26.04 LTS** instance, backed by a managed **AWS RDS PostgreSQL** engine. To guarantee system stability and handle heavy thread operations smoothly on constrained memory instances, a **2 GB Virtual Swap Memory** has been configured on the host machine.
+
+### 🐳 Containerized Production Dockerfile
+
+```dockerfile
+FROM eclipse-temurin:17-jre-jammy
+WORKDIR /app
+COPY target/cypr-backend-1.0.0.jar app.jar
+EXPOSE 8080
+
+# Enforce secure memory limits and seed options for predictable JVM footprints
+ENTRYPOINT ["java", "-Xmx400m", "-Xms200m", "-jar", "app.jar"]
+```
+
+### 🔐 Production Environment Variable Requirements
+For production deployments, the following environment variables must be injected into the container lifecycle (do not hardcode these in files):
+
+| Environment Variable | Description |
+|----------------------|-------------|
+| `SPRING_DATASOURCE_URL` | The complete AWS RDS PostgreSQL connection URL (`jdbc:postgresql://<rds-endpoint>:5432/<db_name>`) |
+| `SPRING_DATASOURCE_USERNAME` | Master database username for AWS RDS |
+| `SPRING_DATASOURCE_PASSWORD` | Secure password for AWS RDS |
+| `VIRUSTOTAL_API_KEY` | VirusTotal API Key for multi-AV engine validations |
+| `CYPR_JWT_SECRET` | Secure cryptographic key for signing user session JSON Web Tokens |
+| `BREVO_API_KEY` | Transactional email provider API key |
+
+---
+
+## 🎨 Frontend Development Journey & Next.js Migration
+
+The user interface of Cypr went through a comprehensive, session-by-session iteration before reaching its current state.
+
+```
+Session 1 (Vanilla Pages) ──► Particle Canvas, Glassmorphism cards, local Password/URL tools
+Session 2 (Responsive)    ──► 4 Breakpoints overhaul, collapsible nav, mobile drawer status dot
+Session 3 (Support Tier)  ──► contact.html support dropdowns, auto-char counters, accordion FAQ
+Session 4 (Design Pivot)  ──► Cyan to KRYPT_ style Lime Green (#c8ff00), Barlow Condensed fonts, Landing page scanlines
+Session 5 (Command Center)──► NexusSec Dashboard recreate, custom rotating SVG Score Ring, avatar uploads
+Session 6 (Perimeter)     ──► Personalized logged-in index, 70-day Activity Heatmap grid, quick stats
+Session 7 (Next.js 14)    ──► Component migration, Tailwind CSS integration, Framer Motion animations
+Session 8 (Code Audit)    ──► squashed wrong localhost URLs, mapped active state notifications
+```
+
+### 🎨 The Design System Specifications (Modern Black + Lime)
+The visual experience is meticulously styled using carefully crafted HSL CSS tokens to create a premium, immersive security operations center dashboard.
+
+* **Primary Dark Background:** Pure Deep Dark `#0a0a0a`
+* **Card Backing:** Lighter Textured Dark `#111111`
+* **Primary Accent Color:** Lime Green `#c8ff00`
+* **Accent Accent Green:** `#00ff88` (for verified/safe statuses)
+* **Accent Warning Amber:** `#ffaa00` (for high risk/warnings)
+* **Accent Danger Red:** `#ff3333` (for critical threat alert)
+* **Main Heading Fonts:** *Barlow Condensed* (Bold, uppercase)
+* **Mono/Console Font:** *JetBrains Mono* (for raw data, logs, and entropy scores)
+
+---
+
+## 📱 Android Native Mobile App Specification
+
+We have prepared a complete architectural blueprint to translate the web experience into a native Android application.
+
+### App Architecture
+* **Interface:** Single Activity + Fragment Navigation Architecture.
+* **Views & Controls:** Custom Views including `RadialGaugeView` (for URL Risk) and `StrengthBar` (for password entropy visualization).
+* **Data Storage:** SQLite database powered by **Room DB** for caching local scan history and **SharedPreferences** for user profile configurations.
+* **Networking Layer:** **Retrofit2** with OkHttp3 client featuring automated retry interceptors and backoff logic to handle cold-start delays.
+
+### Safe Score Calculation Formula
 ```java
-// com.cypr.engine.BrandRegistry
-private static final ConcurrentHashMap<String, BrandEntry> REGISTRY = new ConcurrentHashMap<>();
-
-public void registerNewBrand(String brandName, String primaryDomain, List<String> aliases) {
-    Objects.requireNonNull(brandName);
-    REGISTRY.put(brandName.toLowerCase(), new BrandEntry(primaryDomain, aliases));
+public int calculateSafeScore(List<ScanResult> history) {
+    if (history.isEmpty()) return 100; // default clean perimeter
+    double avgRisk = history.stream()
+        .limit(20)                      // analyze recent 20 scans
+        .mapToInt(ScanResult::getScore)
+        .average()
+        .orElse(0);
+    return Math.min(100, Math.max(0, (int)(100 - avgRisk)));
 }
 ```
 
-### 2. `UrlExpander` (Loop-Safe Blindspot Resolver)
-If a URL uses a shortening service, VAJRA immediately initiates a safe, lightweight **HTTP HEAD request** pipeline to resolve the final target.
+---
+
+## 📁 Complete Codebase File Structure
+
+The project has a unified monorepo-friendly folder layout which decouples backend operations from frontend services:
 
 ```
-Shortened URL (e.g. t.co/xYz) ──► HTTP HEAD Check ──► 3xx Status Caught
-                                                          │
-   ┌──────────────────────────────────────────────────────┘
-   ▼
-Follow Redirect ──► Loop Guard Checks (Max 5 hops) ──► Extract Final URL
-                                                            │
-   ┌────────────────────────────────────────────────────────┘
-   ▼
-Local 16-Signal Heuristic Analysis Suite (Zero Data Leak)
+CYPR/
+├── backend/                             # Enterprise Spring Boot Backend
+│   ├── .idea/                           # IDE Configs (Excluded by Git)
+│   ├── src/
+│   │   └── main/
+│   │       ├── java/com/cypr/
+│   │       │   ├── config/              # Async, Auth, Database Init, Web, & JWT configurations
+│   │       │   ├── controller/          # REST Endpoints (Users, Scanner, Emails, Profile)
+│   │       │   ├── engine/              # VAJRA Phishing Detection Engine v5
+│   │       │   ├── entity/              # Database Models (User, SecurityAlert, EmailLog)
+│   │       │   ├── model/               # DTO Requests & Responses
+│   │       │   ├── repository/          # JPA Repositories (PostgreSQL mappings)
+│   │       │   └── service/             # Business Logic (Anti-abuse, Captcha, VT, Brevo)
+│   │       └── resources/
+│   │           └── application.properties # Fallbacks & Environment Routing
+│   ├── Dockerfile                       # Production Container config
+│   ├── pom.xml                          # Maven build setup (Lombok 1.18.34, Java 17)
+│   └── .gitignore                       # Target, build, and IDE exclusions
+│
+└── frontend/                            # Next.js 14 Web Application
+    ├── app/                             # Pages & Routing (Landing, Login, Dashboard, Scanner)
+    ├── components/                      # UI Modules & Global Toast Notifications
+    ├── lib/                             # Utility classes & validation engines
+    ├── public/                          # Media assets and logos
+    └── tailwind.config.js               # Styling theme config
 ```
 
-### 3. Intelligent Subdomain Whitelisting
-A common issue in heuristic scanners is flagging complex corporate internal subdomains (e.g., `internal.auth.staging.amazon.com`) as subdomain brand abuse. VAJRA implements **subdomain brand-to-domain whitelisting `[IND-3]`** which resolves the registrable domain and verifies it against primary brand records, instantly reducing false-positive rates to near-zero.
-
 ---
 
-### Sigmoid Normalized Risk Scoring
+## 🔌 API Reference & Telemetry Specifications
 
-To prevent single anomalies from triggering false positive alerts, scores are mapped mathematically before classification:
+### 1. POST `/api/phish-check`
+Analyzes a URL using the local VAJRA heuristic engine combined with VirusTotal telemetry.
 
-$$\sigma(x) = \frac{100}{1 + e^{-k(x - x_0)}}$$
-
-This maps the result into clean, categorized tiers:
-* **0 - 19 (SAFE 🟢)**: Completely clean, evolutionary check passed.
-* **20 - 49 (LOW 🟡)**: Minor warnings, recommended to browse carefully.
-* **50 - 69 (MEDIUM 🟠)**: Triggers optional VirusTotal consensus scan.
-* **70 - 89 (HIGH 🔴)**: Severe indicators matching known active campaigns.
-* **90 - 100 (CRITICAL ⛔)**: Automatic block, triggers an asynchronous email alert notification.
-
----
-
-## ✨ Key Platform Modules
-
-### 🔍 Threat Heuristics url-check
-* Zero-API local parsing: URL is evaluated entirely on your Spring Boot node.
-* Deep typosquatting lookup utilizing Levenshtein distance metrics.
-* Displays signal-level breakdowns showing the specific heuristic triggered.
-
-### 🔑 Client-Side Password Auditor password-check
-* Evaluates passwords using Shannon entropy computations.
-* Zero network exposure: calculations are performed 100% locally on the client interface before submission.
-* Real-time validation checks for length, numbers, casings, and symbols.
-
-### 📊 Security Hub dashboard
-* Rotating SVG composition ring displaying the rolling safe-score.
-* 70-Day scan activity heatmap grid displaying daily search engagement.
-* Tracks live metrics: total scans run, threats avoided, and credit usage trends.
-
-### 📧 Decoupled Alerts Engine service
-* Harnesses asynchronous Brevo (Sendinblue) transactional APIs.
-* Immediate inbox notifications sent on `CRITICAL` typosquatting detections.
-
----
-
-## 🔌 REST API Specifications
-
-Authentication uses stateless JWT tokens passed in the request header: `Authorization: Bearer <jwt_token>`.
-
-### 1. Phishing Scanner Endpoint
-* **Endpoint**: `POST /api/phish-check`
-* **Access**: Public / Hashed Rate Limit
-* **Payload**:
+* **Request Payload:**
   ```json
-  { "url": "https://paytm-security-refunds.xyz/bhim" }
+  { "url": "https://paypal-security-login.xyz/signin" }
   ```
-* **Response**:
+* **Response Payload:**
   ```json
   {
-    "status": "Suspicious",
-    "url": "https://paytm-security-refunds.xyz/bhim",
+    "status": "Phishing",
+    "url": "https://paypal-security-login.xyz/signin",
     "score": 87,
     "tier": "CRITICAL",
     "reasons": [
       {
-        "signal": "COMBO_SQUATTING",
-        "title": "Typosquat Keyword Match",
-        "description": "Brand Paytm combined with high-risk keyword 'security-refunds'",
-        "weight": 38
+        "title": "Combo-Squatting detected",
+        "description": "Brand 'paypal' matches with high threat keyword '-security'",
+        "severity": "HIGH"
       }
     ],
     "virusTotal": {
-      "harmless": 56,
-      "suspicious": 1,
-      "malicious": 14,
+      "harmless": 45,
+      "suspicious": 8,
+      "malicious": 21,
       "verdict": "MALICIOUS"
     }
   }
   ```
 
-### 2. Admin Brand Registry
-* **Endpoint**: `POST /api/admin/brands`
-* **Access**: Admin Role (`ROLE_ADMIN`)
-* **Payload**:
-  ```json
-  {
-    "brandName": "zepto",
-    "registrableDomain": "zeptonow.com",
-    "aliases": ["zepto-delivery", "zeptomart"]
-  }
-  ```
-
 ---
 
-## 📦 Local Environment Setup
-
-### 📋 Prerequisites
-* **Java**: SDK 17 (LTS)
-* **Build Tool**: Maven 3.8+
-* **Database**: PostgreSQL (version 15 or higher)
-
-### 🛠️ Step-by-Step Installation
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/iamvineetupadhyay/CYPR-TECH.git
-   cd CYPR-TECH
-   ```
-
-2. **Configure Database**:
-   PostgreSQL must be running. For local development, create a database named `cypr` on port `5433` (custom local default):
-   ```sql
-   CREATE DATABASE cypr;
-   ```
-
-3. **Set Up Local Properties**:
-   Review or edit `backend/src/main/resources/application.properties`:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5433/cypr
-   spring.datasource.username=postgres
-   spring.datasource.password=your_secure_password
-   
-   # Server Port
-   server.port=8080
-   ```
-
-4. **Compile and Run Backend**:
-   ```bash
-   cd backend
-   mvn clean install
-   mvn spring-boot:run
-   ```
-
-5. **Launch Frontend Client**:
-   Since the frontend is a premium static client, simply open `frontend/index.html` inside any modern web browser or host it locally using a light server:
-   ```bash
-   cd ../frontend
-   npx serve .
-   ```
-
----
-
-## 🐳 AWS Production Infrastructure & Docker
-
-CYPR is designed to be easily deployed to containerized AWS services.
-
-### 🐳 Production Dockerfile
-```dockerfile
-# eclipse-temurin JRE jammy base image
-FROM eclipse-temurin:17-jre-jammy
-
-WORKDIR /app
-
-# Copy compiled jar
-COPY target/cypr-backend-1.0.0.jar app.jar
-
-EXPOSE 8080
-
-# Enforce secure memory bounds for AWS t2/t3.micro instances
-ENTRYPOINT ["java", "-Xmx400m", "-Xms200m", "-jar", "app.jar"]
-```
-
-### ⚙️ AWS Host Hardening Configuration
-During our production deployment on an **AWS EC2 Ubuntu 26.04 LTS** instance, we pre-configured **2 GB of Virtual Swap Memory** on the host. This ensures that the Java Virtual Machine (JVM) remains stable and never triggers the Linux Out-Of-Memory (OOM) killer during startup when loading the **143,150+ malicious domain list** into memory.
-
----
-
-## 🗃️ JPA Entity & PostgreSQL Schema
-
-CYPR uses optimized schema representations to log high-volume scan data without degradation.
+## 👤 Developer Profile & Placement Credentials
 
 ```
-                     ┌──────────────────┐
-                     │      users       │
-                     ├──────────────────┤
-                     │ id (PK)          ├────────┐
-                     │ name             │        │
-                     │ email            │        │
-                     │ password         │        │
-                     │ credits          │        │
-                     └──────────────────┘        │
-                                                 │
-                        ┌────────────────────────┴───────────────────────┐
-                        │ 1:N Relation                                   │ 1:N Relation
-                        ▼                                                ▼
-            ┌──────────────────┐                               ┌──────────────────┐
-            │   scan_history   │                               │ security_alerts  │
-            ├──────────────────┤                               ├──────────────────┤
-            │ id (PK)          │                               │ id (PK)          │
-            │ user_id (FK)     │                               │ user_id (FK)     │
-            │ url              │                               │ url              │
-            │ type             │                               │ score            │
-            │ status           │                               │ tier             │
-            │ scanned_at       │                               │ reasons (TEXT)   │
-            └──────────────────┘                               └──────────────────┘
-```
-
-> [!TIP]
-> The database schema uses Large-Capacity `TEXT` columns in PostgreSQL instead of standard `VARCHAR` values. This supports the logging of detailed telemetry arrays (like per-signal weight matrices) as structured JSON strings without requiring migration overhead.
-
----
-
-## 🔬 The Debugging Chronicles
-
-Every robust system is forged through production-level debugging. Below are the core architectural bug resolutions resolved during CYPR's development:
-
-### 1. Lombok AST Compilation Failure (IntelliJ vs Javac 24)
-* **The Bug**: Compiling in IntelliJ crashed with a fatal `java.lang.ExceptionInInitializerError` inside the compiler's internal `com.sun.tools.javac.code.TypeTag` class.
-* **The Cause**: The developer environment defaulted to a newly installed **`javac 24.0.2`**, whereas the Lombok version defined inside the pom was `1.18.32`. Lombok parses AST trees using private javac APIs, which were completely refactored in Java 24.
-* **The Fix**: Explicitly upgraded Lombok in `pom.xml` to **`1.18.34`** and locked target configurations back to **JDK 17** across all compile modules, guaranteeing clean AST tree operations.
-
-### 2. Database Dialect Starvation (PostgreSQL Port Mismatch)
-* **The Bug**: Hibernate failed to boot, throwing `Unable to create requested service [JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata`.
-* **The Cause**: The database was running locally on port `5433` (due to PostgreSQL 18 local dev defaults), but the application had port `5432` hardcoded. Hibernate's failure to connect prevented dialect resolution.
-* **The Fix**: Added a robust property fallback configuration matching `5433` locally while allowing immediate system environment variables to override to the standard `5432` port during AWS production deployment.
-
-### 3. Log Sanitization & Hinglish Comment Cleanup
-* **The Bug**: Original logs were cluttered with console drawings (e.g. emojis `🚀`, `⏳`) and informal comments (e.g., *"sig14 ke baad analyze() is called"*).
-* **The Fix**: Performed a full codebase audit. Removed all decorative emojis from production logger statements and translated all developer scripts into standard English documentation.
-
----
-
-## 📱 Android Native App Specs
-
-The mobile platform architecture translates the web experience into an optimized native interface:
-* **Architecture**: Mapped on a Single Activity + Fragment Navigation pattern.
-* **Storage**: Cached threat list storage utilizing **Room DB** alongside **SharedPreferences** for user token caching.
-* **Widgets**: Dynamic SVG gauges rendered via custom native views `RadialGaugeView` and `StrengthBar`.
-* **Networking**: **Retrofit2** backed by **OkHttp3** with customized retry interceptors and backoff coefficients to tolerate host EC2 cold-start delays.
-
----
-
-## 👤 Developer Profile
-
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│  Vineet Kumar                                                          │
-│  Full-Stack Software Engineer & Backend Specialist                     │
-├────────────────────────────────────────────────────────────────────────┤
-│  • Academic Path :  B.Tech, Computer Science & Engineering              │
-│  • Core Stack    :  Java · Spring Boot · PostgreSQL · Docker · AWS      │
-│  • Location      :  Dadri, Uttar Pradesh, India                        │
-│  • Career Goal   :  Tier-1 Enterprise Campus Placement (HCL Tech)      │
-└────────────────────────────────────────────────────────────────────────┘
+Name:         Vineet Kumar
+Role:         Full-Stack Software Engineer & Backend Specialist
+College:      B.Tech, Computer Science & Engineering
+Location:     Dadri, Uttar Pradesh, India
+Core Stack:   Java, Spring Boot, PostgreSQL, Docker, AWS, Next.js, Android (Native Java)
+Career Goal:  Primary: Campus Placement (HCL Tech / Tier 1 Corporates) 
+              Long-Term: Scale Cypr into a leading Indian B2C & B2B Cybersecurity Platform
 ```
 
 ---
 
-<div align="center">
+*Last Updated: May 2026*  
+*Total Engineering Development Modules: 9+*  
+*Platform Integrity: Production Verified*  
 
-**Engineered with absolute dedication by Vineet Kumar | CYPR Platform v2.5**  
-*Production Verified · Designed to Scale*
-
-```
-"Invisible Defense. Absolute Control."
-```
-
-</div>
+> **"Invisible Defense. Absolute Control."**  
+> — Engineered by Vineet Kumar | Cypr Core Platform v2.5
+> 

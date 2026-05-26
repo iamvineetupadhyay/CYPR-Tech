@@ -1932,8 +1932,8 @@
       if (userId) {
         fetchProfileData();
       } else {
-        showToast("⚠️ Session expired. Please login.");
-        setTimeout(() => window.location.href = 'login.html', 2000);
+        window.isGuestUser = true;
+        renderGuestDashboardState();
       }
 
       // Top 7 Tools List Render
@@ -1942,6 +1942,80 @@
       // Render pinned tools
       renderPinnedTools();
     });
+
+    /* ══ GUEST PREVIEW STATE OVERLAY ══ */
+    function renderGuestDashboardState() {
+      // 1. Set guest profile parameters
+      profile.fn = "Guest";
+      profile.ln = "User";
+      profile.email = "••••••••••••@•••••.com";
+      profile.phone = "+91 ••••• •••••";
+      profile.handle = "@guest";
+      profile.bio = "Create a free account to unlock your personalized threat intelligence bio and safety indicators.";
+      profile.avatarSrc = null;
+      profile.subscriptionType = 'GUEST';
+
+      // 2. Set Safe Score status to locked
+      currentScore = 0;
+      animateSecurityRing(0);
+      const ringNum = document.getElementById('ringScoreNum');
+      if (ringNum) ringNum.textContent = '??';
+      const scoreNum = document.getElementById('idScoreDisplay');
+      if (scoreNum) scoreNum.textContent = '??';
+      const scoreLabel = document.getElementById('idStatusText');
+      if (scoreLabel) {
+        scoreLabel.textContent = 'RESTRICTED';
+        scoreLabel.style.color = 'var(--red)';
+      }
+
+      // 3. Lock dynamic counters
+      ['threatsBlockedVal', 'urlsScannedVal', 'passwordsExposedVal'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.textContent = "Locked";
+          el.style.fontSize = "1rem";
+          el.style.color = "var(--text3)";
+        }
+      });
+
+      // 4. Paint UI
+      updateProfileUI();
+
+      // 5. Instantly show guest restriction modal on page load
+      if (typeof window.showGuestRestrictionModal === 'function') {
+        setTimeout(window.showGuestRestrictionModal, 800);
+      }
+
+      // 6. Bind click events for all interactive buttons to trigger modal
+      const scanBtn = document.querySelector('.btn-run-scan');
+      if (scanBtn) {
+        scanBtn.removeAttribute('href');
+        scanBtn.style.cursor = 'pointer';
+        scanBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (typeof window.showGuestRestrictionModal === 'function') window.showGuestRestrictionModal();
+        });
+      }
+
+      document.querySelectorAll('.identity-edit-btn, .tb-user').forEach(btn => {
+        btn.removeAttribute('onclick');
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (typeof window.showGuestRestrictionModal === 'function') window.showGuestRestrictionModal();
+        });
+      });
+
+      // Pinned tools/Discover click interceptors
+      document.querySelectorAll('.tool-card, .pin-btn, .tool-card-discover').forEach(btn => {
+        btn.removeAttribute('onclick');
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (typeof window.showGuestRestrictionModal === 'function') window.showGuestRestrictionModal();
+        });
+      });
+    }
 
     /* ══ BACKEND FETCH LOGIC ══ */
     async function fetchProfileData() {
