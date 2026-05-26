@@ -1239,18 +1239,7 @@
       min-height: 100vh;
     }
     .sidebar {
-      width: 210px;
-      flex-shrink: 0;
-      background: var(--bg2);
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      z-index: 200;
-      transition: transform .3s ease;
+      display: none !important;
     }
     .sb-logo {
       padding: 20px 20px 18px;
@@ -1356,28 +1345,13 @@
     }
     .main-area {
       flex: 1;
-      margin-left: 210px;
+      margin-left: 0 !important;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
     .topbar {
-      height: 60px;
-      border-bottom: 1px solid var(--border);
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      padding: 0 28px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-sizing: border-box;
-      background: rgba(10, 10, 10, .85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-    html[data-theme="light"] .topbar {
-      background: rgba(255, 255, 255, .85);
+      display: none !important;
     }
     .tb-left {
       display: flex !important;
@@ -1763,9 +1737,6 @@
 
   // Dynamic public header implementation (GitHub-Style Two-Tier Navbar)
   async function enhancePublicHeader() {
-    const navbar = document.querySelector('.navbar');
-    if (!navbar) return;
-
     // Check if we already injected our header wrapper
     let headerContainer = document.querySelector('.cm-header-container');
     if (headerContainer) return;
@@ -1852,9 +1823,14 @@
     bottomTier.appendChild(hamBtn);
     headerContainer.appendChild(bottomTier);
 
-    // Swap and hide static navbar
-    navbar.style.display = 'none';
-    navbar.parentNode.insertBefore(headerContainer, navbar);
+    // Swap and hide static navbar or prepend to body
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+      navbar.style.display = 'none';
+      navbar.parentNode.insertBefore(headerContainer, navbar);
+    } else {
+      document.body.insertBefore(headerContainer, document.body.firstChild);
+    }
 
     // Apply offset margin to the page layout so that content starts below the 90px header
     document.body.style.paddingTop = '90px';
@@ -2108,8 +2084,15 @@
 
   // Dynamic premium footer implementation
   function enhancePublicFooter() {
-    const footerEl = document.querySelector('.site-footer') || document.querySelector('.footer') || document.querySelector('footer');
-    if (!footerEl || document.querySelector('.cm-footer-grid')) return;
+    let footerEl = document.querySelector('.site-footer') || document.querySelector('.footer') || document.querySelector('footer');
+    if (!footerEl) {
+      footerEl = document.createElement('footer');
+      footerEl.className = 'site-footer';
+      const mainArea = document.querySelector('.main-area') || document.body;
+      mainArea.appendChild(footerEl);
+    } else if (document.querySelector('.cm-footer-grid')) {
+      return;
+    }
 
     // Define partners SVG logos
     const virusTotalLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
@@ -3088,21 +3071,9 @@
     enhanceLogo();
 
     const userId = readUserId();
-    const publicPages = ['tools.html', 'pricing.html', 'cyber-news.html', 'aboutus.html', 'contactus.html', 'malwareanalysis.html'];
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-    if (userId && publicPages.some(page => currentPage.includes(page))) {
-      wrapInDashboardShell();
-    }
-
-    const isDashboard = document.querySelector('.sidebar') || document.querySelector('.topbar') || document.querySelector('.sb-nav');
-    
-    if (isDashboard) {
-      enhanceDashboardUI();
-    } else {
-      enhancePublicHeader();
-      enhancePublicFooter();
-    }
+    enhancePublicHeader();
+    enhancePublicFooter();
 
     // Instantly paint cached values on initial load to eliminate initials flashing or avatar desync
     if (userId) {
