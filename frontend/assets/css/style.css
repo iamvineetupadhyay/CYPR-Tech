@@ -2002,6 +2002,22 @@ html[data-theme="dark"] .tool-slide .tool-icon {
    ── COMPLETE PREMIUM RESPONSIVE OVERRIDES ──
    ========================================================================== */
 
+/* ── GLOBAL BUTTON SVG & SCROLL CORRECTIONS ── */
+html {
+  scroll-padding-top: calc(var(--nav-h) + 16px) !important;
+}
+
+.btn svg,
+.btn-primary svg,
+.btn-accent svg,
+.btn-ghost svg {
+  width: 18px !important;
+  height: 18px !important;
+  flex-shrink: 0 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
 /* ── GLOBALS & UTILITIES ON MOBILE ── */
 .table-responsive {
   width: 100%;
@@ -2064,6 +2080,14 @@ html[data-theme="dark"] .tool-slide .tool-icon {
   .sb-overlay.open {
     display: block !important;
     opacity: 1 !important;
+  }
+
+  /* Fix vertical centering overflow on mobile hero */
+  .hero {
+    min-height: auto !important;
+    justify-content: flex-start !important;
+    padding-top: calc(var(--nav-h) + 40px) !important;
+    padding-bottom: 60px !important;
   }
 
   /* ── TYPOGRAPHY & PADDINGS ── */
@@ -2217,6 +2241,7 @@ html[data-theme="dark"] .tool-slide .tool-icon {
 
   .hero-stats {
     max-width: 100% !important;
+    margin-top: 36px !important;
   }
 
   .hero-stat {
