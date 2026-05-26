@@ -555,7 +555,8 @@
     .cm-nav-tabs {
       display: flex;
       align-items: center;
-      gap: 16px;
+      justify-content: space-between;
+      width: 100%;
       height: 100%;
     }
     .cm-nav-tab {
@@ -1739,11 +1740,7 @@
     `;
     leftGroup.appendChild(logoLink);
 
-    // Workspace repo-style path breadcrumb context
-    const contextPath = document.createElement('div');
-    contextPath.className = 'cm-context-path';
-    contextPath.innerHTML = `<span class="sep">iamvineetupadhyay</span><span class="sep">/</span><span class="repo">CYPR</span>`;
-    leftGroup.appendChild(contextPath);
+
 
     topTier.appendChild(leftGroup);
 
