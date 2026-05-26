@@ -674,6 +674,21 @@
             if (pw !== cp) return showMsg('error', '⚠ Passwords do not match.');
             if (pw.length < 8) return showMsg('error', '⚠ Password must be at least 8 characters.');
 
+            const isLocalDev = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+            if (!isLocalDev) {
+                let token = "";
+                try {
+                    if (window.turnstile) token = turnstile.getResponse();
+                } catch (e) {}
+                if (!token) {
+                    const el = document.querySelector('[name="cf-turnstile-response"]');
+                    if (el) token = el.value;
+                }
+                if (!token) {
+                    return showMsg('error', '⚠ Please verify the CAPTCHA before proceeding.');
+                }
+            }
+
             // Save Data
             step1Data = { name: fn + " " + ln, email: em, mobile: ph, password: pw };
 
@@ -737,8 +752,16 @@
             formData.append("username", un);
             formData.append("bio", bio || "CyberSafe Explorer");
 
-            const turnstileToken = document.querySelector('[name="cf-turnstile-response"]') ?
-                document.querySelector('[name="cf-turnstile-response"]').value : "";
+            let turnstileToken = "";
+            try {
+                if (window.turnstile) {
+                    turnstileToken = turnstile.getResponse();
+                }
+            } catch (e) {}
+            if (!turnstileToken) {
+                const el = document.querySelector('[name="cf-turnstile-response"]');
+                if (el) turnstileToken = el.value;
+            }
             formData.append("turnstileToken", turnstileToken);
 
             if (fileInput && fileInput.files[0]) {
