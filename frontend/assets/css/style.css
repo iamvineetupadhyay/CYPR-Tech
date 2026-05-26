@@ -1996,8 +1996,249 @@ html[data-theme="dark"] .tool-slide .tool-icon {
   flex-grow: 1; /* Pushes the button to the bottom */
 }
 
-.tool-slide .btn {
-  width: 100%;
-  margin-top: auto;
-  justify-content: center;
 }
+
+/* ==========================================================================
+   ── COMPLETE PREMIUM RESPONSIVE OVERRIDES ──
+   ========================================================================== */
+
+/* ── GLOBALS & UTILITIES ON MOBILE ── */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .tool-page,
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .service-grid,
+  .features-grid,
+  .testi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* ── DASHBOARD SHELL DRAWERS ── */
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.45);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  .sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  .main-area {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .tb-hamburger {
+    display: flex !important; /* Visible on mobile */
+  }
+
+  .sb-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 199;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .sb-overlay.open {
+    display: block !important;
+    opacity: 1 !important;
+  }
+
+  /* ── TYPOGRAPHY & PADDINGS ── */
+  .page-content {
+    padding: 16px 16px 36px !important;
+  }
+
+  .page-wrapper {
+    padding: 20px 16px 48px !important;
+  }
+
+  .welcome-row {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 16px !important;
+  }
+
+  .welcome-text p {
+    max-width: 100% !important;
+  }
+
+  .btn-run-scan {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── GRIDS COLLAPSE ── */
+  .top-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .stats-row,
+  .service-grid,
+  .features-grid,
+  .testi-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* ── PAGES & CARDS POLISH ── */
+  .scan-row {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .scan-row button {
+    width: 100% !important;
+  }
+
+  /* Horizontal tabs scrolling in Settings */
+  .settings-tabs,
+  .cm-settings-tabs {
+    display: flex !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    padding-bottom: 8px !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  .settings-tabs::-webkit-scrollbar,
+  .cm-settings-tabs::-webkit-scrollbar {
+    height: 3px;
+  }
+
+  .settings-tabs::-webkit-scrollbar-thumb,
+  .cm-settings-tabs::-webkit-scrollbar-thumb {
+    background: var(--border-bright);
+    border-radius: 999px;
+  }
+
+  /* Reflow charts and dashboard panels */
+  .chart-card,
+  .stat-card,
+  .gauge-card {
+    padding: 16px !important;
+  }
+
+  .gauge-container {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 24px !important;
+  }
+
+  .gauge-text-section {
+    padding-left: 0 !important;
+    border-left: none !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .identity-card {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 16px !important;
+  }
+
+  .identity-info {
+    align-items: center !important;
+  }
+
+  .identity-stats {
+    justify-content: center !important;
+  }
+
+  /* File upload scanner page adjustments */
+  .scan-page {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .preset-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Timelines and timelines items */
+  .log-row,
+  .timeline-item {
+    padding: 14px 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Public Landing Page tweaks */
+  .navbar {
+    padding: 0 16px !important;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .hero-desc {
+    font-size: 0.95rem !important;
+    margin-bottom: 32px !important;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px !important;
+  }
+
+  .hero-actions .btn {
+    width: 100% !important;
+  }
+
+  .hero-stats {
+    max-width: 100% !important;
+  }
+
+  .hero-stat {
+    padding: 16px !important;
+  }
+
+  .footer {
+    padding: 24px 16px !important;
+    gap: 16px !important;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px !important;
+  }
+
+  /* Settings avatar grid scaling */
+  .avatar-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)) !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+}

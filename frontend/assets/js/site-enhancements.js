@@ -2874,4 +2874,82 @@
     }
   });
 
+  /* ==========================================================================
+     ── UNIFIED RESPONSIVE NAVIGATION & SIDEBAR COORDINATOR ──
+     ========================================================================== */
+  function initResponsiveNav() {
+    // 1. Dashboard Collapsible Sidebar coordinator
+    const tbHamburger = document.querySelector('.tb-hamburger');
+    const sidebar = document.querySelector('.sidebar');
+    
+    if (sidebar) {
+      // Find or dynamically inject the sidebar background overlay (.sb-overlay)
+      let sbOverlay = document.querySelector('.sb-overlay');
+      if (!sbOverlay) {
+        sbOverlay = document.createElement('div');
+        sbOverlay.className = 'sb-overlay';
+        sbOverlay.id = 'sbOverlay';
+        document.body.appendChild(sbOverlay);
+      }
+
+      if (tbHamburger) {
+        // Remove old listeners to avoid multiple binding
+        const newHam = tbHamburger.cloneNode(true);
+        tbHamburger.parentNode.replaceChild(newHam, tbHamburger);
+        
+        newHam.addEventListener('click', (e) => {
+          e.stopPropagation();
+          sidebar.classList.toggle('open');
+          sbOverlay.classList.toggle('open');
+        });
+
+        // Close when tapping the backdrop overlay
+        sbOverlay.addEventListener('click', () => {
+          sidebar.classList.remove('open');
+          sbOverlay.classList.remove('open');
+        });
+
+        // Close sidebar when clicking any navigation items on mobile
+        sidebar.querySelectorAll('.sb-item').forEach(item => {
+          item.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            sbOverlay.classList.remove('open');
+          });
+        });
+      }
+    }
+
+    // 2. Marketing / Public Pages navbar coordinator
+    const publicHam = document.getElementById('ham') || document.querySelector('.hamburger');
+    const publicMobileNav = document.getElementById('mobileNav') || document.querySelector('.mobile-nav');
+
+    if (publicHam && publicMobileNav) {
+      const newPubHam = publicHam.cloneNode(true);
+      publicHam.parentNode.replaceChild(newPubHam, publicHam);
+
+      newPubHam.addEventListener('click', (e) => {
+        e.stopPropagation();
+        newPubHam.classList.toggle('open');
+        publicMobileNav.classList.toggle('open');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!newPubHam.contains(e.target) && !publicMobileNav.contains(e.target)) {
+          newPubHam.classList.remove('open');
+          publicMobileNav.classList.remove('open');
+        }
+      });
+    }
+  }
+
+  window.initResponsiveNav = initResponsiveNav;
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initResponsiveNav();
+  });
+
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initResponsiveNav();
+  }
+
 })();
