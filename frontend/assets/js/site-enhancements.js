@@ -555,16 +555,17 @@
     .cm-nav-tabs {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       width: 100%;
       height: 100%;
+      gap: 36px;
     }
     .cm-nav-tab {
       display: flex;
       align-items: center;
       gap: 6px;
       height: 100%;
-      padding: 0 8px;
+      padding: 0 16px;
       color: var(--text2) !important;
       font-family: var(--font);
       font-size: 0.8rem;
@@ -583,6 +584,10 @@
     }
     .cm-nav-tab:hover {
       color: var(--text) !important;
+      background: rgba(255, 255, 255, 0.04);
+    }
+    html[data-theme="light"] .cm-nav-tab:hover {
+      background: rgba(0, 0, 0, 0.03);
     }
     .cm-nav-tab:hover svg {
       color: var(--text2);
