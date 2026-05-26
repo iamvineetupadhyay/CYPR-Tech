@@ -325,7 +325,9 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      flex-shrink: 0;
+      flex: 1;
+      justify-content: flex-start;
+      min-width: 0;
     }
     .cm-nav-logo {
       display: flex;
@@ -413,7 +415,9 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      flex-shrink: 0;
+      flex: 1;
+      justify-content: flex-end;
+      min-width: 0;
     }
     .cm-icon-btn {
       width: 32px;
@@ -1170,12 +1174,63 @@
     }
 
     @media(max-width:900px){
-      .cm-hamburger-btn{display:flex}
-      .cm-nav-links{display:none}
-      .cm-nav-actions{display:none}
+      .cm-bottom-tier {
+        padding: 0 12px 0 16px !important;
+        overflow: hidden !important;
+        justify-content: space-between !important;
+      }
+      .cm-nav-tabs {
+        justify-content: flex-start !important;
+        gap: 20px !important;
+        overflow-x: auto !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        flex: 1 !important;
+        padding-right: 8px !important;
+      }
+      .cm-nav-tabs::-webkit-scrollbar {
+        display: none !important;
+      }
+      .cm-hamburger-btn {
+        display: flex !important;
+        flex-shrink: 0 !important;
+        margin-left: 8px !important;
+        z-index: 99 !important;
+        width: 30px !important;
+        height: 30px !important;
+        padding: 6px !important;
+      }
+      
+      /* Hide all desktop actions and clutter in the top tier on mobile */
+      .cm-right-group > *:not(.cm-theme-toggle) {
+        display: none !important;
+      }
+      .cm-left-group > *:not(.cm-nav-logo) {
+        display: none !important;
+      }
+      
+      /* Center and size search container */
+      .cm-nav-search-container {
+        max-width: 140px !important;
+        margin: 0 auto !important;
+      }
+      .cm-nav-search-container input {
+        padding: 4px 8px 4px 22px !important;
+        font-size: 0.68rem !important;
+      }
+      .cm-nav-search-kbd {
+        display: none !important;
+      }
+      .cm-nav-search-icon {
+        left: 6px !important;
+      }
+      .cm-nav-search-icon svg {
+        width: 10px !important;
+        height: 10px !important;
+      }
+      
       .cm-ai-launch{right:14px;bottom:14px}
       .cm-ai-panel{right:14px;bottom:72px}
-      .cm-credit-pill{display:none}
     }
 
     /* ── DASHBOARD SHELL & SIDEBAR FOR WRAPPED PUBLIC PAGES ── */
@@ -1727,12 +1782,11 @@
     const leftGroup = document.createElement('div');
     leftGroup.className = 'cm-left-group';
 
-    // Hamburger Mobile Button
+    // Hamburger Mobile Button (created here, to be appended to bottomTier in Tier 2 later)
     const hamBtn = document.createElement('button');
     hamBtn.className = 'cm-hamburger-btn';
     hamBtn.setAttribute('aria-label', 'Toggle Navigation');
     hamBtn.innerHTML = '<span></span><span></span><span></span>';
-    leftGroup.appendChild(hamBtn);
 
     // Brand logo link
     const logoLink = document.createElement('a');
@@ -1744,8 +1798,6 @@
       </span>
     `;
     leftGroup.appendChild(logoLink);
-
-
 
     topTier.appendChild(leftGroup);
 
@@ -1797,6 +1849,7 @@
       </a>
     `;
     bottomTier.appendChild(navTabs);
+    bottomTier.appendChild(hamBtn);
     headerContainer.appendChild(bottomTier);
 
     // Swap and hide static navbar
@@ -1866,14 +1919,12 @@
     if (!userId) {
       // Guest state
       rightGroup.innerHTML = `
-        <a href="signup.html" class="cm-promo-pill">🎁 50 Free Credits</a>
         <a href="login.html" class="cm-btn-ghost">Sign In</a>
         <a href="signup.html" class="cm-btn-accent">Get Started</a>
       `;
       rightGroup.appendChild(toggleBtn);
 
       mobActions.innerHTML = `
-        <a href="signup.html" class="cm-promo-pill" style="justify-content:center;margin-bottom:8px;">🎁 Get 50 Free Credits</a>
         <a href="login.html" class="cm-btn-ghost" style="width:100%;margin-bottom:8px;">Sign In</a>
         <a href="signup.html" class="cm-btn-accent" style="width:100%">Get Started</a>
       `;
