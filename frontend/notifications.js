@@ -32,7 +32,7 @@
         const activities = await res.json();
         if (activities && activities.length > 0) {
           const fresh = [];
-          
+
           // First add a welcome notification
           fresh.push({
             id: 'welcome',
@@ -54,7 +54,7 @@
               type = 'success';
               icon = '✅';
             }
-            
+
             let timeAgo = 'Recently';
             if (act.timestamp) {
               const diff = Date.now() - act.timestamp;
@@ -79,7 +79,7 @@
           refreshPanel();
         }
       }
-    } catch(e) {
+    } catch (e) {
       console.warn("Failed to fetch dynamic user notifications: ", e);
     }
   }

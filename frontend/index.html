@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <script src="assets/js/config.js"></script>
@@ -11,34 +12,182 @@
   <style>
     /* ── NAVBAR ── */
     .navbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
       height: var(--nav-h);
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 0 60px;
       background: var(--bg);
       box-shadow: 0 2px 8px var(--shadow);
       border-bottom: 1px solid var(--border);
     }
-    .nav-logo { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
-    .nav-logo span { color: var(--lime); }
-    .nav-links { display: flex; gap: 6px; align-items: center; }
-    .nav-links a { font-family: var(--font-display); font-size: 0.85rem; font-weight: 500; color: var(--text2); padding: 8px 16px; border-radius: 6px; transition: all 0.2s; border: 1px solid transparent; }
-    .nav-links a:hover { color: var(--lime); background: var(--bg3); }
-    .nav-actions { display: flex; gap: 10px; align-items: center; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; width: 36px; height: 36px; background: none; border: 1px solid var(--border); border-radius: 6px; padding: 8px; cursor: pointer; }
-    .hamburger span { display: block; width: 100%; height: 2px; background: var(--text2); border-radius: 2px; transition: all 0.3s; }
-    .mobile-nav { display: none; position: fixed; top: var(--nav-h); left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); z-index: 99; padding: 16px; flex-direction: column; gap: 4px; }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a { font-family: var(--font-display); font-size: 0.85rem; font-weight: 500; color: var(--text2); padding: 13px 16px; border-radius: 8px; border: 1px solid transparent; transition: all 0.2s; }
-    .mobile-nav a:hover { color: var(--lime); background: var(--bg3); }
-    .mobile-nav .mobile-actions { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo span {
+      color: var(--lime);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text2);
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .nav-links a:hover {
+      color: var(--lime);
+      background: var(--bg3);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text2);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 99;
+      padding: 16px;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mobile-nav.open {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text2);
+      padding: 13px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .mobile-nav a:hover {
+      color: var(--lime);
+      background: var(--bg3);
+    }
+
+    .mobile-nav .mobile-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
 
     /* ── HERO ── */
-    .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: calc(var(--nav-h) + 60px) 24px 80px; overflow: hidden; background: linear-gradient(135deg, var(--bg2) 0%, #e0e7ff 100%); }
-    html[data-theme="dark"] .hero { background: var(--bg); }
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: left;
+      padding: calc(var(--nav-h) + 60px) 60px 80px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    /* VIDEO */
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    /* DARK OVERLAY */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 2;
+    }
+
+    /* CONTENT */
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      color: white;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    html[data-theme="dark"] .hero {
+      background: var(--bg);
+    }
 
     /* Animated hex grid */
-    .hex-bg { display: none; }
+    .hex-bg {
+      display: none;
+    }
+
     html[data-theme="dark"] .hex-bg {
       display: block;
       position: absolute;
@@ -49,571 +198,2063 @@
       pointer-events: none;
       z-index: 1;
     }
-    .hex-bg svg { width: 100%; height: 100%; }
 
-    /* Rotating ring */
-    .hero-ring { display: none; }
-    html[data-theme="dark"] .hero-ring {
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 480px;
-      height: 480px;
-      border-radius: 50%;
-      border: 2px dashed var(--lime);
-      opacity: 0.12;
-      animation: rotate-ring 25s linear infinite;
-      pointer-events: none;
-      z-index: 1;
+    .hex-bg svg {
+      width: 100%;
+      height: 100%;
     }
-    @keyframes rotate-ring {
-      from { transform: translate(-50%, -50%) rotate(0deg); }
-      to { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-    .hero-ring::before { content: ''; }
-    .hero-ring::after { content: ''; }
 
-    /* Scanline */
-    .scanline { display: none; }
-    html[data-theme="dark"] .scanline {
-      display: block;
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(200, 255, 0, 0) 0%,
-        rgba(200, 255, 0, 0.03) 10%,
-        rgba(200, 255, 0, 0.08) 50%,
-        rgba(200, 255, 0, 0.03) 90%,
-        rgba(200, 255, 0, 0) 100%
-      );
-      background-size: 100% 4px;
-      pointer-events: none;
+    /* Hero animations removed for clean cinematic presentation */
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      position: relative;
       z-index: 2;
-      animation: scan 8s linear infinite;
-    }
-    @keyframes scan {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(100%); }
     }
 
-    .hero-eyebrow { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 28px; display: flex; align-items: center; justify-content: center; gap: 14px; position: relative; z-index: 2; }
-    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 32px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent)); }
-    .hero-eyebrow::after { background: linear-gradient(90deg, var(--accent), transparent); }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent));
+    }
 
-    .hero h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; position: relative; z-index: 2; color: var(--text); }
-    .hero h1 .line1 { display: block; }
-    .hero h1 .line2 { display: block; color: var(--text); }
-    .hero h1 .line3 { display: block; background: linear-gradient(135deg, var(--lime), var(--lime2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-eyebrow::after {
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
 
-    .hero-desc { font-size: clamp(1rem, 2.5vw, 1.15rem); color: var(--text2); max-width: 640px; line-height: 1.8; margin-bottom: 48px; position: relative; z-index: 2; font-weight: 400; }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+      color: #ffffff;
+    }
 
-    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 2; margin-bottom: 80px; }
+    .hero h1 .line1 {
+      display: block;
+    }
+
+    .hero h1 .line2 {
+      display: block;
+      color: #ffffff;
+    }
+
+    .hero h1 .line3 {
+      display: block;
+      background: linear-gradient(135deg, var(--lime), var(--lime2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 640px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 2;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 80px;
+    }
 
     /* Live stat bar */
-    .hero-stats { display: flex; align-items: center; gap: 0; position: relative; z-index: 2; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-lg); }
-    .hero-stat { padding: 24px 32px; text-align: center; border-right: 1px solid var(--border); }
-    .hero-stat:last-child { border-right: none; }
-    .hero-stat-num { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--lime); line-height: 1; margin-bottom: 6px; }
-    .hero-stat-label { font-family: var(--font-display); font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); }
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: relative;
+      z-index: 2;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-stat {
+      padding: 24px 32px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .hero-stat:last-child {
+      border-right: none;
+    }
+
+    .hero-stat-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--lime);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .hero-stat-label {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text3);
+    }
 
     /* ── FEATURES ── */
-    .section { position: relative; z-index: 2; padding: 100px 60px; background: var(--bg); }
-    .section-tag { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--lime); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
-    .section-tag::before { content: ''; display: none; }
-    .section h2 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 20px; color: var(--text); }
-    .section h2 em { font-style: normal; color: var(--lime); }
-    .section-sub { color: var(--text2); font-size: 1.05rem; line-height: 1.7; max-width: 480px; margin-bottom: 60px; font-weight: 400; }
+    .section {
+      position: relative;
+      z-index: 2;
+      padding: 100px 60px;
+      background: var(--bg);
+    }
 
-    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .section-tag {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+    }
+
+    .section-tag::before {
+      content: '';
+      display: none;
+    }
+
+    .section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+
+    .section h2 em {
+      font-style: normal;
+      color: var(--lime);
+    }
+
+    .section-sub {
+      color: var(--text2);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 60px;
+      font-weight: 400;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
 
     .feature-card {
-      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px;
-      position: relative; overflow: hidden; transition: all 0.3s; cursor: default;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+      cursor: default;
     }
-    .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--lime), transparent); opacity: 0; transition: opacity 0.3s; }
-    .feature-card:hover { border-color: var(--lime); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-    .feature-card:hover::before { opacity: 1; }
-    .feature-card.featured { background: var(--lime-dim); border-color: var(--lime-glow); }
-    .feature-icon { width: 52px; height: 52px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 20px; }
-    .icon-blue { background: var(--bg3); border: 1px solid var(--border); }
-    .icon-green { background: var(--green-dim); border: 1px solid var(--green); }
-    .icon-red { background: var(--red-dim); border: 1px solid var(--red); }
-    .icon-warn { background: var(--warn-dim); border: 1px solid var(--warn); }
-    .feature-card h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; color: var(--text); }
-    .feature-card p { font-size: 0.88rem; color: var(--text2); line-height: 1.65; margin-bottom: 20px; }
-    .feature-link { font-family: var(--font-display); font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--lime); display: flex; align-items: center; gap: 6px; transition: gap 0.2s; }
-    .feature-card:hover .feature-link { gap: 10px; }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--lime), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--lime);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-card.featured {
+      background: var(--lime-dim);
+      border-color: var(--lime-glow);
+    }
+
+    .coming-soon-card {
+      opacity: 0.55 !important;
+      cursor: not-allowed !important;
+    }
+
+    .coming-soon-card .feature-link {
+      pointer-events: none !important;
+    }
+
+    .feature-icon {
+      width: auto;
+      height: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .feature-icon-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .feature-card p {
+      font-size: 0.88rem;
+      color: var(--text2);
+      line-height: 1.65;
+      margin-bottom: 20px;
+    }
+
+    .feature-link {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--lime);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s;
+      width: fit-content !important;
+      align-self: flex-start !important;
+      
+      /* Reset global style.css button backgrounds to restore a clean text link */
+      background: none !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+    }
+
+    .feature-card:hover .feature-link {
+      gap: 10px;
+    }
 
     /* ── HOW IT WORKS ── */
-    .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .how-steps { display: flex; flex-direction: column; gap: 0; }
-    .how-step { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--border); position: relative; }
-    .how-step:last-child { border-bottom: none; }
-    .step-num { font-family: var(--font-display); font-size: 0.75rem; color: var(--lime); background: var(--lime-dim); border: 1px solid var(--lime-glow); border-radius: 6px; padding: 6px 10px; flex-shrink: 0; height: fit-content; margin-top: 2px; font-weight: 700; }
-    .step-content h4 { font-family: var(--font-display); font-weight: 700; font-size: 1rem; margin-bottom: 6px; color: var(--lime); }
-    .step-content p { font-size: 0.87rem; color: var(--text2); line-height: 1.6; }
+    .how-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
 
-    .terminal { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-    .terminal-bar { background: var(--bg3); padding: 12px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); }
-    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .t-dot-red { background: var(--red); } .t-dot-yellow { background: var(--warn); } .t-dot-green { background: var(--green); }
-    .terminal-body { padding: 24px; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.9; }
-    .t-line { display: flex; gap: 12px; }
-    .t-prompt { color: var(--lime); font-weight: 600; }
-    .t-cmd { color: var(--text2); }
-    .t-out-safe { color: var(--green); font-weight: 500; }
-    .t-out-warn { color: var(--red); font-weight: 500; }
-    .t-out-dim { color: var(--text3); }
-    .t-cursor { display: inline-block; width: 8px; height: 14px; background: var(--lime); animation: blink 1s step-end infinite; vertical-align: middle; }
+    .how-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .how-step {
+      display: flex;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .how-step:last-child {
+      border-bottom: none;
+    }
+
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      color: var(--lime);
+      background: var(--lime-dim);
+      border: 1px solid var(--lime-glow);
+      border-radius: 6px;
+      padding: 6px 10px;
+      flex-shrink: 0;
+      height: fit-content;
+      margin-top: 2px;
+      font-weight: 700;
+    }
+
+    .step-content h4 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+      color: var(--lime);
+    }
+
+    .step-content p {
+      font-size: 0.87rem;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    .terminal {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .terminal-bar {
+      background: var(--bg3);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .t-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .t-dot-red {
+      background: var(--red);
+    }
+
+    .t-dot-yellow {
+      background: var(--warn);
+    }
+
+    .t-dot-green {
+      background: var(--green);
+    }
+
+    .terminal-body {
+      padding: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.9;
+    }
+
+    .t-line {
+      display: flex;
+      gap: 12px;
+    }
+
+    .t-prompt {
+      color: var(--lime);
+      font-weight: 600;
+    }
+
+    .t-cmd {
+      color: var(--text2);
+    }
+
+    .t-out-safe {
+      color: var(--green);
+      font-weight: 500;
+    }
+
+    .t-out-warn {
+      color: var(--red);
+      font-weight: 500;
+    }
+
+    .t-out-dim {
+      color: var(--text3);
+    }
+
+    .t-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--lime);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+    }
 
     /* ── SAFE SCORE ── */
-    .score-section { padding: 100px 60px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .score-showcase { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-    .score-visual { display: flex; justify-content: center; align-items: center; }
-    .score-ring-wrap { position: relative; width: 260px; height: 260px; }
-    .score-ring-wrap svg { width: 260px; height: 260px; transform: rotate(-90deg); }
-    .score-ring-bg { fill: none; stroke: var(--border); stroke-width: 12; }
-    .score-ring-fill { fill: none; stroke: var(--lime); stroke-width: 12; stroke-linecap: round; stroke-dasharray: 691; stroke-dashoffset: 138; transition: stroke-dashoffset 1.5s ease; filter: drop-shadow(0 0 8px var(--lime-glow)); }
-    .score-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .score-number { font-family: var(--font-display); font-size: 4rem; font-weight: 800; color: var(--lime); line-height: 1; }
-    .score-label { font-family: var(--font-display); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text3); margin-top: 4px; font-weight: 600; }
-    .score-info h3 { font-family: var(--font-display); font-size: 2rem; font-weight: 800; margin-bottom: 16px; color: var(--text); }
-    .score-info p { color: var(--text2); line-height: 1.75; margin-bottom: 28px; }
-    .score-breakdown { display: flex; flex-direction: column; gap: 12px; }
-    .score-item { display: flex; align-items: center; gap: 12px; }
-    .score-item-label { font-family: var(--font-display); font-size: 0.72rem; color: var(--text2); width: 130px; flex-shrink: 0; font-weight: 500; }
-    .score-bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
-    .score-bar-fill { height: 100%; border-radius: 100px; transition: width 1.5s ease; }
-    .score-item-val { font-family: var(--font-display); font-size: 0.72rem; color: var(--text); width: 36px; text-align: right; flex-shrink: 0; font-weight: 600; }
+    .score-section {
+      padding: 100px 60px;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
 
-    /* ── TESTIMONIALS ── */
-    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .testi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
-    .testi-stars { color: var(--amber); font-size: 0.9rem; letter-spacing: 3px; margin-bottom: 14px; }
-    .testi-text { font-size: 0.92rem; color: var(--text2); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
-    .testi-author { display: flex; align-items: center; gap: 12px; }
-    .testi-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--lime-dim); border: 1px solid var(--lime-glow); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--lime); flex-shrink: 0; }
-    .testi-name { font-weight: 600; font-size: 0.88rem; color: var(--text); }
-    .testi-role { font-family: var(--font-display); font-size: 0.68rem; color: var(--text3); font-weight: 500; }
+    .score-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
 
-    /* ── CTA ── */
-    .cta-section { padding: 100px 60px; text-align: center; position: relative; overflow: hidden; background: var(--bg); border-top: 1px solid var(--border); }
-    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 50% 50%, var(--lime-dim) 0%, transparent 70%); pointer-events: none; }
-    .cta-section h2 { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 20px; position: relative; z-index: 2; color: var(--text); }
-    .cta-section p { color: var(--text2); font-size: 1.1rem; margin-bottom: 40px; position: relative; z-index: 2; font-weight: 400; }
-    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; z-index: 2; }
+    .score-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .score-ring-wrap {
+      position: relative;
+      width: 260px;
+      height: 260px;
+    }
+
+    .score-ring-wrap svg {
+      width: 260px;
+      height: 260px;
+      transform: rotate(-90deg);
+    }
+
+    .score-ring-bg {
+      fill: none;
+      stroke: var(--border);
+      stroke-width: 12;
+    }
+
+    .score-ring-fill {
+      fill: none;
+      stroke: var(--lime);
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-dasharray: 691;
+      stroke-dashoffset: 138;
+      transition: stroke-dashoffset 1.5s ease;
+      filter: drop-shadow(0 0 8px var(--lime-glow));
+    }
+
+    .score-ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-number {
+      font-family: var(--font-display);
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--lime);
+      line-height: 1;
+    }
+
+    .score-label {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--text3);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .score-info h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .score-info p {
+      color: var(--text2);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+
+    .score-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .score-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .score-item-label {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      color: var(--text2);
+      width: 130px;
+      flex-shrink: 0;
+      font-weight: 500;
+    }
+
+    .score-bar-track {
+      flex: 1;
+      height: 6px;
+      background: var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 1.5s ease;
+    }
+
+    .score-item-val {
+      font-family: var(--font-display);
+      font-size: 0.72rem;
+      color: var(--text);
+      width: 36px;
+      text-align: right;
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    /* ── CINEMATIC FOOTER SECTION (TESTIMONIALS & CTA COMBINED) ── */
+    .cinematic-footer-section {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+      padding: 120px 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .cinematic-footer-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .cinematic-footer-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 2;
+    }
+
+    .cinematic-footer-content {
+      position: relative;
+      z-index: 3;
+      color: white;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Testimonials Alignment & Typography overrides */
+    .testimonials-block h2 {
+      color: #ffffff !important;
+    }
+
+    .testimonials-block h2 em {
+      color: var(--lime) !important;
+    }
+
+    .testimonials-block .section-tag {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    /* Glassmorphic Cards inside Testimonials block */
+    .testimonials-block .testi-card {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: var(--radius);
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3) !important;
+      transition: all 0.3s ease !important;
+    }
+
+    .testimonials-block .testi-card:hover {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+      transform: translateY(-4px) !important;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .testi-stars {
+      color: var(--amber);
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      margin-bottom: 14px;
+    }
+
+    .testimonials-block .testi-text {
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.85) !important;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonials-block .testi-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #ffffff !important;
+      flex-shrink: 0;
+    }
+
+    .testimonials-block .testi-name {
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: #ffffff !important;
+    }
+
+    .testi-role {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.5) !important;
+      font-weight: 500;
+    }
+
+    /* CTA Alignment & Typography overrides */
+    .cta-block h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+      position: relative;
+      color: #ffffff !important;
+    }
+
+    .cta-block p {
+      color: rgba(255, 255, 255, 0.8) !important;
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      position: relative;
+      font-weight: 400;
+    }
+
+    .cta-block .tag {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    /* Buttons inside CTA Actions overrides */
+    .cta-block .cta-actions .btn-accent {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25) !important;
+    }
+
+    .cta-block .cta-actions .btn-accent:hover {
+      background: #f1f5f9 !important;
+      border-color: #f1f5f9 !important;
+      color: #000000 !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4) !important;
+    }
+
+    .cta-block .cta-actions .btn-ghost {
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.4) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      backdrop-filter: blur(4px);
+    }
+
+    .cta-block .cta-actions .btn-ghost:hover {
+      border-color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+      transform: translateY(-2px) !important;
+    }
 
     /* ── FOOTER ── */
-    .footer { border-top: 1px solid var(--border); padding: 40px 60px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; background: var(--bg2); }
-    .footer-logo { font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--text); }
-    .footer-links { display: flex; gap: 24px; }
-    .footer-links a { font-family: var(--font-display); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text3); transition: color 0.2s; font-weight: 500; }
-    .footer-links a:hover { color: var(--lime); }
-    .footer-copy { font-family: var(--font-display); font-size: 0.68rem; color: var(--text3); font-weight: 400; }
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      background: var(--bg2);
+    }
+
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-family: var(--font-display);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text3);
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+
+    .footer-links a:hover {
+      color: var(--lime);
+    }
+
+    .footer-copy {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      color: var(--text3);
+      font-weight: 400;
+    }
 
     /* ── STATUS PILL ── */
-    .status-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 14px; background: var(--lime-dim); border: 1px solid var(--lime-glow); border-radius: 100px; font-family: var(--font-display); font-size: 0.68rem; color: var(--lime); font-weight: 600; }
-    .status-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); animation: pulse 2s ease-in-out infinite; }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      background: var(--lime-dim);
+      border: 1px solid var(--lime-glow);
+      border-radius: 100px;
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      color: var(--lime);
+      font-weight: 600;
+    }
 
-    body { background: var(--bg) !important; }
+    .status-pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lime);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    body {
+      background: var(--bg) !important;
+    }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
-      .navbar { padding: 0 32px; }
-      .section { padding: 80px 32px; }
-      .score-section { padding: 80px 32px; }
-      .cta-section { padding: 80px 32px; }
-      .footer { padding: 32px; }
-      .features-grid { grid-template-columns: repeat(2, 1fr); }
-      .how-grid { grid-template-columns: 1fr; gap: 40px; }
-      .score-showcase { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-      .score-visual { order: -1; }
-      .score-breakdown { max-width: 400px; margin: 0 auto; }
-      .testi-grid { grid-template-columns: 1fr 1fr; }
+      .navbar {
+        padding: 0 32px;
+      }
+
+      .section {
+        padding: 80px 32px;
+      }
+
+      .hero {
+        padding: calc(var(--nav-h) + 60px) 32px 80px;
+      }
+
+      .score-section {
+        padding: 80px 32px;
+      }
+
+      .cta-section {
+        padding: 80px 32px;
+      }
+
+      .footer {
+        padding: 32px;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .how-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .score-showcase {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
+
+      .score-visual {
+        order: -1;
+      }
+
+      .score-breakdown {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+
+      .testi-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
+
     @media (max-width: 768px) {
-      .navbar { padding: 0 20px; }
-      .nav-links, .nav-actions { display: none; }
-      .hamburger { display: flex; }
-      .section { padding: 60px 20px; }
-      .score-section { padding: 60px 20px; }
-      .cta-section { padding: 60px 20px; }
-      .footer { padding: 28px 20px; flex-direction: column; text-align: center; }
-      .features-grid { grid-template-columns: 1fr; }
-      .hero-stats { flex-direction: column; width: 100%; max-width: 300px; }
-      .hero-stat { border-right: none; border-bottom: 1px solid var(--border); }
-      .hero-stat:last-child { border-bottom: none; }
-      .testi-grid { grid-template-columns: 1fr; }
-      .footer-links { flex-wrap: wrap; justify-content: center; }
-      .hero-ring { width: 300px; height: 300px; }
+      .navbar {
+        padding: 0 20px;
+      }
+
+      .nav-links,
+      .nav-actions {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .section {
+        padding: 60px 20px;
+      }
+
+      .hero {
+        padding: calc(var(--nav-h) + 40px) 20px 60px;
+      }
+
+      .score-section {
+        padding: 60px 20px;
+      }
+
+      .cta-section {
+        padding: 60px 20px;
+      }
+
+      .footer {
+        padding: 28px 20px;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .hero-stat {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .hero-stat:last-child {
+        border-bottom: none;
+      }
+
+      .testi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero-ring {
+        width: 300px;
+        height: 300px;
+      }
     }
+
     @media (max-width: 480px) {
-      .hero { padding-top: calc(var(--nav-h) + 40px); }
-      .hero h1 { font-size: 2.8rem; }
+      .hero {
+        padding-top: calc(var(--nav-h) + 40px);
+      }
+
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+    }
+
+    /* ── SCOPED HERO VIDEO BACKGROUND & STYLES ── */
+    body {
+      padding-top: 0 !important;
+      background: var(--bg) !important;
+      color: var(--text) !important;
+      transition: background-color 0.3s ease, color 0.3s ease !important;
+    }
+
+    /* Transparent or clean checkers for main page sections */
+    section, 
+    .section, 
+    .score-section, 
+    .cinematic-footer-section {
+      background: var(--bg) !important;
+      color: var(--text) !important;
+      border-color: var(--border) !important;
+      transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease !important;
+    }
+
+    #how,
+    .cinematic-footer-section {
+      background: var(--bg2) !important;
+    }
+
+    .feature-icon img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      transition: filter 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    }
+
+    .feature-card:hover .feature-icon img {
+      transform: scale(1.15) rotate(4deg) !important;
+    }
+
+    /* Hero Scoped Video Layout */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      text-align: left;
+      padding: calc(var(--nav-h) + 60px) 60px 80px;
+      overflow: hidden;
+      background: #000000 !important; /* fallback black background */
+      z-index: 2;
+    }
+
+    .hero-video-container {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-bg-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      transition: background-color 0.3s ease;
+    }
+
+    /* Dynamic Hero Overlay and Text Coloring */
+    html[data-theme="light"] .hero-bg-overlay {
+      background: rgba(255, 255, 255, 0.82) !important;
+    }
+
+    html[data-theme="dark"] .hero-bg-overlay {
+      background: rgba(3, 7, 18, 0.65) !important;
+    }
+
+    html[data-theme="light"] .hero .hero-content h1 span.line1,
+    html[data-theme="light"] .hero .hero-content h1 span.line2 {
+      color: #0b192c !important;
+      background: none !important;
+      -webkit-text-fill-color: #0b192c !important;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5) !important;
+    }
+
+    html[data-theme="light"] .hero .hero-content h1 span.line3 {
+      background: linear-gradient(135deg, #1e40af, #3b82f6) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      color: #1e40af !important;
+    }
+
+    html[data-theme="light"] .hero .hero-content .hero-desc {
+      color: #334155 !important;
+      font-weight: 500 !important;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5) !important;
+    }
+
+    html[data-theme="dark"] .hero .hero-content h1 span.line1,
+    html[data-theme="dark"] .hero .hero-content h1 span.line2 {
+      color: #ffffff !important;
+      background: none !important;
+      -webkit-text-fill-color: #ffffff !important;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    html[data-theme="dark"] .hero .hero-content h1 span.line3 {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa) !important;
+      -webkit-background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      background-clip: text !important;
+      color: #3b82f6 !important;
+    }
+
+    html[data-theme="dark"] .hero .hero-content .hero-desc {
+      color: rgba(255, 255, 255, 0.85) !important;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /* Hero Actions Buttons Theme Coloring */
+    html[data-theme="light"] .hero-actions .btn-accent {
+      background: #1e40af !important;
+      color: #ffffff !important;
+      border-color: #1e40af !important;
+      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25) !important;
+    }
+
+    html[data-theme="light"] .hero-actions .btn-accent:hover {
+      background: #1d4ed8 !important;
+      border-color: #1d4ed8 !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.35) !important;
+    }
+
+    html[data-theme="light"] .hero-actions .btn-ghost {
+      color: #0b192c !important;
+      border-color: rgba(11, 25, 44, 0.3) !important;
+      background: rgba(255, 255, 255, 0.6) !important;
+      backdrop-filter: blur(4px);
+    }
+
+    html[data-theme="light"] .hero-actions .btn-ghost:hover {
+      background: rgba(11, 25, 44, 0.06) !important;
+      border-color: #0b192c !important;
+      transform: translateY(-2px) !important;
+    }
+
+    html[data-theme="dark"] .hero-actions .btn-accent {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25) !important;
+    }
+
+    html[data-theme="dark"] .hero-actions .btn-accent:hover {
+      background: #f1f5f9 !important;
+      border-color: #f1f5f9 !important;
+      color: #000000 !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4) !important;
+    }
+
+    html[data-theme="dark"] .hero-actions .btn-ghost {
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.4) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      backdrop-filter: blur(4px);
+    }
+
+    html[data-theme="dark"] .hero-actions .btn-ghost:hover {
+      border-color: #ffffff !important;
+      background: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+      transform: translateY(-2px) !important;
+    }
+
+    /* ── THEME-RESPONSIVE PREMIUM GLASSMORPHISM CARDS ── */
+    
+    /* Light Theme Cards (Crisp corporate slate) */
+    html[data-theme="light"] .features-grid .feature-card,
+    html[data-theme="light"] .testimonials-block .testi-card,
+    html[data-theme="light"] .terminal {
+      background: rgba(255, 255, 255, 0.72) !important;
+      border: 1px solid rgba(15, 23, 42, 0.08) !important;
+      color: #0f172a !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04) !important;
+    }
+
+    html[data-theme="light"] .features-grid .feature-card.featured {
+      background: rgba(30, 64, 175, 0.05) !important;
+      border-color: rgba(30, 64, 175, 0.25) !important;
+    }
+
+    html[data-theme="light"] .features-grid .feature-card:hover,
+    html[data-theme="light"] .testimonials-block .testi-card:hover {
+      background: #ffffff !important;
+      border-color: #1e40af !important;
+      box-shadow: 0 12px 40px rgba(30, 64, 175, 0.08) !important;
+      transform: translateY(-4px) !important;
+    }
+
+    html[data-theme="light"] .features-grid .feature-card h3,
+    html[data-theme="light"] .features-grid .feature-card p,
+    html[data-theme="light"] .testimonials-block .testi-text,
+    html[data-theme="light"] .testimonials-block .testi-name,
+    html[data-theme="light"] .step-content h4,
+    html[data-theme="light"] .section h2,
+    html[data-theme="light"] .score-info h3,
+    html[data-theme="light"] .cta-block h2 {
+      color: #0f172a !important;
+    }
+
+    html[data-theme="light"] .section-sub,
+    html[data-theme="light"] .score-info p,
+    html[data-theme="light"] .how-steps p,
+    html[data-theme="light"] .features-grid .feature-card p,
+    html[data-theme="light"] .cta-block p {
+      color: #475569 !important;
+    }
+
+    html[data-theme="light"] .testi-role {
+      color: #64748b !important;
+    }
+
+    html[data-theme="light"] .testimonials-block .testi-avatar {
+      background: rgba(30, 64, 175, 0.08) !important;
+      border-color: rgba(30, 64, 175, 0.2) !important;
+      color: #1e40af !important;
+    }
+
+    /* Dark Theme Cards (Cyber glassmorphism) */
+    html[data-theme="dark"] .features-grid .feature-card,
+    html[data-theme="dark"] .testimonials-block .testi-card,
+    html[data-theme="dark"] .terminal {
+      background: rgba(255, 255, 255, 0.03) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      color: #f3f4f6 !important;
+      backdrop-filter: blur(16px) !important;
+      -webkit-backdrop-filter: blur(16px) !important;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    html[data-theme="dark"] .feature-icon img {
+      filter: invert(1) brightness(1.8) !important;
+    }
+
+    html[data-theme="dark"] .features-grid .feature-card.featured {
+      background: rgba(59, 130, 246, 0.06) !important;
+      border-color: rgba(59, 130, 246, 0.25) !important;
+    }
+
+    html[data-theme="dark"] .features-grid .feature-card:hover,
+    html[data-theme="dark"] .testimonials-block .testi-card:hover {
+      background: rgba(255, 255, 255, 0.06) !important;
+      border-color: #3b82f6 !important;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5) !important;
+      transform: translateY(-4px) !important;
+    }
+
+    html[data-theme="dark"] .features-grid .feature-card h3,
+    html[data-theme="dark"] .features-grid .feature-card p,
+    html[data-theme="dark"] .testimonials-block .testi-text,
+    html[data-theme="dark"] .testimonials-block .testi-name,
+    html[data-theme="dark"] .step-content h4,
+    html[data-theme="dark"] .section h2,
+    html[data-theme="dark"] .score-info h3,
+    html[data-theme="dark"] .cta-block h2 {
+      color: #ffffff !important;
+    }
+
+    html[data-theme="dark"] .section-sub,
+    html[data-theme="dark"] .score-info p,
+    html[data-theme="dark"] .how-steps p,
+    html[data-theme="dark"] .features-grid .feature-card p,
+    html[data-theme="dark"] .cta-block p {
+      color: rgba(255, 255, 255, 0.7) !important;
+    }
+
+    html[data-theme="dark"] .testi-role {
+      color: rgba(255, 255, 255, 0.5) !important;
+    }
+
+    html[data-theme="dark"] .testimonials-block .testi-avatar {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(255, 255, 255, 0.25) !important;
+      color: #ffffff !important;
+    }
+
+    /* How It Works Terminal Styling */
+    html[data-theme="light"] .terminal-bar {
+      background: #f1f5f9 !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+    }
+    
+    html[data-theme="light"] .terminal-body {
+      background: #ffffff !important;
+      color: #334155 !important;
+    }
+
+    html[data-theme="light"] .t-cmd {
+      color: #0f172a !important;
+    }
+
+    html[data-theme="light"] .t-prompt {
+      color: #1e40af !important;
+    }
+
+    html[data-theme="light"] .t-cursor {
+      background: #1e40af !important;
+    }
+
+    html[data-theme="light"] .t-out-dim {
+      color: #94a3b8 !important;
+    }
+
+    html[data-theme="dark"] .terminal-bar {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    html[data-theme="dark"] .terminal-body {
+      background: rgba(3, 7, 18, 0.4) !important;
+      color: #f3f4f6 !important;
+    }
+
+    html[data-theme="dark"] .t-cmd {
+      color: #e5e7eb !important;
+    }
+
+    html[data-theme="dark"] .t-prompt {
+      color: #3b82f6 !important;
+    }
+
+    html[data-theme="dark"] .t-cursor {
+      background: #3b82f6 !important;
+    }
+
+    html[data-theme="dark"] .t-out-dim {
+      color: #6b7280 !important;
+    }
+
+    /* ── THEME ACCENTS & INTERACTIVE ELEMENTS ── */
+    html[data-theme="light"] .section-tag,
+    html[data-theme="light"] .score-label,
+    html[data-theme="light"] .feature-link {
+      color: #1e40af !important;
+    }
+
+    html[data-theme="light"] .section h2 em,
+    html[data-theme="light"] .testimonials-block h2 em,
+    html[data-theme="light"] .cta-block h2 em {
+      color: #1e40af !important;
+      font-style: normal;
+    }
+
+    html[data-theme="light"] .step-num {
+      color: #1e40af !important;
+      background: rgba(30, 64, 175, 0.08) !important;
+      border-color: rgba(30, 64, 175, 0.2) !important;
+    }
+
+    html[data-theme="light"] .score-number {
+      color: #1e40af !important;
+    }
+
+    html[data-theme="light"] .score-ring-fill {
+      stroke: #1e40af !important;
+    }
+
+    html[data-theme="light"] .score-bar-track {
+      background: #e2e8f0 !important;
+    }
+
+    html[data-theme="light"] .how-step {
+      border-color: #e2e8f0 !important;
+    }
+
+    html[data-theme="dark"] .section-tag,
+    html[data-theme="dark"] .score-label,
+    html[data-theme="dark"] .feature-link {
+      color: #3b82f6 !important;
+    }
+
+    html[data-theme="dark"] .section h2 em,
+    html[data-theme="dark"] .testimonials-block h2 em,
+    html[data-theme="dark"] .cta-block h2 em {
+      color: #3b82f6 !important;
+      font-style: normal;
+    }
+
+    html[data-theme="dark"] .step-num {
+      color: #3b82f6 !important;
+      background: rgba(59, 130, 246, 0.12) !important;
+      border-color: rgba(59, 130, 246, 0.25) !important;
+    }
+
+    html[data-theme="dark"] .score-number {
+      color: #3b82f6 !important;
+    }
+
+    html[data-theme="dark"] .score-ring-fill {
+      stroke: #3b82f6 !important;
+    }
+
+    html[data-theme="dark"] .score-bar-track {
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    html[data-theme="dark"] .how-step {
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* CTA Section Details */
+    html[data-theme="light"] .cta-block .tag {
+      color: #1e40af !important;
+      font-weight: 600 !important;
+    }
+    
+    html[data-theme="dark"] .cta-block .tag {
+      color: #3b82f6 !important;
+    }
+
+    html[data-theme="light"] .cta-block .cta-actions .btn-accent {
+      background: #1e40af !important;
+      color: #ffffff !important;
+      border-color: #1e40af !important;
+      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25) !important;
+    }
+
+    html[data-theme="light"] .cta-block .cta-actions .btn-accent:hover {
+      background: #1d4ed8 !important;
+      border-color: #1d4ed8 !important;
+      transform: translateY(-2px) !important;
+    }
+
+    html[data-theme="light"] .cta-block .cta-actions .btn-ghost {
+      color: #0b192c !important;
+      border-color: rgba(11, 25, 44, 0.3) !important;
+      background: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    html[data-theme="light"] .cta-block .cta-actions .btn-ghost:hover {
+      background: rgba(11, 25, 44, 0.06) !important;
+      border-color: #0b192c !important;
+    }
+
+    html[data-theme="dark"] .cta-block .cta-actions .btn-accent {
+      background: #ffffff !important;
+      color: #000000 !important;
+      border-color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25) !important;
+    }
+
+    html[data-theme="dark"] .cta-block .cta-actions .btn-accent:hover {
+      background: #f1f5f9 !important;
+      border-color: #f1f5f9 !important;
+      transform: translateY(-2px) !important;
+    }
+
+    html[data-theme="dark"] .cta-block .cta-actions .btn-ghost {
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.4) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    html[data-theme="dark"] .cta-block .cta-actions .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    /* ── DYNAMIC TRANSPARENT HEADER & RESPONSIVE POLISH ── */
+    .cm-header-container {
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+      border-bottom: none !important;
+    }
+
+    /* Laptop/Desktop Header Padding - slightly shift down for breathing room */
+    @media (min-width: 901px) {
+      .cm-header-container {
+        padding-top: 8px !important;
+        padding-bottom: 2px !important;
+      }
+    }
+
+    .cm-header-container:not(.scrolled) {
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, transparent 100%) !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    .cm-header-container.scrolled {
+      border-bottom: none !important;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+    }
+
+    html[data-theme="dark"] .cm-header-container.scrolled {
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35) !important;
+    }
+
+    /* Mobile Header Layout & Alignment Fix (Theme Toggle & Navbar Align) */
+    @media (max-width: 900px) {
+      .cm-top-tier {
+        padding: 0 16px !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+      .cm-bottom-tier {
+        padding: 0 16px !important;
+        display: flex !important;
+        align-items: center !important;
+      }
+      .cm-right-group {
+        display: flex !important;
+        align-items: center !important;
+      }
+      .cm-theme-toggle {
+        margin: 0 !important;
+      }
+    }
+
+    .cm-header-container:not(.scrolled) .cm-bottom-tier {
+      background: transparent !important;
+      border-top-color: transparent !important;
+      transition: background-color 0.3s ease, border-color 0.3s ease !important;
+    }
+
+    /* Text & Links in transparent header + Dark Theme Logo Overrides */
+    .cm-header-container:not(.scrolled) .cypr-logo polygon:first-of-type,
+    html[data-theme="dark"] .cypr-logo polygon:first-of-type {
+      fill: #ffffff !important;
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4)) !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cypr-logo polygon:last-of-type {
+      fill: transparent !important;
+    }
+
+    html[data-theme="light"] .cm-header-container.scrolled .cypr-logo polygon:last-of-type {
+      fill: #ffffff !important;
+    }
+
+    html[data-theme="dark"] .cm-header-container.scrolled .cypr-logo polygon:last-of-type {
+      fill: var(--bg) !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cypr-logo text,
+    html[data-theme="dark"] .cypr-logo text {
+      fill: #ffffff !important;
+      filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.4)) !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cm-context-path,
+    .cm-header-container:not(.scrolled) .cm-context-path .repo,
+    .cm-header-container:not(.scrolled) .cm-nav-tab {
+      color: #ffffff !important;
+      transition: color 0.3s ease !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cm-nav-tab svg {
+      color: rgba(255, 255, 255, 0.7) !important;
+      transition: color 0.3s ease !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cm-nav-tab.active {
+      border-bottom-color: #ffffff !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cm-nav-tab:hover {
+      color: rgba(255, 255, 255, 0.8) !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Search bar in transparent header */
+    .cm-header-container:not(.scrolled) .cm-nav-search-container input {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+      transition: all 0.3s ease !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cm-nav-search-container input:focus {
+      background: rgba(255, 255, 255, 0.2) !important;
+      border-color: #ffffff !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cm-nav-search-icon {
+      color: rgba(255, 255, 255, 0.6) !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cm-nav-search-kbd {
+      background: rgba(255, 255, 255, 0.15) !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+
+    /* Header Actions and Profile in transparent header */
+    .cm-header-container:not(.scrolled) .cm-icon-btn,
+    .cm-header-container:not(.scrolled) .cm-plus-trigger {
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.25) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      transition: all 0.3s ease !important;
+    }
+
+    .cm-header-container:not(.scrolled) .cm-icon-btn:hover,
+    .cm-header-container:not(.scrolled) .cm-plus-trigger:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+      border-color: #ffffff !important;
+      color: #ffffff !important;
+    }
+
+    /* Desktop-only hover reveal effect for capability cards */
+    @media (min-width: 901px) {
+      .features-grid .feature-card {
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+
+      .features-grid .feature-card p,
+      .features-grid .feature-card .feature-link {
+        max-height: 0;
+        opacity: 0 !important;
+        margin: 0 !important;
+        transform: translateY(12px);
+        transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                    opacity 0.3s ease, 
+                    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                    margin 0.4s ease !important;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .features-grid .feature-card:hover p {
+        max-height: 120px;
+        opacity: 1 !important;
+        margin-top: 12px !important;
+        margin-bottom: 20px !important;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .features-grid .feature-card:hover .feature-link {
+        max-height: 40px;
+        opacity: 1 !important;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      /* Specific Coming Soon Hover opacity handling */
+      .features-grid .feature-card .coming-soon-link {
+        opacity: 0 !important;
+      }
+      .features-grid .feature-card:hover .coming-soon-link {
+        opacity: 0.5 !important;
+      }
+    }
+
+    /* General Coming Soon Link style */
+    .coming-soon-link {
+      opacity: 0.5;
     }
   </style>
 </head>
+
 <body class="grid-bg">
 
-<!-- NAVBAR -->
-<nav class="navbar">
-  <a href="index.html" class="nav-logo">Cyber<span>Mitra</span></a>
-  <div class="nav-links">
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">Cyber<span>Mitra</span></a>
+    <div class="nav-links">
+      <a href="tools.html">Tools</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="contactus.html">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
+      <a href="signup.html" class="btn btn-accent btn-sm">Get Started</a>
+    </div>
+    <button class="hamburger" id="ham" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
     <a href="tools.html">Tools</a>
     <a href="pricing.html">Pricing</a>
     <a href="contactus.html">Contact</a>
-  </div>
-  <div class="nav-actions">
-    <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
-    <a href="signup.html" class="btn btn-accent btn-sm">Get Started</a>
-  </div>
-  <button class="hamburger" id="ham" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<div class="mobile-nav" id="mobileNav">
-  <a href="tools.html">Tools</a>
-  <a href="pricing.html">Pricing</a>
-  <a href="contactus.html">Contact</a>
-  <div class="mobile-actions">
-    <a href="login.html" class="btn btn-ghost" style="width:100%">Sign In</a>
-    <a href="signup.html" class="btn btn-accent" style="width:100%">Get Started Free</a>
-  </div>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-ring"></div>
-  <div class="scanline"></div>
-
- 
-
-  <h1 class="fade-up d2" style="margin-top:24px;">
-    <span class="line1">Enterprise-Grade</span>
-    <span class="line2">Cybersecurity</span>
-    <span class="line3">Protection</span>
-  </h1>
-
-  <p class="hero-desc fade-up d3">
-    Advanced threat detection, real-time security monitoring, and intelligent risk assessment for organizations and individuals who demand the highest standards of digital protection.
-  </p>
-
-  <div class="hero-actions fade-up d4">
-    <a href="signup.html" class="btn btn-accent btn-lg">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Start for Free
-    </a>
-    <a href="#features" class="btn btn-ghost btn-lg">See How It Works</a>
-  </div>
-
-  <div class="hero-stats fade-up d5">
-    <div class="hero-stat">
-      <div class="hero-stat-num" id="c1">0</div>
-      <div class="hero-stat-label">URLs Scanned</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num" id="c2">0</div>
-      <div class="hero-stat-label">Threats Blocked</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num" id="c3">0</div>
-      <div class="hero-stat-label">Users Protected</div>
-    </div>
-    <div class="hero-stat">
-      <div class="hero-stat-num" style="color:var(--lime)">99%</div>
-      <div class="hero-stat-label">Accuracy</div>
+    <div class="mobile-actions">
+      <a href="login.html" class="btn btn-ghost" style="width:100%">Sign In</a>
+      <a href="signup.html" class="btn btn-accent" style="width:100%">Get Started Free</a>
     </div>
   </div>
-</section>
 
-<!-- FEATURES -->
-<section class="section" id="features">
-  <div class="section-tag fade-up d1">Core Capabilities</div>
-  <h2 class="fade-up d2">Comprehensive <em>Security Tools</em></h2>
-  <p class="section-sub fade-up d3">Professional-grade security features designed for maximum protection and peace of mind.</p>
+  <!-- HERO -->
+  <section class="hero">
+    <!-- VIDEO BACKGROUND SCOPED TO HERO -->
+    <div class="hero-video-container">
+      <video autoplay muted loop playsinline class="hero-bg-video">
+        <source src="assets/video.mp4" type="video/mp4">
+      </video>
+      <div class="hero-bg-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <h1 class="fade-up d2" style="margin-top:24px;">
+        <span class="line1">Enterprise-Grade</span>
+        <span class="line2">Cybersecurity</span>
+        <span class="line3">Protection</span>
+      </h1>
 
-  <div class="features-grid">
-    <div class="feature-card featured fade-up d1">
-      <div class="feature-icon icon-blue">🔍</div>
-      <div class="badge badge-accent" style="margin-bottom:12px;">Live</div>
-      <h3>URL Phishing Checker</h3>
-      <p>Scan any URL against 70+ antivirus engines via VirusTotal. Get a verdict in under a second — Safe, Suspicious, or Malicious.</p>
-      <a href="url-check.html" class="feature-link">Try it → </a>
-    </div>
-    <div class="feature-card fade-up d2">
-      <div class="feature-icon icon-warn">🛡</div>
-      <div class="badge badge-warn" style="margin-bottom:12px;">Live</div>
-      <h3>Password Strength Test</h3>
-      <p>Deep analysis of your password — entropy calculation, crack time estimation, and real-time criteria feedback with backend scoring.</p>
-      <a href="password-check.html" class="feature-link">Try it →</a>
-    </div>
-    <div class="feature-card fade-up d3">
-      <div class="feature-icon icon-green">📊</div>
-      <div class="badge badge-green" style="margin-bottom:12px;">Dashboard</div>
-      <h3>Personal Safe Score</h3>
-      <p>Your security health at a glance. A dynamic score built from your scan history, password habits, and activity patterns.</p>
-      <a href="dashboard.html" class="feature-link">View Dashboard →</a>
-    </div>
-    <div class="feature-card fade-up d1">
-      <div class="feature-icon icon-blue">📋</div>
-      <div class="badge badge-accent" style="margin-bottom:12px;">History</div>
-      <h3>Scan History</h3>
-      <p>All your past scans logged and searchable. Track which sites you've checked and see your top 7 most-used tools.</p>
-      <a href="dashboard.html" class="feature-link">View History →</a>
-    </div>
-    <div class="feature-card fade-up d2">
-      <div class="feature-icon icon-red">🚨</div>
-      <div class="badge badge-red" style="margin-bottom:12px;">Alerts</div>
-      <h3>Threat Intelligence</h3>
-      <p>Powered by VirusTotal's global threat database — 70+ AV engines cross-checking every URL you submit in real time.</p>
-      <a href="#" class="feature-link">Learn more →</a>
-    </div>
-    <div class="feature-card fade-up d3" style="opacity:0.55;pointer-events:none;">
-      <div class="feature-icon icon-warn">🔒</div>
-      <div class="badge badge-warn" style="margin-bottom:12px;">Coming Soon</div>
-      <h3>Security Best Practices</h3>
-      <p>Curated guides on safe browsing, 2FA, phishing awareness, and more for everyday users and professionals alike.</p>
-      <span class="feature-link" style="opacity:0.5;">Soon →</span>
-    </div>
-  </div>
-</section>
+      <p class="hero-desc fade-up d3">
+        Advanced threat detection, real-time security monitoring, and intelligent risk assessment for organizations and
+        individuals who demand the highest standards of digital protection.
+      </p>
 
-<!-- HOW IT WORKS -->
-<section class="section" id="how" style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
-  <div class="how-grid">
-    <div>
-      <div class="section-tag fade-up d1">Getting Started</div>
-      <h2 class="fade-up d2">Simple.<br><em>Effective.</em></h2>
-      <p class="section-sub fade-up d3" style="margin-bottom:32px;">Three straightforward steps to comprehensive security.</p>
-      <div class="how-steps fade-up d4">
-        <div class="how-step">
-          <div class="step-num">01</div>
-          <div class="step-content">
-            <h4>Create your account</h4>
-            <p>Sign up in 30 seconds. No credit card. Your profile, scan history, and safe score are tied to your account.</p>
+      <div class="hero-actions fade-up d4">
+        <a href="signup.html" class="btn btn-accent btn-lg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Start for Free
+        </a>
+        <a href="#features" class="btn btn-ghost btn-lg">See How It Works</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="section-tag fade-up d1">Core Capabilities</div>
+    <h2 class="fade-up d2">Comprehensive <em>Security Tools</em></h2>
+    <p class="section-sub fade-up d3">Professional-grade security features designed for maximum protection and peace of
+      mind.</p>
+
+    <div class="features-grid">
+      <div class="feature-card featured fade-up d1">
+        <div class="feature-icon-row">
+          <div class="feature-icon">
+            <img src="assets/phishing.png" alt="Phishing Scan">
+          </div>
+          <div class="badge badge-green">Live</div>
+        </div>
+        <h3>URL Phishing Checker</h3>
+        <p>Scan any URL against 70+ antivirus engines via VirusTotal. Get a verdict in under a second — Safe,
+          Suspicious, or Malicious.</p>
+        <a href="url-check.html" class="feature-link">Try it → </a>
+      </div>
+      <div class="feature-card fade-up d2">
+        <div class="feature-icon-row">
+          <div class="feature-icon">
+            <img src="assets/password.png" alt="Password Scan">
+          </div>
+          <div class="badge badge-green">Live</div>
+        </div>
+        <h3>Password Strength Test</h3>
+        <p>Deep analysis of your password — entropy calculation, crack time estimation, and real-time criteria feedback
+          with backend scoring.</p>
+        <a href="password-check.html" class="feature-link">Try it →</a>
+      </div>
+      <div class="feature-card fade-up d3">
+        <div class="feature-icon-row">
+          <div class="feature-icon">
+            <img src="assets/safescore.png" alt="Safe Score Scan">
+          </div>
+          <div class="badge badge-warn">Dashboard</div>
+        </div>
+        <h3>Personal Safe Score</h3>
+        <p>Your security health at a glance. A dynamic score built from your scan history, password habits, and activity
+          patterns.</p>
+        <a href="dashboard.html" class="feature-link">View Dashboard →</a>
+      </div>
+      <div class="feature-card fade-up d1">
+        <div class="feature-icon-row">
+          <div class="feature-icon">
+            <img src="assets/history.png" alt="Scan History">
+          </div>
+          <div class="badge badge-accent">History</div>
+        </div>
+        <h3>Scan History</h3>
+        <p>All your past scans logged and searchable. Track which sites you've checked and see your top 7 most-used
+          tools.</p>
+        <a href="dashboard.html" class="feature-link">View History →</a>
+      </div>
+      <div class="feature-card fade-up d2">
+        <div class="feature-icon-row">
+          <div class="feature-icon">
+            <img src="assets/threat.png" alt="Threat Intelligence Scan">
+          </div>
+          <div class="badge badge-red">Alerts</div>
+        </div>
+        <h3>Threat Intelligence</h3>
+        <p>Powered by VirusTotal's global threat database — 70+ AV engines cross-checking every URL you submit in real
+          time.</p>
+        <a href="#" class="feature-link">Learn more →</a>
+      </div>
+      <div class="feature-card fade-up d3 coming-soon-card">
+        <div class="feature-icon-row">
+          <div class="feature-icon">
+            <img src="assets/bestpractices.png" alt="Security Best Practices Scan">
+          </div>
+          <div class="badge badge-warn">Coming Soon</div>
+        </div>
+        <h3>Security Best Practices</h3>
+        <p>Curated guides on safe browsing, 2FA, phishing awareness, and more for everyday users and professionals
+          alike.</p>
+        <span class="feature-link coming-soon-link">Soon →</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how"
+    style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <div class="how-grid">
+      <div>
+        <div class="section-tag fade-up d1">Getting Started</div>
+        <h2 class="fade-up d2">Simple.<br><em>Effective.</em></h2>
+        <p class="section-sub fade-up d3" style="margin-bottom:32px;">Three straightforward steps to comprehensive
+          security.</p>
+        <div class="how-steps fade-up d4">
+          <div class="how-step">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <h4>Create your account</h4>
+              <p>Sign up in 30 seconds. No credit card. Your profile, scan history, and safe score are tied to your
+                account.</p>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <h4>Scan anything suspicious</h4>
+              <p>Paste a URL or test a password. Our backend queries VirusTotal and returns a detailed verdict
+                instantly.</p>
+            </div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <h4>Track your security health</h4>
+              <p>Every scan contributes to your Safe Score. Watch it improve as you develop safer habits over time.</p>
+            </div>
           </div>
         </div>
-        <div class="how-step">
-          <div class="step-num">02</div>
-          <div class="step-content">
-            <h4>Scan anything suspicious</h4>
-            <p>Paste a URL or test a password. Our backend queries VirusTotal and returns a detailed verdict instantly.</p>
+      </div>
+      <div class="terminal fade-up d3">
+        <div class="terminal-bar">
+          <div class="t-dot t-dot-red"></div>
+          <div class="t-dot t-dot-yellow"></div>
+          <div class="t-dot t-dot-green"></div>
+          <span
+            style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-left:8px;">cybermitra —
+            scan</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-prompt">›</span><span class="t-cmd">scan --url
+              "https://login-paypa1.com"</span></div>
+          <div class="t-line" style="margin-top:8px;"><span class="t-out-dim"> Querying VirusTotal...</span></div>
+          <div class="t-line"><span class="t-out-dim"> Checking heuristics...</span></div>
+          <div class="t-line" style="margin-top:4px;"><span class="t-out-warn"> ⚠ TYPOSQUATTING DETECTED</span></div>
+          <div class="t-line"><span class="t-out-warn"> ⚠ SUSPICIOUS TLD</span></div>
+          <div class="t-line" style="margin-top:4px;"><span class="t-out-dim"> VT engines flagged: 23/74</span></div>
+          <div class="t-line" style="margin-top:8px;"><span class="t-out-dim"> Status: </span><span class="t-out-warn"
+              style="font-weight:700;">PHISHING</span></div>
+          <div class="t-line" style="margin-top:12px;"><span class="t-prompt">›</span><span class="t-cmd">scan --url
+              "https://github.com"</span></div>
+          <div class="t-line" style="margin-top:8px;"><span class="t-out-dim"> Querying VirusTotal...</span></div>
+          <div class="t-line"><span class="t-out-safe"> ✓ 0/74 engines flagged</span></div>
+          <div class="t-line"><span class="t-out-safe"> ✓ Domain reputation: EXCELLENT</span></div>
+          <div class="t-line" style="margin-top:8px;"><span class="t-out-dim"> Status: </span><span class="t-out-safe"
+              style="font-weight:700;">SAFE</span></div>
+          <div class="t-line" style="margin-top:12px;"><span class="t-prompt">›</span><span class="t-cursor"></span>
           </div>
         </div>
-        <div class="how-step">
-          <div class="step-num">03</div>
-          <div class="step-content">
-            <h4>Track your security health</h4>
-            <p>Every scan contributes to your Safe Score. Watch it improve as you develop safer habits over time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAFE SCORE -->
+  <section class="score-section">
+    <div class="score-showcase">
+      <div class="score-info fade-up d1">
+        <div class="section-tag">Safe Score</div>
+        <h3>Your personal security <em style="color:var(--lime);font-style:normal;">health score</em></h3>
+        <p>Every URL you scan, every password you test contributes to a live score that reflects your security habits.
+          The more you use CyberMitra, the smarter your score gets.</p>
+        <div class="score-breakdown">
+          <div class="score-item">
+            <span class="score-item-label">URLs Scanned</span>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" style="width:80%;background:var(--accent)"></div>
+            </div>
+            <span class="score-item-val">80</span>
+          </div>
+          <div class="score-item">
+            <span class="score-item-label">Threats Avoided</span>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" style="width:95%;background:var(--green)"></div>
+            </div>
+            <span class="score-item-val">95</span>
+          </div>
+          <div class="score-item">
+            <span class="score-item-label">Password Health</span>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" style="width:72%;background:var(--warn)"></div>
+            </div>
+            <span class="score-item-val">72</span>
+          </div>
+          <div class="score-item">
+            <span class="score-item-label">Activity Streak</span>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" style="width:60%;background:var(--accent)"></div>
+            </div>
+            <span class="score-item-val">60</span>
+          </div>
+        </div>
+      </div>
+      <div class="score-visual fade-up d3">
+        <div class="score-ring-wrap">
+          <svg viewBox="0 0 260 260">
+            <circle class="score-ring-bg" cx="130" cy="130" r="110" />
+            <circle class="score-ring-fill" cx="130" cy="130" r="110" />
+          </svg>
+          <div class="score-ring-center">
+            <div class="score-number">82</div>
+            <div class="score-label">Safe Score</div>
+            <div class="badge badge-green" style="margin-top:8px;">Good</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="terminal fade-up d3">
-      <div class="terminal-bar">
-        <div class="t-dot t-dot-red"></div>
-        <div class="t-dot t-dot-yellow"></div>
-        <div class="t-dot t-dot-green"></div>
-        <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-left:8px;">cybermitra — scan</span>
-      </div>
-      <div class="terminal-body">
-        <div class="t-line"><span class="t-prompt">›</span><span class="t-cmd">scan --url "https://login-paypa1.com"</span></div>
-        <div class="t-line" style="margin-top:8px;"><span class="t-out-dim">  Querying VirusTotal...</span></div>
-        <div class="t-line"><span class="t-out-dim">  Checking heuristics...</span></div>
-        <div class="t-line" style="margin-top:4px;"><span class="t-out-warn">  ⚠ TYPOSQUATTING DETECTED</span></div>
-        <div class="t-line"><span class="t-out-warn">  ⚠ SUSPICIOUS TLD</span></div>
-        <div class="t-line" style="margin-top:4px;"><span class="t-out-dim">  VT engines flagged: 23/74</span></div>
-        <div class="t-line" style="margin-top:8px;"><span class="t-out-dim">  Status: </span><span class="t-out-warn" style="font-weight:700;">PHISHING</span></div>
-        <div class="t-line" style="margin-top:12px;"><span class="t-prompt">›</span><span class="t-cmd">scan --url "https://github.com"</span></div>
-        <div class="t-line" style="margin-top:8px;"><span class="t-out-dim">  Querying VirusTotal...</span></div>
-        <div class="t-line"><span class="t-out-safe">  ✓ 0/74 engines flagged</span></div>
-        <div class="t-line"><span class="t-out-safe">  ✓ Domain reputation: EXCELLENT</span></div>
-        <div class="t-line" style="margin-top:8px;"><span class="t-out-dim">  Status: </span><span class="t-out-safe" style="font-weight:700;">SAFE</span></div>
-        <div class="t-line" style="margin-top:12px;"><span class="t-prompt">›</span><span class="t-cursor"></span></div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- SAFE SCORE -->
-<section class="score-section">
-  <div class="score-showcase">
-    <div class="score-info fade-up d1">
-      <div class="section-tag">Safe Score</div>
-      <h3>Your personal security <em style="color:var(--lime);font-style:normal;">health score</em></h3>
-      <p>Every URL you scan, every password you test contributes to a live score that reflects your security habits. The more you use CyberMitra, the smarter your score gets.</p>
-      <div class="score-breakdown">
-        <div class="score-item">
-          <span class="score-item-label">URLs Scanned</span>
-          <div class="score-bar-track"><div class="score-bar-fill" style="width:80%;background:var(--accent)"></div></div>
-          <span class="score-item-val">80</span>
-        </div>
-        <div class="score-item">
-          <span class="score-item-label">Threats Avoided</span>
-          <div class="score-bar-track"><div class="score-bar-fill" style="width:95%;background:var(--green)"></div></div>
-          <span class="score-item-val">95</span>
-        </div>
-        <div class="score-item">
-          <span class="score-item-label">Password Health</span>
-          <div class="score-bar-track"><div class="score-bar-fill" style="width:72%;background:var(--warn)"></div></div>
-          <span class="score-item-val">72</span>
-        </div>
-        <div class="score-item">
-          <span class="score-item-label">Activity Streak</span>
-          <div class="score-bar-track"><div class="score-bar-fill" style="width:60%;background:var(--accent)"></div></div>
-          <span class="score-item-val">60</span>
+  <!-- CINEMATIC FOOTER BLOCK (TESTIMONIALS + CTA COMBINED) -->
+  <section class="cinematic-footer-section">
+    <div class="cinematic-footer-content">
+      <!-- TESTIMONIALS -->
+      <div class="testimonials-block" style="padding-bottom: 60px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+        <div class="section-tag fade-up d1">Trusted by users</div>
+        <h2 class="fade-up d2" style="margin-bottom:40px; text-align: center;">What people are <em>saying</em></h2>
+        <div class="testi-grid fade-up d3">
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"Caught a phishing link that my email provider missed. CyberMitra literally saved my
+              bank
+              account."</p>
+            <div class="testi-author">
+              <div class="testi-avatar">R</div>
+              <div>
+                <div class="testi-name">Rohit Sharma</div>
+                <div class="testi-role">Software Engineer</div>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-text">"The Safe Score dashboard is brilliant. I check it weekly and it's genuinely changed
+              how I
+              think about my passwords."</p>
+            <div class="testi-author">
+              <div class="testi-avatar" style="color:#059669">P</div>
+              <div>
+                <div class="testi-name">Priya Nair</div>
+                <div class="testi-role">Product Manager</div>
+              </div>
+            </div>
+          </div>
+          <div class="testi-card">
+            <div class="testi-stars">★★★★☆</div>
+            <p class="testi-text">"Finally a security tool that doesn't require a PhD to use. Clean UI, fast results,
+              and
+              the terminal-style output is 🔥"</p>
+            <div class="testi-author">
+              <div class="testi-avatar">A</div>
+              <div>
+                <div class="testi-name">Arjun Dev</div>
+                <div class="testi-role">Cybersecurity Student</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="score-visual fade-up d3">
-      <div class="score-ring-wrap">
-        <svg viewBox="0 0 260 260">
-          <circle class="score-ring-bg" cx="130" cy="130" r="110"/>
-          <circle class="score-ring-fill" cx="130" cy="130" r="110"/>
-        </svg>
-        <div class="score-ring-center">
-          <div class="score-number">82</div>
-          <div class="score-label">Safe Score</div>
-          <div class="badge badge-green" style="margin-top:8px;">Good</div>
+
+      <!-- CTA -->
+      <div class="cta-block" style="padding-top: 80px; text-align: center;">
+        <div class="tag fade-up d1" style="margin-bottom:20px;">Ready for Advanced Protection?</div>
+        <h2 class="fade-up d2">Take Control of Your<br><em>Digital Security</em></h2>
+        <p class="fade-up d3">Join organizations and individuals who trust CyberMitra for enterprise-class threat
+          detection
+          and response.</p>
+        <div class="cta-actions fade-up d4">
+          <a href="signup.html" class="btn btn-accent btn-lg">
+            Create Free Account
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="login.html" class="btn btn-ghost btn-lg">Sign In</a>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- TESTIMONIALS -->
-<section class="section">
-  <div class="section-tag fade-up d1">Trusted by users</div>
-  <h2 class="fade-up d2" style="margin-bottom:40px;">What people are <em>saying</em></h2>
-  <div class="testi-grid fade-up d3">
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"Caught a phishing link that my email provider missed. CyberMitra literally saved my bank account."</p>
-      <div class="testi-author">
-        <div class="testi-avatar">R</div>
-        <div><div class="testi-name">Rohit Sharma</div><div class="testi-role">Software Engineer</div></div>
-      </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">CyberMitra</div>
+    <div class="footer-links">
+      <a href="index.html">Tools</a>
+      <a href="contactus.html">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="signup.html">Sign Up</a>
     </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★★</div>
-      <p class="testi-text">"The Safe Score dashboard is brilliant. I check it weekly and it's genuinely changed how I think about my passwords."</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="color:#059669">P</div>
-        <div><div class="testi-name">Priya Nair</div><div class="testi-role">Product Manager</div></div>
-      </div>
+    <div class="footer-copy" style="text-align: right; line-height: 1.5;">
+      © 2025 CyberMitra. All rights reserved.<br>
+      <a href="https://www.flaticon.com/free-icons/phishing" title="phishing icons" target="_blank" style="opacity: 0.45; font-size: 0.62rem; text-transform: none; letter-spacing: normal;">Phishing icons created by Freepik - Flaticon</a> | 
+      <a href="https://www.flaticon.com/free-icons/password" title="password icons" target="_blank" style="opacity: 0.45; font-size: 0.62rem; text-transform: none; letter-spacing: normal;">Password icons created by Dewi Sari - Flaticon</a> | 
+      <a href="https://www.flaticon.com/free-icons/ui" title="ui icons" target="_blank" style="opacity: 0.45; font-size: 0.62rem; text-transform: none; letter-spacing: normal;">Ui icons created by PixelVerse - Flaticon</a> | 
+      <a href="https://www.flaticon.com/free-icons/speedometer" title="speedometer icons" target="_blank" style="opacity: 0.45; font-size: 0.62rem; text-transform: none; letter-spacing: normal;">Speedometer icons created by Freepik - Flaticon</a> | 
+      <a href="https://www.flaticon.com/free-icons/problem-solving" title="problem-solving icons" target="_blank" style="opacity: 0.45; font-size: 0.62rem; text-transform: none; letter-spacing: normal;">Problem-solving icons created by Canticons - Flaticon</a> | 
+      <a href="https://www.flaticon.com/free-icons/threat" title="threat icons" target="_blank" style="opacity: 0.45; font-size: 0.62rem; text-transform: none; letter-spacing: normal;">Threat icons created by gravisio - Flaticon</a> | 
+      <a href="https://www.flaticon.com/free-icons/like" title="like icons" target="_blank" style="opacity: 0.45; font-size: 0.62rem; text-transform: none; letter-spacing: normal;">Like icons created by Freepik - Flaticon</a>
     </div>
-    <div class="testi-card">
-      <div class="testi-stars">★★★★☆</div>
-      <p class="testi-text">"Finally a security tool that doesn't require a PhD to use. Clean UI, fast results, and the terminal-style output is 🔥"</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="color:#b45309">A</div>
-        <div><div class="testi-name">Arjun Dev</div><div class="testi-role">Cybersecurity Student</div></div>
-      </div>
-    </div>
-  </div>
-</section>
+  </footer>
 
-<!-- CTA -->
-<section class="cta-section">
-  <div class="tag fade-up d1" style="margin-bottom:20px;">Ready for Advanced Protection?</div>
-  <h2 class="fade-up d2">Take Control of Your<br><em>Digital Security</em></h2>
-  <p class="fade-up d3">Join organizations and individuals who trust CyberMitra for enterprise-class threat detection and response.</p>
-  <div class="cta-actions fade-up d4">
-    <a href="signup.html" class="btn btn-accent btn-lg">
-      Create Free Account
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-    <a href="login.html" class="btn btn-ghost btn-lg">Sign In</a>
-  </div>
-</section>
+  <script>
+    // 1. Hamburger Menu Logic
+    const ham = document.getElementById('ham'), mn = document.getElementById('mobileNav');
+    ham.addEventListener('click', () => {
+      ham.classList.toggle('open');
+      mn.classList.toggle('open');
+    });
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-logo">CyberMitra</div>
-  <div class="footer-links">
-    <a href="index.html">Tools</a>
-    <a href="contactus.html">Contact</a>
-    <a href="login.html">Login</a>
-    <a href="signup.html">Sign Up</a>
-  </div>
-  <div class="footer-copy">© 2025 CyberMitra. All rights reserved.</div>
-</footer>
+    document.addEventListener('click', e => {
+      if (!ham.contains(e.target) && !mn.contains(e.target)) {
+        ham.classList.remove('open');
+        mn.classList.remove('open');
+      }
+    });
 
-<script>
-// 1. Hamburger Menu Logic
-const ham = document.getElementById('ham'), mn = document.getElementById('mobileNav');
-ham.addEventListener('click', () => { 
-    ham.classList.toggle('open'); 
-    mn.classList.toggle('open'); 
-});
-
-document.addEventListener('click', e => { 
-    if(!ham.contains(e.target) && !mn.contains(e.target)){ 
-        ham.classList.remove('open'); 
-        mn.classList.remove('open'); 
-    }
-});
-
-// 2. Counter Animation Function
-function animCount(el, target, suffix='', duration=2000) {
-    if(!el) return;
-    let start = null;
-    const step = ts => {
+    // 2. Counter Animation Function
+    function animCount(el, target, suffix = '', duration = 2000) {
+      if (!el) return;
+      let start = null;
+      const step = ts => {
         if (!start) start = ts;
         const p = Math.min((ts - start) / duration, 1);
         const ease = 1 - Math.pow(1 - p, 3); // Smooth ease-out effect
         el.textContent = Math.floor(ease * target).toLocaleString() + suffix;
         if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-}
+      };
+      requestAnimationFrame(step);
+    }
 
-// 3. Backend se Real Stats fetch karna aur animate karna
-async function loadRealTimeStats() {
-    try {
+    // 3. Backend se Real Stats fetch karna aur animate karna
+    async function loadRealTimeStats() {
+      try {
         // Backend API Call
         const response = await fetch((window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api/stats/global');
         if (response.ok) {
-            const data = await response.json();
-            
-            // HTML IDs: c1 (Total Scans), c2 (Threats), c3 (Users)
-            animCount(document.getElementById('c1'), data.totalScans || 0);
-            animCount(document.getElementById('c2'), data.threatsBlocked || 0);
-            animCount(document.getElementById('c3'), data.activeUsers || 0);
+          const data = await response.json();
+
+          // HTML IDs: c1 (Total Scans), c2 (Threats), c3 (Users)
+          animCount(document.getElementById('c1'), data.totalScans || 0);
+          animCount(document.getElementById('c2'), data.threatsBlocked || 0);
+          animCount(document.getElementById('c3'), data.activeUsers || 0);
         }
-    } catch (error) {
+      } catch (error) {
         console.error("Backend stats not reachable, using fallback numbers.");
         // Agar backend band ho toh ye numbers dikhenge
         animCount(document.getElementById('c1'), 48200);
         animCount(document.getElementById('c2'), 3840);
         animCount(document.getElementById('c3'), 12500);
+      }
     }
-}
 
-// 4. Page load par trigger karna
-window.addEventListener('load', () => {
-    // Reveal effects trigger
-    setTimeout(loadRealTimeStats, 400);
-});
+    // 4. Page load par trigger karna
+    window.addEventListener('load', () => {
+      // Reveal effects trigger
+      setTimeout(loadRealTimeStats, 400);
 
-// 5. Scroll Reveal Logic (Fade-up effect)
-const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { 
-        if (e.isIntersecting) { 
-            e.target.style.opacity = '1'; 
-            e.target.style.transform = 'translateY(0)'; 
-        }
+      // Header scroll logic for active status transition
+      const header = document.querySelector('.cm-header-container');
+      if (header) {
+        const handleScroll = () => {
+          if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('scrolled');
+          }
+        };
+        window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Initial check
+      }
     });
-}, { threshold: 0.1 });
 
-document.querySelectorAll('.fade-up').forEach(el => {
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    obs.observe(el);
-});
-</script>
+    // 5. Scroll Reveal Logic (Fade-up effect)
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => {
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      obs.observe(el);
+    });
+  </script>
 </body>
+
 </html>

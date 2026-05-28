@@ -1,597 +1,1506 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <script src="assets/js/config.js"></script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Activity Logs — CyberMitra</title>
-<script src="assets/js/site-enhancements.js"></script>
-<link rel="stylesheet" href="assets/css/style.css">
-<meta name="description" content="View your full security activity history on CyberMitra — URL scans, password checks, logins, and more.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-/* ═══════════════════════════  ROOT TOKENS  ═══════════════════════════ */
-:root {
-  --bg:#ffffff; --bg2:#f8fafc; --bg3:#f1f5f9; --bg4:#e2e8f0;
-  --card:#ffffff; --card2:#f8fafc;
-  --border:#e2e8f0; --border2:#cbd5e1;
-  --lime:#1e40af; --lime2:#3b82f6;
-  --lime-dim:rgba(30,64,175,0.08); --lime-glow:rgba(30,64,175,0.15);
-  --red:#ef4444; --red-dim:rgba(239,68,68,0.10);
-  --amber:#f59e0b; --amber-dim:rgba(245,158,11,0.08);
-  --blue:#3b82f6; --blue-dim:rgba(59,130,246,0.10);
-  --text:#0f172a; --text2:#475569; --text3:#94a3b8;
-  --sidebar-w:200px; --topbar-h:60px;
-  --font:'Outfit',sans-serif; --mono:'JetBrains Mono',monospace;
-  --r:14px; --r-sm:10px;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{-webkit-text-size-adjust:100%;}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
-a{text-decoration:none;color:inherit;}
-button{font-family:inherit;cursor:pointer;border:none;background:none;}
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Logs — CyberMitra</title>
+  <script src="assets/js/site-enhancements.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <meta name="description"
+    content="View your full security activity history on CyberMitra — URL scans, password checks, logins, and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ═══════════════════════════  ROOT TOKENS  ═══════════════════════════ */
+    :root {
+      --bg: #ffffff;
+      --bg2: #f8fafc;
+      --bg3: #f1f5f9;
+      --bg4: #e2e8f0;
+      --card: #ffffff;
+      --card2: #f8fafc;
+      --border: #e2e8f0;
+      --border2: #cbd5e1;
+      --lime: #1e40af;
+      --lime2: #3b82f6;
+      --lime-dim: rgba(30, 64, 175, 0.08);
+      --lime-glow: rgba(30, 64, 175, 0.15);
+      --red: #ef4444;
+      --red-dim: rgba(239, 68, 68, 0.10);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245, 158, 11, 0.08);
+      --blue: #3b82f6;
+      --blue-dim: rgba(59, 130, 246, 0.10);
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --sidebar-w: 200px;
+      --topbar-h: 60px;
+      --font: 'Outfit', sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --r: 14px;
+      --r-sm: 10px;
+    }
 
-/* ─── SHELL ─── */
-.shell{display:flex;min-height:100vh;}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* ─── SIDEBAR ─── */
-.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:200;transition:transform .3s ease;}
-.sb-logo{padding:20px 20px 18px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border);text-decoration:none;}
-.sb-logo-icon{width:30px;height:30px;background:var(--lime);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.sb-logo-icon svg{width:16px;height:16px;color:#0a0a0a;}
-.sb-logo-text{font-size:1.05rem;font-weight:800;letter-spacing:.02em;color:var(--text);}
-.sb-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
-.sb-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:var(--r-sm);font-size:.875rem;font-weight:500;color:var(--text3);cursor:pointer;transition:all .18s;border:1px solid transparent;text-decoration:none;}
-.sb-item svg{width:17px;height:17px;flex-shrink:0;transition:color .18s;}
-.sb-item:hover{color:var(--text2);background:var(--bg3);}
-.sb-item.active{color:var(--text);background:rgba(200,255,0,0.08);border-color:rgba(200,255,0,0.15);}
-.sb-item.active svg{color:var(--lime);}
-.sb-item.active span{color:var(--lime);}
-.sb-bottom{padding:10px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:2px;}
-.sb-logout{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:var(--r-sm);font-size:.875rem;font-weight:500;color:var(--text3);cursor:pointer;transition:all .18s;}
-.sb-logout:hover{color:var(--red);background:var(--red-dim);}
-.sb-logout svg{width:17px;height:17px;}
-.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:199;}
-.sb-overlay.open{display:block;}
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
 
-/* ─── MAIN ─── */
-.main-area{flex:1;margin-left:var(--sidebar-w);display:flex;flex-direction:column;min-height:100vh;}
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* ─── TOPBAR ─── */
-.topbar{
-  height:var(--topbar-h);background:rgba(10,10,10,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;
-  padding:0 28px;position:sticky;top:0;z-index:100;
-}
-.tb-left{display:flex;align-items:center;gap:14px;}
-.tb-hamburger{display:none;flex-direction:column;gap:4px;width:32px;height:32px;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:8px;cursor:pointer;}
-.tb-hamburger span{display:block;width:100%;height:2px;background:var(--text2);border-radius:2px;}
-.tb-breadcrumb{display:flex;align-items:center;gap:7px;font-size:.82rem;color:var(--text3);font-family:var(--mono);}
-.tb-breadcrumb .sep{color:var(--border2);}
-.tb-breadcrumb .current{color:var(--text2);}
-.tb-right{display:flex;align-items:center;gap:12px;}
-.tb-secure-pill{display:flex;align-items:center;gap:7px;padding:6px 14px;background:rgba(200,255,0,.07);border:1px solid rgba(200,255,0,.2);border-radius:100px;font-family:var(--mono);font-size:.65rem;font-weight:500;color:var(--lime);letter-spacing:.04em;text-transform:uppercase;}
-.tb-secure-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);animation:pulse 2s ease-in-out infinite;}
-.tb-bell{position:relative;width:34px;height:34px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .18s;}
-.tb-bell:hover{border-color:var(--border2);}
-.tb-bell svg{width:16px;height:16px;color:var(--text2);}
-.tb-bell-badge{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--bg);}
-.tb-user{display:flex;align-items:center;gap:10px;padding:5px 5px 5px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:100px;cursor:pointer;transition:border-color .18s;}
-.tb-user:hover{border-color:var(--border2);}
-.tb-user-info{text-align:right;}
-.tb-user-name{font-size:.82rem;font-weight:600;line-height:1.2;}
-.tb-user-plan{font-family:var(--mono);font-size:.6rem;color:var(--text3);}
-.tb-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--lime),#44ff88);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.88rem;color:#0a0a0a;overflow:hidden;flex-shrink:0;border:1.5px solid rgba(200,255,0,.3);}
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-/* ─── PAGE ─── */
-.page-content{flex:1;padding:28px 28px 48px;overflow-y:auto;}
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
 
-/* ─── Page Header ─── */
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap;animation:fadeUp .5s ease forwards;}
-.page-tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--lime);background:var(--lime-dim);border:1px solid rgba(200,255,0,.2);padding:4px 12px;border-radius:100px;margin-bottom:12px;}
-.page-header h1{font-size:1.75rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-bottom:6px;}
-.page-header p{font-size:.875rem;color:var(--text2);line-height:1.6;}
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
 
-/* ─── Stats Row ─── */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;animation:fadeUp .5s .08s ease forwards;opacity:0;}
-.stat-chip{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;gap:12px;transition:border-color .18s;}
-.stat-chip:hover{border-color:var(--border2);}
-.stat-chip-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.stat-chip-icon svg{width:16px;height:16px;}
-.stat-chip-val{font-size:1.5rem;font-weight:800;line-height:1;letter-spacing:-.02em;}
-.stat-chip-lbl{font-size:.72rem;color:var(--text3);margin-top:2px;}
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
 
-/* ─── Filter bar ─── */
-.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;animation:fadeUp .5s .14s ease forwards;opacity:0;}
-.filter-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--card);border:1px solid var(--border);border-radius:100px;font-size:.78rem;font-weight:500;color:var(--text3);cursor:pointer;transition:all .18s;}
-.filter-btn:hover{color:var(--text2);border-color:var(--border2);}
-.filter-btn.active{color:var(--lime);background:var(--lime-dim);border-color:rgba(200,255,0,.25);}
-.filter-btn svg{width:13px;height:13px;}
-.filter-spacer{flex:1;}
-.search-wrap{position:relative;}
-.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:13px;height:13px;color:var(--text3);}
-.search-input{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:7px 14px 7px 30px;font-family:var(--mono);font-size:.75rem;color:var(--text);outline:none;transition:border-color .18s;width:200px;}
-.search-input:focus{border-color:var(--lime);}
-.search-input::placeholder{color:var(--text3);}
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 2px;
+    }
 
-/* ─── Log Timeline ─── */
-.log-timeline{display:flex;flex-direction:column;gap:0;animation:fadeUp .5s .18s ease forwards;opacity:0;}
-.log-item{
-  display:flex;align-items:flex-start;gap:14px;
-  padding:16px 18px;background:var(--card);border:1px solid var(--border);
-  border-radius:0;transition:all .18s;position:relative;
-}
-.log-item:first-child{border-radius:var(--r) var(--r) 0 0;}
-.log-item:last-child{border-radius:0 0 var(--r) var(--r);}
-.log-item:only-child{border-radius:var(--r);}
-.log-item+.log-item{border-top:none;}
-.log-item:hover{background:var(--bg3);z-index:1;}
+    @keyframes pulse {
 
-/* timeline line */
-.log-item::before{
-  content:'';position:absolute;left:38px;top:44px;bottom:-1px;
-  width:1px;background:var(--border);z-index:0;
-}
-.log-item:last-child::before{display:none;}
+      0%,
+      100% {
+        opacity: 1
+      }
 
-.log-dot{
-  width:24px;height:24px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;z-index:1;margin-top:2px;
-}
-.log-dot svg{width:12px;height:12px;}
-.log-dot.lime{background:rgba(200,255,0,.12);border:1.5px solid rgba(200,255,0,.3);}
-.log-dot.lime svg{color:var(--lime);}
-.log-dot.red{background:rgba(255,68,68,.12);border:1.5px solid rgba(255,68,68,.3);}
-.log-dot.red svg{color:var(--red);}
-.log-dot.amber{background:rgba(255,170,0,.12);border:1.5px solid rgba(255,170,0,.3);}
-.log-dot.amber svg{color:var(--amber);}
-.log-dot.blue{background:rgba(100,180,255,.12);border:1.5px solid rgba(100,180,255,.3);}
-.log-dot.blue svg{color:var(--blue);}
-.log-dot.gray{background:var(--bg3);border:1.5px solid var(--border2);}
-.log-dot.gray svg{color:var(--text3);}
+      50% {
+        opacity: .4
+      }
+    }
 
-.log-body{flex:1;min-width:0;}
-.log-title{font-size:.875rem;font-weight:600;margin-bottom:3px;line-height:1.3;}
-.log-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-.log-desc{font-size:.78rem;color:var(--text2);}
-.log-time{font-family:var(--mono);font-size:.65rem;color:var(--text3);}
-.log-tag{font-family:var(--mono);font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:4px;}
-.log-tag.safe{color:#0a0a0a;background:var(--lime);}
-.log-tag.danger{color:#fff;background:var(--red);}
-.log-tag.warning{color:#0a0a0a;background:var(--amber);}
-.log-tag.info{color:#0a0a0a;background:var(--blue);}
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px)
+      }
 
-.log-url{font-family:var(--mono);font-size:.72rem;color:var(--text3);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:460px;}
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
 
-.log-empty{
-  display:none;flex-direction:column;align-items:center;justify-content:center;
-  padding:60px 24px;background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r);gap:12px;text-align:center;
-}
-.log-empty svg{width:40px;height:40px;color:var(--text3);}
-.log-empty h3{font-size:1rem;font-weight:700;color:var(--text2);}
-.log-empty p{font-size:.85rem;color:var(--text3);}
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
 
-/* ─── Skeleton loader ─── */
-.skeleton{
-  background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);
-  background-size:400px 100%;
-  animation:shimmer 1.4s infinite;
-  border-radius:6px;
-}
-.skeleton-item{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;background:var(--card);border:1px solid var(--border);}
-.skeleton-item+.skeleton-item{border-top:none;}
-.skeleton-item:first-child{border-radius:var(--r) var(--r) 0 0;}
-.skeleton-item:last-child{border-radius:0 0 var(--r) var(--r);}
+    @keyframes shimmer {
+      0% {
+        background-position: -400px 0
+      }
 
-/* ─── Load More ─── */
-.load-more-wrap{display:flex;justify-content:center;margin-top:18px;}
-.btn-load-more{display:flex;align-items:center;gap:7px;padding:10px 24px;background:var(--card);border:1px solid var(--border);border-radius:100px;font-size:.82rem;font-weight:600;color:var(--text2);cursor:pointer;transition:all .18s;}
-.btn-load-more:hover{border-color:var(--border2);color:var(--text);}
+      100% {
+        background-position: 400px 0
+      }
+    }
 
-/* ─── Footer ─── */
-.site-footer{border-top:1px solid var(--border);padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:.65rem;color:var(--text3);}
-.footer-logo{font-weight:700;color:var(--text2);}
-.footer-links{display:flex;gap:20px;}
-.footer-links a{color:var(--text3);transition:color .18s;}
-.footer-links a:hover{color:var(--lime);}
+    /* ─── SHELL ─── */
+    .shell {
+      display: flex;
+      min-height: 100vh;
+    }
 
-/* ─── Responsive ─── */
-@media(max-width:1100px){.stats-row{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:900px){
-  :root{--sidebar-w:0px;}
-  .sidebar{transform:translateX(-100%);--sidebar-w:200px;width:200px;}
-  .sidebar.open{transform:translateX(0);}
-  .main-area{margin-left:0;}
-  .tb-hamburger{display:flex;}
-}
-@media(max-width:640px){
-  .page-content{padding:20px 16px 40px;}
-  .topbar{padding:0 16px;}
-  .tb-breadcrumb{display:none;}
-  .tb-secure-pill span{display:none;}
-  .tb-user-info{display:none;}
-  .stats-row{grid-template-columns:1fr 1fr;}
-  .filter-bar{gap:6px;}
-  .search-input{width:140px;}
-  .log-url{max-width:200px;}
-}
-@media(max-width:420px){.stats-row{grid-template-columns:1fr;}}
-</style>
+    /* ─── SIDEBAR ─── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: var(--bg2);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 200;
+      transition: transform .3s ease;
+    }
+
+    .sb-logo {
+      padding: 20px 20px 18px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+    }
+
+    .sb-logo-icon {
+      width: 30px;
+      height: 30px;
+      background: var(--lime);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sb-logo-icon svg {
+      width: 16px;
+      height: 16px;
+      color: #0a0a0a;
+    }
+
+    .sb-logo-text {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+      color: var(--text);
+    }
+
+    .sb-nav {
+      flex: 1;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow-y: auto;
+    }
+
+    .sb-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 12px;
+      border-radius: var(--r-sm);
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text3);
+      cursor: pointer;
+      transition: all .18s;
+      border: 1px solid transparent;
+      text-decoration: none;
+    }
+
+    .sb-item svg {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+      transition: color .18s;
+    }
+
+    .sb-item:hover {
+      color: var(--text2);
+      background: var(--bg3);
+    }
+
+    .sb-item.active {
+      color: var(--text);
+      background: rgba(200, 255, 0, 0.08);
+      border-color: rgba(200, 255, 0, 0.15);
+    }
+
+    .sb-item.active svg {
+      color: var(--lime);
+    }
+
+    .sb-item.active span {
+      color: var(--lime);
+    }
+
+    .sb-bottom {
+      padding: 10px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sb-logout {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 12px;
+      border-radius: var(--r-sm);
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text3);
+      cursor: pointer;
+      transition: all .18s;
+    }
+
+    .sb-logout:hover {
+      color: var(--red);
+      background: var(--red-dim);
+    }
+
+    .sb-logout svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .sb-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .7);
+      z-index: 199;
+    }
+
+    .sb-overlay.open {
+      display: block;
+    }
+
+    /* ─── MAIN ─── */
+    .main-area {
+      flex: 1;
+      margin-left: var(--sidebar-w);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ─── TOPBAR ─── */
+    .topbar {
+      height: var(--topbar-h);
+      background: rgba(10, 10, 10, .85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .tb-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .tb-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      width: 32px;
+      height: 32px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .tb-hamburger span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text2);
+      border-radius: 2px;
+    }
+
+    .tb-breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: .82rem;
+      color: var(--text3);
+      font-family: var(--mono);
+    }
+
+    .tb-breadcrumb .sep {
+      color: var(--border2);
+    }
+
+    .tb-breadcrumb .current {
+      color: var(--text2);
+    }
+
+    .tb-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tb-secure-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      background: rgba(200, 255, 0, .07);
+      border: 1px solid rgba(200, 255, 0, .2);
+      border-radius: 100px;
+      font-family: var(--mono);
+      font-size: .65rem;
+      font-weight: 500;
+      color: var(--lime);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .tb-secure-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lime);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .tb-bell {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color .18s;
+    }
+
+    .tb-bell:hover {
+      border-color: var(--border2);
+    }
+
+    .tb-bell svg {
+      width: 16px;
+      height: 16px;
+      color: var(--text2);
+    }
+
+    .tb-bell-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--red);
+      border: 1.5px solid var(--bg);
+    }
+
+    .tb-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 5px 5px 12px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      cursor: pointer;
+      transition: border-color .18s;
+    }
+
+    .tb-user:hover {
+      border-color: var(--border2);
+    }
+
+    .tb-user-info {
+      text-align: right;
+    }
+
+    .tb-user-name {
+      font-size: .82rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .tb-user-plan {
+      font-family: var(--mono);
+      font-size: .6rem;
+      color: var(--text3);
+    }
+
+    .tb-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--lime), #44ff88);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: .88rem;
+      color: #0a0a0a;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(200, 255, 0, .3);
+    }
+
+    /* ─── PAGE ─── */
+    .page-content {
+      flex: 1;
+      padding: 28px 28px 48px;
+      overflow-y: auto;
+    }
+
+    /* ─── Page Header ─── */
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      animation: fadeUp .5s ease forwards;
+    }
+
+    .page-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: .62rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--lime);
+      background: var(--lime-dim);
+      border: 1px solid rgba(200, 255, 0, .2);
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+
+    .page-header h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .page-header p {
+      font-size: .875rem;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* ─── Stats Row ─── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+      animation: fadeUp .5s .08s ease forwards;
+      opacity: 0;
+    }
+
+    .stat-chip {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: border-color .18s;
+    }
+
+    .stat-chip:hover {
+      border-color: var(--border2);
+    }
+
+    .stat-chip-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-chip-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .stat-chip-val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+
+    .stat-chip-lbl {
+      font-size: .72rem;
+      color: var(--text3);
+      margin-top: 2px;
+    }
+
+    /* ─── Filter bar ─── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      animation: fadeUp .5s .14s ease forwards;
+      opacity: 0;
+    }
+
+    .filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: .78rem;
+      font-weight: 500;
+      color: var(--text3);
+      cursor: pointer;
+      transition: all .18s;
+    }
+
+    .filter-btn:hover {
+      color: var(--text2);
+      border-color: var(--border2);
+    }
+
+    .filter-btn.active {
+      color: var(--lime);
+      background: var(--lime-dim);
+      border-color: rgba(200, 255, 0, .25);
+    }
+
+    .filter-btn svg {
+      width: 13px;
+      height: 13px;
+    }
+
+    .filter-spacer {
+      flex: 1;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 13px;
+      height: 13px;
+      color: var(--text3);
+    }
+
+    .search-input {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 7px 14px 7px 30px;
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color .18s;
+      width: 200px;
+    }
+
+    .search-input:focus {
+      border-color: var(--lime);
+    }
+
+    .search-input::placeholder {
+      color: var(--text3);
+    }
+
+    /* ─── Log Timeline ─── */
+    .log-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      animation: fadeUp .5s .18s ease forwards;
+      opacity: 0;
+    }
+
+    .log-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      transition: all .18s;
+      position: relative;
+    }
+
+    .log-item:first-child {
+      border-radius: var(--r) var(--r) 0 0;
+    }
+
+    .log-item:last-child {
+      border-radius: 0 0 var(--r) var(--r);
+    }
+
+    .log-item:only-child {
+      border-radius: var(--r);
+    }
+
+    .log-item+.log-item {
+      border-top: none;
+    }
+
+    .log-item:hover {
+      background: var(--bg3);
+      z-index: 1;
+    }
+
+    /* timeline line */
+    .log-item::before {
+      content: '';
+      position: absolute;
+      left: 38px;
+      top: 44px;
+      bottom: -1px;
+      width: 1px;
+      background: var(--border);
+      z-index: 0;
+    }
+
+    .log-item:last-child::before {
+      display: none;
+    }
+
+    .log-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      margin-top: 2px;
+    }
+
+    .log-dot svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .log-dot.lime {
+      background: rgba(200, 255, 0, .12);
+      border: 1.5px solid rgba(200, 255, 0, .3);
+    }
+
+    .log-dot.lime svg {
+      color: var(--lime);
+    }
+
+    .log-dot.red {
+      background: rgba(255, 68, 68, .12);
+      border: 1.5px solid rgba(255, 68, 68, .3);
+    }
+
+    .log-dot.red svg {
+      color: var(--red);
+    }
+
+    .log-dot.amber {
+      background: rgba(255, 170, 0, .12);
+      border: 1.5px solid rgba(255, 170, 0, .3);
+    }
+
+    .log-dot.amber svg {
+      color: var(--amber);
+    }
+
+    .log-dot.blue {
+      background: rgba(100, 180, 255, .12);
+      border: 1.5px solid rgba(100, 180, 255, .3);
+    }
+
+    .log-dot.blue svg {
+      color: var(--blue);
+    }
+
+    .log-dot.gray {
+      background: var(--bg3);
+      border: 1.5px solid var(--border2);
+    }
+
+    .log-dot.gray svg {
+      color: var(--text3);
+    }
+
+    .log-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .log-title {
+      font-size: .875rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+
+    .log-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .log-desc {
+      font-size: .78rem;
+      color: var(--text2);
+    }
+
+    .log-time {
+      font-family: var(--mono);
+      font-size: .65rem;
+      color: var(--text3);
+    }
+
+    .log-tag {
+      font-family: var(--mono);
+      font-size: .6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .log-tag.safe {
+      color: #0a0a0a;
+      background: var(--lime);
+    }
+
+    .log-tag.danger {
+      color: #fff;
+      background: var(--red);
+    }
+
+    .log-tag.warning {
+      color: #0a0a0a;
+      background: var(--amber);
+    }
+
+    .log-tag.info {
+      color: #0a0a0a;
+      background: var(--blue);
+    }
+
+    .log-url {
+      font-family: var(--mono);
+      font-size: .72rem;
+      color: var(--text3);
+      margin-top: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 460px;
+    }
+
+    .log-empty {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      gap: 12px;
+      text-align: center;
+    }
+
+    .log-empty svg {
+      width: 40px;
+      height: 40px;
+      color: var(--text3);
+    }
+
+    .log-empty h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text2);
+    }
+
+    .log-empty p {
+      font-size: .85rem;
+      color: var(--text3);
+    }
+
+    /* ─── Skeleton loader ─── */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg3) 25%, var(--bg4) 50%, var(--bg3) 75%);
+      background-size: 400px 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+
+    .skeleton-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+    }
+
+    .skeleton-item+.skeleton-item {
+      border-top: none;
+    }
+
+    .skeleton-item:first-child {
+      border-radius: var(--r) var(--r) 0 0;
+    }
+
+    .skeleton-item:last-child {
+      border-radius: 0 0 var(--r) var(--r);
+    }
+
+    /* ─── Load More ─── */
+    .load-more-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .btn-load-more {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--text2);
+      cursor: pointer;
+      transition: all .18s;
+    }
+
+    .btn-load-more:hover {
+      border-color: var(--border2);
+      color: var(--text);
+    }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: .65rem;
+      color: var(--text3);
+    }
+
+    .footer-logo {
+      font-weight: 700;
+      color: var(--text2);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: var(--text3);
+      transition: color .18s;
+    }
+
+    .footer-links a:hover {
+      color: var(--lime);
+    }
+
+    /* ─── Responsive ─── */
+    @media(max-width:1100px) {
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media(max-width:900px) {
+      :root {
+        --sidebar-w: 0px;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+        --sidebar-w: 200px;
+        width: 200px;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main-area {
+        margin-left: 0;
+      }
+
+      .tb-hamburger {
+        display: flex;
+      }
+    }
+
+    @media(max-width:640px) {
+      .page-content {
+        padding: 20px 16px 40px;
+      }
+
+      .topbar {
+        padding: 0 16px;
+      }
+
+      .tb-breadcrumb {
+        display: none;
+      }
+
+      .tb-secure-pill span {
+        display: none;
+      }
+
+      .tb-user-info {
+        display: none;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .filter-bar {
+        gap: 6px;
+      }
+
+      .search-input {
+        width: 140px;
+      }
+
+      .log-url {
+        max-width: 200px;
+      }
+    }
+
+    @media(max-width:420px) {
+      .stats-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+  <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
 
-<div class="shell">
-  <!-- ═══ SIDEBAR ═══ -->
-  <aside class="sidebar" id="sidebar">
-    <a href="index.html" class="sb-logo"><div class="sb-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span class="sb-logo-text">CyberMitra</span></a>
-    <nav class="sb-nav">
-      <a class="sb-item" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Home</span></a>
-      <a class="sb-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Dashboard</span></a>
-      <a class="sb-item" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Security Tools</span></a>
-      <a class="sb-item" href="url-check.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span>URL Scanner</span></a>
-      <a class="sb-item" href="password-check.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Password Check</span></a>
-      <a class="sb-item" href="malwareanalysis.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Malware Scanner</span></a>
-      <a class="sb-item active" href="activity-logs.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Activity Logs</span></a>
-      <a class="sb-item" href="#" onclick="showToast('Vault — Coming Soon')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Family Vault</span></a>
-    </nav>
-    <div class="sb-bottom">
-      <a class="sb-item" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span>Settings</span></a>
-      <a class="sb-logout" href="login.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Secure Log Out</span></a>
-    </div>
-  </aside>
-
-  <!-- ═══ MAIN ═══ -->
-  <div class="main-area">
-    <!-- TOPBAR -->
-    <header class="topbar">
-      <div class="tb-left">
-        <button class="tb-hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
-        <div class="tb-breadcrumb">
-          <span>Account</span><span class="sep">›</span><span class="current">Activity Logs</span>
-        </div>
+  <div class="shell">
+    <!-- ═══ SIDEBAR ═══ -->
+    <aside class="sidebar" id="sidebar">
+      <a href="index.html" class="sb-logo">
+        <div class="sb-logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg></div><span class="sb-logo-text">CyberMitra</span>
+      </a>
+      <nav class="sb-nav">
+        <a class="sb-item" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+          </svg><span>Home</span></a>
+        <a class="sb-item" href="dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+          </svg><span>Dashboard</span></a>
+        <a class="sb-item" href="home.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg><span>Security Tools</span></a>
+        <a class="sb-item" href="url-check.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg><span>URL Scanner</span></a>
+        <a class="sb-item" href="password-check.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg><span>Password Check</span></a>
+        <a class="sb-item" href="malwareanalysis.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg><span>Malware Scanner</span></a>
+        <a class="sb-item active" href="activity-logs.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg><span>Activity Logs</span></a>
+        <a class="sb-item" href="#" onclick="showToast('Vault — Coming Soon')"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg><span>Family Vault</span></a>
+      </nav>
+      <div class="sb-bottom">
+        <a class="sb-item" href="settings.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14" />
+          </svg><span>Settings</span></a>
+        <a class="sb-logout" href="login.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg><span>Secure Log Out</span></a>
       </div>
-      <div class="tb-right">
-        <div class="tb-secure-pill"><div class="tb-secure-dot"></div><span>System Secure</span></div>
-        <div class="tb-bell" onclick="showToast('No new alerts')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <div class="tb-bell-badge"></div>
-        </div>
-        <a class="tb-user" href="profile.html">
-          <div class="tb-user-info">
-            <div class="tb-user-name" id="tbName">—</div>
-            <div class="tb-user-plan">Pro Plan</div>
-          </div>
-          <div class="tb-avatar" id="tbAvatar">?</div>
-        </a>
-      </div>
-    </header>
+    </aside>
 
-    <!-- PAGE CONTENT -->
-    <div class="page-content">
+    <!-- ═══ MAIN ═══ -->
+    <div class="main-area">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="tb-left">
+          <button class="tb-hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+          <div class="tb-breadcrumb">
+            <span>Account</span><span class="sep">›</span><span class="current">Activity Logs</span>
+          </div>
+        </div>
+        <div class="tb-right">
+          <div class="tb-secure-pill">
+            <div class="tb-secure-dot"></div><span>System Secure</span>
+          </div>
+          <div class="tb-bell" onclick="showToast('No new alerts')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <div class="tb-bell-badge"></div>
+          </div>
+          <a class="tb-user" href="profile.html">
+            <div class="tb-user-info">
+              <div class="tb-user-name" id="tbName">—</div>
+              <div class="tb-user-plan">Pro Plan</div>
+            </div>
+            <div class="tb-avatar" id="tbAvatar">?</div>
+          </a>
+        </div>
+      </header>
 
-      <!-- Header -->
-      <div class="page-header">
-        <div class="ph-left">
-          <div class="page-tag">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="10" height="10"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            Security Timeline
-          </div>
-          <h1>Activity Logs</h1>
-          <p>A complete history of all security events, scans, and login sessions for your account.</p>
-        </div>
-        <button class="filter-btn" onclick="refreshLogs()" style="padding:9px 18px;font-size:.82rem;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-          Refresh
-        </button>
-      </div>
+      <!-- PAGE CONTENT -->
+      <div class="page-content">
 
-      <!-- Stats Row -->
-      <div class="stats-row" id="statsRow">
-        <div class="stat-chip">
-          <div class="stat-chip-icon" style="background:rgba(200,255,0,.1);border:1px solid rgba(200,255,0,.2);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <!-- Header -->
+        <div class="page-header">
+          <div class="ph-left">
+            <div class="page-tag">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="10" height="10">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+              Security Timeline
+            </div>
+            <h1>Activity Logs</h1>
+            <p>A complete history of all security events, scans, and login sessions for your account.</p>
           </div>
-          <div><div class="stat-chip-val" id="statTotal">—</div><div class="stat-chip-lbl">Total Events</div></div>
+          <button class="filter-btn" onclick="refreshLogs()" style="padding:9px 18px;font-size:.82rem;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+              <polyline points="23 4 23 10 17 10" />
+              <polyline points="1 20 1 14 7 14" />
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+            </svg>
+            Refresh
+          </button>
         </div>
-        <div class="stat-chip">
-          <div class="stat-chip-icon" style="background:rgba(100,180,255,.1);border:1px solid rgba(100,180,255,.2);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          </div>
-          <div><div class="stat-chip-val" id="statScans">—</div><div class="stat-chip-lbl">URLs Scanned</div></div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-icon" style="background:rgba(255,68,68,.1);border:1px solid rgba(255,68,68,.2);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          </div>
-          <div><div class="stat-chip-val" id="statThreats">—</div><div class="stat-chip-lbl">Threats Detected</div></div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-icon" style="background:rgba(255,170,0,.1);border:1px solid rgba(255,170,0,.2);">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </div>
-          <div><div class="stat-chip-val" id="statLogins">—</div><div class="stat-chip-lbl">Login Sessions</div></div>
-        </div>
-      </div>
 
-      <!-- Filter Bar -->
-      <div class="filter-bar" id="filterBar">
-        <button class="filter-btn active" data-filter="all" onclick="setFilter(this,'all')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-          All
-        </button>
-        <button class="filter-btn" data-filter="url_scan" onclick="setFilter(this,'url_scan')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          URL Scans
-        </button>
-        <button class="filter-btn" data-filter="password" onclick="setFilter(this,'password')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Passwords
-        </button>
-        <button class="filter-btn" data-filter="login" onclick="setFilter(this,'login')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-          Logins
-        </button>
-        <button class="filter-btn" data-filter="threat" onclick="setFilter(this,'threat')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-          Threats
-        </button>
-        <div class="filter-spacer"></div>
-        <div class="search-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input class="search-input" id="searchInput" type="text" placeholder="Search logs…" oninput="applySearch()">
-        </div>
-      </div>
-
-      <!-- Skeleton -->
-      <div id="skeletonWrap">
-        <div style="display:flex;flex-direction:column;">
-          <div class="skeleton-item" style="border-radius:14px 14px 0 0;">
-            <div class="skeleton" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:2px;"></div>
-            <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
-              <div class="skeleton" style="height:14px;width:55%;"></div>
-              <div class="skeleton" style="height:11px;width:35%;"></div>
+        <!-- Stats Row -->
+        <div class="stats-row" id="statsRow">
+          <div class="stat-chip">
+            <div class="stat-chip-icon" style="background:rgba(200,255,0,.1);border:1px solid rgba(200,255,0,.2);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+            </div>
+            <div>
+              <div class="stat-chip-val" id="statTotal">—</div>
+              <div class="stat-chip-lbl">Total Events</div>
             </div>
           </div>
-          <div class="skeleton-item" style="border-top:none;">
-            <div class="skeleton" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:2px;"></div>
-            <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
-              <div class="skeleton" style="height:14px;width:70%;"></div>
-              <div class="skeleton" style="height:11px;width:45%;"></div>
+          <div class="stat-chip">
+            <div class="stat-chip-icon" style="background:rgba(100,180,255,.1);border:1px solid rgba(100,180,255,.2);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            </div>
+            <div>
+              <div class="stat-chip-val" id="statScans">—</div>
+              <div class="stat-chip-lbl">URLs Scanned</div>
             </div>
           </div>
-          <div class="skeleton-item" style="border-top:none;">
-            <div class="skeleton" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:2px;"></div>
-            <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
-              <div class="skeleton" style="height:14px;width:40%;"></div>
-              <div class="skeleton" style="height:11px;width:60%;"></div>
+          <div class="stat-chip">
+            <div class="stat-chip-icon" style="background:rgba(255,68,68,.1);border:1px solid rgba(255,68,68,.2);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                <line x1="12" y1="9" x2="12" y2="13" />
+                <line x1="12" y1="17" x2="12.01" y2="17" />
+              </svg>
+            </div>
+            <div>
+              <div class="stat-chip-val" id="statThreats">—</div>
+              <div class="stat-chip-lbl">Threats Detected</div>
             </div>
           </div>
-          <div class="skeleton-item" style="border-top:none;border-radius:0 0 14px 14px;">
-            <div class="skeleton" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:2px;"></div>
-            <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
-              <div class="skeleton" style="height:14px;width:60%;"></div>
-              <div class="skeleton" style="height:11px;width:30%;"></div>
+          <div class="stat-chip">
+            <div class="stat-chip-icon" style="background:rgba(255,170,0,.1);border:1px solid rgba(255,170,0,.2);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
+            <div>
+              <div class="stat-chip-val" id="statLogins">—</div>
+              <div class="stat-chip-lbl">Login Sessions</div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Timeline -->
-      <div class="log-timeline" id="logTimeline" style="display:none;"></div>
+        <!-- Filter Bar -->
+        <div class="filter-bar" id="filterBar">
+          <button class="filter-btn active" data-filter="all" onclick="setFilter(this,'all')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+            </svg>
+            All
+          </button>
+          <button class="filter-btn" data-filter="url_scan" onclick="setFilter(this,'url_scan')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            URL Scans
+          </button>
+          <button class="filter-btn" data-filter="password" onclick="setFilter(this,'password')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            Passwords
+          </button>
+          <button class="filter-btn" data-filter="login" onclick="setFilter(this,'login')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+              <polyline points="10 17 15 12 10 7" />
+              <line x1="15" y1="12" x2="3" y2="12" />
+            </svg>
+            Logins
+          </button>
+          <button class="filter-btn" data-filter="threat" onclick="setFilter(this,'threat')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            </svg>
+            Threats
+          </button>
+          <div class="filter-spacer"></div>
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input class="search-input" id="searchInput" type="text" placeholder="Search logs…" oninput="applySearch()">
+          </div>
+        </div>
 
-      <!-- Empty state -->
-      <div class="log-empty" id="logEmpty">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        <h3>No activity found</h3>
-        <p>Matching events will appear here once they occur.</p>
-      </div>
+        <!-- Skeleton -->
+        <div id="skeletonWrap">
+          <div style="display:flex;flex-direction:column;">
+            <div class="skeleton-item" style="border-radius:14px 14px 0 0;">
+              <div class="skeleton" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:2px;">
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+                <div class="skeleton" style="height:14px;width:55%;"></div>
+                <div class="skeleton" style="height:11px;width:35%;"></div>
+              </div>
+            </div>
+            <div class="skeleton-item" style="border-top:none;">
+              <div class="skeleton" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:2px;">
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+                <div class="skeleton" style="height:14px;width:70%;"></div>
+                <div class="skeleton" style="height:11px;width:45%;"></div>
+              </div>
+            </div>
+            <div class="skeleton-item" style="border-top:none;">
+              <div class="skeleton" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:2px;">
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+                <div class="skeleton" style="height:14px;width:40%;"></div>
+                <div class="skeleton" style="height:11px;width:60%;"></div>
+              </div>
+            </div>
+            <div class="skeleton-item" style="border-top:none;border-radius:0 0 14px 14px;">
+              <div class="skeleton" style="width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:2px;">
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+                <div class="skeleton" style="height:14px;width:60%;"></div>
+                <div class="skeleton" style="height:11px;width:30%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <!-- Load More -->
-      <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
-        <button class="btn-load-more" onclick="loadMore()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><polyline points="6 9 12 15 18 9"/></svg>
-          Load More
-        </button>
-      </div>
+        <!-- Timeline -->
+        <div class="log-timeline" id="logTimeline" style="display:none;"></div>
 
-    </div><!-- /page-content -->
+        <!-- Empty state -->
+        <div class="log-empty" id="logEmpty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          <h3>No activity found</h3>
+          <p>Matching events will appear here once they occur.</p>
+        </div>
 
-    <!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-logo">CyberMitra</div>
-  <div class="footer-links">
-    <a href="index.html">Tools</a>
-    <a href="contactus.html">Contact</a>
-    <a href="login.html">Login</a>
-    <a href="signup.html">Sign Up</a>
-  </div>
-  <div class="footer-copy">© 2025 CyberMitra. All rights reserved.</div>
-</footer>
-  </div><!-- /main-area -->
-</div><!-- /shell -->
+        <!-- Load More -->
+        <div class="load-more-wrap" id="loadMoreWrap" style="display:none;">
+          <button class="btn-load-more" onclick="loadMore()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+            Load More
+          </button>
+        </div>
 
-<script>
-/* ══ CONFIG ══ */
-const API_BASE = (window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api';
-const PAGE_SIZE = 15;
+      </div><!-- /page-content -->
 
-let allLogs = [];
-let filteredLogs = [];
-let currentFilter = 'all';
-let displayedCount = 0;
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer-logo">CyberMitra</div>
+        <div class="footer-links">
+          <a href="index.html">Tools</a>
+          <a href="contactus.html">Contact</a>
+          <a href="login.html">Login</a>
+          <a href="signup.html">Sign Up</a>
+        </div>
+        <div class="footer-copy">© 2025 CyberMitra. All rights reserved.</div>
+      </footer>
+    </div><!-- /main-area -->
+  </div><!-- /shell -->
 
-/* ══ Init ══ */
-const urlParams = new URLSearchParams(window.location.search);
-const userId = urlParams.get('id') || localStorage.getItem('userId');
+  <script>
+    /* ══ CONFIG ══ */
+    const API_BASE = (window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api';
+    const PAGE_SIZE = 15;
 
-window.addEventListener('load', () => {
-  if (!userId) {
-    showToast('⚠️ Session expired. Redirecting…');
-    setTimeout(() => window.location.href = 'login.html', 1800);
-    return;
-  }
-  fetchProfile();
-  fetchLogs();
-});
+    let allLogs = [];
+    let filteredLogs = [];
+    let currentFilter = 'all';
+    let displayedCount = 0;
 
-/* ══ Fetch profile (topbar name/avatar) ══ */
-async function fetchProfile() {
-  try {
-    const r = await fetch(`${API_BASE}/user/${userId}/profile`);
-    if (!r.ok) return;
-    const d = await r.json();
-    const name = d.name || 'User';
-    const init = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
-    document.getElementById('tbName').textContent = name;
-    const avatarHtml = (d.avatarSrc || d.profilePicUrl) ? `<img src="${d.avatarSrc || d.profilePicUrl}" style="width:100%;height:100%;object-fit:cover;">` : init;
-    document.getElementById('tbAvatar').innerHTML = avatarHtml;
-    document.getElementById('sbName').textContent = name;
-    document.getElementById('sbAvatar').innerHTML = avatarHtml;
-    if (d.safeScore != null) document.getElementById('sbScore').textContent = d.safeScore;
-  } catch {}
-}
+    /* ══ Init ══ */
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('id') || localStorage.getItem('userId');
 
-/* ══ Fetch Logs ══ */
-async function fetchLogs() {
-  showSkeleton(true);
-  document.getElementById('logTimeline').style.display = 'none';
-  document.getElementById('logEmpty').style.display = 'none';
+    window.addEventListener('load', () => {
+      if (!userId) {
+        showToast('⚠️ Session expired. Redirecting…');
+        setTimeout(() => window.location.href = 'login.html', 1800);
+        return;
+      }
+      fetchProfile();
+      fetchLogs();
+    });
 
-  try {
-    const r = await fetch(`${API_BASE}/user/${userId}/activity`);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const data = await r.json();
-    allLogs = Array.isArray(data) ? data : (data.logs || data.activities || []);
-  } catch (err) {
-    console.warn('Backend unavailable, using demo data:', err);
-    allLogs = generateDemoLogs();
-    showToast('⚠️ Showing demo data — backend offline');
-  }
+    /* ══ Fetch profile (topbar name/avatar) ══ */
+    async function fetchProfile() {
+      try {
+        const r = await fetch(`${API_BASE}/user/${userId}/profile`);
+        if (!r.ok) return;
+        const d = await r.json();
+        const name = d.name || 'User';
+        const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+        document.getElementById('tbName').textContent = name;
+        const avatarHtml = (d.avatarSrc || d.profilePicUrl) ? `<img src="${d.avatarSrc || d.profilePicUrl}" style="width:100%;height:100%;object-fit:cover;">` : init;
+        document.getElementById('tbAvatar').innerHTML = avatarHtml;
+        document.getElementById('sbName').textContent = name;
+        document.getElementById('sbAvatar').innerHTML = avatarHtml;
+        if (d.safeScore != null) document.getElementById('sbScore').textContent = d.safeScore;
+      } catch { }
+    }
 
-  updateStats();
-  applyFilter();
-  showSkeleton(false);
-}
+    /* ══ Fetch Logs ══ */
+    async function fetchLogs() {
+      showSkeleton(true);
+      document.getElementById('logTimeline').style.display = 'none';
+      document.getElementById('logEmpty').style.display = 'none';
 
-/* ══ Demo data fallback ══ */
-function generateDemoLogs() {
-  const now = Date.now();
-  const min = 60000;
-  return [
-    { id:1, type:'url_scan',  title:'URL Scan — Safe',         description:'Scanned google.com', url:'https://google.com',           result:'safe',    timestamp: now - 2*min },
-    { id:2, type:'login',     title:'Login — New Session',     description:'Chrome · Windows · Kanpur',                              result:'info',    timestamp: now - 18*min },
-    { id:3, type:'url_scan',  title:'URL Scan — Threat Found', description:'Malicious redirect detected', url:'http://evil-site.tk', result:'danger',  timestamp: now - 45*min },
-    { id:4, type:'password',  title:'Password Strength Check', description:'Password rated Strong (89/100)',                         result:'safe',    timestamp: now - 2.1*60*min },
-    { id:5, type:'url_scan',  title:'URL Scan — Suspicious',   description:'Low reputation domain', url:'https://promo-deals99.xyz', result:'warning', timestamp: now - 3*60*min },
-    { id:6, type:'login',     title:'Login — Password Reset',  description:'Reset via email OTP',                                    result:'info',    timestamp: now - 5*60*min },
-    { id:7, type:'threat',    title:'Threat Blocked',          description:'Blocked outbound request to known C2 server',           result:'danger',  timestamp: now - 6*60*min },
-    { id:8, type:'url_scan',  title:'URL Scan — Safe',         description:'Scanned github.com', url:'https://github.com',           result:'safe',    timestamp: now - 8*60*min },
-    { id:9, type:'password',  title:'Password Strength Check', description:'Password rated Weak (22/100)',                          result:'warning', timestamp: now - 10*60*min },
-    { id:10,type:'login',     title:'Login — Session Started', description:'Firefox · Android · Delhi',                             result:'info',    timestamp: now - 24*60*min },
-    { id:11,type:'url_scan',  title:'URL Scan — Safe',         description:'Scanned stackoverflow.com', url:'https://stackoverflow.com', result:'safe', timestamp: now - 26*60*min },
-    { id:12,type:'threat',    title:'Phishing Link Detected',  description:'Email link matched phishing DB', url:'http://paypa1-update.net', result:'danger', timestamp: now - 28*60*min },
-    { id:13,type:'url_scan',  title:'URL Scan — Safe',         description:'Scanned npmjs.com', url:'https://npmjs.com',            result:'safe',    timestamp: now - 30*60*min },
-    { id:14,type:'password',  title:'Password Strength Check', description:'Password rated Strong (94/100)',                        result:'safe',    timestamp: now - 36*60*min },
-    { id:15,type:'login',     title:'Login — Session Started', description:'Chrome · Windows · Kanpur',                             result:'info',    timestamp: now - 48*60*min },
-    { id:16,type:'url_scan',  title:'URL Scan — Threat Found', description:'Known malware distribution URL', url:'http://virus-dl.ru/payload', result:'danger', timestamp: now - 52*60*min },
-    { id:17,type:'url_scan',  title:'URL Scan — Safe',         description:'Scanned youtube.com', url:'https://youtube.com',       result:'safe',    timestamp: now - 60*60*min },
-    { id:18,type:'login',     title:'Login — Failed Attempt',  description:'Wrong password · 3 attempts',                          result:'warning', timestamp: now - 72*60*min },
-  ];
-}
+      try {
+        const r = await fetch(`${API_BASE}/user/${userId}/activity`);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const data = await r.json();
+        allLogs = Array.isArray(data) ? data : (data.logs || data.activities || []);
+      } catch (err) {
+        console.warn('Backend unavailable, using demo data:', err);
+        allLogs = generateDemoLogs();
+        showToast('⚠️ Showing demo data — backend offline');
+      }
 
-/* ══ Stats ══ */
-function updateStats() {
-  document.getElementById('statTotal').textContent   = allLogs.length;
-  document.getElementById('statScans').textContent   = allLogs.filter(l=>l.type==='url_scan').length;
-  document.getElementById('statThreats').textContent = allLogs.filter(l=>l.result==='danger').length;
-  document.getElementById('statLogins').textContent  = allLogs.filter(l=>l.type==='login').length;
-}
+      updateStats();
+      applyFilter();
+      showSkeleton(false);
+    }
 
-/* ══ Filter ══ */
-function setFilter(btn, filter) {
-  document.querySelectorAll('.filter-btn[data-filter]').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  currentFilter = filter;
-  applyFilter();
-}
+    /* ══ Demo data fallback ══ */
+    function generateDemoLogs() {
+      const now = Date.now();
+      const min = 60000;
+      return [
+        { id: 1, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned google.com', url: 'https://google.com', result: 'safe', timestamp: now - 2 * min },
+        { id: 2, type: 'login', title: 'Login — New Session', description: 'Chrome · Windows · Kanpur', result: 'info', timestamp: now - 18 * min },
+        { id: 3, type: 'url_scan', title: 'URL Scan — Threat Found', description: 'Malicious redirect detected', url: 'http://evil-site.tk', result: 'danger', timestamp: now - 45 * min },
+        { id: 4, type: 'password', title: 'Password Strength Check', description: 'Password rated Strong (89/100)', result: 'safe', timestamp: now - 2.1 * 60 * min },
+        { id: 5, type: 'url_scan', title: 'URL Scan — Suspicious', description: 'Low reputation domain', url: 'https://promo-deals99.xyz', result: 'warning', timestamp: now - 3 * 60 * min },
+        { id: 6, type: 'login', title: 'Login — Password Reset', description: 'Reset via email OTP', result: 'info', timestamp: now - 5 * 60 * min },
+        { id: 7, type: 'threat', title: 'Threat Blocked', description: 'Blocked outbound request to known C2 server', result: 'danger', timestamp: now - 6 * 60 * min },
+        { id: 8, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned github.com', url: 'https://github.com', result: 'safe', timestamp: now - 8 * 60 * min },
+        { id: 9, type: 'password', title: 'Password Strength Check', description: 'Password rated Weak (22/100)', result: 'warning', timestamp: now - 10 * 60 * min },
+        { id: 10, type: 'login', title: 'Login — Session Started', description: 'Firefox · Android · Delhi', result: 'info', timestamp: now - 24 * 60 * min },
+        { id: 11, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned stackoverflow.com', url: 'https://stackoverflow.com', result: 'safe', timestamp: now - 26 * 60 * min },
+        { id: 12, type: 'threat', title: 'Phishing Link Detected', description: 'Email link matched phishing DB', url: 'http://paypa1-update.net', result: 'danger', timestamp: now - 28 * 60 * min },
+        { id: 13, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned npmjs.com', url: 'https://npmjs.com', result: 'safe', timestamp: now - 30 * 60 * min },
+        { id: 14, type: 'password', title: 'Password Strength Check', description: 'Password rated Strong (94/100)', result: 'safe', timestamp: now - 36 * 60 * min },
+        { id: 15, type: 'login', title: 'Login — Session Started', description: 'Chrome · Windows · Kanpur', result: 'info', timestamp: now - 48 * 60 * min },
+        { id: 16, type: 'url_scan', title: 'URL Scan — Threat Found', description: 'Known malware distribution URL', url: 'http://virus-dl.ru/payload', result: 'danger', timestamp: now - 52 * 60 * min },
+        { id: 17, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned youtube.com', url: 'https://youtube.com', result: 'safe', timestamp: now - 60 * 60 * min },
+        { id: 18, type: 'login', title: 'Login — Failed Attempt', description: 'Wrong password · 3 attempts', result: 'warning', timestamp: now - 72 * 60 * min },
+      ];
+    }
 
-function applyFilter() {
-  const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
-  filteredLogs = allLogs.filter(log => {
-    const typeMatch = currentFilter === 'all' || log.type === currentFilter ||
-                      (currentFilter === 'threat' && log.result === 'danger');
-    const searchMatch = !q || log.title.toLowerCase().includes(q) ||
-                        (log.description||'').toLowerCase().includes(q) ||
-                        (log.url||'').toLowerCase().includes(q);
-    return typeMatch && searchMatch;
-  });
-  displayedCount = 0;
-  renderLogs();
-}
+    /* ══ Stats ══ */
+    function updateStats() {
+      document.getElementById('statTotal').textContent = allLogs.length;
+      document.getElementById('statScans').textContent = allLogs.filter(l => l.type === 'url_scan').length;
+      document.getElementById('statThreats').textContent = allLogs.filter(l => l.result === 'danger').length;
+      document.getElementById('statLogins').textContent = allLogs.filter(l => l.type === 'login').length;
+    }
 
-function applySearch() { applyFilter(); }
+    /* ══ Filter ══ */
+    function setFilter(btn, filter) {
+      document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = filter;
+      applyFilter();
+    }
 
-/* ══ Render ══ */
-function renderLogs() {
-  const tl = document.getElementById('logTimeline');
-  const empty = document.getElementById('logEmpty');
-  const lmw = document.getElementById('loadMoreWrap');
+    function applyFilter() {
+      const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
+      filteredLogs = allLogs.filter(log => {
+        const typeMatch = currentFilter === 'all' || log.type === currentFilter ||
+          (currentFilter === 'threat' && log.result === 'danger');
+        const searchMatch = !q || log.title.toLowerCase().includes(q) ||
+          (log.description || '').toLowerCase().includes(q) ||
+          (log.url || '').toLowerCase().includes(q);
+        return typeMatch && searchMatch;
+      });
+      displayedCount = 0;
+      renderLogs();
+    }
 
-  if (filteredLogs.length === 0) {
-    tl.style.display = 'none';
-    empty.style.display = 'flex';
-    lmw.style.display = 'none';
-    return;
-  }
+    function applySearch() { applyFilter(); }
 
-  empty.style.display = 'none';
-  tl.style.display = 'flex';
+    /* ══ Render ══ */
+    function renderLogs() {
+      const tl = document.getElementById('logTimeline');
+      const empty = document.getElementById('logEmpty');
+      const lmw = document.getElementById('loadMoreWrap');
 
-  const batch = filteredLogs.slice(0, displayedCount + PAGE_SIZE);
-  displayedCount = batch.length;
+      if (filteredLogs.length === 0) {
+        tl.style.display = 'none';
+        empty.style.display = 'flex';
+        lmw.style.display = 'none';
+        return;
+      }
 
-  tl.innerHTML = batch.map((log, i) => logItemHTML(log, i, batch.length)).join('');
+      empty.style.display = 'none';
+      tl.style.display = 'flex';
 
-  lmw.style.display = displayedCount < filteredLogs.length ? 'flex' : 'none';
-}
+      const batch = filteredLogs.slice(0, displayedCount + PAGE_SIZE);
+      displayedCount = batch.length;
 
-function loadMore() {
-  const batch = filteredLogs.slice(0, displayedCount + PAGE_SIZE);
-  displayedCount = batch.length;
-  document.getElementById('logTimeline').innerHTML =
-    batch.map((log, i) => logItemHTML(log, i, batch.length)).join('');
-  document.getElementById('loadMoreWrap').style.display =
-    displayedCount < filteredLogs.length ? 'flex' : 'none';
-}
+      tl.innerHTML = batch.map((log, i) => logItemHTML(log, i, batch.length)).join('');
 
-/* ══ Log item HTML ══ */
-function logItemHTML(log, index, total) {
-  const dot = dotConfig(log);
-  const tag = tagHTML(log.result);
-  const time = formatTime(log.timestamp);
-  const urlLine = log.url
-    ? `<div class="log-url">${log.url}</div>`
-    : '';
-  const br = index===0 && total===1 ? 'border-radius:var(--r);'
-           : index===0 ? 'border-radius:var(--r) var(--r) 0 0;'
-           : index===total-1 ? 'border-radius:0 0 var(--r) var(--r);'
-           : '';
-  const bt = index > 0 ? 'border-top:none;' : '';
-  const lc = index < total-1 ? '' : 'class="last"';
-  return `
+      lmw.style.display = displayedCount < filteredLogs.length ? 'flex' : 'none';
+    }
+
+    function loadMore() {
+      const batch = filteredLogs.slice(0, displayedCount + PAGE_SIZE);
+      displayedCount = batch.length;
+      document.getElementById('logTimeline').innerHTML =
+        batch.map((log, i) => logItemHTML(log, i, batch.length)).join('');
+      document.getElementById('loadMoreWrap').style.display =
+        displayedCount < filteredLogs.length ? 'flex' : 'none';
+    }
+
+    /* ══ Log item HTML ══ */
+    function logItemHTML(log, index, total) {
+      const dot = dotConfig(log);
+      const tag = tagHTML(log.result);
+      const time = formatTime(log.timestamp);
+      const urlLine = log.url
+        ? `<div class="log-url">${log.url}</div>`
+        : '';
+      const br = index === 0 && total === 1 ? 'border-radius:var(--r);'
+        : index === 0 ? 'border-radius:var(--r) var(--r) 0 0;'
+          : index === total - 1 ? 'border-radius:0 0 var(--r) var(--r);'
+            : '';
+      const bt = index > 0 ? 'border-top:none;' : '';
+      const lc = index < total - 1 ? '' : 'class="last"';
+      return `
   <div class="log-item" style="${br}${bt}" ${lc}>
     <div class="log-dot ${dot.cls}">${dot.svg}</div>
     <div class="log-body">
@@ -604,76 +1513,77 @@ function logItemHTML(log, index, total) {
       <div class="log-time">${time}</div>
     </div>
   </div>`;
-}
+    }
 
-function dotConfig(log) {
-  const icons = {
-    url_scan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`,
-    password: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
-    login:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>`,
-    threat:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>`,
-  };
-  const clsMap = { safe:'lime', danger:'red', warning:'amber', info:'blue' };
-  return {
-    cls: clsMap[log.result] || 'gray',
-    svg: icons[log.type] || icons.threat
-  };
-}
+    function dotConfig(log) {
+      const icons = {
+        url_scan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`,
+        password: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+        login: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>`,
+        threat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>`,
+      };
+      const clsMap = { safe: 'lime', danger: 'red', warning: 'amber', info: 'blue' };
+      return {
+        cls: clsMap[log.result] || 'gray',
+        svg: icons[log.type] || icons.threat
+      };
+    }
 
-function tagHTML(result) {
-  const map = { safe:'safe', danger:'danger', warning:'warning', info:'info' };
-  const label = { safe:'Safe', danger:'Threat', warning:'Warning', info:'Info' };
-  if (!map[result]) return '';
-  return `<span class="log-tag ${map[result]}">${label[result]}</span>`;
-}
+    function tagHTML(result) {
+      const map = { safe: 'safe', danger: 'danger', warning: 'warning', info: 'info' };
+      const label = { safe: 'Safe', danger: 'Threat', warning: 'Warning', info: 'Info' };
+      if (!map[result]) return '';
+      return `<span class="log-tag ${map[result]}">${label[result]}</span>`;
+    }
 
-function formatTime(ts) {
-  if (!ts) return '—';
-  const d = new Date(ts);
-  const now = new Date();
-  const diff = Math.floor((now - d) / 1000);
-  if (diff < 60)   return `${diff}s ago`;
-  if (diff < 3600) return `${Math.floor(diff/60)}m ago`;
-  if (diff < 86400)return `${Math.floor(diff/3600)}h ago`;
-  return d.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric',hour:'2-digit',minute:'2-digit'});
-}
+    function formatTime(ts) {
+      if (!ts) return '—';
+      const d = new Date(ts);
+      const now = new Date();
+      const diff = Math.floor((now - d) / 1000);
+      if (diff < 60) return `${diff}s ago`;
+      if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+      return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
 
-/* ══ Skeleton ══ */
-function showSkeleton(show) {
-  document.getElementById('skeletonWrap').style.display = show ? 'block' : 'none';
-}
+    /* ══ Skeleton ══ */
+    function showSkeleton(show) {
+      document.getElementById('skeletonWrap').style.display = show ? 'block' : 'none';
+    }
 
-/* ══ Refresh ══ */
-function refreshLogs() {
-  allLogs = [];
-  filteredLogs = [];
-  displayedCount = 0;
-  document.getElementById('logTimeline').innerHTML = '';
-  fetchLogs();
-}
+    /* ══ Refresh ══ */
+    function refreshLogs() {
+      allLogs = [];
+      filteredLogs = [];
+      displayedCount = 0;
+      document.getElementById('logTimeline').innerHTML = '';
+      fetchLogs();
+    }
 
-/* ══ Sidebar ══ */
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sbOverlay').classList.toggle('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sbOverlay').classList.remove('open');
-}
+    /* ══ Sidebar ══ */
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sbOverlay').classList.toggle('open');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sbOverlay').classList.remove('open');
+    }
 
-/* ══ Toast ══ */
-function showToast(msg) {
-  const e = document.querySelector('.cm-toast');
-  if (e) e.remove();
-  const t = document.createElement('div');
-  t.className = 'cm-toast';
-  t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#161616;border:1px solid #c8ff00;border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:#c8ff00;z-index:999;white-space:nowrap;pointer-events:none;transition:opacity .3s;';
-  document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);
-}
-</script>
-<script src="notifications.js"></script>
+    /* ══ Toast ══ */
+    function showToast(msg) {
+      const e = document.querySelector('.cm-toast');
+      if (e) e.remove();
+      const t = document.createElement('div');
+      t.className = 'cm-toast';
+      t.textContent = msg;
+      t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#161616;border:1px solid #c8ff00;border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:#c8ff00;z-index:999;white-space:nowrap;pointer-events:none;transition:opacity .3s;';
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);
+    }
+  </script>
+  <script src="notifications.js"></script>
 </body>
+
 </html>

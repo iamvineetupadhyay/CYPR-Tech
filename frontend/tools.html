@@ -9,25 +9,144 @@
   <meta name="description" content="Live and upcoming CyberMitra security tools for everyday digital safety.">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/site-enhancements.js"></script>
+  <style>
+    /* ── RESET TOOL ICON BOXES & SET SIZES ── */
+    .tool-slide .tool-icon {
+      width: auto !important;
+      height: auto !important;
+      background: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin-bottom: 0 !important;
+    }
+
+    .tool-slide .tool-icon img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      transition: filter 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    }
+
+    /* Hover scale and tilt for clean floating icons */
+    .tool-slide:hover .tool-icon img {
+      transform: scale(1.15) rotate(4deg) !important;
+    }
+
+    /* Dynamic filter for dark mode vector icons */
+    html[data-theme="dark"] .tool-slide .tool-icon img {
+      filter: invert(1) brightness(1.8) !important;
+    }
+
+    /* ── TOOL ICON ROW (Side-by-side flex layout) ── */
+    .tool-icon-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .tool-slide .badge {
+      margin-bottom: 0 !important;
+    }
+
+    /* ── LAPTOP HOVER EXPAND REVEAL ── */
+    @media (min-width: 901px) {
+      .tool-slider .tool-slide {
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        min-height: 140px;
+      }
+
+      .tool-slider .tool-slide .tool-copy,
+      .tool-slider .tool-slide .btn {
+        max-height: 0;
+        opacity: 0 !important;
+        margin: 0 !important;
+        transform: translateY(12px);
+        transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                    opacity 0.3s ease, 
+                    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                    margin 0.4s ease !important;
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      .tool-slider .tool-slide:hover {
+        min-height: 270px;
+      }
+
+      .tool-slider .tool-slide:hover .tool-copy {
+        max-height: 120px;
+        opacity: 1 !important;
+        margin-top: 12px !important;
+        margin-bottom: 20px !important;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .tool-slider .tool-slide:hover .btn {
+        max-height: 40px;
+        opacity: 1 !important;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+    }
+  /* ── NAVBAR (same as index.html) ── */
+    .navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 60px;background:var(--bg);box-shadow:0 2px 8px var(--shadow);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;}
+    .nav-logo span{color:var(--lime);}
+    .nav-links{display:flex;gap:6px;align-items:center;}
+    .nav-links a{font-family:var(--font-display);font-size:0.85rem;font-weight:500;color:var(--text2);padding:8px 16px;border-radius:6px;transition:all 0.2s;border:1px solid transparent;}
+    .nav-links a:hover{color:var(--lime);background:var(--bg3);}
+    .nav-links a.active{color:var(--lime);font-weight:600;}
+    .nav-actions{display:flex;gap:10px;align-items:center;}
+    .hamburger{display:none;flex-direction:column;gap:5px;width:36px;height:36px;background:none;border:1px solid var(--border);border-radius:6px;padding:8px;cursor:pointer;}
+    .hamburger span{display:block;width:100%;height:2px;background:var(--text2);border-radius:2px;transition:all 0.3s;}
+    .mobile-nav{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);z-index:99;padding:16px;flex-direction:column;gap:4px;}
+    .mobile-nav.open{display:flex;}
+    .mobile-nav a{font-family:var(--font-display);font-size:0.85rem;font-weight:500;color:var(--text2);padding:13px 16px;border-radius:8px;border:1px solid transparent;transition:all 0.2s;}
+    .mobile-nav a:hover{color:var(--lime);background:var(--bg3);}
+    .mobile-nav a.active{color:var(--lime);font-weight:600;}
+    .mobile-nav .mobile-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+    @media(max-width:900px){.navbar{padding:0 20px;}.nav-links,.nav-actions{display:none;}.hamburger{display:flex;}}
+  </style>
 </head>
 <body class="grid-bg">
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
 
-<nav class="navbar marketing-nav">
-  <a href="index.html" class="nav-logo">Cyber<span>Mitra</span></a>
-  <nav>
+<nav class="navbar" id="mainNav">
+    <a href="index.html" class="nav-logo">Cyber<span>Mitra</span></a>
+    <div class="nav-links">
+      <a href="tools.html" class="active">Tools</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="cyber-news.html">Cyber News</a>
+      <a href="aboutus.html">About Us</a>
+      <a href="contactus.html">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
+      <a href="signup.html" class="btn btn-accent btn-sm">Get Started</a>
+    </div>
+    <button class="hamburger" id="ham" aria-label="Menu" onclick="document.getElementById('mobileNav').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
     <a href="tools.html" class="active">Tools</a>
     <a href="pricing.html">Pricing</a>
     <a href="cyber-news.html">Cyber News</a>
     <a href="aboutus.html">About Us</a>
     <a href="contactus.html">Contact</a>
-  </nav>
-  <div class="nav-actions">
-    <a href="login.html" class="btn btn-ghost btn-sm">Sign In</a>
-    <a href="signup.html" class="btn btn-accent btn-sm">Get Started</a>
+    <div class="mobile-actions">
+      <a href="login.html" class="btn btn-ghost" style="width:100%">Sign In</a>
+      <a href="signup.html" class="btn btn-accent" style="width:100%">Get Started Free</a>
+    </div>
   </div>
-</nav>
 
 <main class="page-wrapper marketing-page">
   <section class="marketing-hero">
