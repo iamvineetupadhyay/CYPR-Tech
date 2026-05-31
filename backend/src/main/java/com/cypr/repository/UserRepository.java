@@ -16,5 +16,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Ye method dono ko dhoondega
     Optional<User> findByEmailOrUsername(String email, String username);
+
+    // OAuth login ke liye: provider + oauthId se user dhoondo
+    Optional<User> findByOauthProviderAndOauthId(String oauthProvider, String oauthId);
 }
 

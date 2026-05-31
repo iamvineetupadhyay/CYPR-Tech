@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="assets/js/config.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signing you in… — CyberMitra</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+      gap: 28px;
+      background: var(--bg);
+    }
+
+    .oauth-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px 52px;
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .oauth-spinner {
+      width: 52px;
+      height: 52px;
+      border: 3px solid var(--border2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+      margin: 0 auto 28px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .oauth-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .oauth-sub {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      font-family: var(--font-mono);
+    }
+
+    .oauth-brand {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .oauth-brand span { color: var(--green); }
+
+    .oauth-error {
+      color: var(--red);
+      background: var(--red-dim);
+      border: 1px solid rgba(255,77,109,0.2);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      display: none;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body class="grid-bg">
+<div class="orb orb-1"></div>
+
+<div class="oauth-card">
+  <div class="oauth-brand">Cyber<span>Mitra</span></div>
+
+  <div style="margin: 28px 0;">
+    <div class="oauth-spinner" id="spinner"></div>
+    <div class="oauth-title" id="titleText">Signing you in…</div>
+    <div class="oauth-sub" id="subText">Securing your session, please wait.</div>
+  </div>
+
+  <div class="oauth-error" id="errorBox"></div>
+</div>
+
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+
+  // ── Error case ──────────────────────────────────────────────────────────────
+  const oauthError = params.get('oauth_error');
+  if (oauthError) {
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('titleText').textContent = 'Sign-in Failed';
+    document.getElementById('subText').textContent = 'Redirecting to login…';
+    const box = document.getElementById('errorBox');
+    box.textContent = decodeURIComponent(oauthError);
+    box.style.display = 'block';
+    setTimeout(() => { window.location.href = 'login.html'; }, 2500);
+    return;
+  }
+
+  // ── Success case ────────────────────────────────────────────────────────────
+  const token        = params.get('token');
+  const userId       = params.get('userId');
+  const name         = params.get('name')         || 'User';
+  const email        = params.get('email')        || '';
+  const avatar       = params.get('avatar')       || '';
+  const initials     = params.get('initials')     || name.substring(0, 2).toUpperCase();
+  const credits      = params.get('credits')      || '5';
+  const subscription = params.get('subscription') || 'FREE';
+  const score        = params.get('score')        || '100';
+
+  if (!token || !userId) {
+    // Malformed callback — go back to login
+    window.location.href = 'login.html?oauth_error=Missing+session+data';
+    return;
+  }
+
+  // Store session exactly like normal email login does
+  localStorage.setItem('cm_session_token',    token);
+  localStorage.setItem('userId',              userId);
+  localStorage.setItem('cm_user_id',          userId);
+  localStorage.setItem('cm_user_name',        name);
+  localStorage.setItem('cm_user_email',       email);
+  localStorage.setItem('cm_user_initials',    initials);
+  localStorage.setItem('cm_user_credits',     credits);
+  localStorage.setItem('cm_user_subscription', subscription);
+  localStorage.setItem('cm_user_score',       score);
+
+  if (avatar) {
+    localStorage.setItem('cm_user_avatar', avatar);
+  } else {
+    localStorage.removeItem('cm_user_avatar');
+  }
+
+  // Clear stale notifications
+  localStorage.removeItem('cm_notifications');
+
+  // Update UI
+  document.getElementById('titleText').textContent = `Welcome, ${name.split(' ')[0]}!`;
+  document.getElementById('subText').textContent = 'Session secured. Loading your dashboard…';
+
+  // Redirect to home
+  setTimeout(() => {
+    window.location.href = `home.html?id=${userId}`;
+  }, 800);
+})();
+</script>
+</body>
+</html>

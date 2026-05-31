@@ -1,5 +1,6 @@
 package com.cypr.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,10 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    // Production frontend URL (e.g. https://cyprtech.vercel.app)
+    @Value("${cypr.allowed.origins:*}")
+    private String allowedOrigins;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,14 +34,32 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("https://cyprtech.vercel.app", "http://localhost:3000"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-        config.setAllowCredentials(true);
+
+        // Support custom configured origins, local testing, and wildcard for local IP LAN access (mobile testing)
+        if (allowedOrigins != null && !allowedOrigins.trim().isEmpty()) {
+            if (allowedOrigins.equals("*")) {
+                config.setAllowedOriginPatterns(List.of("*"));
+            } else {
+                config.setAllowedOriginPatterns(List.of(allowedOrigins.split(",")));
+            }
+        } else {
+            config.setAllowedOriginPatterns(List.of("*"));
+        }
+
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+
+        // Allow ALL headers — required for multipart/form-data (signup with profile pic)
+        // and for Authorization Bearer token header
+        config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization"));
+
+        // JWT is sent in Authorization header (not cookies), so credentials not needed.
+        // Keeping false allows wildcard pattern matching above to work on ALL origins.
+        config.setAllowCredentials(false);
         config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-}
+}

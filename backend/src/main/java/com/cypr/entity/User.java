@@ -30,6 +30,10 @@ public class User {
     @Column(nullable = false, columnDefinition = "boolean default false")
     private boolean enabled = false;
 
+    // OAuth fields (null for email/password users)
+    private String oauthProvider; // "GOOGLE", "GITHUB", or null
+    private String oauthId;       // Provider's unique user ID
+
     @Transient
     private String sessionToken;
 
@@ -161,5 +165,21 @@ public class User {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getOauthProvider() {
+        return oauthProvider;
+    }
+
+    public void setOauthProvider(String oauthProvider) {
+        this.oauthProvider = oauthProvider;
+    }
+
+    public String getOauthId() {
+        return oauthId;
+    }
+
+    public void setOauthId(String oauthId) {
+        this.oauthId = oauthId;
     }
 }
