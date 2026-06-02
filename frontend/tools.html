@@ -10,91 +10,148 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/site-enhancements.js"></script>
   <style>
-    /* ── RESET TOOL ICON BOXES & SET SIZES ── */
-    .tool-slide .tool-icon {
-      width: auto !important;
-      height: auto !important;
-      background: none !important;
-      border: none !important;
-      border-radius: 0 !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      margin-bottom: 0 !important;
+    /* ── TOOLS GRID ── */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+      margin-bottom: 60px;
     }
 
-    .tool-slide .tool-icon img {
+    .tool-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      min-height: 250px;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--lime);
+      box-shadow: 0 12px 32px var(--lime-glow);
+    }
+
+    html[data-theme="dark"] .tool-card:hover {
+      border-color: var(--lime);
+      box-shadow: 0 12px 32px rgba(59, 130, 246, 0.15);
+    }
+
+    .tool-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .tool-card-icon {
       width: 38px;
       height: 38px;
       object-fit: contain;
-      transition: filter 0.3s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+      transition: transform 0.3s ease;
     }
 
-    /* Hover scale and tilt for clean floating icons */
-    .tool-slide:hover .tool-icon img {
-      transform: scale(1.15) rotate(4deg) !important;
+    .tool-card:hover .tool-card-icon {
+      transform: scale(1.08);
     }
 
-    /* Dynamic filter for dark mode vector icons */
-    html[data-theme="dark"] .tool-slide .tool-icon img {
+    html[data-theme="dark"] .tool-card-icon {
       filter: invert(1) brightness(1.8) !important;
     }
 
-    /* ── TOOL ICON ROW (Side-by-side flex layout) ── */
-    .tool-icon-row {
-      display: flex;
+    .tool-badge {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tool-badge.live {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .tool-badge.dashboard {
+      background: rgba(245, 158, 11, 0.1);
+      color: #d97706;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .tool-badge.history {
+      background: rgba(59, 130, 246, 0.1);
+      color: #2563eb;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .tool-badge.alerts {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .tool-badge.soon {
+      background: rgba(148, 163, 184, 0.1);
+      color: #64748b;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .tool-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .tool-card-desc {
+      font-size: 0.85rem;
+      color: var(--text2);
+      line-height: 1.55;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .tool-card-link {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--lime);
+      text-decoration: none;
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      margin-bottom: 24px;
+      gap: 4px;
+      transition: gap 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
-    .tool-slide .badge {
-      margin-bottom: 0 !important;
+    .tool-card:hover .tool-card-link {
+      gap: 8px;
     }
 
-    /* ── LAPTOP HOVER EXPAND REVEAL ── */
-    @media (min-width: 901px) {
-      .tool-slider .tool-slide {
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        min-height: 140px;
-      }
-
-      .tool-slider .tool-slide .tool-copy,
-      .tool-slider .tool-slide .btn {
-        max-height: 0;
-        opacity: 0 !important;
-        margin: 0 !important;
-        transform: translateY(12px);
-        transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-                    opacity 0.3s ease, 
-                    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-                    margin 0.4s ease !important;
-        pointer-events: none;
-        overflow: hidden;
-      }
-
-      .tool-slider .tool-slide:hover {
-        min-height: 270px;
-      }
-
-      .tool-slider .tool-slide:hover .tool-copy {
-        max-height: 120px;
-        opacity: 1 !important;
-        margin-top: 12px !important;
-        margin-bottom: 20px !important;
-        transform: translateY(0);
-        pointer-events: auto;
-      }
-
-      .tool-slider .tool-slide:hover .btn {
-        max-height: 40px;
-        opacity: 1 !important;
-        transform: translateY(0);
-        pointer-events: auto;
+    @media(max-width: 900px) {
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
-  /* ── NAVBAR (same as index.html) ── */
+
+    @media(max-width: 600px) {
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ── NAVBAR (same as index.html) ── */
     .navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 60px;background:var(--bg);box-shadow:0 2px 8px var(--shadow);border-bottom:1px solid var(--border);}
     .nav-logo{font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;}
     .nav-logo span{color:var(--lime);}
@@ -148,97 +205,100 @@
     </div>
   </div>
 
-<main class="page-wrapper marketing-page">
-  <section class="marketing-hero">
-    <div>
-      <div class="hero-eyebrow">Security toolbox</div>
-      <h1>Live tools today, stronger protection coming next.</h1>
-      <p>CyberMitra keeps the first screen practical: verify passwords, check suspicious links, and track what is coming next for personal and family cyber safety.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;">
-        <a class="btn btn-accent" href="url-check.html">Check a Link</a>
-        <a class="btn btn-ghost" href="password-check.html">Verify Password</a>
-      </div>
-    </div>
-    <div class="glass-card hero-panel">
-      <div class="hero-panel-row">
-        <div>
-          <div class="metric-label">Live tools</div>
-          <div class="metric-value">03</div>
-        </div>
-        <span class="badge badge-green">Active</span>
-      </div>
-      <div class="hero-panel-row">
-        <div>
-          <div class="metric-label">Upcoming</div>
-          <div class="metric-value">06</div>
-        </div>
-        <span class="badge badge-warn">Roadmap</span>
-      </div>
-      <div class="hero-panel-row">
-        <div>
-          <div class="metric-label">Local checks</div>
-          <div class="metric-value">0 cr</div>
-        </div>
-        <span class="badge muted">No credit use</span>
-      </div>
-    </div>
-  </section>
+<main class="page-wrapper marketing-page" style="padding-top: 20px;">
+  <div style="text-align: center; margin-bottom: 36px;">
+    <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--text); letter-spacing: -0.02em;">Security Tools</h1>
+  </div>
 
-  <section class="marketing-section">
-    <div class="section-heading">
-      <div>
-        <div class="section-label">Live tools</div>
-        <h2>Tools available right now</h2>
+  <div class="tools-grid">
+    <!-- Card 1 -->
+    <article class="tool-card">
+      <div class="tool-card-header">
+        <img src="assets/phishing.png" alt="URL Phishing Checker" class="tool-card-icon">
+        <span class="tool-badge live">LIVE</span>
       </div>
-      <p style="max-width:420px;">Use these for quick daily safety checks. Advanced online link scanning uses credits; local checks stay free.</p>
-    </div>
-    <div class="tool-slider">
-      <article class="card tool-slide card-hover">
-        <div class="tool-icon">PW</div>
-        <span class="badge badge-green">Live</span>
-        <h3>Password Verification</h3>
-        <p class="tool-copy">Analyze password strength, risky patterns, length, variety, and practical safety signals before you reuse a weak password.</p>
-        <a href="password-check.html" class="btn btn-accent btn-sm">Open Tool</a>
-      </article>
-      <article class="card tool-slide card-hover">
-        <div class="tool-icon">URL</div>
-        <span class="badge badge-green">Live</span>
-        <h3>Phishing Site Check</h3>
-        <p class="tool-copy">Paste a suspicious link and check whether it looks safe, suspicious, or malicious before you click.</p>
-        <a href="url-check.html" class="btn btn-accent btn-sm">Open Tool</a>
-      </article>
-      <article class="card tool-slide card-hover">
-        <div class="tool-icon">DOC</div>
-        <span class="badge badge-green">Live</span>
-        <h3>Malware Scanner</h3>
-        <p class="tool-copy">Upload a file, paste code, or script and scan for Shannon entropy anomalies, heuristics, and structural risks.</p>
-        <a href="malwareanalysis.html" class="btn btn-accent btn-sm">Open Tool</a>
-      </article>
-      <article class="card tool-slide card-hover">
-        <div class="tool-icon">AI</div>
-        <span class="badge badge-accent">Live Beta</span>
-        <h3>AI Buddy</h3>
-        <p class="tool-copy">A site-wide cybersecurity expert that answers questions with current page context and backend RAG hooks.</p>
-        <a href="cyber-news.html" class="btn btn-accent btn-sm">Try AI Buddy</a>
-      </article>
-    </div>
-  </section>
+      <h3 class="tool-card-title">URL Phishing Checker</h3>
+      <p class="tool-card-desc">Scan any URL against 70+ antivirus engines via VirusTotal. Get a verdict in under a second — Safe, Suspicious, or Malicious.</p>
+      <a href="url-check.html" class="tool-card-link">TRY IT →</a>
+    </article>
 
-  <section class="marketing-section">
-    <div class="section-heading">
-      <div>
-        <div class="section-label">Upcoming tools</div>
-        <h2>Next CyberMitra releases</h2>
+    <!-- Card 2 -->
+    <article class="tool-card">
+      <div class="tool-card-header">
+        <img src="assets/password.png" alt="Password Strength Test" class="tool-card-icon">
+        <span class="tool-badge live">LIVE</span>
       </div>
-      <p style="max-width:420px;">The roadmap focuses on privacy, family protection, AI guidance, document safety, and mobile access.</p>
-    </div>
-    <div class="tool-slider">
-      <article class="card tool-slide"><div class="tool-icon">ID</div><span class="badge badge-warn">Upcoming</span><h3>Personal Details Leak Check</h3><p class="tool-copy">Scan for exposed personal details across web and dark web signals, with guidance on what to do next.</p></article>
-      <article class="card tool-slide"><div class="tool-icon">2FA</div><span class="badge badge-warn">Upcoming</span><h3>Secure 2-Step Verification</h3><p class="tool-copy">A simple protection layer for sensitive CyberMitra actions and family account safety.</p></article>
-      <article class="card tool-slide"><div class="tool-icon">FV</div><span class="badge badge-warn">Upcoming</span><h3>Family Vault</h3><p class="tool-copy">A private space to organize family safety notes, recovery steps, and trusted digital details.</p></article>
-      <article class="card tool-slide"><div class="tool-icon">APP</div><span class="badge badge-warn">Upcoming</span><h3>CyberMitra Mobile Application</h3><p class="tool-copy">Mobile-first link checking, alerts, and quick safety actions for everyday users.</p></article>
-    </div>
-  </section>
+      <h3 class="tool-card-title">Password Strength Test</h3>
+      <p class="tool-card-desc">Verify your passwords locally in your browser. Measure complexity, entropy, and crack resistance without sending data to servers.</p>
+      <a href="password-check.html" class="tool-card-link">TRY IT →</a>
+    </article>
+
+    <!-- Card 3 -->
+    <article class="tool-card">
+      <div class="tool-card-header">
+        <img src="assets/dashboard.png" alt="Malware Scanner" class="tool-card-icon">
+        <span class="tool-badge live">LIVE</span>
+      </div>
+      <h3 class="tool-card-title">Malware Scanner</h3>
+      <p class="tool-card-desc">Upload script files, code files, or text payloads to check for Shannon entropy anomalies, signature compliance, and shell risks.</p>
+      <a href="malwareanalysis.html" class="tool-card-link">TRY IT →</a>
+    </article>
+
+    <!-- Card 4 -->
+    <article class="tool-card">
+      <div class="tool-card-header">
+        <img src="assets/safescore.png" alt="Personal Safe Score" class="tool-card-icon">
+        <span class="tool-badge dashboard">DASHBOARD</span>
+      </div>
+      <h3 class="tool-card-title">Personal Safe Score</h3>
+      <p class="tool-card-desc">Track your security history and monitor your calculated safety rating based on scanned assets and dynamic threat logs.</p>
+      <a href="dashboard.html" class="tool-card-link">VIEW SCORE →</a>
+    </article>
+
+    <!-- Card 5 -->
+    <article class="tool-card">
+      <div class="tool-card-header">
+        <img src="assets/history.png" alt="Scan History" class="tool-card-icon">
+        <span class="tool-badge history">HISTORY</span>
+      </div>
+      <h3 class="tool-card-title">Scan History</h3>
+      <p class="tool-card-desc">Browse your previous file analyses, url scan records, and password test events in a detailed, searchable audit log.</p>
+      <a href="activity-logs.html" class="tool-card-link">VIEW LOGS →</a>
+    </article>
+
+    <!-- Card 6 -->
+    <article class="tool-card">
+      <div class="tool-card-header">
+        <img src="assets/threat.png" alt="Threat Intelligence" class="tool-card-icon">
+        <span class="tool-badge alerts">ALERTS</span>
+      </div>
+      <h3 class="tool-card-title">Threat Intelligence</h3>
+      <p class="tool-card-desc">Receive real-time alerts on active cybercampaigns, local threat distributions, and global zero-day warnings.</p>
+      <a href="cyber-news.html" class="tool-card-link">READ ALERTS →</a>
+    </article>
+
+    <!-- Card 7 -->
+    <article class="tool-card">
+      <div class="tool-card-header">
+        <img src="assets/bestpractices.png" alt="Security Best Practices" class="tool-card-icon">
+        <span class="tool-badge soon">COMING SOON</span>
+      </div>
+      <h3 class="tool-card-title">Security Best Practices</h3>
+      <p class="tool-card-desc">Actionable security guidelines, 2FA setup advice, and digital hygiene principles tailored to defend your family.</p>
+      <span class="tool-card-link" style="color:var(--text3); cursor:default;">UNAVAILABLE</span>
+    </article>
+
+    <!-- Card 8 -->
+    <article class="tool-card">
+      <div class="tool-card-header">
+        <img src="assets/favicon.png" alt="Family Vault" class="tool-card-icon">
+        <span class="tool-badge soon">COMING SOON</span>
+      </div>
+      <h3 class="tool-card-title">Family Vault</h3>
+      <p class="tool-card-desc">A private shared vault to securely document recovery keys, security policies, and family authentication pins.</p>
+      <span class="tool-card-link" style="color:var(--text3); cursor:default;">UNAVAILABLE</span>
+    </article>
+  </div>
 </main>
 
 <footer class="footer">

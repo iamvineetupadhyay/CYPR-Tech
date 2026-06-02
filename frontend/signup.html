@@ -804,7 +804,12 @@
                 }
             } catch (err) {
                 console.error(err);
-                showMsg('error', '⚠ Server is offline! Start your Spring Boot app.');
+                const isLocal = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+                if (isLocal) {
+                    showMsg('error', '⚠ Server is offline! Start your Spring Boot app.');
+                } else {
+                    showMsg('error', '⚠ Connection failed! The CYPR production server is unreachable. Check your network, VPN, or ad-blocker.');
+                }
                 resetSignupBtn();
             }
 

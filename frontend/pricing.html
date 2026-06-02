@@ -5,12 +5,12 @@
   <script src="assets/js/config.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pricing - CyberMitra</title>
-  <meta name="description" content="Simple CyberMitra pricing: free tier and minimal monthly protection plan.">
+  <title>Pricing Plans — CYPR Threat Intelligence</title>
+  <meta name="description" content="Flexible pricing plans for CYPR, the open-source threat intelligence platform. Start free or upgrade for advanced developer Pro and Enterprise features.">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/site-enhancements.js"></script>
   <style>
-    /* ── NAVBAR (same as index.html) ── */
+    /* ── NAVBAR (same across other pages) ── */
     .navbar{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 60px;background:var(--bg);box-shadow:0 2px 8px var(--shadow);border-bottom:1px solid var(--border);}
     .nav-logo{font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;}
     .nav-logo span{color:var(--lime);}
@@ -28,6 +28,351 @@
     .mobile-nav a.active{color:var(--lime);font-weight:600;}
     .mobile-nav .mobile-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
     @media(max-width:900px){.navbar{padding:0 20px;}.nav-links,.nav-actions{display:none;}.hamburger{display:flex;}}
+
+    /* ── PRICING CUSTOM PREMIUM STYLES ── */
+    .pricing-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
+
+    /* Billing Toggle styling */
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 28px 0 8px 0;
+    }
+    .toggle-label {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text2);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .toggle-label.active {
+      color: var(--lime);
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--bg3);
+      transition: .3s;
+      border-radius: 24px;
+      border: 1px solid var(--border);
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: var(--text2);
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--lime-dim);
+      border-color: var(--lime);
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+      background-color: var(--lime);
+    }
+
+    /* Discount Badge */
+    .discount-badge {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--lime);
+      background: var(--lime-dim);
+      padding: 3px 8px;
+      border-radius: 100px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      margin-left: 4px;
+    }
+
+    /* Grid Layout */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    /* Cards */
+    .pricing-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow);
+    }
+    .pricing-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+    }
+    .pricing-card.recommended {
+      border: 1px solid var(--lime);
+      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.1);
+    }
+    .pricing-card.recommended:hover {
+      box-shadow: 0 12px 40px rgba(16, 185, 129, 0.18);
+    }
+    .popular-tag {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      font-weight: 800;
+      color: var(--bg);
+      background: var(--lime);
+      padding: 4px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    html[data-theme="dark"] .popular-tag {
+      color: #030712;
+    }
+    .coming-soon-tag {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      font-weight: 800;
+      color: #eab308;
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid rgba(234, 179, 8, 0.25);
+      padding: 4px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .plan-name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .plan-desc {
+      font-size: 0.8rem;
+      color: var(--text2);
+      line-height: 1.5;
+      margin-bottom: 24px;
+      min-height: 48px;
+    }
+    .plan-price-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+    .plan-price {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -0.04em;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .plan-period {
+      font-size: 0.8rem;
+      color: var(--text3);
+    }
+    .plan-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 32px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-grow: 1;
+    }
+    .plan-features li {
+      font-size: 0.82rem;
+      color: var(--text2);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.4;
+    }
+    .plan-features li svg {
+      color: var(--lime);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .plan-features li.disabled {
+      color: var(--text3);
+    }
+    .plan-features li.disabled svg {
+      color: var(--text3);
+      opacity: 0.4;
+    }
+
+    /* Comparison Table Section */
+    .compare-section {
+      margin-top: 20px;
+    }
+    .compare-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+    .compare-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+      min-width: 700px;
+    }
+    .compare-table th, 
+    .compare-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table th {
+      font-family: var(--font-display);
+      font-weight: 700;
+      color: var(--text);
+      background: var(--bg3);
+    }
+    .compare-table th:first-child {
+      font-size: 0.9rem;
+    }
+    .compare-table td:first-child {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .compare-table tr:last-child td {
+      border-bottom: none;
+    }
+    .compare-table tr:hover td {
+      background: var(--bg3);
+    }
+    .check-icon {
+      color: var(--lime);
+      font-weight: 800;
+    }
+    .cross-icon {
+      color: var(--text3);
+      opacity: 0.5;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+      margin-top: 20px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 20px;
+    }
+    .faq-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+    .faq-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .faq-item:hover {
+      border-color: var(--border2);
+    }
+    .faq-question {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .faq-answer {
+      font-size: 0.82rem;
+      color: var(--text2);
+      line-height: 1.6;
+      margin-top: 10px;
+      display: none;
+    }
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+    .faq-icon {
+      transition: transform 0.2s;
+      color: var(--text3);
+      font-size: 0.75rem;
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+      color: var(--lime);
+    }
+
+    /* Scroll animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fu {
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .d1 { animation-delay: 0.05s; opacity: 0; }
+    .d2 { animation-delay: 0.12s; opacity: 0; }
+    .d3 { animation-delay: 0.18s; opacity: 0; }
+
+    @media (max-width: 900px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body class="grid-bg">
@@ -64,16 +409,278 @@
   </div>
 </div>
 
-<main class="page-wrapper marketing-page" style="display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 180px); padding: 40px 20px;">
-  <div class="glass-card" style="max-width: 600px; padding: 40px; border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); text-align: center; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); animation: fadeUp 0.6s ease;">
-    <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); animation: float 4s ease-in-out infinite;">🛡️</div>
-    <div class="hero-eyebrow" style="color: #3b82f6; font-family: var(--font); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">CYPR Security Plans</div>
-    <h1 style="font-size: 2.2rem; font-weight: 800; color: #ffffff; margin-bottom: 16px; line-height: 1.25; background: linear-gradient(135deg, #3b82f6, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Pricing is Currently Free</h1>
-    <p style="font-size: 1.05rem; color: #94a3b8; line-height: 1.6; margin-bottom: 30px;">All advanced CYPR protection features (including local file scanners, advanced link analysis, and live threat intelligence) are currently <b>100% free and unlimited</b> during our beta testing phase!</p>
-    <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
-      <a class="btn btn-accent" href="signup.html" style="padding: 12px 30px; font-weight: 600;">Create Free Account</a>
-      <a class="btn btn-ghost" href="tools.html" style="padding: 12px 30px; font-weight: 600;">Explore Tools</a>
+<main class="page-wrapper marketing-page" style="padding-top: 20px;">
+  
+  <div class="pricing-container">
+    
+    <!-- HEADER -->
+    <div style="text-align: center;" class="fu d1">
+      <h1 style="font-size: 2.4rem; font-weight: 900; color: var(--text); letter-spacing: -0.03em; margin-bottom: 8px;">Choose Your Shield</h1>
+      <p style="font-size: 0.95rem; color: var(--text3); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 24px;">Democratizing Threat Intelligence</p>
+      <p style="font-size: 0.95rem; color: var(--text2); max-width: 600px; margin: 0 auto; line-height: 1.6;">
+        CYPR provides simple and scalable plans to keep your browsing and systems secure. Protect your web experience for free or unlock high-performance developer nodes.
+      </p>
+
+      <!-- BILLING TOGGLE -->
+      <div class="toggle-container">
+        <span class="toggle-label active" id="label-monthly" onclick="setBilling('monthly')">Monthly Billing</span>
+        <label class="switch">
+          <input type="checkbox" id="billing-checkbox" onchange="toggleBilling(this)">
+          <span class="slider"></span>
+        </label>
+        <span class="toggle-label" id="label-annual" onclick="setBilling('annual')">Annual Billing <span class="discount-badge">20% Off</span></span>
+      </div>
     </div>
+
+    <!-- PRICING CARDS -->
+    <div class="pricing-grid fu d2">
+      <!-- Tier 1: Community -->
+      <div class="pricing-card">
+        <span class="plan-name">Community</span>
+        <p class="plan-desc">Essential scanning vectors and database validation tools for everyday safe browsing.</p>
+        <div class="plan-price-wrapper">
+          <span class="plan-price" id="price-community">$0</span>
+          <span class="plan-period" id="period-community">/month</span>
+        </div>
+        <ul class="plan-features">
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Standard Threat Feed Checks
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            URL & Domain Scan Queue
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Password Strength Estimation
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            3-Day History & Scan Logs
+          </li>
+          <li class="disabled">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            VAJRA Core Ingestion Engine
+          </li>
+          <li class="disabled">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            Brevo SMTP Automated Email Alerts
+          </li>
+          <li class="disabled">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            Custom Webhook Alerts
+          </li>
+        </ul>
+        <a href="signup.html" class="btn btn-ghost" style="width: 100%; text-align: center; justify-content: center; margin-top: auto;">Get Started Free</a>
+      </div>
+
+      <!-- Tier 2: Developer Pro (Recommended) -->
+      <div class="pricing-card recommended">
+        <span class="coming-soon-tag">Coming Soon</span>
+        <span class="plan-name" style="color: var(--lime);">Developer Pro</span>
+        <p class="plan-desc">Advanced threat intelligence access, dedicated cache nodes, and higher throughput API limits.</p>
+        <div class="plan-price-wrapper">
+          <span class="plan-price" id="price-pro">$9</span>
+          <span class="plan-period" id="period-pro">/month</span>
+        </div>
+        <ul class="plan-features">
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            VAJRA Core Concurrent Scanning
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            90+ Multi-Engine VT Scans
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Detailed Breached Password DB Match
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Brevo SMTP Automated Email Alerts
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            90-Day History & Logs Dashboard
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Up to 1,000 API calls / minute
+          </li>
+          <li class="disabled">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            Custom Webhook Alerts
+          </li>
+        </ul>
+        <a href="signup.html" class="btn btn-accent" style="width: 100%; text-align: center; justify-content: center; margin-top: auto; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.25);">Upgrade to Pro</a>
+      </div>
+
+      <!-- Tier 3: Enterprise -->
+      <div class="pricing-card">
+        <span class="coming-soon-tag">Coming Soon</span>
+        <span class="plan-name">Enterprise</span>
+        <p class="plan-desc">Isolated database instances, customized triggers, and cloud pipelines for security teams.</p>
+        <div class="plan-price-wrapper">
+          <span class="plan-price" id="price-enterprise">$49</span>
+          <span class="plan-period" id="period-enterprise">/month</span>
+        </div>
+        <ul class="plan-features">
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            VAJRA Isolated Thread Pool
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Isolated PostgreSQL Db Schema
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Webhooks, Slack & Discord Alerts
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Unlimited Retention & CSV Export
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Custom SLA & Dedicated Engineer
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Custom Domain Nginx Config
+          </li>
+        </ul>
+        <a href="contactus.html" class="btn" style="width: 100%; text-align: center; justify-content: center; margin-top: auto; background: var(--text); color: var(--bg); border: 1px solid transparent;">Contact Sales</a>
+      </div>
+    </div>
+
+    <!-- SERVICES COMPARISON -->
+    <div class="compare-section fu d3">
+      <h2 class="compare-title">Services & Features Comparison</h2>
+      <div class="compare-table-wrapper">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th style="width: 34%">Capability</th>
+              <th style="width: 22%; text-align: center;">Community</th>
+              <th style="width: 22%; text-align: center; color: var(--lime);">Developer Pro</th>
+              <th style="width: 22%; text-align: center;">Enterprise</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>VAJRA Core Ingestion Engine</td>
+              <td style="text-align: center;" class="cross-icon">✗</td>
+              <td style="text-align: center;" class="check-icon">✓ (Sub-ms Cache Lookup)</td>
+              <td style="text-align: center;" class="check-icon">✓ (Isolated Thread Pools)</td>
+            </tr>
+            <tr>
+              <td>Threat Database Update Frequency</td>
+              <td style="text-align: center;">Daily</td>
+              <td style="text-align: center;">Hourly (Live Sync)</td>
+              <td style="text-align: center;">Continuous Real-time Feeds</td>
+            </tr>
+            <tr>
+              <td>Multi-Engine Scan Verification</td>
+              <td style="text-align: center;">Standard DB (Static)</td>
+              <td style="text-align: center;">90+ Engines (Asynchronous VT)</td>
+              <td style="text-align: center;">90+ Engines & Sandbox Exec</td>
+            </tr>
+            <tr>
+              <td>Breached Password DB Check</td>
+              <td style="text-align: center;">Local Evaluation</td>
+              <td style="text-align: center;">✓ API Database Match</td>
+              <td style="text-align: center;">✓ API Match + AD/LDAP Sync</td>
+            </tr>
+            <tr>
+              <td>API Traffic Rate Limits</td>
+              <td style="text-align: center;">10 calls / min</td>
+              <td style="text-align: center;">1,000 calls / min</td>
+              <td style="text-align: center;">Unlimited / Dedicated Socket</td>
+            </tr>
+            <tr>
+              <td>Incident Email Notifications</td>
+              <td style="text-align: center;" class="cross-icon">✗</td>
+              <td style="text-align: center;">✓ Brevo SMTP integration</td>
+              <td style="text-align: center;">✓ Brevo + Custom Relay</td>
+            </tr>
+            <tr>
+              <td>Custom Webhooks / Slack Channels</td>
+              <td style="text-align: center;" class="cross-icon">✗</td>
+              <td style="text-align: center;" class="cross-icon">✗</td>
+              <td style="text-align: center;">✓ Slack, Discord & Webhooks</td>
+            </tr>
+            <tr>
+              <td>Log Retention & Exports</td>
+              <td style="text-align: center;">3 Days</td>
+              <td style="text-align: center;">90 Days</td>
+              <td style="text-align: center;">Unlimited (with CSV Export)</td>
+            </tr>
+            <tr>
+              <td>PostgreSQL DB Integration</td>
+              <td style="text-align: center;">Shared DB Schema</td>
+              <td style="text-align: center;">Shared DB Schema</td>
+              <td style="text-align: center;">✓ Dedicated RDS instance option</td>
+            </tr>
+            <tr>
+              <td>Managed AWS Node Deployments</td>
+              <td style="text-align: center;" class="cross-icon">✗</td>
+              <td style="text-align: center;" class="cross-icon">✗</td>
+              <td style="text-align: center;">✓ Automated Docker/EC2 host</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FAQ SECTION -->
+    <div class="faq-section fu d3">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>Is there a long-term commitment required?</span>
+            <span class="faq-icon">▼</span>
+          </div>
+          <div class="faq-answer">
+            No. You can subscribe monthly and cancel, upgrade, or downgrade your pricing plan at any time directly from your dashboard settings. There are absolutely no termination fees.
+          </div>
+        </div>
+        
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>What makes the VAJRA Core engine faster?</span>
+            <span class="faq-icon">▼</span>
+          </div>
+          <div class="faq-answer">
+            VAJRA is our custom concurrent threat ingestion module developed in Java 21 & Spring Boot 3. It utilizes non-blocking thread scheduling to aggregate over 1.4 Lakh threat intelligence records, caching them instantly in-memory so search lookups complete in under 1 millisecond.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>How does the Brevo SMTP notifier trigger?</span>
+            <span class="faq-icon">▼</span>
+          </div>
+          <div class="faq-answer">
+            When our scan pipelines detect that a URL or script you are checking is classified as high-risk, a background event is dispatched to trigger the Brevo SMTP engine. It immediately sends a transactional diagnostic payload with recommendations directly to your verified email address.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>Are there community or open-source plans?</span>
+            <span class="faq-icon">▼</span>
+          </div>
+          <div class="faq-answer">
+            Yes! Because CYPR is an open-source project, we are proud to offer free, complimentary Pro-tier features for active open-source developers, academic research groups, and educational organizations. Get in touch with details of your work to get set up.
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </main>
 
@@ -87,5 +694,75 @@
   </div>
   <div class="footer-copy">© 2026 CyberMitra. Built to protect.</div>
 </footer>
+
+<script>
+  // Billing Toggle Logic
+  function toggleBilling(checkbox) {
+    const isAnnual = checkbox.checked;
+    setBilling(isAnnual ? 'annual' : 'monthly');
+  }
+
+  function setBilling(mode) {
+    const checkbox = document.getElementById('billing-checkbox');
+    const labelMonthly = document.getElementById('label-monthly');
+    const labelAnnual = document.getElementById('label-annual');
+    
+    // prices
+    const pricePro = document.getElementById('price-pro');
+    const priceEnterprise = document.getElementById('price-enterprise');
+    
+    // periods
+    const periodPro = document.getElementById('period-pro');
+    const periodEnterprise = document.getElementById('period-enterprise');
+
+    if (mode === 'annual') {
+      checkbox.checked = true;
+      labelMonthly.classList.remove('active');
+      labelAnnual.classList.add('active');
+      
+      // Update values with 20% discount (annual rates)
+      animatePrice(pricePro, 7.20);
+      animatePrice(priceEnterprise, 39.20);
+      
+      periodPro.textContent = '/month, billed annually';
+      periodEnterprise.textContent = '/month, billed annually';
+    } else {
+      checkbox.checked = false;
+      labelMonthly.classList.add('active');
+      labelAnnual.classList.remove('active');
+      
+      // Update values to monthly standard rates
+      animatePrice(pricePro, 9);
+      animatePrice(priceEnterprise, 49);
+      
+      periodPro.textContent = '/month';
+      periodEnterprise.textContent = '/month';
+    }
+  }
+
+  function animatePrice(element, targetValue) {
+    element.style.opacity = '0';
+    element.style.transform = 'translateY(-4px)';
+    setTimeout(() => {
+      element.textContent = targetValue % 1 === 0 ? '$' + targetValue : '$' + targetValue.toFixed(2);
+      element.style.opacity = '1';
+      element.style.transform = 'translateY(0)';
+    }, 150);
+  }
+
+  // FAQ Accordion Logic
+  function toggleFaq(element) {
+    const isActive = element.classList.contains('active');
+    
+    // Close other items
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.classList.remove('active');
+    });
+
+    if (!isActive) {
+      element.classList.add('active');
+    }
+  }
+</script>
 </body>
 </html>

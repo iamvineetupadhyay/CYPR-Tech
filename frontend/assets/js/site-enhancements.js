@@ -3471,15 +3471,7 @@
 
   window.showPricingComingSoonModal = showPricingComingSoonModal;
 
-  // Intercept all pricing link clicks globally
-  document.addEventListener('click', (e) => {
-    const target = e.target.closest('a');
-    if (target && target.getAttribute('href') === 'pricing.html') {
-      e.preventDefault();
-      e.stopPropagation();
-      showPricingComingSoonModal();
-    }
-  });
+
 
   /* ==========================================================================
      ── UNIFIED RESPONSIVE NAVIGATION & SIDEBAR COORDINATOR ──

@@ -5,8 +5,8 @@
   <script src="assets/js/config.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us - CyberMitra</title>
-  <meta name="description" content="About CyberMitra, a practical cyber safety platform for everyday users and families.">
+  <title>About CYPR — Threat Intelligence & Analysis</title>
+  <meta name="description" content="Welcome to CYPR, an open-source, automated threat intelligence and security analysis platform designed to democratize web safety.">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/site-enhancements.js"></script>
   <style>
@@ -28,6 +28,305 @@
     .mobile-nav a.active{color:var(--lime);font-weight:600;}
     .mobile-nav .mobile-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
     @media(max-width:900px){.navbar{padding:0 20px;}.nav-links,.nav-actions{display:none;}.hamburger{display:flex;}}
+
+    /* ── ABOUT PAGE CUSTOM PREMIUM STYLES ── */
+    .about-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .about-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .about-card p {
+      font-size: 1.02rem;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    .section-title-wrapper {
+      margin-bottom: 20px;
+    }
+
+    .section-title-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--lime);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .section-title-text {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    /* Mission Grid */
+    .mission-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .mission-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .mission-card:hover {
+      border-color: var(--lime);
+      transform: translateY(-2px);
+    }
+
+    .mission-card-num {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--lime);
+      background: var(--lime-dim);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      padding: 4px 10px;
+      border-radius: 100px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .mission-card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .mission-card-desc {
+      font-size: 0.85rem;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* Team & Developer Block */
+    .dev-profile-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .dev-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .dev-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--lime), #10b981);
+      color: #030712;
+      font-size: 2.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      border: 3px solid var(--border2);
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+      object-fit: cover;
+    }
+
+    .dev-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .dev-role {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--lime);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .stack-title {
+      font-family: var(--mono);
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text3);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .stack-tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .stack-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text2);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .social-btn-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 30px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .social-btn.github {
+      background: var(--text);
+      color: var(--bg);
+      border: 1px solid transparent;
+    }
+    
+    html[data-theme="dark"] .social-btn.github {
+      background: #ffffff;
+      color: #030712;
+    }
+
+    .social-btn.github:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .social-btn.linkedin {
+      background: rgba(10, 102, 194, 0.1);
+      color: #0a66c2;
+      border: 1px solid rgba(10, 102, 194, 0.25);
+    }
+
+    .social-btn.linkedin:hover {
+      background: #0a66c2;
+      color: #ffffff;
+      border-color: transparent;
+      transform: translateY(-1px);
+    }
+
+    /* Contributions timeline */
+    .contribution-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contribution-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .contribution-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    .contribution-icon {
+      font-size: 1.2rem;
+      filter: drop-shadow(0 0 2px var(--lime));
+    }
+
+    .contribution-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .contribution-items-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .contribution-items-list li {
+      position: relative;
+      padding-left: 20px;
+      font-size: 0.85rem;
+      color: var(--text2);
+      line-height: 1.55;
+    }
+
+    .contribution-items-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--lime);
+      font-weight: 800;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fu {
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .d1 { animation-delay: 0.05s; opacity: 0; }
+    .d2 { animation-delay: 0.12s; opacity: 0; }
+    .d3 { animation-delay: 0.18s; opacity: 0; }
+
+    @media (max-width: 900px) {
+      .dev-profile-grid {
+        grid-template-columns: 1fr;
+      }
+      .mission-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body class="grid-bg">
@@ -64,56 +363,134 @@
   </div>
 </div>
 
-<main class="page-wrapper marketing-page">
-  <section class="marketing-hero">
-    <div>
-      <div class="hero-eyebrow">About CyberMitra</div>
-      <h1>A cyber safety companion for real people.</h1>
-      <p>CyberMitra is built to make security checks simple, affordable, and understandable. The goal is not to scare users with technical jargon, but to help them make safer decisions before clicking, sharing, or opening anything risky.</p>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;">
-        <a class="btn btn-accent" href="tools.html">Explore Tools</a>
-        <a class="btn btn-ghost" href="contactus.html">Contact Us</a>
-      </div>
+<main class="page-wrapper marketing-page" style="padding-top: 20px;">
+  
+  <div class="about-container">
+    
+    <!-- HEADER -->
+    <div style="text-align: center;">
+      <h1 style="font-size: 2.4rem; font-weight: 900; color: var(--text); letter-spacing: -0.03em; margin-bottom: 8px;">About CYPR</h1>
+      <p style="font-size: 0.95rem; color: var(--text3); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em;">Cyber Protection & Threat Intelligence</p>
     </div>
-    <div class="glass-card founder-card">
-      <div class="avatar-mark">CM</div>
-      <div>
-        <span class="badge badge-green">Mission</span>
-        <h3 style="margin:14px 0 8px;">Protect first, explain clearly.</h3>
-        <p class="about-copy">Every feature is designed around one idea: people should be able to understand cyber risk quickly and act with confidence.</p>
-      </div>
-    </div>
-  </section>
 
-  <section class="marketing-section">
-    <div class="about-split">
-      <div>
-        <div class="section-label">Why we exist</div>
-        <h2 style="font-size:clamp(1.9rem,3vw,3.1rem);line-height:1.05;letter-spacing:0;margin-bottom:18px;">Digital safety should not feel out of reach.</h2>
-        <p class="about-copy">Most attacks begin with ordinary moments: a link in a message, a reused password, a document from an unknown sender, or a family member who is unsure what is safe. CyberMitra turns those moments into quick checks and clear next steps.</p>
-      </div>
-      <div class="about-grid">
-        <article class="card about-card"><span class="badge badge-green">01</span><h3>Simple</h3><p>Tools should be fast enough for daily use and clear enough for non-technical users.</p></article>
-        <article class="card about-card"><span class="badge badge-accent">02</span><h3>Affordable</h3><p>Pricing stays minimal so students, families, and small teams can use protection regularly.</p></article>
-        <article class="card about-card"><span class="badge badge-warn">03</span><h3>Practical</h3><p>CyberMitra focuses on common risks first: phishing, weak passwords, leaked details, unsafe files, and account protection.</p></article>
-      </div>
+    <!-- PLATFORM OVERVIEW -->
+    <div class="about-card fu d1">
+      <p style="margin-bottom: 16px; font-weight: 600; color: var(--text); font-size: 1.08rem;">Welcome to CYPR, an open-source, automated threat intelligence and security analysis platform designed to democratize web safety and digital asset protection.</p>
+      <p>In an era where malicious web infrastructure, phishing campaigns, and malware deployment loops evolve at an unprecedented pace, standard reactive defenses fall short. CYPR bridges the gap between raw global threat data and actionable real-time defense mechanisms by providing immediate, high-throughput verification vectors for URLs and files.</p>
     </div>
-  </section>
 
-  <section class="marketing-section">
-    <div class="section-heading">
-      <div>
-        <div class="section-label">Roadmap</div>
-        <h2>What CyberMitra is building toward</h2>
+    <!-- INTENTIONS & MISSION -->
+    <div class="fu d2">
+      <div class="section-title-wrapper">
+        <span class="section-title-label">Why CYPR?</span>
+        <h2 class="section-title-text">Intentions & Mission of the Project</h2>
       </div>
-      <p style="max-width:420px;">A growing safety layer for personal browsing, family accounts, documents, and mobile-first protection.</p>
+      
+      <div class="mission-grid">
+        <!-- Pillar 1 -->
+        <article class="mission-card">
+          <span class="mission-card-num">01</span>
+          <h3 class="mission-card-title">Proactive Threat Mitigation</h3>
+          <p class="mission-card-desc">Moving away from traditional periodic checks to a continuous, proactive parsing system that neutralizes attack surfaces before they interact with users.</p>
+        </article>
+        <!-- Pillar 2 -->
+        <article class="mission-card">
+          <span class="mission-card-num">02</span>
+          <h3 class="mission-card-title">High-Throughput Ingestion</h3>
+          <p class="mission-card-desc">Building automated pipelines capable of handling massive volumes of open-source threat feeds without introducing system bottlenecks or high latency.</p>
+        </article>
+        <!-- Pillar 3 -->
+        <article class="mission-card">
+          <span class="mission-card-num">03</span>
+          <h3 class="mission-card-title">Accessible Automation</h3>
+          <p class="mission-card-desc">Providing developers, organizations, and everyday users with a unified, clean interface to instantly verify suspicious hashes, domains, and scripts through multi-engine analysis.</p>
+        </article>
+      </div>
     </div>
-    <div class="timeline-grid">
-      <article class="card timeline-card"><span class="badge badge-green">Live</span><h3>Link and password checks</h3><p>Core tools for identifying phishing risk and weak password behavior.</p></article>
-      <article class="card timeline-card"><span class="badge badge-warn">Next</span><h3>Leak and identity checks</h3><p>Personal detail exposure checks across web and dark web signals.</p></article>
-      <article class="card timeline-card"><span class="badge badge-accent">Future</span><h3>Family-first cyber safety</h3><p>Family Vault, AI Buddy, secure 2-step verification, document malware analysis, and mobile app access.</p></article>
+
+    <!-- TEAM & ARCHITECTURE -->
+    <div class="fu d3">
+      <div class="section-title-wrapper">
+        <span class="section-title-label">Architecture & Operations</span>
+        <h2 class="section-title-text">Engineering Layout & Developer Contribution</h2>
+      </div>
+
+      <div class="dev-profile-grid">
+        <!-- LEFT: Dev Card -->
+        <div class="dev-card">
+          <img class="dev-avatar" src="assets/vineet.png" alt="Vineet Kumar Upadhyay">
+          <h3 class="dev-name">Vineet Kumar Upadhyay</h3>
+          <span class="dev-role">Lead Backend Engineer & Cloud Architect</span>
+          
+          <span class="stack-title">Core Tech Stack</span>
+          <div class="stack-tags-container">
+            <span class="stack-tag">Java 21</span>
+            <span class="stack-tag">Spring Boot 3</span>
+            <span class="stack-tag">Spring Security</span>
+            <span class="stack-tag">AWS (EC2/RDS)</span>
+            <span class="stack-tag">PostgreSQL</span>
+            <span class="stack-tag">Docker</span>
+            <span class="stack-tag">Nginx</span>
+            <span class="stack-tag">Kafka</span>
+          </div>
+
+          <div class="social-btn-container">
+            <a href="https://github.com/iamvineetupadhyay" target="_blank" class="social-btn github">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              Connect on GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/iamvineetupadhyay" target="_blank" class="social-btn linkedin">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              Connect on LinkedIn
+            </a>
+          </div>
+        </div>
+
+        <!-- RIGHT: Contributions Block -->
+        <div class="contribution-list">
+          <!-- Item 1 -->
+          <div class="contribution-card">
+            <div class="contribution-header">
+              <span class="contribution-icon">☁️</span>
+              <h4 class="contribution-title">1. Cloud Infrastructure & Reverse Proxy</h4>
+            </div>
+            <ul class="contribution-items-list">
+              <li>Architected and deployed the live production-grade backend environment hosted on an AWS EC2 standalone instance.</li>
+              <li>Configured and optimized an isolated managed AWS RDS PostgreSQL database cluster to securely isolate system state records and transaction metadata.</li>
+              <li>Implemented an Nginx Reverse Proxy integrated with dynamic DuckDNS configurations to securely route public API endpoints, while engineering programmatic filters to eliminate cross-origin (CORS) preflight blocks between our Vercel client and AWS server layers.</li>
+            </ul>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="contribution-card">
+            <div class="contribution-header">
+              <span class="contribution-icon">🚀</span>
+              <h4 class="contribution-title">2. The VAJRA Core Threat Ingestion Engine</h4>
+            </div>
+            <ul class="contribution-items-list">
+              <li>Designed and engineered VAJRA, a high-velocity concurrent ingestion module within Spring Boot.</li>
+              <li>VAJRA implements asynchronous background scheduling tasks that systematically pull, sanitize, and ingest over 1.42 Lakh+ active malicious domains from global threat intelligence networks (such as OpenPhish and Phishing Army) directly into optimized in-memory caches upon server initialization, delivering sub-millisecond look-up times.</li>
+            </ul>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="contribution-card">
+            <div class="contribution-header">
+              <span class="contribution-icon">🛡️</span>
+              <h4 class="contribution-title">3. Multi-Engine Scans & Anti-Abuse Protocols</h4>
+            </div>
+            <ul class="contribution-items-list">
+              <li>Integrated multi-source signature verification layers by orchestrating parallel asynchronous requests to the VirusTotal API, aggregating results dynamically from over 90+ global security engines.</li>
+              <li>Hardened the application perimeter by embedding Spring Security filter chains with custom stateless JSON Web Tokens (JWT) and enterprise-grade GitHub OAuth 2.0 authentication mechanisms.</li>
+              <li>Mitigated automated bot scripts and script-driven API abuse by developing server-side verification routines for Cloudflare Turnstile CAPTCHA.</li>
+              <li>Configured synchronous transactional alerts via Brevo SMTP engines to dispatch diagnostic payloads and incident response notifications directly to registered user targets.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+
+  </div>
 </main>
 
 <footer class="footer">
