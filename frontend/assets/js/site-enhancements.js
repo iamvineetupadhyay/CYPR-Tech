@@ -920,123 +920,211 @@
     /* ── PREMIUM site-footer & footer Overhaul ── */
     .site-footer, .footer {
       border-top: 1px solid var(--border) !important;
-      background: var(--bg2) !important;
-      padding: 60px 40px 30px !important;
+      background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%) !important;
+      padding: 70px 40px 120px !important;
       font-family: var(--font, sans-serif);
       color: var(--text2) !important;
       box-sizing: border-box !important;
       width: 100% !important;
+      position: relative !important;
+      overflow: hidden !important;
     }
-    .cm-footer-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 40px;
-      margin-bottom: 40px;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: left;
+    html[data-theme="light"] {
+      --footer-watermark-stroke: rgba(11, 25, 44, 0.08);
+      --footer-accent-color: var(--logo-fill);
+      --footer-glow: rgba(30, 64, 175, 0.12);
     }
-    .cm-footer-col {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    html[data-theme="dark"] {
+      --footer-watermark-stroke: rgba(0, 255, 102, 0.08);
+      --footer-accent-color: var(--logo-fill);
+      --footer-glow: rgba(0, 255, 102, 0.2);
     }
-    .cm-footer-col h3 {
-      font-family: var(--mono, monospace);
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text);
-      margin-bottom: 4px;
+    .cm-footer-top-row {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: flex-start !important;
+      flex-wrap: wrap !important;
+      gap: 28px !important;
+      max-width: 1200px !important;
+      margin: 0 auto 40px auto !important;
     }
-    .cm-footer-col p {
-      font-size: 0.8rem;
-      line-height: 1.6;
-      color: var(--text2);
+    .cm-footer-logo-desc {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 16px !important;
     }
-    .cm-footer-links {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .cm-footer-links a {
-      font-size: 0.8rem;
+    .cm-footer-logo-desc p {
+      font-size: 0.85rem !important;
       color: var(--text2) !important;
-      text-decoration: none !important;
-      transition: color 0.15s ease;
-      width: fit-content;
+      max-width: 440px !important;
+      line-height: 1.75 !important;
+      margin: 0 !important;
+      opacity: 0.85 !important;
     }
-    .cm-footer-links a:hover {
-      color: var(--lime) !important;
+    .footer-logo {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      width: fit-content !important;
     }
-    .cm-footer-badges {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 8px;
-    }
-    .cm-footer-badge-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: var(--mono, monospace);
-      font-size: 0.65rem;
-      color: var(--text3);
-    }
-    .cm-footer-badge-item svg {
-      width: 14px;
-      height: 14px;
-      color: var(--text3);
-    }
-    .cm-footer-bottom {
-      border-top: 1px solid var(--border);
-      padding-top: 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .cm-footer-copy {
-      font-size: 0.75rem;
-      color: var(--text3);
+    .footer-logo:hover {
+      transform: scale(1.04) !important;
     }
     .cm-footer-socials {
-      display: flex;
-      gap: 16px;
+      display: flex !important;
+      gap: 12px !important;
+      margin-top: 6px !important;
     }
-    .cm-footer-socials a {
+    .cm-footer-social-btn {
+      width: 40px !important;
+      height: 40px !important;
+      display: inline-grid !important;
+      place-items: center !important;
+      border-radius: 10px !important;
+      border: 1px solid var(--border) !important;
+      background: rgba(255, 255, 255, 0.01) !important;
+      backdrop-filter: blur(4px) !important;
+      -webkit-backdrop-filter: blur(4px) !important;
+      color: var(--text2) !important;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      text-decoration: none !important;
+    }
+    .cm-footer-social-btn:hover {
+      background: var(--lime-dim) !important;
+      border-color: var(--footer-accent-color) !important;
+      color: var(--footer-accent-color) !important;
+      transform: translateY(-3px) !important;
+      box-shadow: 0 4px 15px var(--footer-glow) !important;
+    }
+    .cm-footer-social-btn svg {
+      width: 16px !important;
+      height: 16px !important;
+      fill: currentColor !important;
+    }
+    .cm-footer-divider {
+      border: none !important;
+      height: 1px !important;
+      background: linear-gradient(90deg, transparent 0%, var(--border) 50%, transparent 100%) !important;
+      max-width: 1200px !important;
+      margin: 0 auto 40px auto !important;
+      opacity: 0.6 !important;
+    }
+    .cm-footer-cols {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 40px !important;
+      margin-bottom: 50px !important;
+      max-width: 1200px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      text-align: left !important;
+    }
+    .cm-footer-col {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 18px !important;
+    }
+    .cm-footer-col h3 {
+      font-family: var(--mono, monospace) !important;
+      font-size: 0.72rem !important;
+      font-weight: 700 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.08em !important;
+      color: var(--text) !important;
+      margin: 0 !important;
+      position: relative !important;
+      padding-left: 12px !important;
+    }
+    .cm-footer-col h3::before {
+      content: '' !important;
+      position: absolute !important;
+      left: 0 !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      width: 3px !important;
+      height: 10px !important;
+      background: var(--footer-accent-color) !important;
+      border-radius: 2px !important;
+      transition: height 0.3s ease !important;
+    }
+    .cm-footer-col:hover h3::before {
+      height: 14px !important;
+    }
+    .cm-footer-links {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 12px !important;
+    }
+    .cm-footer-links a {
+      font-size: 0.82rem !important;
+      color: var(--text2) !important;
+      text-decoration: none !important;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      width: fit-content !important;
+      opacity: 0.85 !important;
+    }
+    .cm-footer-links a:hover {
+      color: var(--footer-accent-color) !important;
+      transform: translateX(4px) !important;
+      opacity: 1 !important;
+    }
+    .cm-footer-bottom-row {
+      border-top: none !important;
+      padding-top: 24px !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      max-width: 1200px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      flex-wrap: wrap !important;
+      gap: 16px !important;
+      position: relative !important;
+      z-index: 1 !important;
+    }
+    .cm-footer-copy {
+      font-size: 0.78rem !important;
       color: var(--text3) !important;
-      transition: color 0.15s ease;
     }
-    .cm-footer-socials a:hover {
-      color: var(--lime) !important;
+    .cm-footer-precision {
+      font-size: 0.78rem !important;
+      color: var(--text3) !important;
+      font-weight: 500 !important;
     }
-    .cm-footer-socials a svg {
-      width: 16px;
-      height: 16px;
-      fill: currentColor;
+    .cm-footer-watermark {
+      position: absolute !important;
+      bottom: -45px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      font-family: 'Orbitron', 'Montserrat', sans-serif !important;
+      font-size: 14vw !important;
+      font-weight: 900 !important;
+      letter-spacing: 0.15em !important;
+      color: transparent !important;
+      -webkit-text-stroke: 1px var(--footer-watermark-stroke) !important;
+      pointer-events: none !important;
+      user-select: none !important;
+      z-index: 0 !important;
+      text-align: center !important;
+      width: 100% !important;
     }
     @media (max-width: 900px) {
-      .cm-footer-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
+      .cm-footer-cols {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 30px !important;
+      }
+      .cm-footer-top-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
       }
     }
     @media (max-width: 600px) {
-      .cm-footer-grid {
-        grid-template-columns: 1fr;
-        gap: 24px;
+      .cm-footer-cols {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
       }
-      .cm-footer-bottom {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
+      .cm-footer-bottom-row {
+        flex-direction: column !important;
+        text-align: center !important;
+        align-items: center !important;
       }
     }
 
@@ -1674,9 +1762,9 @@
   function handleSignOut(e) {
     if (e) e.preventDefault();
     // Clear all user session keys to prevent stale data on next login
-    ['userId','cm_user_id','userName','userEmail',
-     'cm_user_name','cm_user_email','cm_user_initials','cm_user_avatar',
-     'cm_user_credits','cm_user_subscription','cm_user_score','cm_notifications'
+    ['userId', 'cm_user_id', 'userName', 'userEmail',
+      'cm_user_name', 'cm_user_email', 'cm_user_initials', 'cm_user_avatar',
+      'cm_user_credits', 'cm_user_subscription', 'cm_user_score', 'cm_notifications'
     ].forEach(k => localStorage.removeItem(k));
     sessionStorage.clear();
     showToast("🔒 Logged out securely. Stay safe!");
@@ -1705,7 +1793,7 @@
         }
       }
     };
-    
+
     const mainArea = document.querySelector('.main-area') || document.body;
     if (mainArea) {
       replaceText(mainArea);
@@ -1726,7 +1814,7 @@
     const logoElements = document.querySelectorAll('.nav-logo, .logo, .auth-brand, .sb-logo, .footer-logo, .cm-nav-logo');
     logoElements.forEach((el) => {
       el.innerHTML = logoSvg;
-      
+
       // Clean up classes/structure that are obsolete
       el.className = el.className.replace(/\b(has-logo)\b/g, '');
       if (el.tagName === 'A') {
@@ -1915,7 +2003,7 @@
         <a href="login.html" class="cm-btn-ghost" style="width:100%;margin-bottom:8px;">Sign In</a>
         <a href="signup.html" class="cm-btn-accent" style="width:100%">Get Started</a>
       `;
-      
+
       const mobToggleBtn = document.createElement('button');
       mobToggleBtn.className = 'cm-theme-toggle';
       mobToggleBtn.setAttribute('aria-label', 'Toggle Theme');
@@ -2041,7 +2129,7 @@
           const d = await response.json();
           const name = d.name || 'User';
           const email = d.email || 'user@example.com';
-          const init = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+          const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
           const credits = creditValue(d);
 
           localStorage.setItem('cm_user_name', name);
@@ -2101,79 +2189,112 @@
       footerEl.className = 'site-footer';
       const mainArea = document.querySelector('.main-area') || document.body;
       mainArea.appendChild(footerEl);
-    } else if (document.querySelector('.cm-footer-grid')) {
+    } else if (document.querySelector('.cm-footer-cols')) {
       return;
     }
 
-    // Define partners SVG logos
-    const virusTotalLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`;
-    const githubLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`;
-    const postgresLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>`;
-    const renderLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`;
+    // Define SVGs for socials
+    const githubLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`;
+    const twitterLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>`;
+    const linkedinLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`;
+    const mailLogo = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`;
 
     const container = document.createElement('div');
     container.style.width = '100%';
 
     container.innerHTML = `
-      <div class="cm-footer-grid">
-        <!-- Col 1: Logo & Partner Integrations -->
-        <div class="cm-footer-col">
-          <div class="footer-logo" style="margin-bottom:8px;font-weight:900;letter-spacing:1px;font-size:1.1rem;color:var(--text);">CYPR</div>
-          <p>Enterprise-grade cybersecurity monitoring, password analytics, and live phishing threat detection vectors.</p>
-          <div class="cm-footer-badges">
-            <div class="cm-footer-badge-item">
-              ${virusTotalLogo} Powered by VirusTotal
-            </div>
-            <div class="cm-footer-badge-item">
-              ${postgresLogo} Secured by AWS RDS
-            </div>
-            <div class="cm-footer-badge-item">
-              ${renderLogo} Hosted on Render Cloud
-            </div>
+      <!-- Top Row: Logo & Socials -->
+      <div class="cm-footer-top-row">
+        <div class="cm-footer-logo-desc">
+          <div class="footer-logo">
+            <svg class="cypr-logo" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" style="height: 38px; width: auto; overflow: visible; display: inline-block; vertical-align: middle;">
+              <!-- Futuristic Geometric Icon Prefix -->
+              <polygon points="12,4 4,16 12,28 20,16" fill="var(--logo-fill)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 3px var(--logo-glow-color));" />
+              <polygon points="12,9 7,16 12,23 17,16" fill="var(--bg)" style="transition: fill 0.25s ease;" />
+              <!-- CYPR Futuristic Text -->
+              <text x="28" y="22" font-family="'Orbitron', 'Montserrat', sans-serif" font-weight="900" font-size="16" letter-spacing="1" fill="var(--logo-fill)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 4px var(--logo-glow-color));">CYPR</text>
+            </svg>
           </div>
+          <p>Enterprise-grade cybersecurity protection for organizations that refuse to compromise on digital safety.</p>
         </div>
-
-        <!-- Col 2: Sitemap Navigation -->
-        <div class="cm-footer-col">
-          <h3>Sitemap</h3>
-          <div class="cm-footer-links">
-            <a href="tools.html">Security Tools</a>
-            <a href="pricing.html">Subscription Pricing</a>
-            <a href="cyber-news.html">Real-Time Threat Intel</a>
-            <a href="aboutus.html">Our Mission & Team</a>
-            <a href="contactus.html">Submit Help Request</a>
-          </div>
-        </div>
-
-        <!-- Col 3: Portal Actions -->
-        <div class="cm-footer-col">
-          <h3>Resources</h3>
-          <div class="cm-footer-links">
-            <a href="dashboard.html">User Dashboard</a>
-            <a href="settings.html">Account Settings</a>
-            <a href="login.html">Secure Login</a>
-            <a href="signup.html">Create Free Profile</a>
-          </div>
-        </div>
-
-        <!-- Col 4: Compliance & Badges -->
-        <div class="cm-footer-col">
-          <h3>Trust & Compliance</h3>
-          <p>Threat heuristics engine matches active OWASP standards and undergoes daily integrity vulnerability validation.</p>
-          <div class="cm-footer-badge-item" style="color:var(--green);font-weight:700;">
-            ✓ Heuristics Engine Compliant
-          </div>
-        </div>
-      </div>
-
-      <div class="cm-footer-bottom">
-        <div class="cm-footer-copy">© 2026 CYPR Platform. Built to protect digital identities. All rights reserved.</div>
         <div class="cm-footer-socials">
-          <a href="https://github.com/iamvineetupadhyay/CyberMitra" target="_blank" aria-label="GitHub">
+          <a class="cm-footer-social-btn" href="https://github.com/iamvineetupadhyay/CYPR-TECH" target="_blank" aria-label="GitHub">
             ${githubLogo}
+          </a>
+          <a class="cm-footer-social-btn" href="https://twitter.com" target="_blank" aria-label="Twitter">
+            ${twitterLogo}
+          </a>
+          <a class="cm-footer-social-btn" href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+            ${linkedinLogo}
+          </a>
+          <a class="cm-footer-social-btn" href="mailto:support@cypr.tech" aria-label="Email">
+            ${mailLogo}
           </a>
         </div>
       </div>
+
+      <!-- Divider Line -->
+      <hr class="cm-footer-divider">
+
+      <!-- Column Links -->
+      <div class="cm-footer-cols">
+        <!-- Product -->
+        <div class="cm-footer-col">
+          <h3>Product</h3>
+          <div class="cm-footer-links">
+            <a href="tools.html">Platform</a>
+            <a href="cyber-news.html">Threat Intel</a>
+            <a href="malwareanalysis.html">Cloud Armor</a>
+            <a href="signup.html">API Access</a>
+            <a href="pricing.html">Pricing</a>
+          </div>
+        </div>
+
+        <!-- Company -->
+        <div class="cm-footer-col">
+          <h3>Company</h3>
+          <div class="cm-footer-links">
+            <a href="aboutus.html">About</a>
+            <a href="#">Careers</a>
+            <a href="cyber-news.html">Blog</a>
+            <a href="#">Press Kit</a>
+            <a href="contactus.html">Contact</a>
+          </div>
+        </div>
+
+        <!-- Resources -->
+        <div class="cm-footer-col">
+          <h3>Resources</h3>
+          <div class="cm-footer-links">
+            <a href="#">Documentation</a>
+            <a href="#">Security Guides</a>
+            <a href="activity-logs.html">Status Page</a>
+            <a href="#">Community</a>
+            <a href="#">Changelog</a>
+          </div>
+        </div>
+
+        <!-- Legal -->
+        <div class="cm-footer-col">
+          <h3>Legal</h3>
+          <div class="cm-footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+            <a href="#">GDPR</a>
+            <a href="#">SOC 2</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom copyright row -->
+      <div class="cm-footer-bottom-row">
+        <div class="cm-footer-copy">© 2026 CYPR Technologies. All rights reserved.</div>
+        <div class="cm-footer-precision">Built with precision. Protected by design.</div>
+      </div>
+
+      <!-- Giant subtle watermark -->
+      <div class="cm-footer-watermark">CYPR</div>
     `;
 
     footerEl.innerHTML = '';
@@ -2250,8 +2371,8 @@
     loadSearchActivities(userId);
 
     document.addEventListener('keydown', (e) => {
-      if ((e.key === '/' && document.activeElement !== searchBox && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) || 
-          ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) {
+      if ((e.key === '/' && document.activeElement !== searchBox && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) ||
+        ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) {
         e.preventDefault();
         searchBox.focus();
         searchBox.select();
@@ -2486,7 +2607,7 @@
         if (!topbar.querySelector('.tb-breadcrumb')) {
           const breadcrumb = document.createElement('div');
           breadcrumb.className = 'tb-breadcrumb';
-          
+
           let displayTitle = 'Overview';
           if (pageFile.includes('url-check.html')) displayTitle = 'URL Scanner';
           else if (pageFile.includes('password-check.html')) displayTitle = 'Password Check';
@@ -2556,7 +2677,7 @@
           <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
         `;
         tbThemeToggle.addEventListener('click', toggleThemeAction);
-        
+
         const tbUser = tbRight.querySelector('.tb-user');
         const tbBell = tbRight.querySelector('.tb-bell');
         if (tbUser) tbRight.insertBefore(tbThemeToggle, tbUser);
@@ -2567,7 +2688,7 @@
       const tbUser = topbar.querySelector('.tb-user');
       if (tbUser && !tbUser.querySelector('.cm-dropdown-menu')) {
         tbUser.style.position = 'relative';
-        
+
         const ddMenu = document.createElement('div');
         ddMenu.className = 'cm-dropdown-menu';
         ddMenu.innerHTML = `
@@ -2601,7 +2722,7 @@
         const d = await response.json();
         const name = d.name || 'User';
         const email = d.email || 'user@example.com';
-        const init = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+        const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
         const credits = creditValue(d);
         const score = d.safeScore != null ? d.safeScore : '—';
 
@@ -3095,7 +3216,7 @@
     if (userId) {
       applyCachedProfile();
     }
-    
+
     installAiBuddy();
     checkLogoutAlert();
 
@@ -3286,7 +3407,7 @@
     setTimeout(() => modal.classList.add('open'), 10);
   }
 
-  window.closeGuestModal = function() {
+  window.closeGuestModal = function () {
     const modal = document.getElementById('guestRestrictionModal');
     if (modal) {
       modal.classList.remove('open');
@@ -3459,7 +3580,7 @@
     setTimeout(() => modal.classList.add('open'), 10);
   }
 
-  window.closePricingModal = function() {
+  window.closePricingModal = function () {
     const modal = document.getElementById('pricingComingSoonModal');
     if (modal) {
       modal.classList.remove('open');
@@ -3480,7 +3601,7 @@
     // 1. Dashboard Collapsible Sidebar coordinator
     const tbHamburger = document.querySelector('.tb-hamburger');
     const sidebar = document.querySelector('.sidebar');
-    
+
     if (sidebar) {
       // Find or dynamically inject the sidebar background overlay (.sb-overlay)
       let sbOverlay = document.querySelector('.sb-overlay');
@@ -3495,7 +3616,7 @@
         // Remove old listeners to avoid multiple binding
         const newHam = tbHamburger.cloneNode(true);
         tbHamburger.parentNode.replaceChild(newHam, tbHamburger);
-        
+
         newHam.addEventListener('click', (e) => {
           e.stopPropagation();
           sidebar.classList.toggle('open');
