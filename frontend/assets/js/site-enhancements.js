@@ -931,12 +931,12 @@
     }
     html[data-theme="light"] {
       --footer-watermark-stroke: rgba(11, 25, 44, 0.08);
-      --footer-accent-color: var(--logo-fill);
+      --footer-accent-color: var(--lime);
       --footer-glow: rgba(30, 64, 175, 0.12);
     }
     html[data-theme="dark"] {
       --footer-watermark-stroke: rgba(0, 255, 102, 0.08);
-      --footer-accent-color: var(--logo-fill);
+      --footer-accent-color: var(--lime);
       --footer-glow: rgba(0, 255, 102, 0.2);
     }
     .cm-footer-top-row {
@@ -1062,7 +1062,7 @@
       opacity: 0.85 !important;
     }
     .cm-footer-links a:hover {
-      color: var(--footer-accent-color) !important;
+      color: var(--lime) !important;
       transform: translateX(4px) !important;
       opacity: 1 !important;
     }
