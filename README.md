@@ -14,8 +14,8 @@
   <img src="https://img.shields.io/badge/Spring%20Boot-3.3-6DB33F?logo=springboot&logoColor=white" alt="Spring Boot 3.3" />
   <img src="https://img.shields.io/badge/PostgreSQL-15-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL" />
   <img src="https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white" alt="Docker Ready" />
-  <img src="https://github.com/<your-username>/cypr/actions/workflows/ci.yml/badge.svg" alt="CI status" />
-  <img src="https://img.shields.io/github/license/<your-username>/cypr" alt="License" />
+  <img src="https://github.com/iamvineetupadhyay/CYPR-Tech/actions/workflows/ci.yml/badge.svg" alt="CI status" />
+  <img src="https://img.shields.io/github/license/iamvineetupadhyay/CYPR-Tech" alt="License" />
 </p>
 
 ---
@@ -198,21 +198,18 @@ cypr/
 │   │   │   │   ├── config/
 │   │   │   │   ├── controller/
 │   │   │   │   ├── service/
-│   │   │   │   ├── vajra/
+│   │   │   │   ├── engine/
 │   │   │   │   ├── repository/
 │   │   │   │   ├── entity/
-│   │   │   │   ├── security/
-│   │   │   │   └── dto/
+│   │   │   │   └── model/
 │   │   │   └── resources/
-│   │   │       ├── application.yml
-│   │   │       └── db/migration/
-│   │   └── test/java/com/cypr/
+│   │   │       ├── application.properties
+│   │   └── test/
 │   ├── pom.xml
 │   └── Dockerfile
 ├── frontend/
 │   ├── assets/
-│   ├── css/
-│   ├── js/
+│   ├── notifications.js
 │   └── index.html
 ├── docker-compose.yml
 ├── .env.example
@@ -226,20 +223,18 @@ cypr/
 
 | Method | Endpoint | Description | Auth |
 |---|---|---|---|
-| POST | `/api/auth/register` | Create a new account | No |
-| POST | `/api/auth/login` | Authenticate and receive a JWT | No |
-| GET | `/api/oauth/google` | Start Google OAuth flow | No |
-| GET | `/api/oauth/github` | Start GitHub OAuth flow | No |
-| POST | `/api/scan/url` | Submit a URL for VAJRA analysis | Yes |
-| POST | `/api/scan/file` | Submit a file for VirusTotal analysis | Yes |
-| GET | `/api/history` | Retrieve the authenticated user's scan history | Yes |
-| GET | `/api/dashboard/summary` | Retrieve aggregate dashboard data | Yes |
-| GET | `/api/news` | Retrieve the aggregated security news feed | Yes |
-| GET | `/api/notifications` | Retrieve in-app notifications | Yes |
+| POST | `/api/user/register` | Create a new account | No |
+| POST | `/api/user/login` | Authenticate and receive a JWT | No |
+| GET | `/api/oauth/google/authorize` | Start Google OAuth flow | No |
+| GET | `/api/oauth/github/authorize` | Start GitHub OAuth flow | No |
+| POST | `/api/phish-check` | Submit a URL for VAJRA analysis | Yes |
+| POST | `/api/malware/scan` | Submit a file for malware analysis | Yes |
+| GET | `/api/malware/history/{userId}` | Retrieve the authenticated user's scan history | Yes |
+| GET | `/api/stats/global-stats` | Retrieve aggregate dashboard data | Yes |
 
 </details>
 
-A full endpoint reference, including request/response schemas, is maintained in [`docs/API.md`](docs/API.md).
+A full endpoint reference, including request/response schemas, is maintained in [`docs/api.md`](docs/api.md).
 
 ## Installation
 
@@ -251,8 +246,8 @@ A full endpoint reference, including request/response schemas, is maintained in 
 - Docker (optional, for containerized setup)
 
 ```bash
-git clone https://github.com/<your-username>/cypr.git
-cd cypr
+git clone https://github.com/iamvineetupadhyay/CYPR-Tech.git
+cd CYPR-Tech
 cp .env.example .env
 # fill in the values described in Configuration below
 ```
@@ -298,10 +293,11 @@ The API is available at `http://localhost:8080`. Serve `frontend/index.html` wit
 ## Docker
 
 ```bash
-docker-compose up --build
+docker build -t cypr-backend .
+docker run -p 8080:8080 cypr-backend
 ```
 
-This starts two services: the Spring Boot backend and a PostgreSQL instance. Configuration is read from `.env` in the project root.
+This starts the Spring Boot backend service. Configuration is read from environment variables.
 
 ## Deployment
 
@@ -325,7 +321,7 @@ The reference deployment runs the backend on AWS EC2 with AWS RDS for PostgreSQL
 |---|---|---|
 | Average VAJRA scan time | < 100ms | Measured locally, VAJRA-only, excluding VirusTotal round-trip |
 | VirusTotal cross-check | 70+ engines | Latency depends on VirusTotal's API response time |
-| Deployment | Docker-ready, AWS-ready | Single-command local startup via `docker-compose up` |
+| Deployment | Docker-ready, AWS-ready | Single-command local startup via `docker build` |
 
 These figures reflect local measurements on a single-instance setup. They are not the result of formal load testing and should not be read as guarantees under production traffic.
 
@@ -345,10 +341,10 @@ The following are planned but **not implemented** in the current codebase:
 
 ## Documentation
 
-- [API Reference](docs/API.md)
-- [Architecture Deep Dive](docs/ARCHITECTURE.md)
-- [VAJRA Engine Internals](docs/VAJRA.md)
-- [Deployment Guide](docs/DEPLOYMENT.md)
+- [API Reference](docs/api.md)
+- [Architecture Deep Dive](docs/architecture.md)
+- [VAJRA Engine Internals](docs/vajra-engine.md)
+- [Deployment Guide](docs/deployment.md)
 - [Contributing Guide](CONTRIBUTING.md)
 
 ## Contributing
@@ -370,8 +366,8 @@ Released under the [MIT License](LICENSE).
 
 **Vineet**
 B.Tech Computer Science and Engineering
-GitHub: [github.com/&lt;your-username&gt;](https://github.com/<your-username>)
-LinkedIn: [linkedin.com/in/&lt;your-handle&gt;](https://linkedin.com/in/<your-handle>)
+GitHub: [github.com/iamvineetupadhyay](https://github.com/iamvineetupadhyay)
+LinkedIn: [linkedin.com/in/iamvineetupadhyay](https://linkedin.com/in/iamvineetupadhyay)
 
 ## Acknowledgements
 

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#0a0a0a" rx="10" />
+  
+  <!-- Grids -->
+  <path d="M 0 50 L 800 50 M 0 100 L 800 100 M 0 150 L 800 150 M 0 200 L 800 200 M 0 250 L 800 250 M 0 300 L 800 300 M 0 350 L 800 350 M 0 400 L 800 400" stroke="#141414" stroke-width="1" />
+  <path d="M 100 0 L 100 450 M 200 0 L 200 450 M 300 0 L 300 450 M 400 0 L 400 450 M 500 0 L 500 450 M 600 0 L 600 450 M 700 0 L 700 450" stroke="#141414" stroke-width="1" />
+  
+  <!-- Core Box Styling -->
+  <style>
+    .title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 22px; fill: #ffffff; letter-spacing: 1.5px; }
+    .subtitle { font-family: 'Inter', sans-serif; font-size: 11px; fill: #888888; }
+    .box-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; fill: #c8ff00; letter-spacing: 1px; }
+    .box-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #dddddd; }
+    .arrow { stroke: #c8ff00; stroke-width: 2; fill: none; }
+    .arrow-dot { fill: #c8ff00; }
+  </style>
+
+  <!-- Title -->
+  <text x="40" y="45" class="title">CYPR TECH — ARCHITECTURE OVERVIEW</text>
+  <text x="40" y="65" class="subtitle">Stateless Client / Core Spring Boot / In-Process VAJRA Heuristics</text>
+
+  <!-- 1. Client Layer -->
+  <rect x="40" y="110" width="200" height="90" rx="8" fill="#111111" stroke="#333333" stroke-width="1.5" />
+  <text x="55" y="132" class="box-title">PRESENTATION LAYER (CLIENT)</text>
+  <text x="55" y="155" class="box-text">• Dashboard (vanilla JS)</text>
+  <text x="55" y="172" class="box-text">• Threat Meter (SVG Gauges)</text>
+
+  <!-- 2. Gateway Layer -->
+  <rect x="40" y="270" width="200" height="90" rx="8" fill="#111111" stroke="#333333" stroke-width="1.5" />
+  <text x="55" y="292" class="box-title">GATEWAY &amp; CONTROLLER</text>
+  <text x="55" y="315" class="box-text">• AuthInterceptor (JWT)</text>
+  <text x="55" y="332" class="box-text">• Turnstile Verification</text>
+
+  <!-- 3. Engine Layer -->
+  <rect x="300" y="110" width="230" height="250" rx="8" fill="#111111" stroke="#c8ff00" stroke-width="2" />
+  <text x="315" y="135" class="box-title">VAJRA DETECTION ENGINE v5</text>
+  <text x="315" y="165" class="box-text">• 16 Algorithmic Signals</text>
+  <text x="315" y="185" class="box-text">  - Shannon Entropy (sig01)</text>
+  <text x="315" y="205" class="box-text">  - N-Gram Lexicals (sig02)</text>
+  <text x="315" y="225" class="box-text">  - Levenshtein Clones (sig04)</text>
+  <text x="315" y="245" class="box-text">  - Confusable Map (sig06)</text>
+  <text x="315" y="265" class="box-text">  - Scheme Security (sig12)</text>
+  <text x="315" y="285" class="box-text">• Thread-Safe BrandRegistry</text>
+  <text x="315" y="305" class="box-text">• UrlExpander Redirect Chain</text>
+
+  <!-- 4. Persistence Layer -->
+  <rect x="580" y="110" width="180" height="90" rx="8" fill="#111111" stroke="#333333" stroke-width="1.5" />
+  <text x="595" y="132" class="box-title">PERSISTENCE LAYER</text>
+  <text x="595" y="155" class="box-text">• AWS RDS PostgreSQL</text>
+  <text x="595" y="172" class="box-text">• Hibernate Entities</text>
+
+  <!-- 5. Integrations -->
+  <rect x="580" y="270" width="180" height="90" rx="8" fill="#111111" stroke="#333333" stroke-width="1.5" />
+  <text x="595" y="292" class="box-title">EXTERNAL INTEGRATIONS</text>
+  <text x="595" y="315" class="box-text">• VirusTotal (70+ AVs)</text>
+  <text x="595" y="332" class="box-text">• Brevo API / Feeds</text>
+
+  <!-- Connection Arrows -->
+  <!-- Client to Gateway -->
+  <path d="M 140 200 L 140 270" class="arrow" marker-end="url(#arrow-head)" />
+  <!-- Gateway to Engine -->
+  <path d="M 240 315 L 300 315" class="arrow" marker-end="url(#arrow-head)" />
+  <!-- Engine to DB -->
+  <path d="M 530 155 L 580 155" class="arrow" marker-end="url(#arrow-head)" />
+  <!-- Engine to Integrations -->
+  <path d="M 530 315 L 580 315" class="arrow" marker-end="url(#arrow-head)" />
+
+  <!-- Arrow Marker Definition -->
+  <defs>
+    <marker id="arrow-head" markerWidth="10" markerHeight="7" refX="6" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c8ff00" />
+    </marker>
+  </defs>
+</svg>
