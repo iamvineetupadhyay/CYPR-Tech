@@ -5,8 +5,8 @@
   <script src="assets/js/config.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyber News - CyberMitra</title>
-  <meta name="description" content="CyberMitra AI summarized cybersecurity news from trusted RSS feeds.">
+  <title>Cyber News - CYPR Tech</title>
+  <meta name="description" content="CYPR Tech AI summarized cybersecurity news from trusted RSS feeds.">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/site-enhancements.js"></script>
   <style>
@@ -81,7 +81,7 @@
 
   <section class="marketing-section">
     <div class="section-heading" style="display: block; margin-bottom: 24px;">
-      <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text);">Feeds included in CyberMitra News</h2>
+      <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text);">Feeds included in CYPR Tech News</h2>
     </div>
     <div class="feed-grid">
       <article class="card feed-card"><span class="badge badge-green">News</span><h3>The Hacker News</h3><p class="feed-meta">Breaking cybersecurity news, malware campaigns, vulnerability coverage, and industry analysis.</p><a href="https://thehackernews.com/" target="_blank" rel="noopener">Visit Source</a></article>
@@ -95,14 +95,14 @@
 </main>
 
 <footer class="footer">
-  <div class="footer-logo">CyberMitra</div>
+  <div class="footer-logo">CYPR Tech</div>
   <div class="footer-links">
     <a href="tools.html">Tools</a>
     <a href="pricing.html">Pricing</a>
     <a href="cyber-news.html">Cyber News</a>
     <a href="aboutus.html">About Us</a>
   </div>
-  <div class="footer-copy">© 2026 CyberMitra. Built to protect.</div>
+  <div class="footer-copy">© 2026 CYPR Tech. Built to protect.</div>
 </footer>
 
 <script>
@@ -150,7 +150,7 @@ function normalizeItem(item, feed) {
     title: stripHtml(item.title || 'Untitled cyber update'),
     link: item.link || item.guid || '#',
     date: item.pubDate || item.isoDate || item.published || item.updated || '',
-    description: shortText(item.description || item.content || item.summary || 'Open CyberMitra AI article for details.'),
+    description: shortText(item.description || item.content || item.summary || 'Open CYPR Tech AI article for details.'),
     author: stripHtml(item.author || item.creator || item['dc:creator'] || feed.name),
     image: item.thumbnail || item.enclosure?.link || item.enclosure?.url || item.image || item.image_url || ''
   };
@@ -200,7 +200,7 @@ function renderNews(items) {
   }
   newsGrid.innerHTML = items.map(item => `
     <a class="card news-card" href="news-article.html?url=${encodeURIComponent(item.link)}">
-      <div class="news-thumb">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='assets/default-news.jpg'; this.onerror=null;">` : '<img src="assets/default-news.jpg" alt="CyberMitra News" loading="lazy">'}</div>
+      <div class="news-thumb">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='assets/default-news.jpg'; this.onerror=null;">` : '<img src="assets/default-news.jpg" alt="CYPR Tech News" loading="lazy">'}</div>
       <div class="news-card-top"><span class="badge ${badgeClass(item.tag)}">${escapeHtml(item.source)}</span><span class="news-date">${formatDate(item.date)}</span></div>
       <h3>${escapeHtml(item.title)}</h3>
       <p>${escapeHtml(item.description)}</p>

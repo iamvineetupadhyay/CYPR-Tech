@@ -5,7 +5,7 @@
   <script src="assets/js/config.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Signing you in… — CyberMitra</title>
+  <title>Signing you in… — CYPR Tech</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <style>
     body {
@@ -133,7 +133,7 @@
   // Store session exactly like normal email login does
   localStorage.setItem('cm_session_token',    token);
   localStorage.setItem('userId',              userId);
-  localStorage.setItem('cm_user_id',          userId);
+  localStorage.setItem('cypr_user_id',          userId);
   localStorage.setItem('cm_user_name',        name);
   localStorage.setItem('cm_user_email',       email);
   localStorage.setItem('cm_user_initials',    initials);
@@ -148,7 +148,7 @@
   }
 
   // Clear stale notifications
-  localStorage.removeItem('cm_notifications');
+  localStorage.removeItem('cypr_notifications');
 
   // Update UI
   document.getElementById('titleText').textContent = `Welcome, ${name.split(' ')[0]}!`;

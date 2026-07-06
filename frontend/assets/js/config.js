@@ -35,7 +35,7 @@
     }
     
     // 🔗 Dynamically set base URL based on environment so requests go to the right server!
-    window.CYBERMITRA_API_BASE = isLocalDev ? LOCAL_API : AWS_PRODUCTION_API;
+    window.CYPR_TECH_API_BASE = isLocalDev ? LOCAL_API : AWS_PRODUCTION_API;
 
     // GLOBAL FETCH INTERCEPTOR FOR SECURITY HARDENING
     const originalFetch = window.fetch;
@@ -44,12 +44,12 @@
         
         // 🛠️ FIX: Agar request short path '/api/' se shuru ho rahi hai, toh uske aage hamara correct Base URL jodd do!
         if (resourceUrl.startsWith('/api/')) {
-            resource = window.CYBERMITRA_API_BASE + resourceUrl;
+            resource = window.CYPR_TECH_API_BASE + resourceUrl;
             resourceUrl = resource;
         }
         
         // If request goes to our Spring Boot backend
-        if (resourceUrl.startsWith(window.CYBERMITRA_API_BASE)) {
+        if (resourceUrl.startsWith(window.CYPR_TECH_API_BASE)) {
             const token = localStorage.getItem('cm_session_token');
             if (token) {
                 if (!config.headers) {

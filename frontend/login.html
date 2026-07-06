@@ -5,7 +5,7 @@
   <script src="assets/js/config.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In — CyberMitra</title>
+  <title>Sign In — CYPR Tech</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/site-enhancements.js"></script>
   <style>
@@ -150,7 +150,7 @@
       </div>
     </div>
   </div>
-  <div class="auth-left-foot">© 2025 CyberMitra. Built to protect.</div>
+  <div class="auth-left-foot">© 2025 CYPR Tech. Built to protect.</div>
 </div>
 
 <!-- RIGHT -->
@@ -207,7 +207,7 @@
       <span id="loginBtnText">Sign In</span>
     </button>
 
-    <div class="auth-switch">New to CyberMitra? <a href="signup.html">Create a free account</a></div>
+    <div class="auth-switch">New to CYPR Tech? <a href="signup.html">Create a free account</a></div>
 
   </div>
 </div>
@@ -220,7 +220,7 @@ window.onload = async function() {
     if (verifyToken) {
         showMsg('success', 'Verifying your security token...');
         try {
-            const response = await fetch(`${window.CYBERMITRA_API_BASE}/api/user/verify?token=${verifyToken}`);
+            const response = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/verify?token=${verifyToken}`);
             if (response.ok) {
                 const data = await response.json();
                 showMsg('success', 'Verified: ' + data.message);
@@ -253,7 +253,7 @@ function togglePwd(id) {
 
 function oauthRedirect(provider) {
     // Redirect to backend which will forward to Google/GitHub consent screen
-    window.location.href = window.CYBERMITRA_API_BASE + '/api/oauth/' + provider + '/authorize';
+    window.location.href = window.CYPR_TECH_API_BASE + '/api/oauth/' + provider + '/authorize';
 }
 
 
@@ -266,7 +266,7 @@ async function handleLogin() {
     // ... loading UI code ...
 
     try {
-        const response = await fetch((window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api/user/login', {
+        const response = await fetch((window.CYPR_TECH_API_BASE !== undefined ? window.CYPR_TECH_API_BASE : '') + '/api/user/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             // Dhyan se dekho: 'identifier' key likhna zaroori hai
@@ -281,7 +281,7 @@ async function handleLogin() {
             }
             // Store user ID AND full profile in localStorage to prevent stale session leakage
             localStorage.setItem('userId', user.id);
-            localStorage.setItem('cm_user_id', user.id);
+            localStorage.setItem('cypr_user_id', user.id);
             const name = user.name || 'User';
             const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
             localStorage.setItem('cm_user_name', name);
@@ -296,7 +296,7 @@ async function handleLogin() {
                 localStorage.removeItem('cm_user_avatar');
             }
             // Clear stale notifications so fresh ones load from activity
-            localStorage.removeItem('cm_notifications');
+            localStorage.removeItem('cypr_notifications');
             showMsg('success', `Welcome back, ${user.name}!`);
             setTimeout(() => { window.location.href = `home.html?id=${user.id}`; }, 1000);
 

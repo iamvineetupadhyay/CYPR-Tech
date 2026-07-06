@@ -6,7 +6,7 @@
   <script src="assets/js/config.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account — CyberMitra</title>
+    <title>Create Account — CYPR Tech</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="assets/js/site-enhancements.js"></script>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -510,7 +510,7 @@
                 </div>
             </div>
         </div>
-        <div class="auth-left-foot">© 2025 CyberMitra. Built to protect.</div>
+        <div class="auth-left-foot">© 2025 CYPR Tech. Built to protect.</div>
     </div>
 
     <!-- RIGHT -->
@@ -650,7 +650,7 @@
 
         function oauthRedirect(provider) {
             // OAuth sign-up = same flow as sign-in (new users auto-created)
-            window.location.href = window.CYBERMITRA_API_BASE + '/api/oauth/' + provider + '/authorize';
+            window.location.href = window.CYPR_TECH_API_BASE + '/api/oauth/' + provider + '/authorize';
         }
 
         function showMsg(type, text) {
@@ -767,7 +767,7 @@
             }
 
             try {
-                const response = await fetch((window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api/user/register', {
+                const response = await fetch((window.CYPR_TECH_API_BASE !== undefined ? window.CYPR_TECH_API_BASE : '') + '/api/user/register', {
                     method: 'POST',
                     body: formData // No headers needed for FormData
                 });
@@ -827,7 +827,7 @@
             if (un.length < 3) return;
 
             try {
-                const response = await fetch(`${window.CYBERMITRA_API_BASE}/api/user/check-username?username=${un}`);
+                const response = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/check-username?username=${un}`);
                 const exists = await response.json();
 
                 if (exists) {

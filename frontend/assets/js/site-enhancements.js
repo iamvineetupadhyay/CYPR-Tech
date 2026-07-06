@@ -1,9 +1,9 @@
 (function () {
   // Immediate theme initialization to prevent content flash
-  const savedTheme = localStorage.getItem('cm_theme') || 'light';
+  const savedTheme = localStorage.getItem('cypr_theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
 
-  const API_BASE = window.CYBERMITRA_API_BASE || '';
+  const API_BASE = window.CYPR_TECH_API_BASE || '';
 
   // Inject Refined Premium Styles
   const style = document.createElement('style');
@@ -1738,15 +1738,15 @@
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('cm_theme', newTheme);
-    showToast(newTheme === 'dark' ? '🌙 Cyberpunk Dark Mode activated!' : '☀️ Premium Corporate Light Mode activated!');
+    localStorage.setItem('cypr_theme', newTheme);
+    showToast(newTheme === 'dark' ? 'Theme switched to Dark Mode successfully.' : 'Theme switched to Light Mode successfully.');
   }
 
 
   // Helper: Read session details
   function readUserId() {
     const params = new URLSearchParams(window.location.search);
-    return params.get('id') || localStorage.getItem('userId') || localStorage.getItem('cm_user_id');
+    return params.get('id') || localStorage.getItem('userId') || localStorage.getItem('cypr_user_id');
   }
 
   function creditValue(profile) {
@@ -1762,9 +1762,9 @@
   function handleSignOut(e) {
     if (e) e.preventDefault();
     // Clear all user session keys to prevent stale data on next login
-    ['userId', 'cm_user_id', 'userName', 'userEmail',
+    ['userId', 'cypr_user_id', 'userName', 'userEmail',
       'cm_user_name', 'cm_user_email', 'cm_user_initials', 'cm_user_avatar',
-      'cm_user_credits', 'cm_user_subscription', 'cm_user_score', 'cm_notifications'
+      'cm_user_credits', 'cm_user_subscription', 'cm_user_score', 'cypr_notifications'
     ].forEach(k => localStorage.removeItem(k));
     sessionStorage.clear();
     showToast("🔒 Logged out securely. Stay safe!");
@@ -1776,15 +1776,15 @@
   // Brand logo helper (preserves authentication page branding layout)
   function enhanceLogo() {
     // 1. Rebrand page titles
-    if (document.title && document.title.includes('CyberMitra')) {
-      document.title = document.title.replace(/CyberMitra/g, 'CYPR');
+    if (document.title && document.title.includes('CYPR Tech')) {
+      document.title = document.title.replace(/CYPR Tech/g, 'CYPR Tech');
     }
 
     // 2. Rebrand text copy in body
     const replaceText = (el) => {
       if (el.nodeType === Node.TEXT_NODE) {
-        if (el.nodeValue.includes('CyberMitra')) {
-          el.nodeValue = el.nodeValue.replace(/CyberMitra/g, 'CYPR');
+        if (el.nodeValue.includes('CYPR Tech')) {
+          el.nodeValue = el.nodeValue.replace(/CYPR Tech/g, 'CYPR');
         }
       } else {
         // Skip script and style tags
@@ -1799,14 +1799,14 @@
       replaceText(mainArea);
     }
 
-    // 3. Define the premium, futuristic reactive SVG logo component for "CYPR"
+    // 3. Define the premium, futuristic reactive SVG logo component for "CYPR Tech"
     const logoSvg = `
       <svg class="cypr-logo" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" style="height: 28px; width: auto; overflow: visible; display: inline-block; vertical-align: middle;">
         <!-- Futuristic Geometric Icon Prefix -->
         <polygon points="12,4 4,16 12,28 20,16" fill="var(--logo-fill)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 3px var(--logo-glow-color));" />
         <polygon points="12,9 7,16 12,23 17,16" fill="var(--bg)" style="transition: fill 0.25s ease;" />
-        <!-- CYPR Futuristic Text -->
-        <text x="28" y="22" font-family="'Orbitron', 'Montserrat', sans-serif" font-weight="900" font-size="16" letter-spacing="1" fill="var(--logo-fill)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 4px var(--logo-glow-color));">CYPR</text>
+        <!-- CYPR Tech Futuristic Text -->
+        <text x="28" y="22" font-family="'Orbitron', 'Montserrat', sans-serif" font-weight="900" font-size="16" letter-spacing="1" fill="var(--logo-fill)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 4px var(--logo-glow-color));">CYPR Tech</text>
       </svg>
     `;
 
@@ -2101,7 +2101,7 @@
       const bell = rightGroup.querySelector('#alertsBellTrigger');
       if (bell) {
         bell.addEventListener('click', () => {
-          showToast('🔔 Perimeter Secure: 0 active threat alerts.');
+          showToast('Perimeter Secure: 0 active threat alerts.');
         });
       }
 
@@ -2821,8 +2821,8 @@
     if (q.includes('credit')) return 'Credits paid plan me daily reset hote hain. Advanced online link check 1 credit use karta hai; local checks 0 credit use karte hain. Login ke baad header me current credits dikhenge.';
     if (q.includes('phishing') || q.includes('link')) return 'Suspicious link check karne ke liye Tools > Phishing Site Check open karo. Unknown sender, misspelled domain, urgency, shortened URLs, aur login forms ko extra caution se verify karo.';
     if (q.includes('password')) return 'Strong password 14+ characters, unique, random, aur password manager generated hona chahiye. Reused password sabse bada risk hai.';
-    if (q.includes('news')) return 'Cyber News page RSS sources se latest stories laata hai. Har story ka CyberMitra AI summary article page par milega, aur original publisher ke liye Visit Original Site button rahega.';
-    return 'Main CyberMitra AI Buddy hoon. Is page ke context ke basis par help kar sakta hoon: tools, credits, phishing, password safety, news summaries, aur general cybersecurity guidance.';
+    if (q.includes('news')) return 'Cyber News page RSS sources se latest stories laata hai. Har story ka CYPR Tech AI summary article page par milega, aur original publisher ke liye Visit Original Site button rahega.';
+    return 'Main CYPR Tech AI Buddy hoon. Is page ke context ke basis par help kar sakta hoon: tools, credits, phishing, password safety, news summaries, aur general cybersecurity guidance.';
   }
 
   async function askBuddy(question) {
@@ -2857,7 +2857,7 @@
     bubble.className = 'cm-ai-bubble';
     bubble.style.cssText = 'position:fixed;right:22px;bottom:80px;z-index:702;background:var(--bg2);border:1px solid var(--lime);border-radius:12px;padding:10px 14px;font-size:0.75rem;color:var(--text);box-shadow:var(--shadow-lg);max-width:200px;font-family:var(--font);animation:fadeUp .4s ease;';
     bubble.innerHTML = `
-      <div style="font-weight:700;color:var(--lime);margin-bottom:4px;">🤖 CyberMitra AI</div>
+      <div style="font-weight:700;color:var(--lime);margin-bottom:4px;">🤖 CYPR Tech AI</div>
       Need help scanning a link or strengthening your password? Ask me!
       <div class="cm-bubble-close" style="position:absolute;top:4px;right:6px;cursor:pointer;font-weight:800;color:var(--text3);font-size:0.7rem;">×</div>
     `;
@@ -2896,7 +2896,7 @@
       </div>
       <div class="cm-ai-body">
         <div class="cm-ai-log">
-          <div class="cm-ai-msg">Namaste. Main CyberMitra AI Buddy hoon. Site ke current page context se help kar sakta hoon.</div>
+          <div class="cm-ai-msg">Namaste. Main CYPR Tech AI Buddy hoon. Site ke current page context se help kar sakta hoon.</div>
         </div>
         <form class="cm-ai-form">
           <input autocomplete="off" placeholder="Ask cybersecurity help...">
@@ -2981,7 +2981,7 @@
         <div class="sb-logo-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
-        <span class="sb-logo-text">CyberMitra</span>
+        <span class="sb-logo-text">CYPR Tech</span>
       </a>
       <nav class="sb-nav"></nav>
       <div class="sb-bottom"></div>
@@ -3165,7 +3165,7 @@
           e.preventDefault();
           e.stopPropagation();
           localStorage.setItem('cm_user_credits', '50');
-          showToast('🎁 Test Mode: Credits refilled to 50!');
+          showToast('Test Mode: Credits refilled to 50.');
           applyCachedProfile();
           if (typeof profile !== 'undefined') {
             profile.credits = 50;

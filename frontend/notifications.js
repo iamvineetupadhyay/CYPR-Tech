@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════
-   CyberMitra – Notification System
+   CYPR Tech – Notification System
    Shared across all pages
    ══════════════════════════════════════ */
 
@@ -8,7 +8,7 @@
 
   /* ── Default fallback notifications (For guests) ── */
   const DEFAULT_NOTIFICATIONS = [
-    { id: 'n1', type: 'success', icon: '🛡️', title: 'CyberMitra Vault Active', body: 'Welcome to CyberMitra! Complete portal scanning modules are online.', time: 'Just now', read: false }
+    { id: 'n1', type: 'success', icon: '🛡️', title: 'CYPR Tech Vault Active', body: 'Welcome to CYPR Tech! Complete portal scanning modules are online.', time: 'Just now', read: false }
   ];
 
   /* ── State ── */
@@ -16,7 +16,7 @@
   let panelOpen = false;
 
   function loadNotifications() {
-    const saved = localStorage.getItem('cm_notifications');
+    const saved = localStorage.getItem('cypr_notifications');
     if (saved) {
       try { notifications = JSON.parse(saved); } catch { notifications = structuredClone(DEFAULT_NOTIFICATIONS); }
     } else {
@@ -26,7 +26,7 @@
 
   async function fetchUserNotifications(userId) {
     try {
-      const apiBase = window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '';
+      const apiBase = window.CYPR_TECH_API_BASE !== undefined ? window.CYPR_TECH_API_BASE : '';
       const res = await fetch(`${apiBase}/api/user/${userId}/activity`);
       if (res.ok) {
         const activities = await res.json();
@@ -39,7 +39,7 @@
             type: 'success',
             icon: '🛡️',
             title: 'Protection Active',
-            body: 'CyberMitra active heuristics, URL phishing detectors, and credit monitoring are fully operational.',
+            body: 'CYPR Tech active heuristics, URL phishing detectors, and credit monitoring are fully operational.',
             time: 'Just now',
             read: false
           });
@@ -85,7 +85,7 @@
   }
 
   function saveNotifications() {
-    localStorage.setItem('cm_notifications', JSON.stringify(notifications));
+    localStorage.setItem('cypr_notifications', JSON.stringify(notifications));
   }
 
   function unreadCount() {
@@ -334,7 +334,7 @@
     injectCSS();
     loadNotifications();
 
-    const userId = localStorage.getItem('userId') || localStorage.getItem('cm_user_id');
+    const userId = localStorage.getItem('userId') || localStorage.getItem('cypr_user_id');
     if (userId) {
       fetchUserNotifications(userId);
     }

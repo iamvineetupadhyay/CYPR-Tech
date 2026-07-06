@@ -1,4 +1,4 @@
-# 🛡️ Cypr (CyberMitra) — Enterprise Cybersecurity Platform & Core VAJRA Engine
+# 🛡️ Cypr (CYPR Tech) — Enterprise Cybersecurity Platform & Core VAJRA Engine
 
 [![Java Version](https://img.shields.io/badge/Java-17-orange.svg?style=for-the-badge&logo=openjdk)](https://adoptium.net/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.0-brightgreen.svg?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
@@ -29,7 +29,7 @@
 
 ## 🎯 Project Vision & Overview
 
-**Cypr (CyberMitra)**—meaning *"Cyber Friend"* in Hindi/Sanskrit—is engineered to serve as a complete, privacy-first cybersecurity ecosystem for the Indian digital market. The platform focuses on local threat parsing and zero-knowledge privacy standards to ensure client-side telemetry protection.
+**Cypr (CYPR Tech)**—meaning *"Cyber Friend"* in Hindi/Sanskrit—is engineered to serve as a complete, privacy-first cybersecurity ecosystem for the Indian digital market. The platform focuses on local threat parsing and zero-knowledge privacy standards to ensure client-side telemetry protection.
 
 ### Product Roadmap Phases
 ```

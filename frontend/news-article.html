@@ -5,8 +5,8 @@
   <script src="assets/js/config.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI News Article - CyberMitra</title>
-  <meta name="description" content="CyberMitra AI-generated cybersecurity news article summary with source attribution.">
+  <title>AI News Article - CYPR Tech</title>
+  <meta name="description" content="CYPR Tech AI-generated cybersecurity news article summary with source attribution.">
   <link rel="stylesheet" href="assets/css/style.css">
   <script src="assets/js/site-enhancements.js"></script>
   <style>
@@ -69,7 +69,7 @@
   <article class="marketing-section" style="border-top:0;padding-top:24px;">
     <div class="news-modal-media" id="articleMedia" style="border-radius:16px;border:1px solid var(--border);margin-bottom:28px;"></div>
     <div class="news-meta-row" id="articleMeta"></div>
-    <h1 id="articleTitle" style="font-size:clamp(2rem,5vw,4.6rem);line-height:1.02;letter-spacing:0;margin:18px 0;">Loading CyberMitra AI article...</h1>
+    <h1 id="articleTitle" style="font-size:clamp(2rem,5vw,4.6rem);line-height:1.02;letter-spacing:0;margin:18px 0;">Loading CYPR Tech AI article...</h1>
     <p id="articleLead" class="about-copy" style="max-width:860px;font-size:1.08rem;"></p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 34px;">
       <a class="btn btn-accent" href="#" target="_blank" rel="noopener" id="originalLink">Visit Original Site</a>
@@ -77,7 +77,7 @@
     </div>
 
     <div class="ai-summary-box" style="margin-bottom:28px;">
-      <div class="ai-summary-title">CyberMitra AI Article</div>
+      <div class="ai-summary-title">CYPR Tech AI Article</div>
       <div class="news-article-copy" id="articleBody">Generating article from RSS context...</div>
     </div>
 
@@ -86,18 +86,18 @@
 </main>
 
 <footer class="footer">
-  <div class="footer-logo">CyberMitra</div>
+  <div class="footer-logo">CYPR Tech</div>
   <div class="footer-links">
     <a href="tools.html">Tools</a>
     <a href="pricing.html">Pricing</a>
     <a href="cyber-news.html">Cyber News</a>
     <a href="aboutus.html">About Us</a>
   </div>
-  <div class="footer-copy">© 2026 CyberMitra. Built to protect.</div>
+  <div class="footer-copy">© 2026 CYPR Tech. Built to protect.</div>
 </footer>
 
 <script>
-const API_BASE = window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '';
+const API_BASE = window.CYPR_TECH_API_BASE !== undefined ? window.CYPR_TECH_API_BASE : '';
 const feeds = [
   { name: 'The Hacker News', tag: 'News', url: 'https://feeds.feedburner.com/TheHackersNews' },
   { name: 'BleepingComputer', tag: 'News', url: 'https://www.bleepingcomputer.com/feed/' },
@@ -183,7 +183,7 @@ function localArticle(item) {
   const intro = sentences.slice(0, 2).join(' ') || `${item.title} is a cybersecurity update from ${item.source}.`;
   const impact = sentences.slice(2, 5).join(' ') || 'The story matters because it may affect how users, teams, or defenders understand current cyber risk.';
   const action = 'For users, the practical takeaway is to verify links, keep software updated, avoid rushed decisions, and follow official remediation guidance when a vulnerability or advisory is involved.';
-  return `${intro}\n\n${impact}\n\n${action}\n\nCyberMitra recommends reading the original source for full reporting, technical details, and publisher updates.`;
+  return `${intro}\n\n${impact}\n\n${action}\n\nCYPR Tech recommends reading the original source for full reporting, technical details, and publisher updates.`;
 }
 
 async function generateAiArticle(item) {
@@ -237,8 +237,8 @@ async function initArticle() {
     return;
   }
 
-  document.title = `${item.title} - CyberMitra`;
-  articleMedia.innerHTML = item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" onerror="this.src='assets/default-news.jpg'; this.onerror=null;">` : '<img src="assets/default-news.jpg" alt="CyberMitra News">';
+  document.title = `${item.title} - CYPR Tech`;
+  articleMedia.innerHTML = item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" onerror="this.src='assets/default-news.jpg'; this.onerror=null;">` : '<img src="assets/default-news.jpg" alt="CYPR Tech News">';
   articleMeta.innerHTML = `<span class="badge badge-green">${escapeHtml(item.source)}</span><span class="badge muted">Author: ${escapeHtml(item.author || item.source)}</span><span class="badge muted">${formatDate(item.date)}</span>`;
   articleTitle.textContent = item.title;
   articleLead.textContent = item.content ? stripHtml(item.content).slice(0, 260) + (item.content.length > 260 ? '...' : '') : `AI-generated summary article from ${item.source}.`;

@@ -856,8 +856,8 @@
 </div><!-- /shell -->
 
 <script>
-const API = (window.CYBERMITRA_API_BASE !== undefined ? window.CYBERMITRA_API_BASE : '') + '/api';
-const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId') || localStorage.getItem('cm_user_id');
+const API = (window.CYPR_TECH_API_BASE !== undefined ? window.CYPR_TECH_API_BASE : '') + '/api';
+const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId') || localStorage.getItem('cypr_user_id');
 
 window.addEventListener('DOMContentLoaded', () => {
   setGreeting();

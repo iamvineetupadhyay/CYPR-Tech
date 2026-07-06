@@ -813,7 +813,7 @@ function renderGuestState() {
 /* ══ BACKEND FETCH ══ */
 async function fetchProfileData() {
   try {
-    const res = await fetch(`${window.CYBERMITRA_API_BASE}/api/user/${userId}/profile`);
+    const res = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/${userId}/profile`);
     if (res.ok) {
       const d = await res.json();
       profile.fn = d.name.split(' ')[0] || 'User';
@@ -843,7 +843,7 @@ async function fetchProfileData() {
       // Fetch activity stats
       let urlCount=0, passCount=0, urlThreats=0, exposedPasswords=0;
       try {
-        const actRes = await fetch(`${window.CYBERMITRA_API_BASE}/api/user/${userId}/activity`);
+        const actRes = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/${userId}/activity`);
         if (actRes.ok) {
           const acts = await actRes.json() || [];
           urlCount = acts.filter(a=>(a.type||'').toLowerCase().includes('url')).length;
@@ -889,7 +889,7 @@ async function fetchProfileData() {
 
       let malCount=0, malThreats=0;
       try {
-        const malRes = await fetch(`${window.CYBERMITRA_API_BASE}/api/malware/history/${userId}`);
+        const malRes = await fetch(`${window.CYPR_TECH_API_BASE}/api/malware/history/${userId}`);
         if (malRes.ok) {
           const malLogs = await malRes.json()||[];
           malCount = malLogs.length;
@@ -1106,7 +1106,7 @@ function closeModal() { document.getElementById('modalOverlay').classList.remove
 async function saveProfile() {
   const upd = { name:document.getElementById('mFN').value.trim()+' '+document.getElementById('mLN').value.trim(), email:document.getElementById('mEM').value.trim(), mobile:document.getElementById('mPH').value.trim(), bio:document.getElementById('mBI').value.trim() };
   try {
-    const res = await fetch(`${window.CYBERMITRA_API_BASE}/api/user/${userId}/update`, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(upd) });
+    const res = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/${userId}/update`, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(upd) });
     if (res.ok) { showToast('Profile updated'); fetchProfileData(); closeModal(); }
   } catch(e) { showToast('Update failed'); }
 }

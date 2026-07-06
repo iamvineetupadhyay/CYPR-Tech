@@ -13,14 +13,14 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("🔄 Initializing and updating database schema...");
+        System.out.println("Initializing and updating database schema...");
 
         // Fix 1: Ensure profile_pic_url is TEXT type
         try {
             jdbcTemplate.execute("ALTER TABLE users ALTER COLUMN profile_pic_url TYPE TEXT");
-            System.out.println("✅ profile_pic_url column set to TEXT.");
+            System.out.println("profile_pic_url column set to TEXT.");
         } catch (Exception e) {
-            System.out.println("ℹ️  profile_pic_url migration skipped: " + e.getMessage());
+            System.out.println("profile_pic_url migration skipped: " + e.getMessage());
         }
 
         // Fix 2: Add 'enabled' column if it doesn't exist (handles existing DB with rows)
@@ -39,7 +39,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 jdbcTemplate.execute(
                     "ALTER TABLE users ADD COLUMN enabled boolean NOT NULL DEFAULT false"
                 );
-                System.out.println("✅ 'enabled' column added to users table.");
+                System.out.println("'enabled' column added to users table.");
             }
 
             // Enable all pre-existing users (they were registered before email verification existed)
@@ -47,12 +47,12 @@ public class DatabaseInitializer implements CommandLineRunner {
                 "UPDATE users SET enabled = true WHERE enabled = false AND created_at < NOW() - INTERVAL '1 minute'"
             );
             if (updated > 0) {
-                System.out.println("✅ " + updated + " pre-existing user(s) automatically enabled.");
+                System.out.println(updated + " pre-existing user(s) automatically enabled.");
             }
         } catch (Exception e) {
-            System.err.println("⚠️ 'enabled' column migration failed: " + e.getMessage());
+            System.err.println("'enabled' column migration failed: " + e.getMessage());
         }
 
-        System.out.println("🚀 CYPR Backend is running...");
+        System.out.println("CYPR Backend is running...");
     }
 }
