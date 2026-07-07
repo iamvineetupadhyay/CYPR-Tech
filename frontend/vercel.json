@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://cypr-api.duckdns.org/api/:path*"
+      "destination": "http://cypr-api.duckdns.org:8080/api/:path*"
     }
   ]
 }

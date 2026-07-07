@@ -25,7 +25,7 @@
                        hostname.endsWith('.local');
     
     // 🔥 Tumhara valid AWS Production API URL
-    const AWS_PRODUCTION_API = 'https://cypr-api.duckdns.org';
+    const AWS_PRODUCTION_API = 'http://cypr-api.duckdns.org:8080';
     
     // 🛠️ Dynamic local API for mobile/LAN testing!
     // Connect to backend at the same host on port 8080.
