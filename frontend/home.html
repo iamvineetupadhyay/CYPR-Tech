@@ -999,6 +999,93 @@
       }
     }
 
+    // Dynamic announcement banner loader
+    function loadAnnounceBanner() {
+      const banner = document.getElementById('announceBanner');
+      if (!banner) return;
+
+      const b = JSON.parse(localStorage.getItem('cypr_admin_banner') || 'null');
+      if (b && b.active) {
+        // Check expiry
+        if (b.expiry && Date.now() > b.expiry) {
+          localStorage.removeItem('cypr_admin_banner');
+          banner.style.display = 'none';
+          return;
+        }
+
+        const colors = {
+          info: 'var(--blue)',
+          success: 'var(--lime)',
+          warning: 'var(--yellow)',
+          critical: 'var(--red)'
+        };
+
+        if (b.fullImage && b.imageUrl) {
+          // Render full image banner
+          let html = `<a href="${b.link || '#'}" target="${b.link ? '_blank' : '_self'}" style="display: block; width: 100%; height: auto; outline: none;">
+            <img src="${b.imageUrl}" style="width: 100%; max-height: 120px; object-fit: cover; border-radius: 6px; display: block;" alt="Promo Banner">
+          </a>`;
+          html += `<button class="announce-close" onclick="dismissBanner()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: #fff; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; border: none; font-size: 14px; font-weight: bold; line-height: 1;">&times;</button>`;
+          banner.innerHTML = html;
+          banner.style.padding = '0';
+          banner.style.position = 'relative';
+          banner.style.borderLeft = 'none';
+          banner.style.background = 'transparent';
+          banner.style.border = 'none';
+        } else {
+          // Render text banner with optional thumbnail
+          let imgHtml = '';
+          if (b.imageUrl) {
+            imgHtml = `<img src="${b.imageUrl}" style="width: 24px; height: 24px; border-radius: 4px; object-fit: cover; margin-right: 8px;" alt="Banner Thumbnail">`;
+          }
+          
+          let textHtml = `<span><b>${b.message}</b>`;
+          if (b.link) {
+            textHtml += ` — <a href="${b.link}" style="color: inherit; text-decoration: underline; font-weight: 600;" target="_blank">${b.linkText || 'Learn More'}</a>`;
+          }
+          textHtml += `</span>`;
+
+          banner.innerHTML = `
+            <div style="display:flex;align-items:center;gap:4px;">
+              <span class="announce-icon" style="display: flex; align-items: center; margin-right: 4px;">
+                ${imgHtml || `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;color:${colors[b.type] || 'var(--accent)'};"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`}
+              </span>
+              ${textHtml}
+            </div>
+            <button class="announce-close" onclick="dismissBanner()">&times;</button>
+          `;
+          
+          // Re-apply standard layout styles
+          banner.style.display = 'flex';
+          banner.style.padding = '10px 16px';
+          banner.style.background = 'var(--bg2)';
+          banner.style.border = '1px solid var(--border)';
+          banner.style.borderLeft = `4px solid ${colors[b.type] || 'var(--accent)'}`;
+        }
+        banner.classList.remove('hidden');
+      } else {
+        // Fallback default banner
+        banner.innerHTML = `
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="announce-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round"
+                style="width:15px;height:15px;vertical-align:middle;color:var(--accent);">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg></span>
+            <span><b>VAJRA engine v2 is live</b> — 16 heuristic signals now scoring every scan</span>
+          </div>
+          <button class="announce-close" onclick="dismissBanner()">&times;</button>
+        `;
+        banner.style.display = 'flex';
+        banner.style.padding = '10px 16px';
+        banner.style.background = '';
+        banner.style.border = '';
+        banner.style.borderLeft = '';
+        banner.classList.remove('hidden');
+      }
+    }
+
     // Announcement dismissal
     function dismissBanner() {
       const banner = document.getElementById('announceBanner');
@@ -1010,6 +1097,7 @@
       setFactOfTheDay();
       startCarouselRotation();
       updateHelpline();
+      loadAnnounceBanner();
       if (userId) {
         fetchProfileAndActivity();
         fetchThreatIntel();

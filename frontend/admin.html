@@ -385,8 +385,14 @@
           <div class="fg" style="margin:0"><label class="fl">Expires After</label><select class="fsel" id="bnrExp"><option value="never">Never</option><option value="1h">1 Hour</option><option value="6h">6 Hours</option><option value="24h">24 Hours</option><option value="7d">7 Days</option></select></div>
         </div>
         <div class="fg" style="margin-top:14px"><label class="fl">Banner Message</label><input type="text" id="bnrMsg" class="fi" placeholder="e.g. CYPR v2.0 is live!" oninput="updBnr()" maxlength="200"><div class="fhint"><span id="bnrCC">0</span>/200 characters</div></div>
-        <div class="fg"><label class="fl">CTA Link <span style="color:var(--text3)">(optional)</span></label><input type="url" id="bnrLink" class="fi" placeholder="https://cyprtech.com/whats-new"></div>
-        <div class="fg"><label class="fl">CTA Text <span style="color:var(--text3)">(optional)</span></label><input type="text" id="bnrLinkTxt" class="fi" placeholder="Learn More →"></div>
+        <div class="frow">
+          <div class="fg" style="margin:0"><label class="fl">CTA Link <span style="color:var(--text3)">(optional)</span></label><input type="url" id="bnrLink" class="fi" placeholder="https://cyprtech.com/whats-new"></div>
+          <div class="fg" style="margin:0"><label class="fl">CTA Text <span style="color:var(--text3)">(optional)</span></label><input type="text" id="bnrLinkTxt" class="fi" placeholder="Learn More →"></div>
+        </div>
+        <div class="frow" style="margin-top:14px">
+          <div class="fg" style="margin:0"><label class="fl">Banner Photo / Image URL <span style="color:var(--text3)">(optional)</span></label><input type="url" id="bnrImgUrl" class="fi" placeholder="https://example.com/photo.png" oninput="updBnr()"></div>
+          <div class="fg" style="margin:0; display:flex; align-items:center; gap:8px; padding-top:28px;"><input type="checkbox" id="bnrFullImg" class="rck" onchange="updBnr()"><label class="fl" style="margin:0; cursor:pointer;" for="bnrFullImg">Full-width graphic banner (image only)</label></div>
+        </div>
         <div class="bgrp">
           <button class="btn btn-p" onclick="pubBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-.46a2 2 0 012.11.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Publish Banner</button>
           <button class="btn btn-d" onclick="rmBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>Remove Banner</button>
@@ -582,23 +588,48 @@ function saveDraft() { const s=document.getElementById('eSubj').value.trim(); if
 // ── Banner ──
 function updBnr() {
   const msg = document.getElementById('bnrMsg').value||'Your banner message...', type = document.getElementById('bnrType').value;
-  const prev = document.getElementById('bnrPrev'); prev.className = `bnr-prev bnr-${type}`;
-  document.getElementById('bnrPrevTxt').textContent = msg;
+  const imgUrl = document.getElementById('bnrImgUrl').value.trim();
+  const fullImg = document.getElementById('bnrFullImg').checked;
+  const prev = document.getElementById('bnrPrev'); 
+  
+  prev.className = `bnr-prev bnr-${type}`;
   document.getElementById('bnrCC').textContent = document.getElementById('bnrMsg').value.length;
-  const icos = { info:'<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/>', success:'<path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>', warning:'<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round" stroke-width="3"/>', critical:'<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>' };
-  document.getElementById('bnrIco').innerHTML = icos[type];
+
+  if (fullImg && imgUrl) {
+    prev.innerHTML = `<img src="${imgUrl}" style="width:100%; max-height:80px; object-fit:cover; border-radius:6px; display:block;" alt="Banner Preview">`;
+  } else {
+    let imgHtml = '';
+    if (imgUrl) {
+      imgHtml = `<img src="${imgUrl}" style="width:24px; height:24px; border-radius:4px; object-fit:cover; margin-right:8px;" alt="Thum">`;
+    }
+    const icos = { info:'<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/>', success:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>', warning:'<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round" stroke-width="3"/>', critical:'<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>' };
+    
+    prev.innerHTML = `
+      <span id="bnrIco" style="display:flex;align-items:center;">
+        ${imgHtml || icos[type]}
+      </span>
+      <div class="bnr-txt" id="bnrPrevTxt">${msg}</div>
+    `;
+  }
 }
 function pubBnr() {
-  const msg = document.getElementById('bnrMsg').value.trim(); if(!msg){toast('Enter a banner message.','err');return;}
+  const fullImg = document.getElementById('bnrFullImg').checked;
+  const imgUrl = document.getElementById('bnrImgUrl').value.trim();
+  const msg = document.getElementById('bnrMsg').value.trim(); 
+  
+  if (!fullImg && !msg) { toast('Enter a banner message.','err'); return; }
+  if (fullImg && !imgUrl) { toast('Please provide a Banner Photo/Image URL to show as a full graphic banner.','err'); return; }
+  
   const type=document.getElementById('bnrType').value, exp=document.getElementById('bnrExp').value, link=document.getElementById('bnrLink').value.trim(), lt=document.getElementById('bnrLinkTxt').value.trim();
   const ems = {never:null,'1h':3600000,'6h':21600000,'24h':86400000,'7d':604800000};
-  const b = {active:true,type,message:msg,link:link||null,linkText:lt||null,expiry:exp==='never'?null:Date.now()+ems[exp],publishedAt:Date.now()};
+  const b = {active:true,type,message:msg || 'Announcement',imageUrl:imgUrl||null,fullImage:fullImg,link:link||null,linkText:lt||null,expiry:exp==='never'?null:Date.now()+ems[exp],publishedAt:Date.now()};
+  
   localStorage.setItem('cypr_admin_banner',JSON.stringify(b)); syncStats(); showABnr(b);
-  addLog('success',`Banner "<strong>${msg.slice(0,40)}</strong>" published (${type})`); toast('Banner published!','ok');
+  addLog('success',`Banner "${(msg || imgUrl).slice(0,40)}" published (${type})`); toast('Banner published!','ok');
 }
 function rmBnr() { openConf('danger','Remove Banner?','This will remove the active banner from all pages.',()=>{ closeConf(); localStorage.removeItem('cypr_admin_banner'); syncStats(); document.getElementById('aBnrInfo').innerHTML='<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="2"/></svg><p>No active banner set</p></div>'; addLog('warning','Active banner removed'); toast('Banner removed.','inf'); }); }
-function restBnr() { const b=JSON.parse(localStorage.getItem('cypr_admin_banner')||'null'); if(!b)return; if(b.expiry&&Date.now()>b.expiry){localStorage.removeItem('cypr_admin_banner');return;} document.getElementById('bnrMsg').value=b.message||''; document.getElementById('bnrType').value=b.type||'info'; document.getElementById('bnrLink').value=b.link||''; document.getElementById('bnrLinkTxt').value=b.linkText||''; updBnr(); showABnr(b); syncStats(); }
-function showABnr(b) { const clrs={info:'var(--blue)',success:'var(--lime)',warning:'var(--yellow)',critical:'var(--red)'}; document.getElementById('aBnrInfo').innerHTML=`<div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:${clrs[b.type]};box-shadow:0 0 6px ${clrs[b.type]}"></div><span style="font-size:.85rem;font-weight:700">${b.message}</span></div><div style="font-size:.75rem;color:var(--text3)">Published: ${new Date(b.publishedAt).toLocaleString()} · Expires: ${b.expiry?new Date(b.expiry).toLocaleString():'Never'}</div></div>`; }
+function restBnr() { const b=JSON.parse(localStorage.getItem('cypr_admin_banner')||'null'); if(!b)return; if(b.expiry&&Date.now()>b.expiry){localStorage.removeItem('cypr_admin_banner');return;} document.getElementById('bnrMsg').value=b.message||''; document.getElementById('bnrType').value=b.type||'info'; document.getElementById('bnrLink').value=b.link||''; document.getElementById('bnrLinkTxt').value=b.linkText||''; document.getElementById('bnrImgUrl').value=b.imageUrl||''; document.getElementById('bnrFullImg').checked=!!b.fullImage; updBnr(); showABnr(b); syncStats(); }
+function showABnr(b) { const clrs={info:'var(--blue)',success:'var(--lime)',warning:'var(--yellow)',critical:'var(--red)'}; document.getElementById('aBnrInfo').innerHTML=`<div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:${clrs[b.type]};box-shadow:0 0 6px ${clrs[b.type]}"></div><span style="font-size:.85rem;font-weight:700">${b.fullImage ? 'Full Image Graphic' : b.message}</span></div><div style="font-size:.75rem;color:var(--text3)">Published: ${new Date(b.publishedAt).toLocaleString()} · Expires: ${b.expiry?new Date(b.expiry).toLocaleString():'Never'}</div></div>`; }
 
 // ── Users ──
 async function loadUsers() {
