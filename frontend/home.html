@@ -1005,6 +1005,15 @@
       if (!banner) return;
 
       const b = JSON.parse(localStorage.getItem('cypr_admin_banner') || 'null');
+      
+      // Check if dismissed
+      const currentBnrId = (b && b.active) ? String(b.publishedAt) : 'default';
+      if (localStorage.getItem('cypr_banner_dismissed_id') === currentBnrId) {
+        banner.style.display = 'none';
+        banner.classList.add('hidden');
+        return;
+      }
+
       if (b && b.active) {
         // Check expiry
         if (b.expiry && Date.now() > b.expiry) {
@@ -1032,6 +1041,10 @@
           banner.style.borderLeft = 'none';
           banner.style.background = 'transparent';
           banner.style.border = 'none';
+          banner.style.maxHeight = '120px';
+          banner.style.marginTop = '0';
+          banner.style.marginBottom = '0';
+          banner.style.opacity = '1';
         } else {
           // Render text banner with optional thumbnail
           let imgHtml = '';
@@ -1061,6 +1074,10 @@
           banner.style.background = 'var(--bg2)';
           banner.style.border = '1px solid var(--border)';
           banner.style.borderLeft = `4px solid ${colors[b.type] || 'var(--accent)'}`;
+          banner.style.maxHeight = '80px';
+          banner.style.marginTop = '0';
+          banner.style.marginBottom = '0';
+          banner.style.opacity = '1';
         }
         banner.classList.remove('hidden');
       } else {
@@ -1082,14 +1099,37 @@
         banner.style.background = '';
         banner.style.border = '';
         banner.style.borderLeft = '';
+        banner.style.maxHeight = '80px';
+        banner.style.marginTop = '0';
+        banner.style.marginBottom = '0';
+        banner.style.opacity = '1';
         banner.classList.remove('hidden');
       }
     }
 
-    // Announcement dismissal
+    // Announcement dismissal with smooth collapse transition
     function dismissBanner() {
       const banner = document.getElementById('announceBanner');
-      if (banner) banner.classList.add('hidden');
+      if (banner) {
+        banner.style.transition = 'opacity 0.25s ease, max-height 0.25s ease, padding 0.25s ease, margin 0.25s ease';
+        banner.style.opacity = '0';
+        banner.style.maxHeight = '0';
+        banner.style.paddingTop = '0';
+        banner.style.paddingBottom = '0';
+        banner.style.marginTop = '-12px';
+        banner.style.marginBottom = '-12px';
+        banner.style.border = 'none';
+        banner.style.overflow = 'hidden';
+
+        const b = JSON.parse(localStorage.getItem('cypr_admin_banner') || 'null');
+        const currentBnrId = (b && b.active) ? String(b.publishedAt) : 'default';
+        localStorage.setItem('cypr_banner_dismissed_id', currentBnrId);
+
+        setTimeout(() => {
+          banner.style.display = 'none';
+          banner.classList.add('hidden');
+        }, 250);
+      }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
