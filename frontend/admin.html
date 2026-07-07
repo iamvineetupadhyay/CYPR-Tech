@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="assets/js/config.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — CYPR Tech</title>
+  <meta name="description" content="CYPR Tech Admin Control Center">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0a0b0f;--bg2:#12141a;--bg3:#1a1d26;--bg4:#22263a;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#f0f0f2;--text2:#9ca3af;--text3:#6b7280;--accent:#f97316;--lime:#a3e635;--lime2:#84cc16;--lime-dim:rgba(163,230,53,0.08);--lime-glow:rgba(163,230,53,0.25);--red:#ef4444;--red-dim:rgba(239,68,68,0.1);--blue:#3b82f6;--blue-dim:rgba(59,130,246,0.1);--purple:#a855f7;--purple-dim:rgba(168,85,247,0.1);--yellow:#eab308;--yellow-dim:rgba(234,179,8,0.1);--font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;--nav-h:64px;}
+    [data-theme="light"]{--bg:#f5f6fa;--bg2:#ffffff;--bg3:#f0f1f5;--bg4:#e8e9ef;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);--text:#0f172a;--text2:#475569;--text3:#94a3b8;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+    a{text-decoration:none;color:inherit;}
+    button{font-family:inherit;cursor:pointer;border:none;background:none;}
+    ::-webkit-scrollbar{width:5px;height:5px;}
+    ::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:99px;}
+    input,textarea,select{font-family:var(--font);}
+
+    /* TOPBAR */
+    .adm-top{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(10,11,15,0.94);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:200;}
+    [data-theme="light"] .adm-top{background:rgba(245,246,250,0.97);}
+    .adm-brand{display:flex;align-items:center;gap:10px;}
+    .adm-logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#c2410c);display:grid;place-items:center;box-shadow:0 0 18px rgba(249,115,22,.35);}
+    .adm-logo svg{width:18px;height:18px;color:#fff;}
+    .adm-brand b{font-size:.95rem;font-weight:800;letter-spacing:-.02em;}
+    .adm-tag{font-size:.6rem;font-family:var(--mono);background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.25);padding:2px 7px;border-radius:5px;text-transform:uppercase;letter-spacing:.08em;}
+    .adm-right{display:flex;align-items:center;gap:12px;}
+    .back-btn{display:flex;align-items:center;gap:6px;font-size:.8rem;color:var(--text2);padding:6px 12px;border-radius:8px;border:1px solid var(--border2);transition:all .2s;}
+    .back-btn:hover{color:var(--text);background:var(--bg3);}
+    .back-btn svg{width:14px;height:14px;}
+    .th-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border2);color:var(--text2);display:grid;place-items:center;transition:all .2s;}
+    .th-btn:hover{border-color:var(--accent);color:var(--accent);}
+    .th-btn svg{width:16px;height:16px;}
+    .adm-user{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--text2);}
+    .adm-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--lime),var(--lime2));display:grid;place-items:center;font-weight:800;font-size:.8rem;color:#0a0a0a;}
+
+    /* LAYOUT */
+    .adm-layout{display:flex;padding-top:var(--nav-h);min-height:100vh;}
+    .adm-sidebar{width:240px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));overflow-y:auto;padding:20px 12px;display:flex;flex-direction:column;gap:4px;}
+    .sb-lbl{font-size:.62rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--text3);padding:12px 10px 6px;}
+    .sb-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;font-size:.84rem;font-weight:500;color:var(--text2);transition:all .18s;cursor:pointer;border:1px solid transparent;}
+    .sb-item svg{width:16px;height:16px;flex-shrink:0;}
+    .sb-item:hover{background:var(--bg3);color:var(--text);border-color:var(--border);}
+    .sb-item.on{background:rgba(249,115,22,.1);color:var(--accent);border-color:rgba(249,115,22,.2);}
+    .sb-badge{margin-left:auto;font-size:.65rem;font-family:var(--mono);background:var(--red);color:#fff;border-radius:99px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px;}
+
+    /* MAIN */
+    .adm-main{flex:1;padding:28px;overflow-y:auto;}
+    .panel{display:none;}
+    .panel.on{display:block;animation:fadeIn .25s ease;}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    .pg-hdr{margin-bottom:24px;}
+    .pg-hdr h1{font-size:1.5rem;font-weight:800;margin-bottom:4px;}
+    .pg-hdr p{font-size:.84rem;color:var(--text2);}
+
+    /* STAT CARDS */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+    @media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr);}}
+    .sc{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px;transition:all .2s;}
+    .sc:hover{border-color:var(--border2);transform:translateY(-2px);}
+    .sc-top{display:flex;align-items:center;justify-content:space-between;}
+    .sc-ico{width:36px;height:36px;border-radius:9px;display:grid;place-items:center;}
+    .sc-ico svg{width:18px;height:18px;}
+    .sc-ico.g{background:var(--lime-dim);color:var(--lime);}
+    .sc-ico.o{background:rgba(249,115,22,.1);color:var(--accent);}
+    .sc-ico.b{background:var(--blue-dim);color:var(--blue);}
+    .sc-ico.p{background:var(--purple-dim);color:var(--purple);}
+    .sc-val{font-size:1.7rem;font-weight:800;font-family:var(--mono);}
+    .sc-lbl{font-size:.75rem;color:var(--text2);}
+    .sc-chg{font-size:.72rem;color:var(--text3);}
+    .sc-chg.up{color:var(--lime);}
+
+    /* CARD */
+    .card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px;}
+    .card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+    .card-ttl{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .card-ttl svg{width:18px;height:18px;color:var(--accent);}
+
+    /* FORM */
+    .fg{margin-bottom:16px;}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+    .fl{font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:6px;display:block;}
+    .fi,.fsel,.fta{width:100%;padding:10px 13px;border-radius:9px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-size:.85rem;outline:none;transition:all .18s;}
+    .fi:focus,.fsel:focus,.fta:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,.12);}
+    .fsel{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;}
+    .fta{resize:vertical;min-height:100px;line-height:1.5;}
+    .fhint{font-size:.72rem;color:var(--text3);margin-top:5px;}
+
+    /* BUTTONS */
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:9px;font-size:.83rem;font-weight:600;transition:all .2s;cursor:pointer;}
+    .btn svg{width:15px;height:15px;flex-shrink:0;}
+    .btn-p{background:linear-gradient(135deg,var(--accent),#c2410c);color:#fff;box-shadow:0 4px 14px rgba(249,115,22,.3);border:none;}
+    .btn-p:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(249,115,22,.4);}
+    .btn-s{background:var(--bg3);color:var(--text);border:1px solid var(--border2);}
+    .btn-s:hover{border-color:var(--accent);color:var(--accent);}
+    .btn-d{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.2);}
+    .btn-d:hover{background:rgba(239,68,68,.2);}
+    .btn-g{background:var(--lime-dim);color:var(--lime);border:1px solid var(--lime-glow);}
+    .btn-g:hover{background:rgba(163,230,53,.15);}
+    .btn-sm{padding:6px 12px;font-size:.77rem;}
+    .bgrp{display:flex;gap:10px;flex-wrap:wrap;}
+
+    /* NOTIF TYPES */
+    .nt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;}
+    .nt-btn{padding:10px;border-radius:9px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);display:flex;flex-direction:column;align-items:center;gap:5px;font-size:.74rem;font-weight:600;transition:all .18s;cursor:pointer;}
+    .nt-btn svg{width:18px;height:18px;}
+    .nt-btn.nt-info{border-color:var(--blue);background:var(--blue-dim);color:var(--blue);}
+    .nt-btn.nt-success{border-color:var(--lime);background:var(--lime-dim);color:var(--lime);}
+    .nt-btn.nt-warning{border-color:var(--yellow);background:var(--yellow-dim);color:var(--yellow);}
+    .nt-btn.nt-critical{border-color:var(--red);background:var(--red-dim);color:var(--red);}
+
+    /* BANNER PREVIEW */
+    .bnr-prev{border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;font-size:.84rem;border:1px dashed var(--border2);transition:all .3s;}
+    .bnr-prev svg{width:18px;height:18px;flex-shrink:0;}
+    .bnr-txt{flex:1;}
+    .bnr-prev.bnr-info{background:var(--blue-dim);border-color:rgba(59,130,246,.25);color:var(--blue);}
+    .bnr-prev.bnr-success{background:var(--lime-dim);border-color:var(--lime-glow);color:var(--lime);}
+    .bnr-prev.bnr-warning{background:var(--yellow-dim);border-color:rgba(234,179,8,.25);color:var(--yellow);}
+    .bnr-prev.bnr-critical{background:var(--red-dim);border-color:rgba(239,68,68,.25);color:var(--red);}
+
+    /* USER TABLE */
+    .srch{flex:1;min-width:220px;padding:9px 13px 9px 36px;border-radius:9px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-size:.84rem;outline:none;transition:all .18s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='M21 21l-4.35-4.35'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center;}
+    .srch:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(249,115,22,.12);}
+    .sfrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+    .utbl{width:100%;border-collapse:collapse;}
+    .utbl th{text-align:left;padding:10px 14px;font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);border-bottom:1px solid var(--border);background:var(--bg3);}
+    .utbl td{padding:12px 14px;font-size:.84rem;color:var(--text2);border-bottom:1px solid var(--border);vertical-align:middle;}
+    .utbl tr:hover td{background:var(--bg3);}
+    .uname{font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px;}
+    .uav{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#c2410c);display:grid;place-items:center;font-weight:700;font-size:.75rem;color:#fff;flex-shrink:0;}
+    .ubadge{font-size:.65rem;padding:2px 8px;border-radius:99px;font-weight:700;font-family:var(--mono);}
+    .ubadge.free{background:var(--bg4);color:var(--text3);border:1px solid var(--border2);}
+    .ubadge.pro{background:rgba(249,115,22,.1);color:var(--accent);border:1px solid rgba(249,115,22,.2);}
+    .ubadge.admin{background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.2);}
+    .ustatus{display:flex;align-items:center;gap:5px;font-size:.78rem;}
+    .udot{width:7px;height:7px;border-radius:50%;}
+    .udot.active{background:var(--lime);box-shadow:0 0 6px var(--lime);}
+    .udot.inactive{background:var(--text3);}
+    .rck{width:16px;height:16px;border-radius:4px;cursor:pointer;accent-color:var(--accent);}
+    .pgn{display:flex;align-items:center;gap:8px;}
+    .pgb{width:32px;height:32px;border-radius:7px;border:1px solid var(--border2);color:var(--text2);display:grid;place-items:center;transition:all .18s;font-size:.8rem;}
+    .pgb:hover{border-color:var(--accent);color:var(--accent);}
+    .pgb.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+    .pgb svg{width:13px;height:13px;}
+    .bulk-bar{display:none;align-items:center;gap:10px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.2);border-radius:9px;padding:10px 14px;margin-bottom:12px;}
+    .bulk-bar.show{display:flex;}
+
+    /* EMAIL TEMPLATES */
+    .tmpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+    @media(max-width:700px){.tmpl-grid{grid-template-columns:1fr;}}
+    .tmpl{padding:14px;border-radius:10px;border:1px solid var(--border2);background:var(--bg3);cursor:pointer;transition:all .18s;}
+    .tmpl:hover{background:var(--bg4);}
+    .tmpl.on{border-color:var(--accent);background:rgba(249,115,22,.08);}
+    .tmpl-ico{width:36px;height:36px;border-radius:8px;background:rgba(249,115,22,.12);color:var(--accent);display:grid;place-items:center;margin-bottom:8px;}
+    .tmpl-ico svg{width:18px;height:18px;}
+    .tmpl-name{font-size:.83rem;font-weight:700;margin-bottom:3px;}
+    .tmpl-desc{font-size:.72rem;color:var(--text2);}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+    .chip{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:.75rem;font-weight:600;border:1px solid var(--border2);background:var(--bg3);cursor:pointer;transition:all .18s;}
+    .chip.on{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.3);color:var(--accent);}
+    .chip svg{width:13px;height:13px;}
+    .eprev{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:.82rem;color:var(--text2);line-height:1.6;}
+    .eprev .esubj{font-weight:700;color:var(--text);font-size:.9rem;margin-bottom:8px;}
+
+    /* LOG */
+    .logs{display:flex;flex-direction:column;}
+    .log-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+    .log-item:last-child{border-bottom:none;}
+    .ldot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex-shrink:0;}
+    .ldot.info{background:var(--blue);}
+    .ldot.success{background:var(--lime);}
+    .ldot.warning{background:var(--yellow);}
+    .ldot.danger{background:var(--red);}
+    .ltxt{font-size:.83rem;color:var(--text2);flex:1;}
+    .ltxt strong{color:var(--text);}
+    .ltm{font-size:.7rem;color:var(--text3);font-family:var(--mono);flex-shrink:0;}
+
+    /* PROGRESS */
+    .prog{display:none;flex-direction:column;gap:8px;margin-top:14px;}
+    .prog.show{display:flex;}
+    .pb-wrap{height:6px;background:var(--bg4);border-radius:99px;overflow:hidden;}
+    .pb-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--lime));border-radius:99px;transition:width .3s ease;}
+    .pb-lbl{font-size:.75rem;color:var(--text2);display:flex;justify-content:space-between;}
+
+    /* TOAST */
+    .toast-stack{position:fixed;bottom:22px;right:22px;display:flex;flex-direction:column;gap:8px;z-index:9999;}
+    .toast{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--border2);border-radius:11px;padding:13px 16px;box-shadow:0 8px 32px rgba(0,0,0,.4);font-size:.83rem;max-width:340px;animation:slideUp .3s ease;}
+    .toast svg{width:16px;height:16px;flex-shrink:0;}
+    .toast.ok{border-color:var(--lime-glow);}
+    .toast.ok svg{color:var(--lime);}
+    .toast.err{border-color:rgba(239,68,68,.3);}
+    .toast.err svg{color:var(--red);}
+    .toast.inf{border-color:rgba(59,130,246,.3);}
+    .toast.inf svg{color:var(--blue);}
+    @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+    /* EMPTY */
+    .empty{text-align:center;padding:40px 20px;color:var(--text3);}
+    .empty svg{width:40px;height:40px;margin-bottom:10px;opacity:.4;}
+    .empty p{font-size:.85rem;}
+
+    /* CONFIRM */
+    .conf-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);z-index:9000;align-items:center;justify-content:center;}
+    .conf-ov.show{display:flex;}
+    .conf-box{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:28px;width:100%;max-width:400px;animation:slideUp .25s ease;}
+    .conf-ico{width:48px;height:48px;border-radius:12px;margin-bottom:14px;display:grid;place-items:center;}
+    .conf-ico svg{width:24px;height:24px;}
+    .conf-ico.warn{background:rgba(234,179,8,.1);color:var(--yellow);}
+    .conf-ico.danger{background:var(--red-dim);color:var(--red);}
+    .conf-ttl{font-size:1.1rem;font-weight:800;margin-bottom:6px;}
+    .conf-desc{font-size:.83rem;color:var(--text2);margin-bottom:20px;line-height:1.5;}
+    .conf-act{display:flex;gap:10px;justify-content:flex-end;}
+
+    @media(max-width:768px){.adm-sidebar{display:none;}.adm-main{padding:16px;}.stats{grid-template-columns:repeat(2,1fr);}.frow{grid-template-columns:1fr;}.nt-grid{grid-template-columns:repeat(2,1fr);}}
+  </style>
+</head>
+<body>
+
+<header class="adm-top">
+  <div class="adm-brand">
+    <div class="adm-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <b>CYPR Tech</b>
+    <span class="adm-tag">Admin</span>
+  </div>
+  <div class="adm-right">
+    <a href="dashboard.html" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Dashboard
+    </a>
+    <button class="th-btn" id="thBtn">
+      <svg id="thIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+    </button>
+    <div class="adm-user">
+      <div class="adm-av" id="avInit">A</div>
+      <span id="avName">Admin</span>
+    </div>
+  </div>
+</header>
+
+<div class="adm-layout">
+  <aside class="adm-sidebar">
+    <div class="sb-lbl">Overview</div>
+    <div class="sb-item on" id="si-overview" onclick="go('overview')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="sb-lbl">Communication</div>
+    <div class="sb-item" id="si-notif" onclick="go('notif')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+      Push Notifications
+      <span class="sb-badge" id="nBadge">0</span>
+    </div>
+    <div class="sb-item" id="si-email" onclick="go('email')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Bulk Email
+    </div>
+    <div class="sb-item" id="si-banner" onclick="go('banner')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+      Site Banner
+    </div>
+    <div class="sb-lbl">Users</div>
+    <div class="sb-item" id="si-users" onclick="go('users')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      User Management
+      <span class="sb-badge" id="uBadge">—</span>
+    </div>
+    <div class="sb-lbl">System</div>
+    <div class="sb-item" id="si-logs" onclick="go('logs')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Activity Logs
+    </div>
+  </aside>
+
+  <main class="adm-main">
+
+    <!-- OVERVIEW -->
+    <div class="panel on" id="panel-overview">
+      <div class="pg-hdr"><h1>Admin Control Center</h1><p>Monitor platform activity and manage all users from one place.</p></div>
+      <div class="stats">
+        <div class="sc"><div class="sc-top"><div><div class="sc-val" id="sTotalU">—</div><div class="sc-lbl">Total Users</div></div><div class="sc-ico g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div></div><div class="sc-chg up">Live data</div></div>
+        <div class="sc"><div class="sc-top"><div><div class="sc-val" id="sNotif">0</div><div class="sc-lbl">Notifications Sent</div></div><div class="sc-ico o"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></div></div><div class="sc-chg up">This session</div></div>
+        <div class="sc"><div class="sc-top"><div><div class="sc-val" id="sEmail">0</div><div class="sc-lbl">Emails Sent</div></div><div class="sc-ico b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg></div></div><div class="sc-chg up">This session</div></div>
+        <div class="sc"><div class="sc-top"><div><div class="sc-val" id="sBnr">OFF</div><div class="sc-lbl">Banner Active</div></div><div class="sc-ico p"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/></svg></div></div><div class="sc-chg" id="sBnrLbl">No active banner</div></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Quick Actions</div></div>
+        <div class="bgrp">
+          <button class="btn btn-p" onclick="go('notif')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>Send Notification</button>
+          <button class="btn btn-s" onclick="go('email')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/></svg>Bulk Email</button>
+          <button class="btn btn-s" onclick="go('banner')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/></svg>Update Banner</button>
+          <button class="btn btn-g" onclick="go('users')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Manage Users</button>
+        </div>
+      </div>
+      <div class="card"><div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>Recent Activity</div></div><div class="logs" id="ovLog"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg><p>No activity yet</p></div></div></div>
+    </div>
+
+    <!-- PUSH NOTIFICATIONS -->
+    <div class="panel" id="panel-notif">
+      <div class="pg-hdr"><h1>Push Notifications</h1><p>Broadcast real-time alerts to all users or specific segments instantly.</p></div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>Compose Notification</div></div>
+        <div class="fg"><label class="fl">Notification Type</label>
+          <div class="nt-grid">
+            <button class="nt-btn nt-info" id="ti" onclick="selType('info')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/></svg>Info</button>
+            <button class="nt-btn" id="ts" onclick="selType('success')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Success</button>
+            <button class="nt-btn" id="tw" onclick="selType('warning')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round" stroke-width="3"/></svg>Warning</button>
+            <button class="nt-btn" id="tc" onclick="selType('critical')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>Critical</button>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg" style="margin:0"><label class="fl">Title</label><input type="text" id="nTitle" class="fi" placeholder="e.g. Security Update Available" maxlength="80"></div>
+          <div class="fg" style="margin:0"><label class="fl">Target Audience</label>
+            <select class="fsel" id="nAud"><option value="all">All Users</option><option value="pro">Pro Users Only</option><option value="free">Free Users Only</option><option value="new">New Users (&lt; 7 days)</option></select>
+          </div>
+        </div>
+        <div class="fg" style="margin-top:14px"><label class="fl">Message Body</label><textarea id="nBody" class="fta" placeholder="Write your notification message..." maxlength="300"></textarea><div class="fhint"><span id="nCC">0</span>/300 characters</div></div>
+        <div class="fg"><label class="fl">Action URL <span style="color:var(--text3)">(optional)</span></label><input type="url" id="nUrl" class="fi" placeholder="https://cyprtech.com/announcement"></div>
+        <div class="bgrp">
+          <button class="btn btn-p" onclick="sendNotif()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Broadcast to All Users</button>
+          <button class="btn btn-s" onclick="prevNotif()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Preview</button>
+        </div>
+        <div class="prog" id="nProg"><div class="pb-lbl"><span id="nPT">Sending...</span><span id="nPPct">0%</span></div><div class="pb-wrap"><div class="pb-fill" id="nPB" style="width:0%"></div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Notification History</div><button class="btn btn-s btn-sm" onclick="clearNH()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>Clear</button></div>
+        <div class="logs" id="nHist"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><p>No notifications sent yet</p></div></div>
+      </div>
+    </div>
+
+    <!-- BULK EMAIL -->
+    <div class="panel" id="panel-email">
+      <div class="pg-hdr"><h1>Bulk Email Campaign</h1><p>Send personalized update emails to all or segmented users at once.</p></div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email Template</div></div>
+        <div class="fg"><label class="fl">Choose Template</label>
+          <div class="tmpl-grid">
+            <div class="tmpl on" id="tmpl-update" onclick="selTmpl('update')"><div class="tmpl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg></div><div class="tmpl-name">Product Update</div><div class="tmpl-desc">New features &amp; improvements</div></div>
+            <div class="tmpl" id="tmpl-security" onclick="selTmpl('security')"><div class="tmpl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="tmpl-name">Security Alert</div><div class="tmpl-desc">Important security advisory</div></div>
+            <div class="tmpl" id="tmpl-promo" onclick="selTmpl('promo')"><div class="tmpl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="tmpl-name">Promotion</div><div class="tmpl-desc">Special offers &amp; upgrades</div></div>
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Recipients</label>
+          <div class="chips">
+            <div class="chip on" id="ch-all" onclick="toggleChip('all')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>All Users</div>
+            <div class="chip" id="ch-pro" onclick="toggleChip('pro')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Pro Users</div>
+            <div class="chip" id="ch-free" onclick="toggleChip('free')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Free Users</div>
+            <div class="chip" id="ch-inactive" onclick="toggleChip('inactive')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg>Inactive (&gt;30d)</div>
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg" style="margin:0"><label class="fl">Subject Line</label><input type="text" id="eSubj" class="fi" placeholder="e.g. New CYPR Features Are Live!"></div>
+          <div class="fg" style="margin:0"><label class="fl">Sender Name</label><input type="text" id="eSender" class="fi" value="CYPR Tech Team"></div>
+        </div>
+        <div class="fg" style="margin-top:14px"><label class="fl">Email Body</label><textarea id="eBody" class="fta" style="min-height:140px" placeholder="Write your email content here..."></textarea></div>
+        <div class="fg"><label class="fl" style="margin-bottom:10px">Live Preview</label><div class="eprev"><div class="esubj" id="ePrevSubj">Subject will appear here</div><div id="ePrevBody" style="white-space:pre-wrap">Body will appear here...</div></div></div>
+        <div class="bgrp">
+          <button class="btn btn-p" onclick="confSendEmail()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Send Campaign</button>
+          <button class="btn btn-s" onclick="saveDraft()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>Save Draft</button>
+        </div>
+        <div class="prog" id="eProg"><div class="pb-lbl"><span id="ePT">Preparing...</span><span id="ePPct">0%</span></div><div class="pb-wrap"><div class="pb-fill" id="ePB" style="width:0%"></div></div></div>
+      </div>
+    </div>
+
+    <!-- BANNER -->
+    <div class="panel" id="panel-banner">
+      <div class="pg-hdr"><h1>Site Banner</h1><p>Display a prominent announcement banner across all pages.</p></div>
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Banner Editor</div>
+        </div>
+        <div class="bnr-prev bnr-info" id="bnrPrev">
+          <svg id="bnrIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/></svg>
+          <div class="bnr-txt" id="bnrPrevTxt">Your banner message will appear here...</div>
+        </div>
+        <div class="frow">
+          <div class="fg" style="margin:0"><label class="fl">Banner Type</label><select class="fsel" id="bnrType" onchange="updBnr()"><option value="info">Info (Blue)</option><option value="success">Success (Green)</option><option value="warning">Warning (Yellow)</option><option value="critical">Critical (Red)</option></select></div>
+          <div class="fg" style="margin:0"><label class="fl">Expires After</label><select class="fsel" id="bnrExp"><option value="never">Never</option><option value="1h">1 Hour</option><option value="6h">6 Hours</option><option value="24h">24 Hours</option><option value="7d">7 Days</option></select></div>
+        </div>
+        <div class="fg" style="margin-top:14px"><label class="fl">Banner Message</label><input type="text" id="bnrMsg" class="fi" placeholder="e.g. CYPR v2.0 is live!" oninput="updBnr()" maxlength="200"><div class="fhint"><span id="bnrCC">0</span>/200 characters</div></div>
+        <div class="fg"><label class="fl">CTA Link <span style="color:var(--text3)">(optional)</span></label><input type="url" id="bnrLink" class="fi" placeholder="https://cyprtech.com/whats-new"></div>
+        <div class="fg"><label class="fl">CTA Text <span style="color:var(--text3)">(optional)</span></label><input type="text" id="bnrLinkTxt" class="fi" placeholder="Learn More →"></div>
+        <div class="bgrp">
+          <button class="btn btn-p" onclick="pubBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-.46a2 2 0 012.11.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Publish Banner</button>
+          <button class="btn btn-d" onclick="rmBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>Remove Banner</button>
+        </div>
+      </div>
+      <div class="card"><div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Current Active Banner</div></div><div id="aBnrInfo"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="2"/></svg><p>No active banner set</p></div></div></div>
+    </div>
+
+    <!-- USERS -->
+    <div class="panel" id="panel-users">
+      <div class="pg-hdr"><h1>User Management</h1><p>View, search, and manage all registered users.</p></div>
+      <div class="bulk-bar" id="bulkBar">
+        <span style="font-size:.83rem;font-weight:600;color:var(--accent)" id="bulkLbl">0 selected</span>
+        <button class="btn btn-s btn-sm" onclick="bulkNotif()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>Notify</button>
+        <button class="btn btn-d btn-sm" onclick="bulkSusp()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>Suspend</button>
+        <button class="btn btn-s btn-sm" style="margin-left:auto" onclick="clearSel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Deselect All</button>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="padding:16px 18px;border-bottom:1px solid var(--border)">
+          <div class="sfrow">
+            <input type="text" class="srch" id="uSrch" placeholder="Search by name or email..." oninput="filterU()">
+            <select class="fsel" style="width:auto;min-width:130px" id="uRole" onchange="filterU()"><option value="">All Roles</option><option value="admin">Admin</option><option value="pro">Pro</option><option value="free">Free</option></select>
+            <select class="fsel" style="width:auto;min-width:130px" id="uStatus" onchange="filterU()"><option value="">All Status</option><option value="active">Active</option><option value="inactive">Inactive</option></select>
+            <button class="btn btn-s btn-sm" onclick="loadUsers()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>Refresh</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="utbl">
+            <thead><tr><th style="width:40px"><input type="checkbox" class="rck" id="selAll" onchange="togSelAll()"></th><th>User</th><th>Role</th><th>Status</th><th>Joined</th><th>Last Seen</th><th>Actions</th></tr></thead>
+            <tbody id="uTbody"><tr><td colspan="7"><div class="empty"><p>Loading users...</p></div></td></tr></tbody>
+          </table>
+        </div>
+        <div style="padding:12px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:.78rem;color:var(--text3)" id="uInfo">—</span>
+          <div class="pgn" id="uPgn"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGS -->
+    <div class="panel" id="panel-logs">
+      <div class="pg-hdr"><h1>Activity Logs</h1><p>Complete audit trail of all admin actions this session.</p></div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>All Events</div><button class="btn btn-s btn-sm" onclick="clearLogs()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>Clear All</button></div>
+        <div class="logs" id="fullLog"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg><p>No activity recorded</p></div></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="conf-ov" id="confOv">
+  <div class="conf-box">
+    <div class="conf-ico warn" id="confIco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round" stroke-width="3"/></svg></div>
+    <div class="conf-ttl" id="confTtl">Are you sure?</div>
+    <div class="conf-desc" id="confDesc">This action cannot be undone.</div>
+    <div class="conf-act"><button class="btn btn-s" onclick="closeConf()">Cancel</button><button class="btn btn-p" id="confOk" onclick="doConf()">Confirm</button></div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toasts"></div>
+
+<script>
+// ── State ──
+let aLog = [], nSent = 0, eSent = 0, nType = 'info', tmpl = 'update';
+let chips = new Set(['all']), pg = 1, PS = 10, users = [], fu = [], sel = new Set();
+let confCB = null, apiBase = '';
+
+document.addEventListener('DOMContentLoaded', () => {
+  try { apiBase = window.CYPR_TECH_API_BASE || ''; } catch {}
+  restTheme(); loadAdmin(); loadUsers(); restBnr(); syncStats();
+  document.getElementById('nBody').addEventListener('input', e => document.getElementById('nCC').textContent = e.target.value.length);
+  document.getElementById('bnrMsg').addEventListener('input', e => { document.getElementById('bnrCC').textContent = e.target.value.length; updBnr(); });
+  document.getElementById('eSubj').addEventListener('input', prevEmail);
+  document.getElementById('eBody').addEventListener('input', prevEmail);
+  selTmpl('update');
+});
+
+// ── Theme ──
+function restTheme() { const t = localStorage.getItem('cypr_theme') || 'dark'; document.documentElement.setAttribute('data-theme', t); updThIco(t); }
+function togTheme() { const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('cypr_theme', n); updThIco(n); }
+function updThIco(t) { document.getElementById('thIco').innerHTML = t === 'light' ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>' : '<path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>'; }
+document.getElementById('thBtn').addEventListener('click', togTheme);
+
+function loadAdmin() { try { const u = JSON.parse(localStorage.getItem('cypr_user') || '{}'); const n = u.name || u.username || 'Admin'; document.getElementById('avName').textContent = n; document.getElementById('avInit').textContent = n[0]?.toUpperCase() || 'A'; } catch {} }
+
+// ── Nav ──
+function go(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.sb-item').forEach(s => s.classList.remove('on'));
+  document.getElementById('panel-' + id)?.classList.add('on');
+  document.getElementById('si-' + id)?.classList.add('on');
+  if (id === 'users') loadUsers();
+}
+
+// ── Stats ──
+function syncStats() {
+  document.getElementById('sNotif').textContent = nSent;
+  document.getElementById('sEmail').textContent = eSent;
+  document.getElementById('sTotalU').textContent = users.length || '—';
+  document.getElementById('uBadge').textContent = users.length || '—';
+  const b = JSON.parse(localStorage.getItem('cypr_admin_banner') || 'null');
+  if (b?.active) { document.getElementById('sBnr').textContent = 'ON'; document.getElementById('sBnr').style.color = 'var(--lime)'; document.getElementById('sBnrLbl').textContent = 'Active'; document.getElementById('sBnrLbl').className = 'sc-chg up'; }
+  else { document.getElementById('sBnr').textContent = 'OFF'; document.getElementById('sBnr').style.color = ''; document.getElementById('sBnrLbl').textContent = 'No active banner'; document.getElementById('sBnrLbl').className = 'sc-chg'; }
+}
+
+// ── Notifications ──
+function selType(t) {
+  nType = t;
+  ['i','s','w','c'].forEach(x => document.getElementById('t'+x)?.classList.remove('nt-info','nt-success','nt-warning','nt-critical'));
+  const map = { info:'ti,nt-info', success:'ts,nt-success', warning:'tw,nt-warning', critical:'tc,nt-critical' };
+  const [id, cls] = map[t].split(','); document.getElementById(id)?.classList.add(cls);
+}
+
+async function sendNotif() {
+  const title = document.getElementById('nTitle').value.trim();
+  const body = document.getElementById('nBody').value.trim();
+  const aud = document.getElementById('nAud').value;
+  if (!title || !body) { toast('Please fill in title and message.', 'err'); return; }
+  document.getElementById('nProg').classList.add('show');
+  await animProg('nPB','nPPct','nPT',[{at:0,lbl:'Connecting...'},{at:40,lbl:'Broadcasting...'},{at:80,lbl:'Delivering to '+aud+'...'},{at:100,lbl:'Delivered!'}]);
+  const n = { id:'a_'+Date.now(), type:nType, icon:{info:'ℹ️',success:'✅',warning:'⚠️',critical:'🚨'}[nType], title, body, time:'Just now', read:false };
+  const un = JSON.parse(localStorage.getItem('cypr_notifications') || '[]'); un.unshift(n); localStorage.setItem('cypr_notifications', JSON.stringify(un.slice(0,50)));
+  nSent++; syncStats(); addLog('success', `Notification "<strong>${title}</strong>" sent to <strong>${aud}</strong>`);
+  addNH(n, aud); document.getElementById('nBadge').textContent = nSent;
+  setTimeout(() => document.getElementById('nProg').classList.remove('show'), 1200);
+  toast('Notification broadcast successfully!', 'ok');
+  document.getElementById('nTitle').value = ''; document.getElementById('nBody').value = ''; document.getElementById('nCC').textContent = '0'; document.getElementById('nUrl').value = '';
+}
+
+function prevNotif() { const t = document.getElementById('nTitle').value||'(No title)', b = document.getElementById('nBody').value||'(No body)'; toast(`Preview: "${t}" — ${b.slice(0,60)}`, 'inf'); }
+function clearNH() { document.getElementById('nHist').innerHTML = '<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><p>No notifications sent yet</p></div>'; toast('History cleared.', 'inf'); }
+function addNH(n, aud) {
+  const list = document.getElementById('nHist'); const e = list.querySelector('.empty'); if (e) e.remove();
+  const colors = { info:'var(--blue)', success:'var(--lime)', warning:'var(--yellow)', critical:'var(--red)' };
+  const el = document.createElement('div'); el.className = 'log-item';
+  el.innerHTML = `<div class="ldot" style="background:${colors[n.type]};flex-shrink:0;margin-top:6px"></div><div class="ltxt"><strong>${n.title}</strong> — ${n.body.slice(0,80)}<div style="margin-top:3px;font-size:.72rem;color:var(--text3)">Target: ${aud} · Type: ${n.type}</div></div><div class="ltm">${new Date().toLocaleTimeString()}</div>`;
+  list.prepend(el);
+}
+
+// ── Email ──
+function selTmpl(id) {
+  tmpl = id; document.querySelectorAll('.tmpl').forEach(t => t.classList.remove('on'));
+  document.getElementById('tmpl-'+id)?.classList.add('on');
+  const subjects = { update:"New Features & Updates from CYPR Tech", security:"Important Security Advisory from CYPR Tech", promo:"Special Offer: Upgrade to CYPR Pro Today" };
+  const bodies = { update:`Hi {{name}},\n\nWe've shipped exciting updates to CYPR Tech:\n• Enhanced URL phishing detection\n• Faster malware analysis engine\n• New dark web monitoring alerts\n\nLog in to explore!\n\nStay secure,\nCYPR Tech Team`, security:`Hi {{name}},\n\nImportant security notice from CYPR Tech.\n\nWe recommend:\n• Review your active sessions\n• Update your password\n• Enable two-factor authentication\n\nStay safe,\nCYPR Tech Team`, promo:`Hi {{name}},\n\nUpgrade to CYPR Pro and unlock:\n✅ Unlimited URL scans\n✅ Real-time dark web monitoring\n✅ Priority threat intelligence\n\nUse code CYPR2024 for 30% off!\n\nCYPR Tech Team` };
+  document.getElementById('eSubj').value = subjects[id];
+  document.getElementById('eBody').value = bodies[id];
+  prevEmail();
+}
+
+// ── Segment Chips ──
+function toggleChip(id) {
+  const el = document.getElementById('ch-'+id);
+  if (id === 'all') { chips.clear(); chips.add('all'); document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); el.classList.add('on'); return; }
+  chips.delete('all'); document.getElementById('ch-all').classList.remove('on');
+  if (chips.has(id)) { chips.delete(id); el.classList.remove('on'); } else { chips.add(id); el.classList.add('on'); }
+  if (!chips.size) { chips.add('all'); document.getElementById('ch-all').classList.add('on'); }
+}
+
+function prevEmail() {
+  document.getElementById('ePrevSubj').textContent = document.getElementById('eSubj').value || 'Subject here';
+  document.getElementById('ePrevBody').textContent = (document.getElementById('eBody').value || 'Body here').replace('{{name}}','John Doe');
+}
+
+function confSendEmail() {
+  const s = document.getElementById('eSubj').value.trim(), b = document.getElementById('eBody').value.trim();
+  if (!s||!b) { toast('Fill in subject and body.', 'err'); return; }
+  openConf('warn','Send Bulk Email?',`Send "<strong>${s}</strong>" to <strong>${[...chips].join(', ')}</strong> users?`, doSendEmail);
+}
+async function doSendEmail() {
+  closeConf();
+  const s = document.getElementById('eSubj').value.trim(), b = document.getElementById('eBody').value.trim(), sender = document.getElementById('eSender').value.trim()||'CYPR Tech Team', tgts = [...chips].join(', ');
+  document.getElementById('eProg').classList.add('show');
+  await animProg('ePB','ePPct','ePT',[{at:0,lbl:'Preparing...'},{at:25,lbl:'Personalizing...'},{at:60,lbl:'Sending...'},{at:90,lbl:'Finalizing...'},{at:100,lbl:'Sent!'}]);
+  const h = JSON.parse(localStorage.getItem('cypr_email_history')||'[]'); h.unshift({subject:s,body:b,sender,targets:tgts,sentAt:Date.now()}); localStorage.setItem('cypr_email_history',JSON.stringify(h.slice(0,20)));
+  eSent++; syncStats(); addLog('info',`Email campaign "<strong>${s}</strong>" sent to <strong>${tgts}</strong>`);
+  setTimeout(()=>document.getElementById('eProg').classList.remove('show'),1200); toast(`Campaign sent to ${tgts}!`,'ok');
+}
+function saveDraft() { const s=document.getElementById('eSubj').value.trim(); if(!s){toast('Enter a subject first.','err');return;} localStorage.setItem('cypr_email_draft',JSON.stringify({subject:s,body:document.getElementById('eBody').value,savedAt:Date.now()})); addLog('info',`Draft "<strong>${s}</strong>" saved`); toast('Draft saved!','ok'); }
+
+// ── Banner ──
+function updBnr() {
+  const msg = document.getElementById('bnrMsg').value||'Your banner message...', type = document.getElementById('bnrType').value;
+  const prev = document.getElementById('bnrPrev'); prev.className = `bnr-prev bnr-${type}`;
+  document.getElementById('bnrPrevTxt').textContent = msg;
+  document.getElementById('bnrCC').textContent = document.getElementById('bnrMsg').value.length;
+  const icos = { info:'<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/>', success:'<path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>', warning:'<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-linecap="round" stroke-width="3"/>', critical:'<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>' };
+  document.getElementById('bnrIco').innerHTML = icos[type];
+}
+function pubBnr() {
+  const msg = document.getElementById('bnrMsg').value.trim(); if(!msg){toast('Enter a banner message.','err');return;}
+  const type=document.getElementById('bnrType').value, exp=document.getElementById('bnrExp').value, link=document.getElementById('bnrLink').value.trim(), lt=document.getElementById('bnrLinkTxt').value.trim();
+  const ems = {never:null,'1h':3600000,'6h':21600000,'24h':86400000,'7d':604800000};
+  const b = {active:true,type,message:msg,link:link||null,linkText:lt||null,expiry:exp==='never'?null:Date.now()+ems[exp],publishedAt:Date.now()};
+  localStorage.setItem('cypr_admin_banner',JSON.stringify(b)); syncStats(); showABnr(b);
+  addLog('success',`Banner "<strong>${msg.slice(0,40)}</strong>" published (${type})`); toast('Banner published!','ok');
+}
+function rmBnr() { openConf('danger','Remove Banner?','This will remove the active banner from all pages.',()=>{ closeConf(); localStorage.removeItem('cypr_admin_banner'); syncStats(); document.getElementById('aBnrInfo').innerHTML='<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="2"/></svg><p>No active banner set</p></div>'; addLog('warning','Active banner removed'); toast('Banner removed.','inf'); }); }
+function restBnr() { const b=JSON.parse(localStorage.getItem('cypr_admin_banner')||'null'); if(!b)return; if(b.expiry&&Date.now()>b.expiry){localStorage.removeItem('cypr_admin_banner');return;} document.getElementById('bnrMsg').value=b.message||''; document.getElementById('bnrType').value=b.type||'info'; document.getElementById('bnrLink').value=b.link||''; document.getElementById('bnrLinkTxt').value=b.linkText||''; updBnr(); showABnr(b); syncStats(); }
+function showABnr(b) { const clrs={info:'var(--blue)',success:'var(--lime)',warning:'var(--yellow)',critical:'var(--red)'}; document.getElementById('aBnrInfo').innerHTML=`<div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:${clrs[b.type]};box-shadow:0 0 6px ${clrs[b.type]}"></div><span style="font-size:.85rem;font-weight:700">${b.message}</span></div><div style="font-size:.75rem;color:var(--text3)">Published: ${new Date(b.publishedAt).toLocaleString()} · Expires: ${b.expiry?new Date(b.expiry).toLocaleString():'Never'}</div></div>`; }
+
+// ── Users ──
+async function loadUsers() {
+  document.getElementById('uTbody').innerHTML='<tr><td colspan="7"><div class="empty"><p>Fetching users...</p></div></td></tr>';
+  try { const r=await fetch(`${apiBase}/api/admin/users`,{credentials:'include'}); if(r.ok) users=await r.json(); else users=mockUsers(); }
+  catch { users=mockUsers(); }
+  fu=[...users]; pg=1; renderU(); syncStats();
+}
+function mockUsers() {
+  const ns=['Vineet Upadhyay','Rahul Sharma','Priya Singh','Amit Kumar','Anjali Verma','Karan Malhotra','Sneha Gupta','Rohit Joshi','Deepika Patel','Manish Tiwari','Sanya Kapoor','Arjun Nair','Pooja Reddy','Vikram Mehta','Neha Agarwal'];
+  const rs=['admin','pro','free','free','pro','free','pro','free','free','free','pro','free','free','free','free'];
+  return ns.map((n,i)=>({id:'u'+(i+1),name:n,email:n.toLowerCase().replace(' ','.')+`@${i%2===0?'gmail':'cypr'}.com`,role:rs[i],status:Math.random()>.25?'active':'inactive',joinedAt:Date.now()-Math.random()*1e10,lastSeen:Date.now()-Math.random()*1e8}));
+}
+function filterU() { const q=document.getElementById('uSrch').value.toLowerCase(),r=document.getElementById('uRole').value,s=document.getElementById('uStatus').value; fu=users.filter(u=>(!q||u.name.toLowerCase().includes(q)||u.email.toLowerCase().includes(q))&&(!r||u.role===r)&&(!s||u.status===s)); pg=1; renderU(); }
+function renderU() {
+  const s=(pg-1)*PS, page=fu.slice(s,s+PS);
+  document.getElementById('uInfo').textContent=`Showing ${s+1}–${Math.min(s+PS,fu.length)} of ${fu.length} users`;
+  if(!page.length){document.getElementById('uTbody').innerHTML='<tr><td colspan="7"><div class="empty"><p>No users found</p></div></td></tr>';rPgn();return;}
+  document.getElementById('uTbody').innerHTML=page.map(u=>`<tr><td><input type="checkbox" class="rck" ${sel.has(u.id)?'checked':''} onchange="togSel('${u.id}')"></td><td><div class="uname"><div class="uav">${u.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div><div><div>${u.name}</div><div style="font-size:.72rem;color:var(--text3)">${u.email}</div></div></div></td><td><span class="ubadge ${u.role}">${u.role.toUpperCase()}</span></td><td><div class="ustatus"><div class="udot ${u.status}"></div>${u.status}</div></td><td style="font-size:.78rem">${u.joinedAt?new Date(u.joinedAt).toLocaleDateString('en-IN'):'—'}</td><td style="font-size:.78rem">${tAgo(u.lastSeen)}</td><td><div style="display:flex;gap:5px"><button class="btn btn-s btn-sm" onclick="qNotif('${u.id}','${u.name}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg></button><button class="btn btn-d btn-sm" onclick="suspUser('${u.id}','${u.name}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></button></div></td></tr>`).join('');
+  rPgn();
+}
+function rPgn() { const tot=Math.ceil(fu.length/PS), pEl=document.getElementById('uPgn'); if(tot<=1){pEl.innerHTML='';return;} let h=`<button class="pgb" onclick="cPg(${pg-1})" ${pg===1?'disabled':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>`; for(let i=1;i<=Math.min(tot,5);i++) h+=`<button class="pgb ${i===pg?'on':''}" onclick="cPg(${i})">${i}</button>`; if(tot>5)h+=`<span style="color:var(--text3);font-size:.8rem">…${tot}</span>`; h+=`<button class="pgb" onclick="cPg(${pg+1})" ${pg===tot?'disabled':''}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>`; pEl.innerHTML=h; }
+function cPg(p) { const tot=Math.ceil(fu.length/PS); if(p<1||p>tot)return; pg=p; renderU(); }
+function togSelAll() { const c=document.getElementById('selAll').checked,s=(pg-1)*PS; fu.slice(s,s+PS).forEach(u=>c?sel.add(u.id):sel.delete(u.id)); renderU(); updBulk(); }
+function togSel(id) { sel.has(id)?sel.delete(id):sel.add(id); updBulk(); }
+function updBulk() { const n=sel.size; const b=document.getElementById('bulkBar'); n>0?(b.classList.add('show'),document.getElementById('bulkLbl').textContent=n+' selected'):b.classList.remove('show'); }
+function clearSel() { sel.clear(); renderU(); updBulk(); }
+function qNotif(id,name) { const n={id:'q_'+Date.now(),type:'info',icon:'ℹ️',title:'Admin Notification',body:'You have a new message from CYPR Tech Admin.',time:'Just now',read:false}; const un=JSON.parse(localStorage.getItem('cypr_notifications')||'[]'); un.unshift(n); localStorage.setItem('cypr_notifications',JSON.stringify(un.slice(0,50))); addLog('info',`Notification sent to <strong>${name}</strong>`); toast(`Sent to ${name}!`,`ok`); }
+function suspUser(id,name) { openConf('danger','Suspend User?',`Suspend <strong>${name}</strong>? They will lose access to CYPR Tech.`,()=>{ closeConf(); users=users.map(u=>u.id===id?{...u,status:'inactive'}:u); fu=fu.map(u=>u.id===id?{...u,status:'inactive'}:u); renderU(); addLog('warning',`User <strong>${name}</strong> suspended`); toast(`${name} suspended.`,`inf`); }); }
+function bulkNotif() { const c=sel.size; openConf('warn','Notify Selected?',`Send a notification to <strong>${c} users</strong>?`,()=>{ closeConf(); const n={id:'bulk_'+Date.now(),type:'info',icon:'📢',title:'Announcement',body:'New update from CYPR Tech.',time:'Just now',read:false}; const un=JSON.parse(localStorage.getItem('cypr_notifications')||'[]'); un.unshift(n); localStorage.setItem('cypr_notifications',JSON.stringify(un.slice(0,50))); nSent+=c; syncStats(); addLog('success',`Bulk notification sent to <strong>${c}</strong> users`); toast(`Sent to ${c} users!`,`ok`); clearSel(); }); }
+function bulkSusp() { const c=sel.size; openConf('danger','Bulk Suspend?',`Suspend <strong>${c} selected users</strong>? This is critical.`,()=>{ closeConf(); sel.forEach(id=>{users=users.map(u=>u.id===id?{...u,status:'inactive'}:u);fu=fu.map(u=>u.id===id?{...u,status:'inactive'}:u);}); renderU(); addLog('warning',`<strong>${c}</strong> users suspended in bulk`); toast(`${c} users suspended.`,`inf`); clearSel(); }); }
+function tAgo(ts) { if(!ts)return'—'; const d=Date.now()-ts; if(d<60000)return'Just now'; if(d<3600000)return Math.floor(d/60000)+'m ago'; if(d<86400000)return Math.floor(d/3600000)+'h ago'; return Math.floor(d/86400000)+'d ago'; }
+
+// ── Logs ──
+function addLog(type, msg) { aLog.unshift({type,msg,time:new Date().toLocaleTimeString()}); renderLogs(); }
+function renderLogs() {
+  ['fullLog','ovLog'].forEach(id=>{ const el=document.getElementById(id); const items=id==='ovLog'?aLog.slice(0,6):aLog; if(!items.length){el.innerHTML='<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg><p>No activity yet</p></div>';return;} el.innerHTML=items.map(e=>`<div class="log-item"><div class="ldot ${e.type}" style="flex-shrink:0;margin-top:6px"></div><div class="ltxt">${e.msg}</div><div class="ltm">${e.time}</div></div>`).join(''); });
+}
+function clearLogs() { aLog=[]; renderLogs(); toast('Logs cleared.','inf'); }
+
+// ── Helpers ──
+async function animProg(barId,pctId,txtId,steps) {
+  return new Promise(r=>{let si=0;const nx=()=>{if(si>=steps.length){r();return;} const s=steps[si++]; document.getElementById(barId).style.width=s.at+'%'; document.getElementById(pctId).textContent=s.at+'%'; document.getElementById(txtId).textContent=s.lbl; setTimeout(nx,s.at===100?400:500);}; nx();});
+}
+function toast(msg, type='inf') {
+  const icos={ok:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',err:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',inf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/></svg>'};
+  const t=document.createElement('div'); t.className=`toast ${type}`; t.innerHTML=icos[type]+`<span>${msg}</span>`; document.getElementById('toasts').prepend(t); setTimeout(()=>t.remove(),4000);
+}
+function openConf(ico,ttl,desc,cb) { confCB=cb; document.getElementById('confIco').className=`conf-ico ${ico}`; document.getElementById('confTtl').textContent=ttl; document.getElementById('confDesc').innerHTML=desc; document.getElementById('confOv').classList.add('show'); }
+function closeConf() { document.getElementById('confOv').classList.remove('show'); confCB=null; }
+function doConf() { if(confCB)confCB(); }
+document.getElementById('confOv').addEventListener('click',e=>{if(e.target===e.currentTarget)closeConf();});
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <script src="assets/js/config.js"></script>
@@ -8,9 +9,12 @@
   <title>Home — CYPR</title>
   <script src="assets/js/site-enhancements.js"></script>
   <link rel="stylesheet" href="assets/css/style.css">
-  <meta name="description" content="CYPR security command center — scan URLs, analyze passwords, and monitor threats in real time.">
+  <meta name="description"
+    content="CYPR security command center — scan URLs, analyze passwords, and monitor threats in real time.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+    rel="stylesheet">
   <style>
     body.premium-dashboard {
       background: var(--bg);
@@ -23,33 +27,130 @@
 
 
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-    a { text-decoration: none; color: inherit; }
-    button { font-family: inherit; cursor: pointer; border: none; background: none; }
-    
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(0.98); } }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes countUp { from { opacity: 0; transform: scale(.95); } to { opacity: 1; transform: scale(1); } }
-    
-    .fu { animation: fadeUp .5s ease forwards; }
-    .d1 { animation-delay: .05s; opacity: 0; }
-    .d2 { animation-delay: .12s; opacity: 0; }
-    .d3 { animation-delay: .18s; opacity: 0; }
-    .d4 { animation-delay: .24s; opacity: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 4px;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: .4;
+        transform: scale(0.98);
+      }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes countUp {
+      from {
+        opacity: 0;
+        transform: scale(.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .fu {
+      animation: fadeUp .5s ease forwards;
+    }
+
+    .d1 {
+      animation-delay: .05s;
+      opacity: 0;
+    }
+
+    .d2 {
+      animation-delay: .12s;
+      opacity: 0;
+    }
+
+    .d3 {
+      animation-delay: .18s;
+      opacity: 0;
+    }
+
+    .d4 {
+      animation-delay: .24s;
+      opacity: 0;
+    }
 
     /* ═══ SHELL ═══ */
-    .shell { display: flex; min-height: 100vh; }
-    
+    .shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
     /* ═══ SIDEBAR & TOPBAR (Hidden by default when dynamic navbar runs, left as offline fallback) ═══ */
-    .sidebar, .topbar { display: none !important; }
+    .sidebar,
+    .topbar {
+      display: none !important;
+    }
 
     /* ═══ MAIN ═══ */
-    .main-area { flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
-    .page { flex: 1; padding: 0 0 60px; overflow-y: auto; }
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .page {
+      flex: 1;
+      padding: 0 0 60px;
+      overflow-y: auto;
+    }
 
     /* ═══ PREMIUM HOME LAYOUT ═══ */
     .dashboard-layout {
@@ -75,16 +176,19 @@
       color: var(--text);
       transition: opacity 0.3s ease, margin 0.3s ease;
     }
+
     .announce-banner.hidden {
       opacity: 0;
       margin-bottom: -44px;
       pointer-events: none;
       display: none;
     }
+
     .announce-icon {
       font-size: 1rem;
       color: var(--accent);
     }
+
     .announce-close {
       cursor: pointer;
       background: none;
@@ -97,6 +201,7 @@
       padding: 2px;
       transition: color 0.15s;
     }
+
     .announce-close:hover {
       color: var(--accent);
     }
@@ -108,6 +213,7 @@
       letter-spacing: -0.02em;
       margin-bottom: 4px;
     }
+
     .home-sub {
       font-size: 0.88rem;
       color: var(--text2);
@@ -128,6 +234,7 @@
       justify-content: center;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
     }
+
     .promo-card::before {
       content: '';
       position: absolute;
@@ -135,10 +242,12 @@
       background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e05a00' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       pointer-events: none;
     }
+
     .promo-content {
       position: relative;
       z-index: 2;
     }
+
     .promo-tag {
       font-size: 0.65rem;
       font-weight: 700;
@@ -148,18 +257,21 @@
       margin-bottom: 8px;
       display: inline-block;
     }
+
     .promo-title {
       font-size: 1.45rem;
       font-weight: 800;
       margin-bottom: 6px;
       letter-spacing: -0.01em;
     }
+
     .promo-desc {
       font-size: 0.85rem;
       color: #b5adab;
       max-width: 480px;
       line-height: 1.5;
     }
+
     .promo-dots {
       position: absolute;
       right: 36px;
@@ -170,6 +282,7 @@
       gap: 8px;
       z-index: 2;
     }
+
     .promo-dot {
       width: 6px;
       height: 6px;
@@ -178,6 +291,7 @@
       cursor: pointer;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .promo-dot.active {
       background: var(--accent);
       height: 16px;
@@ -193,6 +307,7 @@
       letter-spacing: 0.05em;
       margin-bottom: 12px;
     }
+
     .home-section-sub-title {
       font-size: 0.82rem;
       font-weight: 800;
@@ -207,6 +322,7 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
     }
+
     .q-tool-pill {
       display: flex;
       align-items: center;
@@ -221,11 +337,13 @@
       font-weight: 700;
       box-shadow: var(--shadow);
     }
+
     .q-tool-pill:hover {
       border-color: var(--accent);
       background: var(--lime-dim);
       transform: translateY(-1.5px);
     }
+
     .q-tool-icon {
       font-size: 1.1rem;
       display: flex;
@@ -245,6 +363,7 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 14px;
     }
+
     .explore-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -258,11 +377,13 @@
       min-height: 116px;
       box-shadow: var(--shadow);
     }
+
     .explore-card:hover {
       border-color: var(--accent);
       transform: translateY(-2px);
       box-shadow: 0 8px 30px var(--lime-glow);
     }
+
     .explore-icon {
       font-size: 1.3rem;
       margin-bottom: 8px;
@@ -270,6 +391,7 @@
       display: flex;
       align-items: center;
     }
+
     .explore-name {
       font-weight: 800;
       font-size: 0.88rem;
@@ -278,11 +400,13 @@
       align-items: center;
       justify-content: space-between;
     }
+
     .explore-desc {
       font-size: 0.76rem;
       color: var(--text2);
       line-height: 1.45;
     }
+
     .badge-soon {
       font-size: 0.58rem;
       font-weight: 700;
@@ -311,6 +435,7 @@
       padding: 24px;
       box-shadow: var(--shadow);
     }
+
     .news-item {
       padding: 16px 0;
       border-bottom: 1px solid var(--border);
@@ -320,21 +445,26 @@
       cursor: pointer;
       transition: all 0.15s;
     }
+
     .news-item:last-child {
       border-bottom: none;
       padding-bottom: 0;
     }
+
     .news-item:first-child {
       padding-top: 0;
     }
+
     .news-item:hover h4 {
       color: var(--lime);
     }
+
     .news-info {
       flex: 1;
       min-width: 0;
       padding-right: 14px;
     }
+
     .news-source {
       font-size: 0.68rem;
       color: var(--text3);
@@ -342,6 +472,7 @@
       font-weight: 600;
       font-family: var(--mono);
     }
+
     .news-item h4 {
       font-size: 0.86rem;
       font-weight: 700;
@@ -351,12 +482,14 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     .news-arrow {
       color: var(--text3);
       display: flex;
       align-items: center;
       transition: transform 0.15s ease;
     }
+
     .news-item:hover .news-arrow {
       transform: translateX(3px);
       color: var(--lime);
@@ -381,11 +514,13 @@
       flex-direction: column;
       gap: 6px;
     }
+
     .fact-icon {
       font-size: 1.3rem;
       margin-bottom: 2px;
       color: var(--accent);
     }
+
     .fact-quote {
       font-size: 0.78rem;
       line-height: 1.5;
@@ -401,22 +536,26 @@
       padding: 20px 22px;
       box-shadow: var(--shadow);
     }
+
     .complaint-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 14px;
     }
+
     .country-selector-wrap {
       display: flex;
       align-items: center;
       gap: 8px;
     }
+
     .country-selector-label {
       font-size: 0.7rem;
       color: var(--text3);
       font-weight: 600;
     }
+
     .country-dropdown {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -429,9 +568,11 @@
       cursor: pointer;
       outline: none;
     }
+
     .country-dropdown:focus {
       border-color: var(--accent);
     }
+
     .complaint-info-block {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -442,6 +583,7 @@
       flex-direction: column;
       gap: 4px;
     }
+
     .complaint-dept-title {
       font-size: 0.65rem;
       font-family: var(--mono);
@@ -450,16 +592,19 @@
       letter-spacing: 0.05em;
       font-weight: 600;
     }
+
     .complaint-title {
       font-weight: 700;
       font-size: 0.9rem;
     }
+
     .complaint-phone {
       font-size: 1.25rem;
       font-weight: 900;
       color: var(--accent);
       font-family: var(--mono);
     }
+
     .complaint-link-btn {
       font-size: 0.75rem;
       font-weight: 700;
@@ -485,427 +630,549 @@
       color: var(--text3);
       margin-top: 20px;
     }
-    .footer-logo { font-weight: 800; color: var(--text2); font-size: 0.72rem; }
-    .footer-links { display: flex; gap: 18px; }
-    .footer-links a { color: var(--text3); transition: color .18s; }
-    .footer-links a:hover { color: var(--accent); }
+
+    .footer-logo {
+      font-weight: 800;
+      color: var(--text2);
+      font-size: 0.72rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .footer-links a {
+      color: var(--text3);
+      transition: color .18s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
 
     /* ═══ RESPONSIVE OVERRIDES ═══ */
     @media(max-width: 900px) {
-      .quick-tools-row { grid-template-columns: repeat(2, 1fr); }
-      .explore-grid { grid-template-columns: repeat(2, 1fr); }
-      .home-bottom-grid { grid-template-columns: 1fr; }
+      .quick-tools-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .explore-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .home-bottom-grid {
+        grid-template-columns: 1fr;
+      }
     }
+
     @media(max-width: 580px) {
-      .dashboard-layout { padding: 16px 20px; gap: 18px; }
-      .quick-tools-row { grid-template-columns: 1fr; }
-      .explore-grid { grid-template-columns: 1fr; }
-      .promo-card { padding: 24px; min-height: 160px; }
-      .promo-title { font-size: 1.25rem; }
-      .promo-dots { display: none; }
+      .dashboard-layout {
+        padding: 16px 20px;
+        gap: 18px;
+      }
+
+      .quick-tools-row {
+        grid-template-columns: 1fr;
+      }
+
+      .explore-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .promo-card {
+        padding: 24px;
+        min-height: 160px;
+      }
+
+      .promo-title {
+        font-size: 1.25rem;
+      }
+
+      .promo-dots {
+        display: none;
+      }
     }
   </style>
 
 </head>
+
 <body class="premium-dashboard">
-<div class="shell">
-        <div class="dashboard-layout">
-        
-        <!-- Top Announcement Banner -->
-        <div class="announce-banner fu d1" id="announceBanner">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span class="announce-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;vertical-align:middle;color:var(--accent);"><path d="M11 5L6 9H2v6h4l5 4V5z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></span>
-            <span><b>VAJRA engine v2 is live</b> — 16 heuristic signals now scoring every scan</span>
-          </div>
-          <button class="announce-close" onclick="dismissBanner()">&times;</button>
-        </div>
+  <div class="shell">
+    <div class="dashboard-layout">
 
-        <!-- Greeting & Subheader -->
-        <div class="home-greeting-row fu d2">
-          <h1>Welcome back, <span id="welcomeName">User</span>.</h1>
-          <p class="home-sub">Here's what's happening across CYPR today.</p>
+      <!-- Top Announcement Banner -->
+      <div class="announce-banner fu d1" id="announceBanner">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="announce-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round"
+              style="width:15px;height:15px;vertical-align:middle;color:var(--accent);">
+              <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg></span>
+          <span><b>VAJRA engine v2 is live</b> — 16 heuristic signals now scoring every scan</span>
         </div>
+        <button class="announce-close" onclick="dismissBanner()">&times;</button>
+      </div>
 
-        <!-- Featured Promo Carousel Card -->
-        <div class="promo-card fu d2" id="promoCarousel">
-          <div class="promo-content">
-            <span class="promo-tag" id="promoTag">NEW FEATURE</span>
-            <h2 class="promo-title" id="promoTitle">GitHub OAuth login is here</h2>
-            <p class="promo-desc" id="promoDesc">Sign in faster with your existing GitHub account.</p>
-          </div>
-          <div class="promo-dots">
-            <span class="promo-dot active" onclick="setCarouselSlide(0)"></span>
-            <span class="promo-dot" onclick="setCarouselSlide(1)"></span>
-            <span class="promo-dot" onclick="setCarouselSlide(2)"></span>
-          </div>
+      <!-- Greeting & Subheader -->
+      <div class="home-greeting-row fu d2">
+        <h1>Welcome back, <span id="welcomeName">User</span>.</h1>
+        <p class="home-sub">Here's what's happening across CYPR today.</p>
+      </div>
+
+      <!-- Featured Promo Carousel Card -->
+      <div class="promo-card fu d2" id="promoCarousel">
+        <div class="promo-content">
+          <span class="promo-tag" id="promoTag">NEW FEATURE</span>
+          <h2 class="promo-title" id="promoTitle">GitHub OAuth login is here</h2>
+          <p class="promo-desc" id="promoDesc">Sign in faster with your existing GitHub account.</p>
         </div>
-
-        <!-- Quick Tools Section -->
-        <div class="home-section-title fu d3">Quick tools</div>
-        <div class="quick-tools-row fu d3">
-          <a href="url-check.html" class="q-tool-pill">
-            <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
-            <span>Scan URL</span>
-          </a>
-          <a href="password-check.html" class="q-tool-pill">
-            <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg></div>
-            <span>Test Password</span>
-          </a>
-          <a href="dashboard.html" class="q-tool-pill">
-            <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
-            <span>View Dashboard</span>
-          </a>
-          <a href="tools.html" class="q-tool-pill">
-            <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div>
-            <span>All Tools</span>
-          </a>
+        <div class="promo-dots">
+          <span class="promo-dot active" onclick="setCarouselSlide(0)"></span>
+          <span class="promo-dot" onclick="setCarouselSlide(1)"></span>
+          <span class="promo-dot" onclick="setCarouselSlide(2)"></span>
         </div>
+      </div>
 
-        <!-- Explore CYPR Section -->
-        <div class="explore-section fu d4">
-          <div class="home-section-title">Explore CYPR</div>
-          <div class="explore-grid">
-            <div class="explore-card" onclick="window.location.href='url-check.html'">
-              <div>
-                <div class="explore-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
-                <div class="explore-name">VAJRA engine</div>
-                <div class="explore-desc">16-signal heuristic detection, no ML.</div>
-              </div>
-            </div>
-            <div class="explore-card" onclick="window.location.href='dashboard.html'">
-              <div>
-                <div class="explore-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
-                <div class="explore-name">Analytics</div>
-                <div class="explore-desc">Scan trends across your account.</div>
-              </div>
-            </div>
-            <div class="explore-card" onclick="showToast('Browser extension coming soon!')">
-              <div>
-                <div class="explore-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);"><path d="M12 2a3 3 0 0 0-3 3v2H7a3 3 0 0 0-3 3v2h2a3 3 0 0 1 0 6H4v2a3 3 0 0 0 3 3h2v-2a3 3 0 0 1 6 0v2h2a3 3 0 0 0 3-3v-2h-2a3 3 0 0 1 0-6h2v-2a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3z"></path></svg></div>
-                <div class="explore-name">Browser extension <span class="badge-soon">Soon</span></div>
-                <div class="explore-desc">Real-time browser threat blocking.</div>
-              </div>
-            </div>
-            <div class="explore-card" onclick="showToast('Android app coming soon!')">
-              <div>
-                <div class="explore-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></div>
-                <div class="explore-name">Android app <span class="badge-soon">Soon</span></div>
-                <div class="explore-desc">Mobile perimeter security client.</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <!-- Quick Tools Section -->
+      <div class="home-section-title fu d3">Quick tools</div>
+      <div class="quick-tools-row fu d3">
+        <a href="url-check.html" class="q-tool-pill">
+          <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg></div>
+          <span>Scan URL</span>
+        </a>
+        <a href="password-check.html" class="q-tool-pill">
+          <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);">
+              <path
+                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4">
+              </path>
+            </svg></div>
+          <span>Test Password</span>
+        </a>
+        <a href="dashboard.html" class="q-tool-pill">
+          <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg></div>
+          <span>View Dashboard</span>
+        </a>
+        <a href="tools.html" class="q-tool-pill">
+          <div class="q-tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);">
+              <path
+                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+              </path>
+            </svg></div>
+          <span>All Tools</span>
+        </a>
+      </div>
 
-        <!-- Bottom Split (News Feed + Right Widgets) -->
-        <div class="home-bottom-grid fu d5">
-          
-          <!-- Left: Cyber News -->
-          <div class="news-feed-card" id="threatCard">
-            <div class="section-head" style="border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
-              <h2 style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 800; color: var(--text);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;color:var(--lime);"><path d="m12 14 4-4M10 10l2 2m-2 10s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Cyber news
-              </h2>
-              <span class="count-badge" id="intelBadge" style="font-family: var(--mono); font-size: 0.6rem; font-weight: 700; background: var(--lime-dim); border: 1px solid var(--lime-glow); color: var(--lime); padding: 2px 8px; border-radius: 4px;">Loading...</span>
-            </div>
-            <div class="news-list" id="newsList">
-              <!-- Dynamically populated from CISA RSS -->
+      <!-- Explore CYPR Section -->
+      <div class="explore-section fu d4">
+        <div class="home-section-title">Explore CYPR</div>
+        <div class="explore-grid">
+          <div class="explore-card" onclick="window.location.href='url-check.html'">
+            <div>
+              <div class="explore-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg></div>
+              <div class="explore-name">VAJRA engine</div>
+              <div class="explore-desc">16-signal heuristic detection, no ML.</div>
             </div>
           </div>
-
-          <!-- Right: Fact of the Day & Report Cybercrime -->
-          <div class="right-widgets-col">
-            
-            <!-- Fact of the day -->
-            <div class="fact-card">
-              <div class="fact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1 .5 2.5 1.5 3.5.7.8 1.3 1.5 1.5 2.5"></path><line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line></svg></div>
-              <div class="home-section-sub-title" style="margin-bottom: 2px; font-weight:700;">Fact of the day</div>
-              <div class="fact-quote" id="factText">A four-word passphrase is harder to brute-force than an 8-character password with symbols.</div>
+          <div class="explore-card" onclick="window.location.href='dashboard.html'">
+            <div>
+              <div class="explore-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);">
+                  <line x1="18" y1="20" x2="18" y2="10"></line>
+                  <line x1="12" y1="20" x2="12" y2="4"></line>
+                  <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg></div>
+              <div class="explore-name">Analytics</div>
+              <div class="explore-desc">Scan trends across your account.</div>
             </div>
+          </div>
+          <div class="explore-card" onclick="showToast('Browser extension coming soon!')">
+            <div>
+              <div class="explore-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);">
+                  <path
+                    d="M12 2a3 3 0 0 0-3 3v2H7a3 3 0 0 0-3 3v2h2a3 3 0 0 1 0 6H4v2a3 3 0 0 0 3 3h2v-2a3 3 0 0 1 6 0v2h2a3 3 0 0 0 3-3v-2h-2a3 3 0 0 1 0-6h2v-2a3 3 0 0 0-3-3h-2V5a3 3 0 0 0-3-3z">
+                  </path>
+                </svg></div>
+              <div class="explore-name">Browser extension <span class="badge-soon">Soon</span></div>
+              <div class="explore-desc">Real-time browser threat blocking.</div>
+            </div>
+          </div>
+          <div class="explore-card" onclick="showToast('Android app coming soon!')">
+            <div>
+              <div class="explore-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                </svg></div>
+              <div class="explore-name">Android app <span class="badge-soon">Soon</span></div>
+              <div class="explore-desc">Mobile perimeter security client.</div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <!-- Report Cybercrime Country-Aware Board -->
-            <div class="complaint-card">
-              <div class="complaint-header">
-                <span class="home-section-sub-title" style="font-weight:700;">Report cybercrime</span>
-                <div class="country-selector-wrap">
-                  <span class="country-selector-label">Your country</span>
-                  <select class="country-dropdown" id="countrySelect" onchange="updateHelpline()">
-                    <option value="IN" selected>India</option>
-                    <option value="US">United States</option>
-                    <option value="UK">United Kingdom</option>
-                    <option value="CA">Canada</option>
-                    <option value="AU">Australia</option>
-                  </select>
-                </div>
-              </div>
-              <div class="complaint-info-block">
-                <div class="complaint-dept-title" id="helplineDept">National Cyber Crime Helpline</div>
-                <div class="complaint-phone" id="helplinePhone">1930</div>
-                <a class="complaint-link-btn" id="helplineLink" href="https://cybercrime.gov.in" target="_blank">cybercrime.gov.in</a>
+      <!-- Bottom Split (News Feed + Right Widgets) -->
+      <div class="home-bottom-grid fu d5">
+
+        <!-- Left: Cyber News -->
+        <div class="news-feed-card" id="threatCard">
+          <div class="section-head"
+            style="border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+            <h2
+              style="display: flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 800; color: var(--text);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                style="width:16px;height:16px;color:var(--lime);">
+                <path d="m12 14 4-4M10 10l2 2m-2 10s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              Cyber news
+            </h2>
+            <span class="count-badge" id="intelBadge"
+              style="font-family: var(--mono); font-size: 0.6rem; font-weight: 700; background: var(--lime-dim); border: 1px solid var(--lime-glow); color: var(--lime); padding: 2px 8px; border-radius: 4px;">Loading...</span>
+          </div>
+          <div class="news-list" id="newsList">
+            <!-- Dynamically populated from CISA RSS -->
+          </div>
+        </div>
+
+        <!-- Right: Fact of the Day & Report Cybercrime -->
+        <div class="right-widgets-col">
+
+          <!-- Fact of the day -->
+          <div class="fact-card">
+            <div class="fact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);">
+                <path
+                  d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A5 5 0 0 0 8 8c0 1 .5 2.5 1.5 3.5.7.8 1.3 1.5 1.5 2.5">
+                </path>
+                <line x1="9" y1="18" x2="15" y2="18"></line>
+                <line x1="10" y1="22" x2="14" y2="22"></line>
+              </svg></div>
+            <div class="home-section-sub-title" style="margin-bottom: 2px; font-weight:700;">Fact of the day</div>
+            <div class="fact-quote" id="factText">A four-word passphrase is harder to brute-force than an 8-character
+              password with symbols.</div>
+          </div>
+
+          <!-- Report Cybercrime Country-Aware Board -->
+          <div class="complaint-card">
+            <div class="complaint-header">
+              <span class="home-section-sub-title" style="font-weight:700;">Report cybercrime</span>
+              <div class="country-selector-wrap">
+                <span class="country-selector-label">Your country</span>
+                <select class="country-dropdown" id="countrySelect" onchange="updateHelpline()">
+                  <option value="IN" selected>India</option>
+                  <option value="US">United States</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="CA">Canada</option>
+                  <option value="AU">Australia</option>
+                </select>
               </div>
             </div>
-
+            <div class="complaint-info-block">
+              <div class="complaint-dept-title" id="helplineDept">National Cyber Crime Helpline</div>
+              <div class="complaint-phone" id="helplinePhone">1930</div>
+              <a class="complaint-link-btn" id="helplineLink" href="https://cybercrime.gov.in"
+                target="_blank">cybercrime.gov.in</a>
+            </div>
           </div>
 
         </div>
 
-      </div><!-- /dashboard-layout -->
-    </div><!-- /page -->
+      </div>
 
-    <footer class="site-footer">
-      <span class="footer-logo">CYPR</span>
-      <div class="footer-links"><a href="dashboard.html">Dashboard</a><a href="home.html">Tools</a><a href="contactus.html">Contact</a><a href="https://github.com/iamvineetupadhyay/CYPR-TECH" target="_blank">GitHub</a></div>
-      <span>© 2026 CYPR · Built to protect.</span>
-    </footer>
+    </div><!-- /dashboard-layout -->
+  </div><!-- /page -->
+
+  <footer class="site-footer">
+    <span class="footer-logo">CYPR</span>
+    <div class="footer-links"><a href="dashboard.html">Dashboard</a><a href="home.html">Tools</a><a
+        href="contactus.html">Contact</a><a href="https://github.com/iamvineetupadhyay/CYPR-TECH"
+        target="_blank">GitHub</a></div>
+    <span>© 2026 CYPR · Built to protect.</span>
+  </footer>
   </div><!-- /main-area -->
-</div><!-- /shell -->
+  </div><!-- /shell -->
 
-<script>
-const API = (window.CYPR_TECH_API_BASE !== undefined ? window.CYPR_TECH_API_BASE : '') + '/api';
-const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId') || localStorage.getItem('cypr_user_id');
+  <script>
+    const API = (window.CYPR_TECH_API_BASE !== undefined ? window.CYPR_TECH_API_BASE : '') + '/api';
+    const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId') || localStorage.getItem('cypr_user_id');
 
-// Carousel Data & Config
-const slides = [
-  {
-    tag: "NEW FEATURE",
-    title: "GitHub OAuth login is here",
-    desc: "Sign in faster with your existing GitHub account."
-  },
-  {
-    tag: "PRODUCT UPDATE",
-    title: "VAJRA Engine v2 is live",
-    desc: "16 security telemetry signals analyze every URL scan in real time."
-  },
-  {
-    tag: "AWARENESS UPDATE",
-    title: "Double-key Vault is coming",
-    desc: "Securely store notes, passwords, and sensitive keys right in your browser."
-  }
-];
-let currentSlide = 0;
-
-function setCarouselSlide(idx) {
-  currentSlide = idx;
-  const tagEl = document.getElementById('promoTag');
-  const titleEl = document.getElementById('promoTitle');
-  const descEl = document.getElementById('promoDesc');
-  const dots = document.querySelectorAll('.promo-dot');
-  
-  if (tagEl) tagEl.textContent = slides[idx].tag;
-  if (titleEl) titleEl.textContent = slides[idx].title;
-  if (descEl) descEl.textContent = slides[idx].desc;
-  
-  dots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === idx);
-  });
-}
-
-function startCarouselRotation() {
-  setInterval(() => {
-    const next = (currentSlide + 1) % slides.length;
-    setCarouselSlide(next);
-  }, 5000);
-}
-
-// Helpline Dropdown
-const helplines = {
-  IN: { dept: "National Cyber Crime Helpline", phone: "1930", link: "cybercrime.gov.in" },
-  US: { dept: "FBI Internet Crime Complaint Center (IC3)", phone: "Submit Online", link: "ic3.gov" },
-  UK: { dept: "Action Fraud National Helpline", phone: "0300 123 2040", link: "actionfraud.police.uk" },
-  CA: { dept: "Canadian Anti-Fraud Centre", phone: "1-888-495-8501", link: "antifraudcentre.ca" },
-  AU: { dept: "ReportCyber (ASD)", phone: "1300 CYBER1", link: "cyber.gov.au" }
-};
-
-function updateHelpline() {
-  const sel = document.getElementById('countrySelect');
-  if (!sel) return;
-  const country = sel.value;
-  const data = helplines[country];
-  
-  const deptEl = document.getElementById('helplineDept');
-  const phoneEl = document.getElementById('helplinePhone');
-  const linkEl = document.getElementById('helplineLink');
-  
-  if (deptEl) deptEl.textContent = data.dept;
-  if (phoneEl) phoneEl.textContent = data.phone;
-  if (linkEl) {
-    linkEl.textContent = data.link;
-    linkEl.href = "https://" + data.link;
-  }
-}
-
-// Facts Rotation
-const facts = [
-  "A four-word passphrase is harder to brute-force than an 8-character password with symbols.",
-  "Over 90% of successful cyber attacks start with a phishing email.",
-  "Public Wi-Fi networks can be intercepted easily; always use a VPN when connecting to them.",
-  "Enabling multi-factor authentication (MFA) blocks 99.9% of automated account hacks.",
-  "Cybercriminals can guess weak passwords in less than a second using automated dictionary tools."
-];
-
-function setFactOfTheDay() {
-  const factText = document.getElementById('factText');
-  if (factText) {
-    const idx = Math.floor(Math.random() * facts.length);
-    factText.textContent = facts[idx];
-  }
-}
-
-// Announcement dismissal
-function dismissBanner() {
-  const banner = document.getElementById('announceBanner');
-  if (banner) banner.classList.add('hidden');
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  setGreeting();
-  setFactOfTheDay();
-  startCarouselRotation();
-  updateHelpline();
-  if (userId) {
-    fetchProfileAndActivity();
-    fetchThreatIntel();
-  } else {
-    window.location.href = 'login.html';
-  }
-});
-
-function setGreeting() {
-  const h = new Date().getHours();
-  let g = 'Good evening';
-  if (h < 12) g = 'Good morning'; else if (h < 17) g = 'Good afternoon';
-  const greetEl = document.getElementById('greetText');
-  if (greetEl) greetEl.textContent = g;
-}
-
-function formatRelativeTime(date) {
-  const seconds = Math.floor((new Date() - date) / 1000);
-  if (seconds < 60) return 'Just now';
-  const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m ago`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
-}
-
-async function fetchProfileAndActivity() {
-  try {
-    const profileRes = await fetch(`${API}/user/${userId}/profile`);
-    if (profileRes.ok) {
-      const profileData = await profileRes.json();
-      const name = profileData.name || 'User';
-      const fn = name.split(' ')[0];
-      const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-      
-      const email = profileData.email || 'user@example.com';
-      localStorage.setItem('cm_user_name', name);
-      localStorage.setItem('cm_user_email', email);
-      
-      const welcomeNameEl = document.getElementById('welcomeName');
-      if (welcomeNameEl) welcomeNameEl.textContent = fn;
-    }
-  } catch (err) {
-    console.warn("Profile fetch failed:", err);
-  }
-}
-
-function stripHtml(value = '') {
-  const div = document.createElement('div');
-  div.innerHTML = value;
-  return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
-}
-
-function normalizeItem(item, feed) {
-  return {
-    source: feed.name,
-    tag: feed.tag,
-    title: stripHtml(item.title || 'Untitled cyber update'),
-    link: item.link || item.guid || '#',
-    date: item.pubDate || item.isoDate || item.published || item.updated || ''
-  };
-}
-
-async function loadFeed(feed) {
-  const endpoint = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
-  const res = await fetch(endpoint);
-  if (!res.ok) throw new Error('Failed to load ' + feed.name);
-  const data = await res.json();
-  return (data.items || []).slice(0, 4).map(item => normalizeItem(item, feed));
-}
-
-async function fetchThreatIntel() {
-  const feeds = [
-    { name: 'The Hacker News', tag: 'News', url: 'https://feeds.feedburner.com/TheHackersNews' },
-    { name: 'BleepingComputer', tag: 'News', url: 'https://www.bleepingcomputer.com/feed/' },
-    { name: 'KrebsOnSecurity', tag: 'Cybercrime', url: 'https://krebsonsecurity.com/feed/' },
-    { name: 'CISA Alerts', tag: 'Advisory', url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml' },
-    { name: 'NIST Cybersecurity', tag: 'Research', url: 'https://www.nist.gov/news-events/cybersecurity/rss.xml' },
-    { name: 'Sophos News', tag: 'Operations', url: 'https://news.sophos.com/en-us/category/security-operations/feed/' },
-    { name: 'Dark Reading', tag: 'News', url: 'https://www.darkreading.com/rss.xml' },
-    { name: 'SecurityWeek', tag: 'News', url: 'https://www.securityweek.com/rss' }
-  ];
-  
-  const newsList = document.getElementById('newsList');
-  if (!newsList) return;
-
-  const CACHE_KEY = 'cypr_news_cache';
-  const CACHE_TIME_KEY = 'cypr_news_cache_time';
-  const CACHE_DURATION = 15 * 60 * 1000; // 15 mins cache
-  
-  const cachedData = localStorage.getItem(CACHE_KEY);
-  const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
-  const now = Date.now();
-  
-  let items = [];
-  
-  if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
-    items = JSON.parse(cachedData);
-  } else {
-    try {
-      const results = await Promise.allSettled(feeds.map(loadFeed));
-      items = results
-        .filter(r => r.status === 'fulfilled')
-        .flatMap(r => r.value)
-        .filter(Boolean)
-        .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-      
-      if (items.length > 0) {
-        localStorage.setItem(CACHE_KEY, JSON.stringify(items));
-        localStorage.setItem(CACHE_TIME_KEY, now.toString());
+    // Carousel Data & Config
+    const slides = [
+      {
+        tag: "NEW FEATURE",
+        title: "GitHub OAuth login is here",
+        desc: "Sign in faster with your existing GitHub account."
+      },
+      {
+        tag: "PRODUCT UPDATE",
+        title: "VAJRA Engine v2 is live",
+        desc: "16 security telemetry signals analyze every URL scan in real time."
+      },
+      {
+        tag: "AWARENESS UPDATE",
+        title: "Double-key Vault is coming",
+        desc: "Securely store notes, passwords, and sensitive keys right in your browser."
       }
-    } catch (err) {
-      console.warn("Threat Intel fetch failed, attempting to read expired cache:", err);
-    }
-  }
+    ];
+    let currentSlide = 0;
 
-  // Render
-  try {
-    if (!items || items.length === 0) {
-      // If we have expired cache, use it as fallback
-      if (cachedData) {
+    function setCarouselSlide(idx) {
+      currentSlide = idx;
+      const tagEl = document.getElementById('promoTag');
+      const titleEl = document.getElementById('promoTitle');
+      const descEl = document.getElementById('promoDesc');
+      const dots = document.querySelectorAll('.promo-dot');
+
+      if (tagEl) tagEl.textContent = slides[idx].tag;
+      if (titleEl) titleEl.textContent = slides[idx].title;
+      if (descEl) descEl.textContent = slides[idx].desc;
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === idx);
+      });
+    }
+
+    function startCarouselRotation() {
+      setInterval(() => {
+        const next = (currentSlide + 1) % slides.length;
+        setCarouselSlide(next);
+      }, 5000);
+    }
+
+    // Helpline Dropdown
+    const helplines = {
+      IN: { dept: "National Cyber Crime Helpline", phone: "1930", link: "cybercrime.gov.in" },
+      US: { dept: "FBI Internet Crime Complaint Center (IC3)", phone: "Submit Online", link: "ic3.gov" },
+      UK: { dept: "Action Fraud National Helpline", phone: "0300 123 2040", link: "actionfraud.police.uk" },
+      CA: { dept: "Canadian Anti-Fraud Centre", phone: "1-888-495-8501", link: "antifraudcentre.ca" },
+      AU: { dept: "ReportCyber (ASD)", phone: "1300 CYBER1", link: "cyber.gov.au" }
+    };
+
+    function updateHelpline() {
+      const sel = document.getElementById('countrySelect');
+      if (!sel) return;
+      const country = sel.value;
+      const data = helplines[country];
+
+      const deptEl = document.getElementById('helplineDept');
+      const phoneEl = document.getElementById('helplinePhone');
+      const linkEl = document.getElementById('helplineLink');
+
+      if (deptEl) deptEl.textContent = data.dept;
+      if (phoneEl) phoneEl.textContent = data.phone;
+      if (linkEl) {
+        linkEl.textContent = data.link;
+        linkEl.href = "https://" + data.link;
+      }
+    }
+
+    // Facts Rotation
+    const facts = [
+      "A four-word passphrase is harder to brute-force than an 8-character password with symbols.",
+      "Over 90% of successful cyber attacks start with a phishing email.",
+      "Public Wi-Fi networks can be intercepted easily; always use a VPN when connecting to them.",
+      "Enabling multi-factor authentication (MFA) blocks 99.9% of automated account hacks.",
+      "Cybercriminals can guess weak passwords in less than a second using automated dictionary tools."
+    ];
+
+    function setFactOfTheDay() {
+      const factText = document.getElementById('factText');
+      if (factText) {
+        const idx = Math.floor(Math.random() * facts.length);
+        factText.textContent = facts[idx];
+      }
+    }
+
+    // Announcement dismissal
+    function dismissBanner() {
+      const banner = document.getElementById('announceBanner');
+      if (banner) banner.classList.add('hidden');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setGreeting();
+      setFactOfTheDay();
+      startCarouselRotation();
+      updateHelpline();
+      if (userId) {
+        fetchProfileAndActivity();
+        fetchThreatIntel();
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+
+    function setGreeting() {
+      const h = new Date().getHours();
+      let g = 'Good evening';
+      if (h < 12) g = 'Good morning'; else if (h < 17) g = 'Good afternoon';
+      const greetEl = document.getElementById('greetText');
+      if (greetEl) greetEl.textContent = g;
+    }
+
+    function formatRelativeTime(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      if (seconds < 60) return 'Just now';
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return `${minutes}m ago`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `${hours}h ago`;
+      const days = Math.floor(hours / 24);
+      return `${days}d ago`;
+    }
+
+    async function fetchProfileAndActivity() {
+      try {
+        const profileRes = await fetch(`${API}/user/${userId}/profile`);
+        if (profileRes.ok) {
+          const profileData = await profileRes.json();
+          const name = profileData.name || 'User';
+          const fn = name.split(' ')[0];
+          const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+
+          const email = profileData.email || 'user@example.com';
+          localStorage.setItem('cm_user_name', name);
+          localStorage.setItem('cm_user_email', email);
+
+          const welcomeNameEl = document.getElementById('welcomeName');
+          if (welcomeNameEl) welcomeNameEl.textContent = fn;
+        }
+      } catch (err) {
+        console.warn("Profile fetch failed:", err);
+      }
+    }
+
+    function stripHtml(value = '') {
+      const div = document.createElement('div');
+      div.innerHTML = value;
+      return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
+    }
+
+    function shortText(value, limit = 180) {
+      const clean = stripHtml(value);
+      if (clean.length <= limit) return clean;
+      return `${clean.slice(0, limit).trim()}...`;
+    }
+
+    function normalizeItem(item, feed) {
+      return {
+        source: feed.name,
+        tag: feed.tag,
+        title: stripHtml(item.title || 'Untitled cyber update'),
+        link: item.link || item.guid || '#',
+        date: item.pubDate || item.isoDate || item.published || item.updated || '',
+        description: shortText(item.description || item.content || item.summary || 'Open CYPR Tech AI article for details.'),
+        author: stripHtml(item.author || item.creator || item['dc:creator'] || feed.name),
+        image: item.thumbnail || item.enclosure?.link || item.enclosure?.url || item.image || item.image_url || ''
+      };
+    }
+
+    async function loadFeed(feed) {
+      try {
+        const fetchPromise = (async () => {
+          const endpoint = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
+          const res = await fetch(endpoint);
+          if (!res.ok) throw new Error('Failed to load ' + feed.name);
+          const data = await res.json();
+          return (data.items || []).slice(0, 15).map(item => normalizeItem(item, feed));
+        })();
+        const timeoutPromise = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout')), 5000)
+        );
+        return await Promise.race([fetchPromise, timeoutPromise]);
+      } catch (err) {
+        console.warn(`Feed ${feed.name} failed:`, err);
+        return null;
+      }
+    }
+
+    async function fetchThreatIntel() {
+      const feeds = [
+        { name: 'The Hacker News', tag: 'News', url: 'https://feeds.feedburner.com/TheHackersNews' },
+        { name: 'BleepingComputer', tag: 'News', url: 'https://www.bleepingcomputer.com/feed/' },
+        { name: 'KrebsOnSecurity', tag: 'Cybercrime', url: 'https://krebsonsecurity.com/feed/' },
+        { name: 'CISA Alerts', tag: 'Advisory', url: 'https://www.cisa.gov/cybersecurity-advisories/all.xml' },
+        { name: 'NIST Cybersecurity', tag: 'Research', url: 'https://www.nist.gov/news-events/information%20technology/rss.xml' },
+        { name: 'InfoSecurity Magazine', tag: 'Operations', url: 'https://www.infosecurity-magazine.com/rss/news/' },
+        { name: 'Dark Reading', tag: 'News', url: 'https://www.darkreading.com/rss.xml' },
+        { name: 'SecurityWeek', tag: 'News', url: 'https://www.securityweek.com/feed/' }
+      ];
+
+      const newsList = document.getElementById('newsList');
+      if (!newsList) return;
+
+      const CACHE_KEY = 'cypr_news_cache';
+      const CACHE_TIME_KEY = 'cypr_news_cache_time';
+      const CACHE_DURATION = 15 * 60 * 1000; // 15 mins cache
+
+      const cachedData = localStorage.getItem(CACHE_KEY);
+      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+      const now = Date.now();
+
+      let items = [];
+
+      if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
         items = JSON.parse(cachedData);
       } else {
-        throw new Error('No items available');
+        try {
+          const results = await Promise.all(feeds.map(loadFeed));
+          items = results
+            .filter(Boolean)
+            .flat()
+            .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+          if (items.length > 0) {
+            localStorage.setItem(CACHE_KEY, JSON.stringify(items));
+            localStorage.setItem(CACHE_TIME_KEY, now.toString());
+          }
+        } catch (err) {
+          console.warn("Threat Intel fetch failed, attempting to read expired cache:", err);
+        }
       }
-    }
-    
-    newsList.innerHTML = '';
-    const activeCount = document.getElementById('intelBadge');
-    if (activeCount) activeCount.textContent = `${items.length} Active`;
-    
-    items.slice(0, 3).forEach(item => {
-      const pubDate = new Date(item.date);
-      const timeStr = isNaN(pubDate.getTime()) ? 'Recent' : formatRelativeTime(pubDate);
-      
-      const div = document.createElement('div');
-      div.className = 'news-item';
-      
-      div.addEventListener('click', () => {
-        window.location.href = `cyber-news.html?highlight=${encodeURIComponent(item.link)}`;
-      });
-      
-      div.innerHTML = `
+
+      // Render
+      try {
+        if (!items || items.length === 0) {
+          // If we have expired cache, use it as fallback
+          if (cachedData) {
+            items = JSON.parse(cachedData);
+          } else {
+            throw new Error('No items available');
+          }
+        }
+
+        newsList.innerHTML = '';
+        const activeCount = document.getElementById('intelBadge');
+        if (activeCount) activeCount.textContent = `${items.length} Active`;
+
+        items.slice(0, 3).forEach(item => {
+          const pubDate = new Date(item.date);
+          const timeStr = isNaN(pubDate.getTime()) ? 'Recent' : formatRelativeTime(pubDate);
+
+          const div = document.createElement('div');
+          div.className = 'news-item';
+
+          div.addEventListener('click', () => {
+            window.location.href = `cyber-news.html?highlight=${encodeURIComponent(item.link)}`;
+          });
+
+          div.innerHTML = `
         <div class="news-info">
           <div class="news-source">${item.source} · ${timeStr}</div>
           <h4>${item.title}</h4>
@@ -914,11 +1181,11 @@ async function fetchThreatIntel() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
       `;
-      newsList.appendChild(div);
-    });
-  } catch (err) {
-    console.warn("Threat Intel fetch failed, loading offline fallback:", err);
-    newsList.innerHTML = `
+          newsList.appendChild(div);
+        });
+      } catch (err) {
+        console.warn("Threat Intel fetch failed, loading offline fallback:", err);
+        newsList.innerHTML = `
       <div class="news-item" onclick="window.location.href='cyber-news.html?highlight=ransomware'">
         <div class="news-info">
           <div class="news-source">The Hacker News · 2h ago</div>
@@ -941,18 +1208,19 @@ async function fetchThreatIntel() {
         <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
       </div>
     `;
-    const activeCount = document.getElementById('intelBadge');
-    if (activeCount) activeCount.textContent = `3 Active`;
-  }
-}
+        const activeCount = document.getElementById('intelBadge');
+        if (activeCount) activeCount.textContent = `3 Active`;
+      }
+    }
 
-function showToast(msg) {
-  const e = document.querySelector('.cm-toast'); if (e) e.remove();
-  const t = document.createElement('div'); t.className = 'cm-toast'; t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--lime);border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:var(--lime);z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px var(--lime-glow);';
-  document.body.appendChild(t); setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400);
-}
-</script>
-<script src="notifications.js"></script>
+    function showToast(msg) {
+      const e = document.querySelector('.cm-toast'); if (e) e.remove();
+      const t = document.createElement('div'); t.className = 'cm-toast'; t.textContent = msg;
+      t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--lime);border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:var(--lime);z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px var(--lime-glow);';
+      document.body.appendChild(t); setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400);
+    }
+  </script>
+  <script src="notifications.js"></script>
 </body>
+
 </html>
