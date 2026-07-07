@@ -3,35 +3,24 @@
 
 (function() {
     const hostname = window.location.hostname;
-    const isLocalDev = ['localhost', '127.0.0.1', ''].includes(hostname) ||
-                       hostname.startsWith('192.168.') ||
-                       hostname.startsWith('10.') ||
-                       hostname.startsWith('172.16.') ||
-                       hostname.startsWith('172.17.') ||
-                       hostname.startsWith('172.18.') ||
-                       hostname.startsWith('172.19.') ||
-                       hostname.startsWith('172.20.') ||
-                       hostname.startsWith('172.21.') ||
-                       hostname.startsWith('172.22.') ||
-                       hostname.startsWith('172.23.') ||
-                       hostname.startsWith('172.24.') ||
-                       hostname.startsWith('172.25.') ||
-                       hostname.startsWith('172.26.') ||
-                       hostname.startsWith('172.27.') ||
-                       hostname.startsWith('172.28.') ||
-                       hostname.startsWith('172.29.') ||
-                       hostname.startsWith('172.30.') ||
-                       hostname.startsWith('172.31.') ||
-                       hostname.endsWith('.local');
+    
+    // Clean and optimized check using regex for local development environments
+    const isLocalDev = [
+        'localhost', '127.0.0.1', ''
+    ].includes(hostname) || 
+    /^192\.168\./.test(hostname) || 
+    /^10\./.test(hostname) || 
+    /^172\.(1[6-9]|2[0-9]|3[0-1])\./.test(hostname) || // Matches 172.16.x.x to 172.31.x.x completely
+    hostname.endsWith('.local');
     
     // 🔥 Tumhara valid AWS Production API URL
     const AWS_PRODUCTION_API = 'https://cypr-api.duckdns.org';
     
     // 🛠️ Dynamic local API for mobile/LAN testing!
-    // Connect to backend at the same host on port 8080.
+    // Forces http:// protocol for local development backend to avoid local HTTPS mismatch
     let LOCAL_API = 'http://localhost:8080';
     if (hostname) {
-        LOCAL_API = window.location.protocol + '//' + hostname + ':8080';
+        LOCAL_API = `http://${hostname}:8080`;
     }
     
     // 🔗 Dynamically set base URL based on environment so requests go to the right server!
@@ -44,6 +33,7 @@
         
         // 🛠️ FIX: Agar request short path '/api/' se shuru ho rahi hai, toh uske aage hamara correct Base URL jodd do!
         if (resourceUrl.startsWith('/api/')) {
+            // Check if it already has a trailing slash or avoid double slashes
             resource = window.CYPR_TECH_API_BASE + resourceUrl;
             resourceUrl = resource;
         }
