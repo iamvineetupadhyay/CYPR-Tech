@@ -340,7 +340,7 @@
     }
 
     // Find the bell element
-    const bell = document.querySelector('.tb-bell');
+    const bell = document.querySelector('#alertsBellTrigger, .tb-bell');
     if (bell) {
       buildPanel(bell);
     }

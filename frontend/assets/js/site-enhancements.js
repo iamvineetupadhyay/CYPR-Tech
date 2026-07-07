@@ -2121,9 +2121,9 @@
         </a>
 
         <!-- Alerts Bell -->
-        <button class="cm-icon-btn" id="alertsBellTrigger" title="No Alerts">
+        <button class="cm-icon-btn tb-bell" id="alertsBellTrigger" title="No Alerts">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <div class="cm-icon-badge"></div>
+          <div class="cm-icon-badge tb-bell-badge"></div>
         </button>
 
         <span class="cm-credit-pill">Credits: ...</span>
@@ -2180,13 +2180,7 @@
         document.addEventListener('click', () => plusMenu.classList.remove('open'));
       }
 
-      // Alerts bell toast alert
-      const bell = rightGroup.querySelector('#alertsBellTrigger');
-      if (bell) {
-        bell.addEventListener('click', () => {
-          showToast('Perimeter Secure: 0 active threat alerts.');
-        });
-      }
+      // Alerts bell integrated with notifications.js
 
       // User profile trigger dropdown binding
       const trigger = rightGroup.querySelector('.cm-user-trigger');

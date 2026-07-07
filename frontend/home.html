@@ -913,43 +913,100 @@
     const userId = new URLSearchParams(window.location.search).get('id') || localStorage.getItem('userId') || localStorage.getItem('cypr_user_id');
 
     // Carousel Data & Config
-    const slides = [
+    let slides = [
       {
         tag: "NEW FEATURE",
         title: "GitHub OAuth login is here",
-        desc: "Sign in faster with your existing GitHub account."
+        desc: "Sign in faster with your existing GitHub account.",
+        image: null,
+        link: null
       },
       {
         tag: "PRODUCT UPDATE",
         title: "VAJRA Engine v2 is live",
-        desc: "16 security telemetry signals analyze every URL scan in real time."
+        desc: "16 security telemetry signals analyze every URL scan in real time.",
+        image: null,
+        link: null
       },
       {
         tag: "AWARENESS UPDATE",
         title: "Double-key Vault is coming",
-        desc: "Securely store notes, passwords, and sensitive keys right in your browser."
+        desc: "Securely store notes, passwords, and sensitive keys right in your browser.",
+        image: null,
+        link: null
       }
     ];
     let currentSlide = 0;
 
     function setCarouselSlide(idx) {
+      if (idx < 0 || idx >= slides.length) return;
       currentSlide = idx;
       const tagEl = document.getElementById('promoTag');
       const titleEl = document.getElementById('promoTitle');
       const descEl = document.getElementById('promoDesc');
+      const promoCard = document.getElementById('promoCarousel');
       const dots = document.querySelectorAll('.promo-dot');
 
       if (tagEl) tagEl.textContent = slides[idx].tag;
       if (titleEl) titleEl.textContent = slides[idx].title;
       if (descEl) descEl.textContent = slides[idx].desc;
 
+      // Handle custom background image
+      if (promoCard) {
+        if (slides[idx].image) {
+          promoCard.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url("${slides[idx].image}")`;
+          promoCard.style.backgroundSize = 'cover';
+          promoCard.style.backgroundPosition = 'center';
+          promoCard.style.backgroundRepeat = 'no-repeat';
+        } else {
+          // Reset to default
+          promoCard.style.backgroundImage = '';
+        }
+        
+        // Handle action link click
+        if (slides[idx].link) {
+          promoCard.style.cursor = 'pointer';
+          promoCard.onclick = () => window.open(slides[idx].link, '_blank');
+        } else {
+          promoCard.style.cursor = '';
+          promoCard.onclick = null;
+        }
+      }
+
       dots.forEach((dot, i) => {
         dot.classList.toggle('active', i === idx);
       });
     }
 
+    function initCarousel() {
+      // Prepend custom homepage featured banner if published
+      const fb = JSON.parse(localStorage.getItem('cypr_admin_featured_banner') || 'null');
+      if (fb && fb.active) {
+        slides.unshift({
+          tag: fb.tag || 'ANNOUNCEMENT',
+          title: fb.title,
+          desc: fb.desc,
+          image: fb.imageUrl || null,
+          link: fb.link || null
+        });
+      }
+
+      // Dynamically build indicators
+      const dotsContainer = document.querySelector('.promo-dots');
+      if (dotsContainer) {
+        dotsContainer.innerHTML = slides.map((_, idx) => 
+          `<span class="promo-dot ${idx === 0 ? 'active' : ''}" onclick="setCarouselSlide(${idx})"></span>`
+        ).join('');
+      }
+
+      setCarouselSlide(0);
+      startCarouselRotation();
+    }
+
     function startCarouselRotation() {
-      setInterval(() => {
+      // Clear previous interval if any
+      if (window.carouselInterval) clearInterval(window.carouselInterval);
+      window.carouselInterval = setInterval(() => {
         const next = (currentSlide + 1) % slides.length;
         setCarouselSlide(next);
       }, 5000);
@@ -1004,7 +1061,7 @@
       const banner = document.getElementById('announceBanner');
       if (!banner) return;
 
-      const b = JSON.parse(localStorage.getItem('cypr_admin_banner') || 'null');
+      const b = JSON.parse(localStorage.getItem('cypr_admin_announcement') || 'null');
       
       // Check if dismissed
       const currentBnrId = (b && b.active) ? String(b.publishedAt) : 'default';
@@ -1017,7 +1074,7 @@
       if (b && b.active) {
         // Check expiry
         if (b.expiry && Date.now() > b.expiry) {
-          localStorage.removeItem('cypr_admin_banner');
+          localStorage.removeItem('cypr_admin_announcement');
           banner.style.display = 'none';
           return;
         }
@@ -1121,7 +1178,7 @@
         banner.style.border = 'none';
         banner.style.overflow = 'hidden';
 
-        const b = JSON.parse(localStorage.getItem('cypr_admin_banner') || 'null');
+        const b = JSON.parse(localStorage.getItem('cypr_admin_announcement') || 'null');
         const currentBnrId = (b && b.active) ? String(b.publishedAt) : 'default';
         localStorage.setItem('cypr_banner_dismissed_id', currentBnrId);
 
@@ -1135,7 +1192,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       setGreeting();
       setFactOfTheDay();
-      startCarouselRotation();
+      initCarousel();
       updateHelpline();
       loadAnnounceBanner();
       if (userId) {

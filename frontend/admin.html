@@ -10,8 +10,9 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="notifications.js"></script>
   <style>
-    :root{--bg:#0a0b0f;--bg2:#12141a;--bg3:#1a1d26;--bg4:#22263a;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#f0f0f2;--text2:#9ca3af;--text3:#6b7280;--accent:#f97316;--lime:#a3e635;--lime2:#84cc16;--lime-dim:rgba(163,230,53,0.08);--lime-glow:rgba(163,230,53,0.25);--red:#ef4444;--red-dim:rgba(239,68,68,0.1);--blue:#3b82f6;--blue-dim:rgba(59,130,246,0.1);--purple:#a855f7;--purple-dim:rgba(168,85,247,0.1);--yellow:#eab308;--yellow-dim:rgba(234,179,8,0.1);--font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;--nav-h:64px;}
+    :root{--bg:#0a0b0f;--bg2:#12141a;--bg3:#1a1d26;--bg4:#22263a;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);--text:#f0f0f2;--text2:#9ca3af;--text3:#6b7280;--accent:#f97316;--lime:#a3e635;--lime2:#84cc16;--lime-dim:rgba(163,230,53,0.08);--lime-glow:rgba(163,230,53,0.25);--red:#ef4444;--red-dim:rgba(239,68,68,0.1);--blue:#3b82f6;--blue-dim:rgba(59,130,246,0.1);--purple:#a855f7;--purple-dim:rgba(168,85,247,0.1);--yellow:#eab308;--yellow-dim:rgba(234,179,8,0.1);--font:'Outfit',sans-serif;--mono:'JetBrains Mono',monospace;--nav-h:90px;}
     [data-theme="light"]{--bg:#f5f6fa;--bg2:#ffffff;--bg3:#f0f1f5;--bg4:#e8e9ef;--border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);--text:#0f172a;--text2:#475569;--text3:#94a3b8;}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
@@ -222,29 +223,6 @@
 </head>
 <body>
 
-<header class="adm-top">
-  <div class="adm-brand">
-    <div class="adm-logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <b>CYPR Tech</b>
-    <span class="adm-tag">Admin</span>
-  </div>
-  <div class="adm-right">
-    <a href="dashboard.html" class="back-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-      Dashboard
-    </a>
-    <button class="th-btn" id="thBtn">
-      <svg id="thIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
-    </button>
-    <div class="adm-user">
-      <div class="adm-av" id="avInit">A</div>
-      <span id="avName">Admin</span>
-    </div>
-  </div>
-</header>
-
 <div class="adm-layout">
   <aside class="adm-sidebar">
     <div class="sb-lbl">Overview</div>
@@ -262,9 +240,13 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       Bulk Email
     </div>
-    <div class="sb-item" id="si-banner" onclick="go('banner')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-      Site Banner
+    <div class="sb-item" id="si-announcement" onclick="go('announcement')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Site Announcement
+    </div>
+    <div class="sb-item" id="si-featbanner" onclick="go('featbanner')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V9l7 4-7 4z"/></svg>
+      Homepage Banner
     </div>
     <div class="sb-lbl">Users</div>
     <div class="sb-item" id="si-users" onclick="go('users')">
@@ -369,36 +351,71 @@
       </div>
     </div>
 
-    <!-- BANNER -->
-    <div class="panel" id="panel-banner">
-      <div class="pg-hdr"><h1>Site Banner</h1><p>Display a prominent announcement banner across all pages.</p></div>
+    <!-- SITE ANNOUNCEMENT -->
+    <div class="panel" id="panel-announcement">
+      <div class="pg-hdr"><h1>Site Announcement</h1><p>Display a prominent notice bar at the very top of the homepage.</p></div>
       <div class="card">
         <div class="card-hdr">
-          <div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Banner Editor</div>
+          <div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>Announcement Editor</div>
         </div>
         <div class="bnr-prev bnr-info" id="bnrPrev">
-          <svg id="bnrIco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/></svg>
-          <div class="bnr-txt" id="bnrPrevTxt">Your banner message will appear here...</div>
+          <span id="bnrIco" style="display:flex;align-items:center;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8" stroke-linecap="round" stroke-width="3"/></span>
+          <div class="bnr-txt" id="bnrPrevTxt">Your announcement message will appear here...</div>
         </div>
         <div class="frow">
-          <div class="fg" style="margin:0"><label class="fl">Banner Type</label><select class="fsel" id="bnrType" onchange="updBnr()"><option value="info">Info (Blue)</option><option value="success">Success (Green)</option><option value="warning">Warning (Yellow)</option><option value="critical">Critical (Red)</option></select></div>
+          <div class="fg" style="margin:0"><label class="fl">Announcement Type</label><select class="fsel" id="bnrType" onchange="updBnr()"><option value="info">Info (Blue)</option><option value="success">Success (Green)</option><option value="warning">Warning (Yellow)</option><option value="critical">Critical (Red)</option></select></div>
           <div class="fg" style="margin:0"><label class="fl">Expires After</label><select class="fsel" id="bnrExp"><option value="never">Never</option><option value="1h">1 Hour</option><option value="6h">6 Hours</option><option value="24h">24 Hours</option><option value="7d">7 Days</option></select></div>
         </div>
-        <div class="fg" style="margin-top:14px"><label class="fl">Banner Message</label><input type="text" id="bnrMsg" class="fi" placeholder="e.g. CYPR v2.0 is live!" oninput="updBnr()" maxlength="200"><div class="fhint"><span id="bnrCC">0</span>/200 characters</div></div>
+        <div class="fg" style="margin-top:14px"><label class="fl">Announcement Message</label><input type="text" id="bnrMsg" class="fi" placeholder="e.g. CYPR v2.0 is live!" oninput="updBnr()" maxlength="200"><div class="fhint"><span id="bnrCC">0</span>/200 characters</div></div>
         <div class="frow">
           <div class="fg" style="margin:0"><label class="fl">CTA Link <span style="color:var(--text3)">(optional)</span></label><input type="url" id="bnrLink" class="fi" placeholder="https://cyprtech.com/whats-new"></div>
           <div class="fg" style="margin:0"><label class="fl">CTA Text <span style="color:var(--text3)">(optional)</span></label><input type="text" id="bnrLinkTxt" class="fi" placeholder="Learn More →"></div>
         </div>
         <div class="frow" style="margin-top:14px">
-          <div class="fg" style="margin:0"><label class="fl">Banner Photo / Image URL <span style="color:var(--text3)">(optional)</span></label><input type="url" id="bnrImgUrl" class="fi" placeholder="https://example.com/photo.png" oninput="updBnr()"></div>
+          <div class="fg" style="margin:0"><label class="fl">Icon / Photo URL <span style="color:var(--text3)">(optional)</span></label><input type="url" id="bnrImgUrl" class="fi" placeholder="https://example.com/photo.png" oninput="updBnr()"></div>
           <div class="fg" style="margin:0; display:flex; align-items:center; gap:8px; padding-top:28px;"><input type="checkbox" id="bnrFullImg" class="rck" onchange="updBnr()"><label class="fl" style="margin:0; cursor:pointer;" for="bnrFullImg">Full-width graphic banner (image only)</label></div>
         </div>
         <div class="bgrp">
-          <button class="btn btn-p" onclick="pubBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.16 6.16l1.27-.46a2 2 0 012.11.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Publish Banner</button>
-          <button class="btn btn-d" onclick="rmBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>Remove Banner</button>
+          <button class="btn btn-p" onclick="pubBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Publish Announcement</button>
+          <button class="btn btn-d" onclick="rmBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>Remove Announcement</button>
         </div>
       </div>
-      <div class="card"><div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Current Active Banner</div></div><div id="aBnrInfo"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="2"/></svg><p>No active banner set</p></div></div></div>
+      <div class="card"><div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Current Active Announcement</div></div><div id="aBnrInfo"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="2"/></svg><p>No active announcement set</p></div></div></div>
+    </div>
+
+    <!-- HOMEPAGE BANNER -->
+    <div class="panel" id="panel-featbanner">
+      <div class="pg-hdr"><h1>Homepage Banner</h1><p>Configure the large featured promo card carousel block on the homepage.</p></div>
+      <div class="card">
+        <div class="card-hdr">
+          <div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Homepage Banner Editor</div>
+        </div>
+        
+        <!-- Live Preview -->
+        <label class="fl">Live Preview</label>
+        <div class="fb-prev" id="fbPrev" style="background: linear-gradient(135deg, #120e0c 0%, #2b201a 100%); border: 1px solid rgba(224, 90, 0, 0.25); border-radius: 12px; padding: 24px; color: #f5f2f0; position: relative; overflow: hidden; min-height: 120px; display: flex; flex-direction: column; justify-content: center; gap: 6px; margin-bottom: 20px; transition: background 0.3s ease;">
+          <span id="fbPrevTag" style="font-size: 0.65rem; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; display: inline-block;">NEW FEATURE</span>
+          <h3 id="fbPrevTitle" style="font-size: 1.25rem; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.8); margin-bottom: 4px;">GitHub OAuth login is here</h3>
+          <p id="fbPrevDesc" style="font-size: 0.82rem; color: #9ca3af; text-shadow: 0 1px 2px rgba(0,0,0,0.8); line-height: 1.4;">Sign in faster with your existing GitHub account.</p>
+        </div>
+
+        <div class="frow">
+          <div class="fg" style="margin:0"><label class="fl">Banner Label / Tag</label><input type="text" id="fbTag" class="fi" placeholder="e.g. NEW FEATURE, PRODUCT UPDATE" oninput="updFeatBnr()" maxlength="25"></div>
+          <div class="fg" style="margin:0"><label class="fl">Banner Title</label><input type="text" id="fbTitle" class="fi" placeholder="e.g. GitHub OAuth login is here" oninput="updFeatBnr()" maxlength="80"></div>
+        </div>
+        <div class="fg" style="margin-top:14px"><label class="fl">Banner Description</label><input type="text" id="fbDesc" class="fi" placeholder="e.g. Sign in faster with your existing GitHub account." oninput="updFeatBnr()" maxlength="150"></div>
+        
+        <div class="frow">
+          <div class="fg" style="margin:0"><label class="fl">Photo / Background Image URL</label><input type="url" id="fbImgUrl" class="fi" placeholder="e.g. https://example.com/slide-bg.png" oninput="updFeatBnr()"></div>
+          <div class="fg" style="margin:0"><label class="fl">Action Link URL <span style="color:var(--text3)">(optional)</span></label><input type="url" id="fbLink" class="fi" placeholder="e.g. https://cyprtech.com/oauth-details"></div>
+        </div>
+        
+        <div class="bgrp" style="margin-top:18px">
+          <button class="btn btn-p" onclick="pubFeatBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Publish Banner</button>
+          <button class="btn btn-d" onclick="rmFeatBnr()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>Remove Banner</button>
+        </div>
+      </div>
+      <div class="card"><div class="card-hdr"><div class="card-ttl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>Current Active Homepage Banner</div></div><div id="aFeatBnrInfo"><div class="empty"><p>No active homepage banner set</p></div></div></div>
     </div>
 
     <!-- USERS -->
@@ -474,7 +491,7 @@ let confCB = null, apiBase = '';
 
 document.addEventListener('DOMContentLoaded', () => {
   try { apiBase = window.CYPR_TECH_API_BASE || ''; } catch {}
-  restTheme(); loadAdmin(); loadUsers(); restBnr(); syncStats();
+  restTheme(); loadUsers(); restBnr(); restFeatBnr(); syncStats();
   document.getElementById('nBody').addEventListener('input', e => document.getElementById('nCC').textContent = e.target.value.length);
   document.getElementById('bnrMsg').addEventListener('input', e => { document.getElementById('bnrCC').textContent = e.target.value.length; updBnr(); });
   document.getElementById('eSubj').addEventListener('input', prevEmail);
@@ -483,12 +500,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ── Theme ──
-function restTheme() { const t = localStorage.getItem('cypr_theme') || 'dark'; document.documentElement.setAttribute('data-theme', t); updThIco(t); }
-function togTheme() { const n = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('cypr_theme', n); updThIco(n); }
-function updThIco(t) { document.getElementById('thIco').innerHTML = t === 'light' ? '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>' : '<path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/>'; }
-document.getElementById('thBtn').addEventListener('click', togTheme);
-
-function loadAdmin() { try { const u = JSON.parse(localStorage.getItem('cypr_user') || '{}'); const n = u.name || u.username || 'Admin'; document.getElementById('avName').textContent = n; document.getElementById('avInit').textContent = n[0]?.toUpperCase() || 'A'; } catch {} }
+function restTheme() { 
+  const t = localStorage.getItem('cypr_theme') || 'dark'; 
+  document.documentElement.setAttribute('data-theme', t); 
+}
 
 // ── Nav ──
 function go(id) {
@@ -505,9 +520,29 @@ function syncStats() {
   document.getElementById('sEmail').textContent = eSent;
   document.getElementById('sTotalU').textContent = users.length || '—';
   document.getElementById('uBadge').textContent = users.length || '—';
-  const b = JSON.parse(localStorage.getItem('cypr_admin_banner') || 'null');
-  if (b?.active) { document.getElementById('sBnr').textContent = 'ON'; document.getElementById('sBnr').style.color = 'var(--lime)'; document.getElementById('sBnrLbl').textContent = 'Active'; document.getElementById('sBnrLbl').className = 'sc-chg up'; }
-  else { document.getElementById('sBnr').textContent = 'OFF'; document.getElementById('sBnr').style.color = ''; document.getElementById('sBnrLbl').textContent = 'No active banner'; document.getElementById('sBnrLbl').className = 'sc-chg'; }
+  
+  // Announcement Stats
+  const b = JSON.parse(localStorage.getItem('cypr_admin_announcement') || 'null');
+  if (b?.active) { 
+    document.getElementById('sBnr').textContent = 'ON'; 
+    document.getElementById('sBnr').style.color = 'var(--lime)'; 
+    document.getElementById('sBnrLbl').textContent = 'Active Announcement'; 
+    document.getElementById('sBnrLbl').className = 'sc-chg up'; 
+  } else { 
+    // Homepage Banner Stats
+    const fb = JSON.parse(localStorage.getItem('cypr_admin_featured_banner') || 'null');
+    if (fb?.active) {
+      document.getElementById('sBnr').textContent = 'ON'; 
+      document.getElementById('sBnr').style.color = 'var(--accent)'; 
+      document.getElementById('sBnrLbl').textContent = 'Active Featured Banner'; 
+      document.getElementById('sBnrLbl').className = 'sc-chg up'; 
+    } else {
+      document.getElementById('sBnr').textContent = 'OFF'; 
+      document.getElementById('sBnr').style.color = ''; 
+      document.getElementById('sBnrLbl').textContent = 'No active notice/banner'; 
+      document.getElementById('sBnrLbl').className = 'sc-chg'; 
+    }
+  }
 }
 
 // ── Notifications ──
@@ -585,9 +620,9 @@ async function doSendEmail() {
 }
 function saveDraft() { const s=document.getElementById('eSubj').value.trim(); if(!s){toast('Enter a subject first.','err');return;} localStorage.setItem('cypr_email_draft',JSON.stringify({subject:s,body:document.getElementById('eBody').value,savedAt:Date.now()})); addLog('info',`Draft "<strong>${s}</strong>" saved`); toast('Draft saved!','ok'); }
 
-// ── Banner ──
+// ── Site Announcement (Notice Bar) ──
 function updBnr() {
-  const msg = document.getElementById('bnrMsg').value||'Your banner message...', type = document.getElementById('bnrType').value;
+  const msg = document.getElementById('bnrMsg').value||'Your announcement message...', type = document.getElementById('bnrType').value;
   const imgUrl = document.getElementById('bnrImgUrl').value.trim();
   const fullImg = document.getElementById('bnrFullImg').checked;
   const prev = document.getElementById('bnrPrev'); 
@@ -617,19 +652,101 @@ function pubBnr() {
   const imgUrl = document.getElementById('bnrImgUrl').value.trim();
   const msg = document.getElementById('bnrMsg').value.trim(); 
   
-  if (!fullImg && !msg) { toast('Enter a banner message.','err'); return; }
-  if (fullImg && !imgUrl) { toast('Please provide a Banner Photo/Image URL to show as a full graphic banner.','err'); return; }
+  if (!fullImg && !msg) { toast('Enter an announcement message.','err'); return; }
+  if (fullImg && !imgUrl) { toast('Please provide a Photo/Image URL to show as a full graphic announcement.','err'); return; }
   
   const type=document.getElementById('bnrType').value, exp=document.getElementById('bnrExp').value, link=document.getElementById('bnrLink').value.trim(), lt=document.getElementById('bnrLinkTxt').value.trim();
   const ems = {never:null,'1h':3600000,'6h':21600000,'24h':86400000,'7d':604800000};
   const b = {active:true,type,message:msg || 'Announcement',imageUrl:imgUrl||null,fullImage:fullImg,link:link||null,linkText:lt||null,expiry:exp==='never'?null:Date.now()+ems[exp],publishedAt:Date.now()};
   
-  localStorage.setItem('cypr_admin_banner',JSON.stringify(b)); syncStats(); showABnr(b);
-  addLog('success',`Banner "${(msg || imgUrl).slice(0,40)}" published (${type})`); toast('Banner published!','ok');
+  localStorage.setItem('cypr_admin_announcement',JSON.stringify(b)); syncStats(); showABnr(b);
+  addLog('success', `Site announcement "${(msg || imgUrl).slice(0,30)}" published`); toast('Announcement published!','ok');
 }
-function rmBnr() { openConf('danger','Remove Banner?','This will remove the active banner from all pages.',()=>{ closeConf(); localStorage.removeItem('cypr_admin_banner'); syncStats(); document.getElementById('aBnrInfo').innerHTML='<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="2"/></svg><p>No active banner set</p></div>'; addLog('warning','Active banner removed'); toast('Banner removed.','inf'); }); }
-function restBnr() { const b=JSON.parse(localStorage.getItem('cypr_admin_banner')||'null'); if(!b)return; if(b.expiry&&Date.now()>b.expiry){localStorage.removeItem('cypr_admin_banner');return;} document.getElementById('bnrMsg').value=b.message||''; document.getElementById('bnrType').value=b.type||'info'; document.getElementById('bnrLink').value=b.link||''; document.getElementById('bnrLinkTxt').value=b.linkText||''; document.getElementById('bnrImgUrl').value=b.imageUrl||''; document.getElementById('bnrFullImg').checked=!!b.fullImage; updBnr(); showABnr(b); syncStats(); }
+function rmBnr() { openConf('danger','Remove Announcement?','This will remove the active announcement from all pages.',()=>{ closeConf(); localStorage.removeItem('cypr_admin_announcement'); syncStats(); document.getElementById('aBnrInfo').innerHTML='<div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="10" rx="2"/></svg><p>No active announcement set</p></div>'; addLog('warning','Active announcement removed'); toast('Announcement removed.','inf'); }); }
+function restBnr() { const b=JSON.parse(localStorage.getItem('cypr_admin_announcement')||'null'); if(!b)return; if(b.expiry&&Date.now()>b.expiry){localStorage.removeItem('cypr_admin_announcement');return;} document.getElementById('bnrMsg').value=b.message||''; document.getElementById('bnrType').value=b.type||'info'; document.getElementById('bnrLink').value=b.link||''; document.getElementById('bnrLinkTxt').value=b.linkText||''; document.getElementById('bnrImgUrl').value=b.imageUrl||''; document.getElementById('bnrFullImg').checked=!!b.fullImage; updBnr(); showABnr(b); syncStats(); }
 function showABnr(b) { const clrs={info:'var(--blue)',success:'var(--lime)',warning:'var(--yellow)',critical:'var(--red)'}; document.getElementById('aBnrInfo').innerHTML=`<div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:${clrs[b.type]};box-shadow:0 0 6px ${clrs[b.type]}"></div><span style="font-size:.85rem;font-weight:700">${b.fullImage ? 'Full Image Graphic' : b.message}</span></div><div style="font-size:.75rem;color:var(--text3)">Published: ${new Date(b.publishedAt).toLocaleString()} · Expires: ${b.expiry?new Date(b.expiry).toLocaleString():'Never'}</div></div>`; }
+
+// ── Homepage Featured Banner (Carousel Card) ──
+function updFeatBnr() {
+  const tag = document.getElementById('fbTag').value.trim() || 'NEW FEATURE';
+  const title = document.getElementById('fbTitle').value.trim() || 'Banner Title here...';
+  const desc = document.getElementById('fbDesc').value.trim() || 'Banner description here...';
+  const imgUrl = document.getElementById('fbImgUrl').value.trim();
+
+  document.getElementById('fbPrevTag').textContent = tag;
+  document.getElementById('fbPrevTitle').textContent = title;
+  document.getElementById('fbPrevDesc').textContent = desc;
+
+  const prev = document.getElementById('fbPrev');
+  if (prev) {
+    if (imgUrl) {
+      prev.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url(${imgUrl})`;
+      prev.style.backgroundSize = 'cover';
+      prev.style.backgroundPosition = 'center';
+      prev.style.backgroundRepeat = 'no-repeat';
+    } else {
+      prev.style.backgroundImage = 'linear-gradient(135deg, #120e0c 0%, #2b201a 100%)';
+    }
+  }
+}
+function pubFeatBnr() {
+  const tag = document.getElementById('fbTag').value.trim() || 'ANNOUNCEMENT';
+  const title = document.getElementById('fbTitle').value.trim();
+  const desc = document.getElementById('fbDesc').value.trim();
+  const imgUrl = document.getElementById('fbImgUrl').value.trim();
+  const link = document.getElementById('fbLink').value.trim();
+
+  if (!title || !desc) { toast('Please fill in title and description.', 'err'); return; }
+
+  const fb = {
+    active: true,
+    tag,
+    title,
+    desc,
+    imageUrl: imgUrl || null,
+    link: link || null,
+    publishedAt: Date.now()
+  };
+
+  localStorage.setItem('cypr_admin_featured_banner', JSON.stringify(fb));
+  showAFeatBnr(fb);
+  syncStats();
+  addLog('success', `Homepage Featured Banner "<strong>${title.slice(0,30)}</strong>" published`);
+  toast('Homepage Banner published!', 'ok');
+}
+function rmFeatBnr() {
+  openConf('danger', 'Remove Homepage Banner?', 'This will remove the custom featured banner from the homepage.', () => {
+    closeConf();
+    localStorage.removeItem('cypr_admin_featured_banner');
+    document.getElementById('aFeatBnrInfo').innerHTML = '<div class="empty"><p>No active homepage banner set</p></div>';
+    syncStats();
+    addLog('warning', 'Homepage featured banner removed');
+    toast('Homepage Banner removed.', 'inf');
+  });
+}
+function restFeatBnr() {
+  const fb = JSON.parse(localStorage.getItem('cypr_admin_featured_banner') || 'null');
+  if (!fb) return;
+  document.getElementById('fbTag').value = fb.tag || '';
+  document.getElementById('fbTitle').value = fb.title || '';
+  document.getElementById('fbDesc').value = fb.desc || '';
+  document.getElementById('fbImgUrl').value = fb.imageUrl || '';
+  document.getElementById('fbLink').value = fb.link || '';
+  updFeatBnr();
+  showAFeatBnr(fb);
+  syncStats();
+}
+function showAFeatBnr(fb) {
+  document.getElementById('aFeatBnrInfo').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent)"></div>
+        <span style="font-size:.85rem;font-weight:700">[${fb.tag || 'NEW'}] ${fb.title}</span>
+      </div>
+      <div style="font-size:.75rem;color:var(--text3)">Published: ${new Date(fb.publishedAt).toLocaleString()}</div>
+    </div>
+  `;
+}
 
 // ── Users ──
 async function loadUsers() {
