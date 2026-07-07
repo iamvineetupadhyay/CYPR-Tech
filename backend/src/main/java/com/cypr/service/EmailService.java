@@ -240,7 +240,7 @@ public class EmailService {
         boolean success = false;
         String lastError = null;
 
-        if (apiKey == null || apiKey.isBlank()) {
+        if (apiKey == null || apiKey.isBlank() || "APNA_KEY_YAHAN_DAALO".equals(apiKey)) {
             // Extract the actionable link from html for local testing convenience
             String actionLink = extractFirstHref(htmlContent);
 

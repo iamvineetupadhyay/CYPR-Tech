@@ -87,7 +87,7 @@
       position: absolute;
       top: -80px; right: -80px;
       width: 320px; height: 320px;
-      background: radial-gradient(circle, rgba(59,130,246,.08) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(249, 115, 22,.08) 0%, transparent 70%);
       pointer-events: none;
     }
     .hero-left { position: relative; z-index: 1; }
@@ -101,11 +101,11 @@
     .hero-tag svg { width: 9px; height: 9px; }
     .hero-left h1 { font-size: 2.4rem; font-weight: 900; letter-spacing: -.02em; line-height: 1.1; margin-bottom: 10px; }
     .hero-left h1 span {
-      background: linear-gradient(135deg, #a78bfa, #3b82f6, #60a5fa);
+      background: linear-gradient(135deg, #f97316, #f97316, #fdba74);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     html[data-theme="light"] .hero-left h1 span {
-      background: linear-gradient(135deg, #7c3aed, #2563eb, #3b82f6);
+      background: linear-gradient(135deg, #e05a00, #f97316, #f97316);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     .hero-left p { font-size: .88rem; color: var(--text2); line-height: 1.6; max-width: 480px; }
@@ -113,9 +113,9 @@
 
     /* Shield Graphic */
     .hero-shield { position: relative; z-index: 1; width: 130px; height: 130px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .shield-glow { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(59,130,246,.25) 0%, transparent 70%); animation: pulse 3s infinite; }
+    .shield-glow { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(249, 115, 22,.25) 0%, transparent 70%); animation: pulse 3s infinite; }
     .shield-rings { position: absolute; width: 130px; height: 130px; }
-    .hero-shield svg.shield-icon { width: 80px; height: 80px; position: relative; z-index: 2; filter: drop-shadow(0 0 12px rgba(59,130,246,.5)); }
+    .hero-shield svg.shield-icon { width: 80px; height: 80px; position: relative; z-index: 2; filter: drop-shadow(0 0 12px rgba(249, 115, 22,.5)); }
 
     /* Safe Score Panel */
     .hero-score-panel {
@@ -146,7 +146,7 @@
     .risk-label-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
     .risk-label { font-family: var(--mono); font-size: .55rem; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; }
     .risk-bar-track { height: 4px; background: var(--border); border-radius: 100px; overflow: hidden; margin-top: 4px; }
-    .risk-bar-fill { height: 100%; background: linear-gradient(90deg, #ef4444, #fbbf24, #10b981, #3b82f6); border-radius: 100px; transition: width 1.6s cubic-bezier(.4,0,.2,1); width: 0%; }
+    .risk-bar-fill { height: 100%; background: linear-gradient(90deg, #ef4444, #fbbf24, #10b981, #f97316); border-radius: 100px; transition: width 1.6s cubic-bezier(.4,0,.2,1); width: 0%; }
 
     /* ══ STAT STRIP ══ */
     .stat-strip {
@@ -188,7 +188,7 @@
       transition: all .2s; text-decoration: none; color: inherit; position: relative;
     }
     .tool-card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,0,0,.06); }
-    html[data-theme="dark"] .tool-card:hover { box-shadow: 0 6px 24px rgba(59,130,246,.06); border-color: rgba(59,130,246,.25); }
+    html[data-theme="dark"] .tool-card:hover { box-shadow: 0 6px 24px rgba(249, 115, 22,.06); border-color: rgba(249, 115, 22,.25); }
     .tc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
     .tc-icon-box { width: 42px; height: 42px; border-radius: 10px; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; }
     .tc-icon-box svg { width: 20px; height: 20px; }
@@ -234,7 +234,7 @@
     .chart-legend { display: flex; gap: 14px; margin-bottom: 14px; }
     .legend-dot { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: .6rem; color: var(--text3); }
     .legend-dot::before { content: '●'; font-size: .7rem; }
-    .legend-dot.scans::before { color: #3b82f6; }
+    .legend-dot.scans::before { color: #f97316; }
     .legend-dot.threats::before { color: #f87171; }
     .legend-dot.blocked::before { color: #34d399; }
     .chart-svg-wrap { width: 100%; overflow: visible; }
@@ -416,19 +416,19 @@
     <div class="hero-shield">
       <div class="shield-glow"></div>
       <svg class="shield-rings" viewBox="0 0 130 130" fill="none">
-        <circle cx="65" cy="65" r="60" stroke="rgba(59,130,246,0.08)" stroke-width="1"/>
-        <circle cx="65" cy="65" r="48" stroke="rgba(59,130,246,0.12)" stroke-width="1"/>
-        <circle cx="65" cy="65" r="36" stroke="rgba(59,130,246,0.15)" stroke-width="1"/>
+        <circle cx="65" cy="65" r="60" stroke="rgba(249, 115, 22,0.08)" stroke-width="1"/>
+        <circle cx="65" cy="65" r="48" stroke="rgba(249, 115, 22,0.12)" stroke-width="1"/>
+        <circle cx="65" cy="65" r="36" stroke="rgba(249, 115, 22,0.15)" stroke-width="1"/>
       </svg>
       <svg class="shield-icon" viewBox="0 0 24 24" fill="none">
         <defs>
           <linearGradient id="shieldGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#3b82f6"/>
-            <stop offset="50%" stop-color="#60a5fa"/>
+            <stop offset="0%" stop-color="#f97316"/>
+            <stop offset="50%" stop-color="#fdba74"/>
             <stop offset="100%" stop-color="#10b981"/>
           </linearGradient>
         </defs>
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shieldGrad)" style="filter:drop-shadow(0 0 8px rgba(59,130,246,.5))"/>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shieldGrad)" style="filter:drop-shadow(0 0 8px rgba(249, 115, 22,.5))"/>
         <polyline points="9 12 11 14 15 10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </div>
@@ -446,7 +446,7 @@
               <stop offset="0%" stop-color="#ef4444"/>
               <stop offset="35%" stop-color="#fbbf24"/>
               <stop offset="75%" stop-color="#10b981"/>
-              <stop offset="100%" stop-color="#3b82f6"/>
+              <stop offset="100%" stop-color="#f97316"/>
             </linearGradient>
           </defs>
           <path d="M 12 60 A 48 48 0 0 1 108 60" fill="none" stroke="var(--bg3)" stroke-width="10" stroke-linecap="round"/>
@@ -543,8 +543,8 @@
         <div class="tools-grid">
           <a href="url-check.html" class="tool-card">
             <div class="tc-top">
-              <div class="tc-icon-box" style="background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.2);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <div class="tc-icon-box" style="background:rgba(249, 115, 22,.1);border-color:rgba(249, 115, 22,.2);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               </div>
               <button class="pin-btn" data-key="url-check" onclick="togglePin('url-check', event)" title="Pin Tool">☆</button>
             </div>
@@ -645,8 +645,8 @@
         <svg viewBox="0 0 340 110" class="chart-svg-wrap" preserveAspectRatio="none" style="height:110px;">
           <defs>
             <linearGradient id="scansGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.2"/>
-              <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+              <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
+              <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
             </linearGradient>
             <linearGradient id="threatsGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#f87171" stop-opacity="0.15"/>
@@ -677,8 +677,8 @@
           <text x="286" y="110" font-size="7" fill="var(--text3)" font-family="monospace">May 12</text>
           <!-- Scans area -->
           <path d="M 22 78 C 50 62 85 40 107 48 S 160 28 192 20 S 250 15 320 18 L 320 100 L 22 100 Z" fill="url(#scansGrad)"/>
-          <path d="M 22 78 C 50 62 85 40 107 48 S 160 28 192 20 S 250 15 320 18" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="320" cy="18" r="3" fill="#3b82f6" style="filter:drop-shadow(0 0 4px #3b82f6)"/>
+          <path d="M 22 78 C 50 62 85 40 107 48 S 160 28 192 20 S 250 15 320 18" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="320" cy="18" r="3" fill="#f97316" style="filter:drop-shadow(0 0 4px #f97316)"/>
           <!-- Threats area -->
           <path d="M 22 90 C 55 85 90 75 107 82 S 155 65 192 70 S 250 60 320 55 L 320 100 L 22 100 Z" fill="url(#threatsGrad)"/>
           <path d="M 22 90 C 55 85 90 75 107 82 S 155 65 192 70 S 250 60 320 55" fill="none" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/>
@@ -1000,12 +1000,12 @@ async function fetchThreatIntel() {
 /* ══ TOP 7 TOOLS ══ */
 function renderTopTools(urlCount=0, passCount=0, malCount=0) {
   const tools = [
-    { icon:'🔍', name:'URL Phishing Checker', count:urlCount, color:'#3b82f6', url:'url-check.html' },
+    { icon:'🔍', name:'URL Phishing Checker', count:urlCount, color:'#f97316', url:'url-check.html' },
     { icon:'🔑', name:'Password Vault', count:passCount, color:'#fbbf24', url:'password-check.html' },
     { icon:'🛡️', name:'Dark Web Monitor', count:malCount, color:'#8b5cf6', url:'#' },
     { icon:'📊', name:'Activity Logs', count:Math.max(urlCount,passCount,malCount)>0?1:0, color:'#34d399', url:'activity-logs.html' },
     { icon:'🕵', name:'Breach Radar', count:0, color:'#f87171', url:'#' },
-    { icon:'🔐', name:'Asset Encryptor', count:0, color:'#a78bfa', url:'#' },
+    { icon:'🔐', name:'Asset Encryptor', count:0, color:'#f97316', url:'#' },
   ].sort((a,b)=>b.count-a.count);
 
   const maxC = Math.max(1, tools[0].count);

@@ -12,87 +12,86 @@
 
     /* ── GLOBAL THEME VARIABLE OVERRIDES ── */
     html[data-theme="light"] {
-      --logo-fill: #0B192C; /* Deep Royal Blue / Dark Indigo */
-      --logo-glow-color: rgba(11, 25, 44, 0.15);
-      --bg: #ffffff;
-      --bg2: #f8fafc;
-      --bg3: #f1f5f9;
-      --bg4: #e2e8f0;
+      --logo-fill: #e05a00; /* Burnt Orange matching brand logo */
+      --logo-glow-color: rgba(224, 90, 0, 0.15);
+      --bg: #ffffff; /* Crisp white background */
+      --bg2: #ffffff;
+      --bg3: #ffffff;
+      --bg4: #ffffff;
       --surface: #ffffff;
-      --surface2: #f8fafc;
-      --surface3: #f1f5f9;
+      --surface2: #ffffff;
+      --surface3: #ffffff;
       --card: #ffffff;
-      --card2: #f8fafc;
-      --border: #e2e8f0;
-      --border2: #cbd5e1;
-      --border-bright: #cbd5e1;
-      --accent: #1e40af; /* Sleek corporate blue */
-      --accent2: #3b82f6;
+      --card2: #ffffff;
+      --border: #000000; /* Black borders */
+      --border2: #000000;
+      --border-bright: #000000;
+      --accent: #e05a00; /* Sleek brand orange */
+      --accent2: #f97316;
       --accent3: #ef4444;
-      --accent-dim: rgba(30, 64, 175, 0.08);
-      --lime: #1e40af;
-      --lime2: #3b82f6;
-      --lime-dim: rgba(30, 64, 175, 0.08);
-      --lime-glow: rgba(30, 64, 175, 0.15);
-      --green: #10b981;
-      --green-dim: rgba(16, 185, 129, 0.12);
+      --accent-dim: rgba(224, 90, 0, 0.08);
+      --lime: #e05a00;
+      --lime2: #f97316;
+      --lime-dim: rgba(224, 90, 0, 0.08);
+      --lime-glow: rgba(224, 90, 0, 0.15);
+      --green: #00b85c;
+      --green-dim: rgba(0, 184, 92, 0.12);
       --red: #ef4444;
       --red-dim: rgba(239, 68, 68, 0.10);
       --amber: #f59e0b;
       --amber-dim: rgba(245, 158, 11, 0.08);
       --warn: #f59e0b;
       --warn-dim: rgba(245, 158, 11, 0.08);
-      --blue: #3b82f6;
-      --text: #0f172a; /* Slate 900 */
-      --text2: #475569; /* Slate 600 */
-      --text3: #94a3b8; /* Slate 400 */
-      --text-dim: #4b5563;
-      --text-muted: #6b7280;
+      --blue: #f97316;
+      --text: #000000; /* Pure black text */
+      --text2: #000000;
+      --text3: #000000;
+      --text-dim: #000000;
+      --text-muted: #000000;
       --shadow: rgba(0, 0, 0, 0.05);
       --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
-      --nav-bg: rgba(255, 255, 255, 0.88);
+      --nav-bg: rgba(255, 255, 255, 0.95);
     }
     html[data-theme="dark"] {
-      --logo-fill: #00FF66; /* Exact bright Neon Green */
-      --logo-glow-color: rgba(0, 255, 102, 0.4);
-      --bg: #030712;
-
-      --bg2: #080f25;
-      --bg3: #111e3b;
-      --bg4: #1e293b;
-      --surface: rgba(8, 15, 37, 0.65);
-      --surface2: rgba(12, 22, 52, 0.85);
-      --surface3: #111e3b;
-      --card: rgba(8, 15, 37, 0.65);
-      --card2: rgba(12, 22, 52, 0.85);
-      --border: #111e3b;
-      --border2: #1e3a8a;
-      --border-bright: #1e3a8a;
-      --accent: #3b82f6; /* Premium Cobalt Blue */
-      --accent2: #60a5fa;
+      --logo-fill: #e05a00; /* Burnt Orange matching brand logo */
+      --logo-glow-color: rgba(224, 90, 0, 0.4);
+      --bg: #0a0a0a; /* Premium deep black matching logo background */
+      --bg2: #120e0c; /* Deep warm black/charcoal */
+      --bg3: #1c1613;
+      --bg4: #2b201a;
+      --surface: rgba(18, 14, 12, 0.65);
+      --surface2: rgba(28, 22, 19, 0.85);
+      --surface3: #1c1613;
+      --card: rgba(18, 14, 12, 0.65);
+      --card2: rgba(28, 22, 19, 0.85);
+      --border: #1c1613;
+      --border2: #2b201a;
+      --border-bright: #3a2d24;
+      --accent: #e05a00; /* Burnt Orange */
+      --accent2: #f97316;
       --accent3: #ff4444;
-      --accent-dim: rgba(59, 130, 246, 0.12);
-      --lime: #3b82f6;
-      --lime2: #60a5fa;
-      --lime-dim: rgba(59, 130, 246, 0.12);
-      --lime-glow: rgba(59, 130, 246, 0.25);
-      --green: #34d399;
-      --green-dim: rgba(52, 211, 153, 0.1);
+      --accent-dim: rgba(224, 90, 0, 0.12);
+      --lime: #e05a00;
+      --lime2: #f97316;
+      --lime-dim: rgba(224, 90, 0, 0.12);
+      --lime-glow: rgba(224, 90, 0, 0.25);
+      --green: #00b85c; /* Brand matching safe green */
+      --green-dim: rgba(0, 184, 92, 0.12);
       --red: #f87171;
       --red-dim: rgba(248, 113, 113, 0.1);
       --amber: #fbbf24;
       --amber-dim: rgba(251, 191, 36, 0.1);
       --warn: #fbbf24;
       --warn-dim: rgba(251, 191, 36, 0.1);
-      --blue: #60a5fa;
-      --text: #f3f4f6;
-      --text2: #9ca3af;
-      --text3: #6b7280;
-      --text-dim: #9ca3af;
-      --text-muted: #6b7280;
-      --shadow: rgba(0, 0, 0, 0.45);
-      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.45);
-      --nav-bg: rgba(3, 7, 18, 0.85);
+      --blue: #f97316;
+      --text: #f5f2f0;
+      --text2: #b5adab;
+      --text3: #7d7573;
+      --text-dim: #b5adab;
+      --text-muted: #7d7573;
+      --shadow: rgba(0, 0, 0, 0.60);
+      --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.60);
+      --nav-bg: rgba(10, 10, 10, 0.85);
     }
 
     body {
@@ -184,7 +183,7 @@
     }
     .log-dot.blue {
       background: var(--blue-dim) !important;
-      border-color: rgba(59, 130, 246, 0.25) !important;
+      border-color: rgba(249, 115, 22, 0.25) !important;
     }
     .log-dot.blue svg {
       color: var(--blue) !important;
@@ -312,6 +311,48 @@
       border-bottom: 1px solid var(--border);
       width: 100%;
       box-sizing: border-box;
+      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+    }
+    /* Transparent state at the top for landing/public pages when not scrolled */
+    html[data-theme="light"] .cm-header-container:not(.scrolled) {
+      background: transparent !important;
+      border-bottom-color: rgba(255, 255, 255, 0.15) !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    /* When not scrolled, light theme text "CYPR" should be white */
+    html[data-theme="light"] .cm-header-container:not(.scrolled) .cm-nav-logo span {
+      color: #ffffff !important;
+    }
+    /* Scroll down state: light theme text "CYPR" should turn black */
+    html[data-theme="light"] .cm-header-container.scrolled .cm-nav-logo span {
+      color: #000000 !important;
+    }
+    /* Light theme nav links white at the top, black/dark when scrolled */
+    html[data-theme="light"] .cm-header-container:not(.scrolled) .cm-nav-tab {
+      color: rgba(255, 255, 255, 0.85) !important;
+    }
+    html[data-theme="light"] .cm-header-container:not(.scrolled) .cm-nav-tab svg {
+      color: rgba(255, 255, 255, 0.65) !important;
+    }
+    html[data-theme="light"] .cm-header-container.scrolled .cm-nav-tab {
+      color: var(--text2) !important;
+    }
+    html[data-theme="light"] .cm-header-container.scrolled .cm-nav-tab svg {
+      color: var(--text3) !important;
+    }
+    
+    /* Guest/Auth buttons at the top in light theme */
+    html[data-theme="light"] .cm-header-container:not(.scrolled) .cm-btn-ghost {
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.35) !important;
+      background: transparent !important;
+    }
+    html[data-theme="light"] .cm-header-container:not(.scrolled) .cm-btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+      border-color: #ffffff !important;
+      color: #ffffff !important;
     }
     .cm-top-tier {
       display: flex;
@@ -364,15 +405,26 @@
     }
     .cm-nav-search-container input {
       width: 100%;
-      background: var(--bg3) !important;
-      border: 1px solid var(--border) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
       border-radius: 6px !important;
       padding: 6px 12px 6px 30px !important;
       font-family: var(--font-mono, monospace) !important;
       font-size: 0.72rem !important;
-      color: var(--text) !important;
+      color: #ffffff !important;
       outline: none !important;
       transition: all 0.2s ease !important;
+    }
+    .cm-nav-search-container input::placeholder {
+      color: rgba(255, 255, 255, 0.55) !important;
+    }
+    html[data-theme="light"] .cm-nav-search-container input {
+      background: rgba(0, 0, 0, 0.04) !important;
+      border: 1px solid rgba(0, 0, 0, 0.3) !important;
+      color: #000000 !important;
+    }
+    html[data-theme="light"] .cm-nav-search-container input::placeholder {
+      color: rgba(0, 0, 0, 0.5) !important;
     }
     .cm-nav-search-container input:focus {
       border-color: var(--lime) !important;
@@ -386,11 +438,14 @@
       transform: translateY(-50%);
       width: 12px;
       height: 12px;
-      color: var(--text3);
+      color: rgba(255, 255, 255, 0.55) !important;
       pointer-events: none;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    html[data-theme="light"] .cm-nav-search-icon {
+      color: rgba(0, 0, 0, 0.5) !important;
     }
     .cm-nav-search-icon svg {
       width: 100%;
@@ -403,12 +458,17 @@
       transform: translateY(-50%);
       font-family: var(--mono, monospace);
       font-size: 0.55rem;
-      color: var(--text3);
-      background: var(--bg4);
-      border: 1px solid var(--border);
+      color: rgba(255, 255, 255, 0.55) !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
       padding: 1px 5px;
       border-radius: 3px;
       pointer-events: none;
+    }
+    html[data-theme="light"] .cm-nav-search-kbd {
+      color: rgba(0, 0, 0, 0.5) !important;
+      background: rgba(0, 0, 0, 0.05) !important;
+      border: 1px solid rgba(0, 0, 0, 0.15) !important;
     }
     
     .cm-right-group {
@@ -930,9 +990,9 @@
       overflow: hidden !important;
     }
     html[data-theme="light"] {
-      --footer-watermark-stroke: rgba(11, 25, 44, 0.08);
+      --footer-watermark-stroke: rgba(0, 0, 0, 0.08);
       --footer-accent-color: var(--lime);
-      --footer-glow: rgba(30, 64, 175, 0.12);
+      --footer-glow: rgba(224, 90, 0, 0.12);
     }
     html[data-theme="dark"] {
       --footer-watermark-stroke: rgba(0, 255, 102, 0.08);
@@ -1799,21 +1859,26 @@
       replaceText(mainArea);
     }
 
-    // 3. Define the premium, futuristic reactive SVG logo component for "CYPR Tech"
+    // 3. Define the premium, futuristic reactive SVG logo component for "CYPR" (used in footer)
     const logoSvg = `
       <svg class="cypr-logo" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" style="height: 28px; width: auto; overflow: visible; display: inline-block; vertical-align: middle;">
-        <!-- Futuristic Geometric Icon Prefix -->
-        <polygon points="12,4 4,16 12,28 20,16" fill="var(--logo-fill)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 3px var(--logo-glow-color));" />
-        <polygon points="12,9 7,16 12,23 17,16" fill="var(--bg)" style="transition: fill 0.25s ease;" />
-        <!-- CYPR Tech Futuristic Text -->
-        <text x="28" y="22" font-family="'Orbitron', 'Montserrat', sans-serif" font-weight="900" font-size="16" letter-spacing="1" fill="var(--logo-fill)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 4px var(--logo-glow-color));">CYPR Tech</text>
+        <!-- Futuristic Geometric Icon Prefix matching brand banner -->
+        <polygon points="12,4 4,16 12,28 20,16" fill="#e05a00" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 3px var(--logo-glow-color));" />
+        <polygon points="12,6.5 6,16 12,25.5 18,16" fill="var(--text)" style="transition: fill 0.25s ease;" />
+        <polygon points="12,8.5 8,16 12,23.5 16,16" fill="var(--bg)" style="transition: fill 0.25s ease;" />
+        <!-- CYPR Futuristic Text -->
+        <text x="28" y="22" font-family="'Orbitron', 'Outfit', sans-serif" font-weight="900" font-size="16" letter-spacing="1" fill="var(--text)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 4px var(--logo-glow-color));">CYPR</text>
       </svg>
     `;
 
     // 4. Inject logo SVG into all branding classes
     const logoElements = document.querySelectorAll('.nav-logo, .logo, .auth-brand, .sb-logo, .footer-logo, .cm-nav-logo');
     logoElements.forEach((el) => {
-      el.innerHTML = logoSvg;
+      if (el.classList.contains('footer-logo')) {
+        el.innerHTML = logoSvg;
+      } else {
+        el.innerHTML = `<span style="font-family: 'Orbitron', 'Outfit', sans-serif; font-weight: 900; font-size: 20px; letter-spacing: 0.5px; color: var(--text); transition: color 0.25s ease; display: inline-block; vertical-align: middle;">CYPR</span>`;
+      }
 
       // Clean up classes/structure that are obsolete
       el.className = el.className.replace(/\b(has-logo)\b/g, '');
@@ -2179,6 +2244,22 @@
 
     // Set up search box spotlight hooks inside navbar
     setupSpotlightSearch();
+
+    // Scroll state sync for header styling over hero section
+    const hasHeroVideo = document.querySelector('.hero-video-container') !== null;
+    if (hasHeroVideo) {
+      const handleScroll = () => {
+        if (window.scrollY > 50) {
+          headerContainer.classList.add('scrolled');
+        } else {
+          headerContainer.classList.remove('scrolled');
+        }
+      };
+      window.addEventListener('scroll', handleScroll);
+      handleScroll();
+    } else {
+      headerContainer.classList.add('scrolled');
+    }
   }
 
   // Dynamic premium footer implementation
@@ -2207,12 +2288,13 @@
       <div class="cm-footer-top-row">
         <div class="cm-footer-logo-desc">
           <div class="footer-logo">
-            <svg class="cypr-logo" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" style="height: 38px; width: auto; overflow: visible; display: inline-block; vertical-align: middle;">
-              <!-- Futuristic Geometric Icon Prefix -->
-              <polygon points="12,4 4,16 12,28 20,16" fill="var(--logo-fill)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 3px var(--logo-glow-color));" />
-              <polygon points="12,9 7,16 12,23 17,16" fill="var(--bg)" style="transition: fill 0.25s ease;" />
+            <svg class="cypr-logo" viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg" style="height: 52px; width: auto; overflow: visible; display: inline-block; vertical-align: middle;">
+              <!-- Futuristic Geometric Icon Prefix matching brand banner -->
+              <polygon points="12,4 4,16 12,28 20,16" fill="#e05a00" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 3px var(--logo-glow-color));" />
+              <polygon points="12,6.5 6,16 12,25.5 18,16" fill="var(--text)" style="transition: fill 0.25s ease;" />
+              <polygon points="12,8.5 8,16 12,23.5 16,16" fill="var(--bg)" style="transition: fill 0.25s ease;" />
               <!-- CYPR Futuristic Text -->
-              <text x="28" y="22" font-family="'Orbitron', 'Montserrat', sans-serif" font-weight="900" font-size="16" letter-spacing="1" fill="var(--logo-fill)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 4px var(--logo-glow-color));">CYPR</text>
+              <text x="28" y="22" font-family="'Orbitron', 'Outfit', sans-serif" font-weight="900" font-size="16" letter-spacing="1" fill="var(--text)" style="transition: fill 0.25s ease; filter: drop-shadow(0 0 4px var(--logo-glow-color));">CYPR</text>
             </svg>
           </div>
           <p>Enterprise-grade cybersecurity protection for organizations that refuse to compromise on digital safety.</p>
@@ -2327,9 +2409,9 @@
     function updatePill() {
       if (toggle.checked) {
         enginePill.textContent = '🚀 Powered by VirusTotal';
-        enginePill.style.color = '#3b82f6';
-        enginePill.style.borderColor = 'rgba(59, 130, 246, 0.4)';
-        enginePill.style.background = 'rgba(59, 130, 246, 0.08)';
+        enginePill.style.color = '#f97316';
+        enginePill.style.borderColor = 'rgba(249, 115, 22, 0.4)';
+        enginePill.style.background = 'rgba(249, 115, 22, 0.08)';
       } else {
         enginePill.textContent = '⚡ Powered by VAJRA';
         enginePill.style.color = 'var(--lime)';
@@ -3310,17 +3392,12 @@
       }
       #guestRestrictionModal .modal-shield-icon {
         width: 42px; height: 42px;
-        background: rgba(30, 64, 175, 0.06);
-        border: 1px solid rgba(30, 64, 175, 0.15);
+        background: var(--lime-dim);
+        border: 1px solid var(--lime-glow);
         border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
-        color: #1e40af;
+        color: var(--lime);
         flex-shrink: 0;
-      }
-      html[data-theme="dark"] #guestRestrictionModal .modal-shield-icon {
-        background: rgba(200, 255, 0, 0.06);
-        border: 1px solid rgba(200, 255, 0, 0.18);
-        color: #c8ff00;
       }
       #guestRestrictionModal .modal-title {
         font-family: var(--font, 'Outfit', sans-serif);
@@ -3340,39 +3417,38 @@
         text-transform: none; text-align: center;
       }
       #guestRestrictionModal .btn-primary {
-        background: #1e40af;
-        color: #ffffff !important;
-        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
+        background: var(--lime);
+        color: var(--bg) !important;
+        box-shadow: 0 4px 12px var(--lime-glow);
         flex: 2;
       }
       #guestRestrictionModal .btn-primary:hover {
-        background: #1e3a8a;
+        background: var(--lime2);
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(30, 64, 175, 0.3);
+        box-shadow: 0 6px 16px var(--lime-glow);
       }
       html[data-theme="dark"] #guestRestrictionModal .btn-primary {
-        background: #c8ff00;
-        color: #0a0a0a !important;
-        box-shadow: 0 4px 12px rgba(200, 255, 0, 0.2);
+        background: var(--lime);
+        color: var(--bg) !important;
+        box-shadow: 0 4px 12px var(--lime-glow);
       }
       html[data-theme="dark"] #guestRestrictionModal .btn-primary:hover {
-        background: #c8ff00;
-        opacity: 0.9;
-        box-shadow: 0 6px 16px rgba(200, 255, 0, 0.35);
+        background: var(--lime2);
+        box-shadow: 0 6px 16px var(--lime-glow);
       }
       #guestRestrictionModal .btn-ghost {
-        color: #1e40af;
-        border-color: #cbd5e1;
+        color: var(--lime);
+        border-color: var(--border2);
         background: transparent;
         flex: 1;
       }
       #guestRestrictionModal .btn-ghost:hover {
-        border-color: #1e40af;
-        background: #f8fafc;
+        border-color: var(--lime);
+        background: var(--bg2);
       }
       html[data-theme="dark"] #guestRestrictionModal .btn-ghost {
-        color: #f2f2f2;
-        border-color: rgba(255, 255, 255, 0.15);
+        color: var(--text);
+        border-color: var(--border);
       }
       html[data-theme="dark"] #guestRestrictionModal .btn-ghost:hover {
         border-color: #f2f2f2;
@@ -3485,12 +3561,12 @@
       }
       #pricingComingSoonModal .modal-icon-wrapper {
         width: 60px; height: 60px;
-        background: rgba(59, 130, 246, 0.08);
-        border: 1px solid rgba(59, 130, 246, 0.2);
+        background: rgba(249, 115, 22, 0.08);
+        border: 1px solid rgba(249, 115, 22, 0.2);
         border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         margin: 0 auto 20px;
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        box-shadow: 0 0 20px rgba(249, 115, 22, 0.1);
       }
       html[data-theme="dark"] #pricingComingSoonModal .modal-icon-wrapper {
         background: rgba(200, 255, 0, 0.06);
@@ -3502,7 +3578,7 @@
         font-size: 1.6rem; font-weight: 800;
         color: var(--text, #0f172a);
         margin-bottom: 8px;
-        background: linear-gradient(135deg, #3b82f6, #10b981);
+        background: linear-gradient(135deg, #f97316, #10b981);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -3511,9 +3587,9 @@
         display: inline-block;
         font-family: var(--mono, monospace);
         font-size: 0.6rem; font-weight: 700;
-        color: #3b82f6;
-        background: rgba(59, 130, 246, 0.1);
-        border: 1px solid rgba(59, 130, 246, 0.2);
+        color: #f97316;
+        background: rgba(249, 115, 22, 0.1);
+        border: 1px solid rgba(249, 115, 22, 0.2);
         padding: 3px 12px; border-radius: 100px;
         text-transform: uppercase; letter-spacing: 0.1em;
         margin-bottom: 20px;
@@ -3532,18 +3608,18 @@
         color: #94a3b8;
       }
       #pricingComingSoonModal .btn-primary {
-        background: #1e40af;
+        background: #e05a00;
         color: #ffffff !important;
-        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
+        box-shadow: 0 4px 12px rgba(224, 90, 0, 0.2);
         width: 100%; min-height: 46px;
         border-radius: 10px; font-weight: 600;
         font-size: 0.9rem;
         cursor: pointer; transition: all 0.2s ease; border: 1px solid transparent;
       }
       #pricingComingSoonModal .btn-primary:hover {
-        background: #1e3a8a;
+        background: #c24e00;
         transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(30, 64, 175, 0.3);
+        box-shadow: 0 6px 16px rgba(224, 90, 0, 0.3);
       }
       html[data-theme="dark"] #pricingComingSoonModal .btn-primary {
         background: #c8ff00;
@@ -3564,7 +3640,7 @@
       <div class="modal">
         <button class="modal-close" onclick="window.closePricingModal()">✕</button>
         <div class="modal-icon-wrapper">
-          <span style="font-size: 1.8rem; filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.4));">👑</span>
+          <span style="font-size: 1.8rem; filter: drop-shadow(0 0 5px rgba(249, 115, 22, 0.4));">👑</span>
         </div>
         <div class="modal-title">Pricing Coming Soon</div>
         <div class="modal-badge">Free Beta Testing Phase</div>
