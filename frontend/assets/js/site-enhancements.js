@@ -1292,6 +1292,18 @@
       transform: scale(1.05);
       box-shadow: 0 0 12px var(--lime-glow);
     }
+    .cm-header-container:not(.scrolled) .cm-theme-toggle {
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.25) !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      box-shadow: none !important;
+    }
+    .cm-header-container:not(.scrolled) .cm-theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+      border-color: #ffffff !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.2) !important;
+    }
     .cm-theme-toggle svg {
       width: 16px;
       height: 16px;
@@ -3239,20 +3251,14 @@
       }
     }
 
-    // Credits pill click binding for easy test refills (Test Mode Bypass)
+    // Credits pill click binding - redirect to pricing details
     document.querySelectorAll('.cm-credit-pill').forEach(pill => {
       if (!pill.dataset.refillBound) {
         pill.dataset.refillBound = 'true';
         pill.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          localStorage.setItem('cm_user_credits', '50');
-          showToast('Test Mode: Credits refilled to 50.');
-          applyCachedProfile();
-          if (typeof profile !== 'undefined') {
-            profile.credits = 50;
-            if (typeof updateProfileUI === 'function') updateProfileUI();
-          }
+          window.location.href = 'pricing.html';
         });
       }
     });
