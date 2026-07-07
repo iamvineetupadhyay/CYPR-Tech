@@ -794,6 +794,7 @@ function renderGuestState() {
     if (el) { el.textContent='Locked'; el.style.fontSize='1rem'; el.style.color='var(--text3)'; }
   });
   updateProfileUI();
+  renderOverviewChart([], []);
   if (typeof window.showGuestRestrictionModal === 'function') setTimeout(window.showGuestRestrictionModal, 800);
 }
 
@@ -829,10 +830,11 @@ async function fetchProfileData() {
 
       // Fetch activity stats
       let urlCount=0, passCount=0, urlThreats=0, exposedPasswords=0;
+      let acts = [];
       try {
         const actRes = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/${userId}/activity`);
         if (actRes.ok) {
-          const acts = await actRes.json() || [];
+          acts = await actRes.json() || [];
           urlCount = acts.filter(a=>(a.type||'').toLowerCase().includes('url')).length;
           passCount = acts.filter(a=>(a.type||'').toLowerCase().includes('pass')).length;
           urlThreats = acts.filter(a=>(a.type||'').toLowerCase().includes('url')&&a.result==='danger').length;
@@ -875,10 +877,11 @@ async function fetchProfileData() {
       } catch(e) {}
 
       let malCount=0, malThreats=0;
+      let malLogs = [];
       try {
         const malRes = await fetch(`${window.CYPR_TECH_API_BASE}/api/malware/history/${userId}`);
         if (malRes.ok) {
-          const malLogs = await malRes.json()||[];
+          malLogs = await malRes.json()||[];
           malCount = malLogs.length;
           malThreats = malLogs.filter(m=>(m.threatLevel||'CLEAN')!=='CLEAN').length;
         }
@@ -894,6 +897,7 @@ async function fetchProfileData() {
         document.getElementById('passwordsExposedVal').style.color = exposedPasswords > 0 ? 'var(--red)' : 'var(--lime)';
       }
       renderTopTools(urlCount, passCount, malCount);
+      renderOverviewChart(acts, malLogs);
     }
   } catch(err) { console.error('Fetch Error:', err); showToast('Connection to server failed.'); }
 }
@@ -910,6 +914,165 @@ function updateProfileUI() {
     if (profile.avatarSrc) el.innerHTML = `<img src="${profile.avatarSrc}" alt="avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
     else el.innerHTML = init || 'U';
   });
+}
+
+/* ══ DYNAMIC CHART GENERATOR ══ */
+function getBezierPath(points) {
+  if (points.length === 0) return '';
+  let path = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[i];
+    const p1 = points[i+1];
+    const cpX1 = p0.x + (p1.x - p0.x) / 3;
+    const cpY1 = p0.y;
+    const cpX2 = p0.x + 2 * (p1.x - p0.x) / 3;
+    const cpY2 = p1.y;
+    path += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${p1.x} ${p1.y}`;
+  }
+  return path;
+}
+
+function renderOverviewChart(acts, malLogs) {
+  // 1. Determine last 7 days (today, yesterday... 6 days ago)
+  const dateLabels = [];
+  const now = new Date();
+  const dayMs = 24 * 60 * 60 * 1000;
+
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now.getTime() - i * dayMs);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    dateLabels.push(`${months[d.getMonth()]} ${d.getDate()}`);
+  }
+
+  // 2. Group logs by day
+  let scansData = Array(7).fill(0);
+  let threatsData = Array(7).fill(0);
+  let blockedData = Array(7).fill(0);
+
+  const startOf7DaysAgo = new Date(now.getTime() - 6 * dayMs);
+  startOf7DaysAgo.setHours(0, 0, 0, 0);
+
+  // Group acts (URL check, Password check)
+  acts.forEach(act => {
+    const actDate = new Date(act.scannedAt);
+    if (isNaN(actDate.getTime())) return;
+    if (actDate >= startOf7DaysAgo) {
+      const diffDays = Math.floor((now - actDate) / dayMs);
+      if (diffDays >= 0 && diffDays < 7) {
+        const index = 6 - diffDays;
+        scansData[index]++;
+        const sLower = (act.status || '').toLowerCase();
+        if (sLower.includes('malicious') || sLower.includes('phishing') || sLower.includes('danger') || sLower.includes('unsafe')) {
+          threatsData[index]++;
+          blockedData[index]++;
+        } else if (sLower.includes('weak') || sLower.includes('warning') || sLower.includes('compromised')) {
+          blockedData[index]++;
+        }
+      }
+    }
+  });
+
+  // Group malLogs (Malware history)
+  malLogs.forEach(log => {
+    const logDate = new Date(log.scannedAt || log.timestamp);
+    if (isNaN(logDate.getTime())) return;
+    if (logDate >= startOf7DaysAgo) {
+      const diffDays = Math.floor((now - logDate) / dayMs);
+      if (diffDays >= 0 && diffDays < 7) {
+        const index = 6 - diffDays;
+        scansData[index]++;
+        if ((log.threatLevel || 'CLEAN') !== 'CLEAN') {
+          threatsData[index]++;
+          blockedData[index]++;
+        }
+      }
+    }
+  });
+
+  // Fallback to beautiful mock curves if there is zero activity (Guest preview or new accounts)
+  const totalActCount = scansData.reduce((s, c) => s + c, 0);
+  if (totalActCount === 0) {
+    scansData   = [8, 18, 14, 22, 28, 25, 23];
+    blockedData = [5,  8,  7, 12, 14, 12, 11];
+    threatsData = [3,  6,  4,  8, 10,  8,  7];
+  }
+
+  // 3. Find max value to scale Y axis appropriately
+  const maxVal = Math.max(10, ...scansData, ...threatsData, ...blockedData);
+  const ceilMax = Math.ceil(maxVal / 10) * 10;
+  
+  // Y mapping: Y = 100 - (val / ceilMax * 75) [Value 0 is at Y=100, Value ceilMax is at Y=25]
+  const getY = (val) => 100 - (val / ceilMax * 75);
+  const getX = (index) => [22, 70, 118, 166, 214, 262, 310][index];
+
+  // Construct coordinates
+  const scansPoints = scansData.map((val, idx) => ({ x: getX(idx), y: getY(val) }));
+  const threatsPoints = threatsData.map((val, idx) => ({ x: getX(idx), y: getY(val) }));
+  const blockedPoints = blockedData.map((val, idx) => ({ x: getX(idx), y: getY(val) }));
+
+  const scansPath = getBezierPath(scansPoints);
+  const threatsPath = getBezierPath(threatsPoints);
+  const blockedPath = getBezierPath(blockedPoints);
+
+  const scansFill = scansPath ? `${scansPath} L 310 100 L 22 100 Z` : '';
+  const threatsFill = threatsPath ? `${threatsPath} L 310 100 L 22 100 Z` : '';
+  const blockedFill = blockedPath ? `${blockedPath} L 310 100 L 22 100 Z` : '';
+
+  const lastScanPoint = scansPoints[scansPoints.length - 1];
+
+  // Rebuild inner SVG
+  const svgEl = document.querySelector('.chart-svg-wrap');
+  if (!svgEl) return;
+
+  svgEl.innerHTML = `
+    <defs>
+      <linearGradient id="scansGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f97316" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="threatsGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#f87171" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#f87171" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="blockedGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#34d399" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <!-- Grid lines -->
+    <line x1="0" y1="100" x2="340" y2="100" stroke="var(--border)" stroke-width="0.5"/>
+    <line x1="0" y1="75" x2="340" y2="75" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3 3"/>
+    <line x1="0" y1="50" x2="340" y2="50" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3 3"/>
+    <line x1="0" y1="25" x2="340" y2="25" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3 3"/>
+    
+    <!-- Y axis labels -->
+    <text x="2" y="103" font-size="7" fill="var(--text3)" font-family="monospace">0</text>
+    <text x="2" y="78" font-size="7" fill="var(--text3)" font-family="monospace">${(ceilMax / 3).toFixed(0)}</text>
+    <text x="2" y="53" font-size="7" fill="var(--text3)" font-family="monospace">${(2 * ceilMax / 3).toFixed(0)}</text>
+    <text x="2" y="28" font-size="7" fill="var(--text3)" font-family="monospace">${ceilMax}</text>
+    
+    <!-- X axis labels -->
+    <text x="12" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[0]}</text>
+    <text x="60" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[1]}</text>
+    <text x="108" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[2]}</text>
+    <text x="156" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[3]}</text>
+    <text x="204" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[4]}</text>
+    <text x="252" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[5]}</text>
+    <text x="300" y="110" font-size="7" fill="var(--text3)" font-family="monospace">${dateLabels[6]}</text>
+    
+    <!-- Scans area -->
+    ${scansFill ? `<path d="${scansFill}" fill="url(#scansGrad)"/>` : ''}
+    ${scansPath ? `<path d="${scansPath}" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round"/>` : ''}
+    ${lastScanPoint ? `<circle cx="${lastScanPoint.x}" cy="${lastScanPoint.y}" r="3" fill="#f97316" style="filter:drop-shadow(0 0 4px #f97316)"/>` : ''}
+    
+    <!-- Blocked area -->
+    ${blockedFill ? `<path d="${blockedFill}" fill="url(#blockedGrad)"/>` : ''}
+    ${blockedPath ? `<path d="${blockedPath}" fill="none" stroke="#34d399" stroke-width="1.5" stroke-linecap="round"/>` : ''}
+    
+    <!-- Threats area -->
+    ${threatsFill ? `<path d="${threatsFill}" fill="url(#threatsGrad)"/>` : ''}
+    ${threatsPath ? `<path d="${threatsPath}" fill="none" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/>` : ''}
+  `;
 }
 
 /* ══ GAUGE ANIMATION ══ */
