@@ -13,76 +13,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     body.premium-dashboard {
-      /* LIGHT THEME VARIABLES (Premium Corporate Slate) */
-      --bg: #f8fafc;
-      --bg2: #f1f5f9;
-      --bg3: #e2e8f0;
-      --bg4: #cbd5e1;
-      --card: #ffffff;
-      --card-hover: #ffffff;
-      --border: #e2e8f0;
-      --border2: #cbd5e1;
-      --text: #0f172a;
-      --text2: #475569;
-      --text3: #94a3b8;
-      
-      --lime: #f97316; /* Premium Cobalt Blue */
-      --lime2: #f97316;
-      --lime-dim: rgba(249, 115, 22, 0.06);
-      --lime-glow: rgba(249, 115, 22, 0.12);
-      
-      --red: #ef4444;
-      --red-dim: rgba(239, 68, 68, 0.08);
-      --amber: #f59e0b;
-      --amber-dim: rgba(245, 158, 11, 0.08);
-      --blue: #f97316;
-      --green: #10b981;
-      --green-dim: rgba(16, 185, 129, 0.08);
-      
-      --sidebar-w: 210px;
-      --topbar-h: 54px;
-      --font: 'Outfit', sans-serif;
-      --mono: 'JetBrains Mono', monospace;
-      --r: 16px;
-      --r-sm: 10px;
-      --shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
-      --glow-color: rgba(249, 115, 22, 0.15);
-      
-      background: var(--bg) !important;
-      color: var(--text) !important;
-    }
-
-    html[data-theme="dark"] body.premium-dashboard {
-      /* DARK THEME VARIABLES (Futuristic Cyberpunk Command Center) */
-      --bg: #030712;
-      --bg2: #080f25;
-      --bg3: #111e3b;
-      --bg4: #1e293b;
-      --card: rgba(8, 15, 37, 0.65);
-      --card-hover: rgba(12, 22, 52, 0.85);
-      --border: #111e3b;
-      --border2: #c24e00;
-      --text: #f3f4f6;
-      --text2: #9ca3af;
-      --text3: #6b7280;
-      
-      --lime: #f97316;
-      --lime2: #fdba74;
-      --lime-dim: rgba(249, 115, 22, 0.12);
-      --lime-glow: rgba(249, 115, 22, 0.25);
-      
-      --red: #f87171;
-      --red-dim: rgba(248, 113, 113, 0.1);
-      --amber: #fbbf24;
-      --amber-dim: rgba(251, 191, 36, 0.1);
-      --blue: #fdba74;
-      --green: #34d399;
-      --green-dim: rgba(52, 211, 153, 0.1);
-      
-      --shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
-      --glow-color: rgba(249, 115, 22, 0.35);
-      
-      background: radial-gradient(circle at top right, #080f25 0%, #030712 100%) !important;
+      background: var(--bg);
+      color: var(--text);
+      --r: var(--radius, 16px);
+      --r-sm: var(--radius-sm, 10px);
+      --shadow: var(--shadow-lg);
+      --mono: var(--font-mono, 'JetBrains Mono', monospace);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -613,7 +549,7 @@
           <!-- CORE SCANNERS GRID (3 CARDS) -->
           <div class="scanners-grid fu d2">
             <a href="url-check.html" class="qa-card">
-              <div class="qa-icon" style="background:var(--lime-dim);border:1px solid rgba(224, 90, 0,0.2);color:var(--lime);">
+              <div class="qa-icon" style="background:var(--lime-dim);border:1px solid var(--lime-glow);color:var(--lime);">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
               </div>
               <h3>Scan a URL</h3>
@@ -629,7 +565,7 @@
               <span class="qa-go">Analyze Now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
             </a>
             <a href="dashboard.html" class="qa-card">
-              <div class="qa-icon" style="background:rgba(249, 115, 22,0.1);border:1px solid rgba(249, 115, 22,0.2);color:var(--blue);">
+              <div class="qa-icon" style="background:var(--green-dim);border:1px solid rgba(0,184,92,0.2);color:var(--green);">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
               </div>
               <h3>View Dashboard</h3>
@@ -771,10 +707,9 @@
               <svg viewBox="0 0 100 60" class="score-gauge-svg">
                 <defs>
                   <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#ef4444" />     <!-- Red -->
-                    <stop offset="35%" stop-color="#fbbf24" />    <!-- Amber/Yellow -->
-                    <stop offset="75%" stop-color="#10b981" />    <!-- Green -->
-                    <stop offset="100%" stop-color="#f97316" />   <!-- Blue -->
+                    <stop offset="0%" stop-color="#f87171" />     <!-- Red -->
+                    <stop offset="50%" stop-color="#fbbf24" />    <!-- Amber/Yellow -->
+                    <stop offset="100%" stop-color="#34d399" />   <!-- Green -->
                   </linearGradient>
                 </defs>
                 <path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="var(--bg3)" stroke-width="8" stroke-linecap="round" />

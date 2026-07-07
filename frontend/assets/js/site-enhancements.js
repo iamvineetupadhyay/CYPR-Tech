@@ -14,18 +14,18 @@
     html[data-theme="light"] {
       --logo-fill: #e05a00; /* Burnt Orange matching brand logo */
       --logo-glow-color: rgba(224, 90, 0, 0.15);
-      --bg: #ffffff; /* Crisp white background */
-      --bg2: #ffffff;
-      --bg3: #ffffff;
-      --bg4: #ffffff;
+      --bg: #f8fafc; /* Crisp slate white background */
+      --bg2: #f1f5f9;
+      --bg3: #e2e8f0;
+      --bg4: #cbd5e1;
       --surface: #ffffff;
-      --surface2: #ffffff;
-      --surface3: #ffffff;
+      --surface2: #f8fafc;
+      --surface3: #f1f5f9;
       --card: #ffffff;
-      --card2: #ffffff;
-      --border: #000000; /* Black borders */
-      --border2: #000000;
-      --border-bright: #000000;
+      --card2: #f8fafc;
+      --border: #e2e8f0; /* Soft gray borders */
+      --border2: #cbd5e1;
+      --border-bright: #e2e8f0;
       --accent: #e05a00; /* Sleek brand orange */
       --accent2: #f97316;
       --accent3: #ef4444;
@@ -43,14 +43,14 @@
       --warn: #f59e0b;
       --warn-dim: rgba(245, 158, 11, 0.08);
       --blue: #f97316;
-      --text: #000000; /* Pure black text */
-      --text2: #000000;
-      --text3: #000000;
-      --text-dim: #000000;
-      --text-muted: #000000;
-      --shadow: rgba(0, 0, 0, 0.05);
-      --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
-      --nav-bg: rgba(255, 255, 255, 0.95);
+      --text: #0f172a; /* Slate 900 */
+      --text2: #334155; /* Slate 700 */
+      --text3: #64748b; /* Slate 500 */
+      --text-dim: #475569;
+      --text-muted: #64748b;
+      --shadow: rgba(15, 23, 42, 0.04);
+      --shadow-lg: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --nav-bg: rgba(248, 250, 252, 0.95);
     }
     html[data-theme="dark"] {
       --logo-fill: #e05a00; /* Burnt Orange matching brand logo */
