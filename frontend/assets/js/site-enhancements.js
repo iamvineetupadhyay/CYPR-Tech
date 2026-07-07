@@ -1969,6 +1969,10 @@
     ` : '';
 
     const mobileSettingsLinkHtml = userId ? `<a href="settings.html" class="${isActive('settings.html')}">Settings</a>` : '';
+    const userSub = localStorage.getItem('cm_user_subscription') || 'FREE';
+    const userEmail = localStorage.getItem('cm_user_email') || '';
+    const isAdmin = userSub.toUpperCase() === 'ADMIN' || userEmail.includes('admin') || userEmail === 'iamvineetupadhyay@gmail.com';
+    const mobileAdminLinkHtml = (userId && isAdmin) ? `<a href="admin.html" class="${isActive('admin.html')}" style="color:var(--accent);font-weight:600;">Admin Panel</a>` : '';
 
     const navTabs = document.createElement('div');
     navTabs.className = 'cm-nav-tabs';
@@ -2025,6 +2029,7 @@
         <a href="cyber-news.html" class="${isActive('cyber-news.html')}">Cyber News</a>
         <a href="aboutus.html" class="${isActive('aboutus.html')}">About Us</a>
         <a href="contactus.html" class="${isActive('contactus.html')}">Contact</a>
+        ${mobileAdminLinkHtml}
         ${mobileSettingsLinkHtml}
       </div>
       <div class="cm-mobile-actions"></div>
@@ -2136,6 +2141,7 @@
               <span class="email">...</span>
             </div>
             <a href="dashboard.html" class="cm-dropdown-item">📊 Dashboard</a>
+            ${isAdmin ? '<a href="admin.html" class="cm-dropdown-item" style="color:var(--accent);font-weight:600;">🔑 Admin Panel</a>' : ''}
             <a href="settings.html" class="cm-dropdown-item">⚙️ Settings</a>
             <div class="cm-dropdown-divider"></div>
             <div class="cm-dropdown-item logout">🔒 Sign Out</div>
@@ -2151,6 +2157,7 @@
           <span style="font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;margin-right:8px;">Logged In</span>
         </div>
         <a href="dashboard.html" class="cm-btn-accent" style="width:100%;margin-bottom:8px;">Dashboard</a>
+        ${isAdmin ? '<a href="admin.html" class="cm-btn-ghost" style="width:100%;margin-bottom:8px;color:var(--accent);border-color:rgba(249,115,22,0.3)">🔑 Admin Panel</a>' : ''}
         <a href="settings.html" class="cm-btn-ghost" style="width:100%;margin-bottom:8px;">Settings</a>
         <a href="#" class="cm-btn-ghost logout" style="width:100%;color:#ff5555;border-color:rgba(255,85,85,0.2)">🔒 Sign Out</a>
       `;
@@ -2785,12 +2792,18 @@
 
         const ddMenu = document.createElement('div');
         ddMenu.className = 'cm-dropdown-menu';
+        const userSub = localStorage.getItem('cm_user_subscription') || 'FREE';
+        const userEmail = localStorage.getItem('cm_user_email') || '';
+        const isAdmin = userSub.toUpperCase() === 'ADMIN' || userEmail.includes('admin') || userEmail === 'iamvineetupadhyay@gmail.com';
+        const adminLink = isAdmin ? '<a href="admin.html" class="cm-dropdown-item" style="color:var(--accent);font-weight:600;">🔑 Admin Panel</a>' : '';
+
         ddMenu.innerHTML = `
           <div class="cm-dropdown-header">
             <span class="name" id="ddName">Loading profile...</span>
             <span class="email" id="ddEmail">...</span>
           </div>
           <a href="dashboard.html" class="cm-dropdown-item">📊 Dashboard</a>
+          ${adminLink}
           <a href="settings.html" class="cm-dropdown-item">⚙️ Settings</a>
           <div class="cm-dropdown-divider"></div>
           <div class="cm-dropdown-item logout">🔒 Sign Out</div>

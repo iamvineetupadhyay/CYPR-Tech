@@ -451,6 +451,17 @@
 <div class="toast-stack" id="toasts"></div>
 
 <script>
+// Protect admin panel - only allow admins
+(function() {
+  const subType = localStorage.getItem('cm_user_subscription') || 'FREE';
+  const userEmail = localStorage.getItem('cm_user_email') || '';
+  const isAdmin = subType.toUpperCase() === 'ADMIN' || userEmail.includes('admin') || userEmail === 'iamvineetupadhyay@gmail.com';
+  if (!localStorage.getItem('userId') || !isAdmin) {
+    alert('Access Denied: Admin authorization required.');
+    window.location.href = localStorage.getItem('userId') ? 'dashboard.html' : 'login.html';
+  }
+})();
+
 // ── State ──
 let aLog = [], nSent = 0, eSent = 0, nType = 'info', tmpl = 'update';
 let chips = new Set(['all']), pg = 1, PS = 10, users = [], fu = [], sel = new Set();
