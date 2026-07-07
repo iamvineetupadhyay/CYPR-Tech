@@ -843,16 +843,47 @@ async function fetchThreatIntel() {
   
   const newsList = document.getElementById('newsList');
   if (!newsList) return;
+
+  const CACHE_KEY = 'cypr_news_cache';
+  const CACHE_TIME_KEY = 'cypr_news_cache_time';
+  const CACHE_DURATION = 15 * 60 * 1000; // 15 mins cache
   
-  try {
-    const results = await Promise.allSettled(feeds.map(loadFeed));
-    const items = results
-      .filter(r => r.status === 'fulfilled')
-      .flatMap(r => r.value)
-      .filter(Boolean)
-      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+  const cachedData = localStorage.getItem(CACHE_KEY);
+  const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+  const now = Date.now();
+  
+  let items = [];
+  
+  if (cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
+    items = JSON.parse(cachedData);
+  } else {
+    try {
+      const results = await Promise.allSettled(feeds.map(loadFeed));
+      items = results
+        .filter(r => r.status === 'fulfilled')
+        .flatMap(r => r.value)
+        .filter(Boolean)
+        .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
       
-    if (items.length === 0) throw new Error('No items fetched');
+      if (items.length > 0) {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(items));
+        localStorage.setItem(CACHE_TIME_KEY, now.toString());
+      }
+    } catch (err) {
+      console.warn("Threat Intel fetch failed, attempting to read expired cache:", err);
+    }
+  }
+
+  // Render
+  try {
+    if (!items || items.length === 0) {
+      // If we have expired cache, use it as fallback
+      if (cachedData) {
+        items = JSON.parse(cachedData);
+      } else {
+        throw new Error('No items available');
+      }
+    }
     
     newsList.innerHTML = '';
     const activeCount = document.getElementById('intelBadge');

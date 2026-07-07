@@ -298,42 +298,78 @@ const fallbackNews = [
   }
 ];
 
-async function loadNews() {
+async function loadNews(forceRefresh = false) {
   refreshNews.disabled = true;
+  
+  const CACHE_KEY = 'cypr_news_cache';
+  const CACHE_TIME_KEY = 'cypr_news_cache_time';
+  const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes cache
+  
+  const cachedData = localStorage.getItem(CACHE_KEY);
+  const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+  const now = Date.now();
+  
+  if (!forceRefresh && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
+    const items = JSON.parse(cachedData);
+    newsStatus.textContent = `${items.length} articles loaded from cache (auto-refreshes in ${Math.round((CACHE_DURATION - (now - cachedTime)) / 60000)}m)`;
+    renderNews(items);
+    refreshNews.disabled = false;
+    return;
+  }
+  
   newsStatus.textContent = 'Loading latest cyber news...';
   newsGrid.innerHTML = '<div class="news-empty">Fetching latest RSS items...</div>';
   
+  // Construct promises for all feeds individually
+  const feedPromises = feeds.map(async (feed) => {
+    try {
+      return await loadFeed(feed);
+    } catch (err) {
+      console.warn(`Feed ${feed.name} failed:`, err);
+      return null;
+    }
+  });
+
   let items = [];
-  let settled = [];
+  let succeededFeedsCount = 0;
   try {
-    settled = await Promise.race([
-      Promise.allSettled(feeds.map(loadFeed)),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 3500))
+    // Load all feeds concurrently with a 6-second timeout limit
+    const results = await Promise.race([
+      Promise.all(feedPromises),
+      new Promise((resolve) => setTimeout(() => resolve(null), 6000))
     ]);
     
-    items = settled
-      .filter(r => r.status === 'fulfilled')
-      .flatMap(r => r.value)
-      .filter(Boolean)
-      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
-      .slice(0, 18);
+    if (results) {
+      succeededFeedsCount = results.filter(Boolean).length;
+      items = results.filter(Boolean).flat().sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+    } else {
+      // Gather whatever completed in background if possible, otherwise empty
+      console.warn("Feed fetch timed out at 6s limit.");
+    }
   } catch (err) {
-    console.warn("RSS feed fetch timed out or failed:", err);
+    console.error("News load error:", err);
   }
   
   if (!items || items.length === 0) {
-    console.log("Using fallback threat intelligence news...");
-    items = fallbackNews;
-    newsStatus.textContent = 'Loaded offline curated threat intelligence feeds (fallback)';
+    const backupCache = localStorage.getItem(CACHE_KEY);
+    if (backupCache) {
+      items = JSON.parse(backupCache);
+      newsStatus.textContent = `Loaded from offline cache due to connection timeout`;
+    } else {
+      items = fallbackNews;
+      newsStatus.textContent = `Loaded offline curated threat intelligence feeds (fallback)`;
+    }
   } else {
-    newsStatus.textContent = `${items.length} articles loaded from ${settled.filter(r => r.status === 'fulfilled').length}/${feeds.length} sources`;
+    localStorage.setItem(CACHE_KEY, JSON.stringify(items));
+    localStorage.setItem(CACHE_TIME_KEY, now.toString());
+    newsStatus.textContent = `${items.length} fresh articles loaded (from ${succeededFeedsCount}/${feeds.length} active feeds)`;
   }
   
   renderNews(items);
   refreshNews.disabled = false;
 }
 
-refreshNews.addEventListener('click', loadNews);
+refreshNews.addEventListener('click', () => loadNews(true));
 loadNews();
 </script>
 </body>
