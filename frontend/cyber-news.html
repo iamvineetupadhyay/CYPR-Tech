@@ -39,10 +39,17 @@
     /* ── Split Layout for Cyber News ── */
     .news-layout-wrapper {
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 1fr 280px;
       gap: 32px;
       align-items: start;
       margin-top: 24px;
+      transition: grid-template-columns 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .news-layout-wrapper.sources-hidden {
+      grid-template-columns: 1fr;
+    }
+    .news-layout-wrapper.sources-hidden .feeds-sidebar {
+      display: none;
     }
     
     /* Feeds Sidebar */
@@ -224,20 +231,18 @@
       <h1 class="section-title" style="font-size: 2.2rem; font-weight: 800; color: var(--text);">Cyber News</h1>
     </div>
 
-    <div class="news-layout-wrapper">
-      <!-- Left Sidebar: Filter Buttons -->
-      <aside class="feeds-sidebar">
-        <h3 class="sidebar-title">News Sources</h3>
-        <div class="feed-filter-list" id="feedFilterList">
-          <!-- Populated dynamically via JS -->
-        </div>
-      </aside>
-
-      <!-- Right Column: Controls + Grid + Pagination -->
+    <div class="news-layout-wrapper" id="newsLayoutWrapper">
+      <!-- Left Column: Controls + Grid + Pagination (Max Span) -->
       <div class="news-content-area">
         <div class="news-controls">
           <div class="news-status" id="newsStatus">Loading latest cyber news...</div>
-          <button class="btn btn-ghost btn-sm" type="button" id="refreshNews">Refresh Feeds</button>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <button class="btn btn-ghost btn-sm" type="button" id="toggleSourcesBtn" onclick="toggleSources()" style="display: flex; align-items: center; gap: 6px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:12px;height:12px;"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+              Sources Filter
+            </button>
+            <button class="btn btn-ghost btn-sm" type="button" id="refreshNews">Refresh Feeds</button>
+          </div>
         </div>
 
         <div class="news-grid" id="newsGrid">
@@ -247,6 +252,14 @@
         <!-- Pagination -->
         <div class="pagination-wrap" id="paginationWrap"></div>
       </div>
+
+      <!-- Right Column: Sources Sidebar (Toggleable) -->
+      <aside class="feeds-sidebar" id="feedsSidebar">
+        <h3 class="sidebar-title">News Sources</h3>
+        <div class="feed-filter-list" id="feedFilterList">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </aside>
     </div>
   </section>
 </main>
@@ -640,6 +653,41 @@ async function loadNews(forceRefresh = false) {
   
   refreshNews.disabled = false;
 }
+
+function toggleSources() {
+  const wrapper = document.getElementById('newsLayoutWrapper');
+  const btn = document.getElementById('toggleSourcesBtn');
+  if (!wrapper || !btn) return;
+  
+  const isHidden = wrapper.classList.toggle('sources-hidden');
+  localStorage.setItem('cypr_sources_visible', isHidden ? 'false' : 'true');
+  
+  if (isHidden) {
+    btn.style.background = 'none';
+    btn.style.borderColor = 'var(--border)';
+  } else {
+    btn.style.background = 'var(--bg3)';
+    btn.style.borderColor = 'var(--border2)';
+  }
+}
+
+// Restore sidebar toggle state on load
+window.addEventListener('DOMContentLoaded', () => {
+  const visible = localStorage.getItem('cypr_sources_visible') ?? 'true';
+  const wrapper = document.getElementById('newsLayoutWrapper');
+  const btn = document.getElementById('toggleSourcesBtn');
+  if (wrapper && btn) {
+    if (visible === 'false') {
+      wrapper.classList.add('sources-hidden');
+      btn.style.background = 'none';
+      btn.style.borderColor = 'var(--border)';
+    } else {
+      wrapper.classList.remove('sources-hidden');
+      btn.style.background = 'var(--bg3)';
+      btn.style.borderColor = 'var(--border2)';
+    }
+  }
+});
 
 refreshNews.addEventListener('click', () => loadNews(true));
 loadNews();
