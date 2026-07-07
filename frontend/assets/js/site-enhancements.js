@@ -1969,9 +1969,8 @@
     ` : '';
 
     const mobileSettingsLinkHtml = userId ? `<a href="settings.html" class="${isActive('settings.html')}">Settings</a>` : '';
-    const userSub = localStorage.getItem('cm_user_subscription') || 'FREE';
     const userEmail = localStorage.getItem('cm_user_email') || '';
-    const isAdmin = userSub.toUpperCase() === 'ADMIN' || userEmail.includes('admin') || userEmail === 'iamvineetupadhyay@gmail.com';
+    const isAdmin = userEmail === 'vineetk5704@gmail.com';
     const mobileAdminLinkHtml = (userId && isAdmin) ? `<a href="admin.html" class="${isActive('admin.html')}" style="color:var(--accent);font-weight:600;">Admin Panel</a>` : '';
 
     const navTabs = document.createElement('div');
@@ -2792,9 +2791,8 @@
 
         const ddMenu = document.createElement('div');
         ddMenu.className = 'cm-dropdown-menu';
-        const userSub = localStorage.getItem('cm_user_subscription') || 'FREE';
         const userEmail = localStorage.getItem('cm_user_email') || '';
-        const isAdmin = userSub.toUpperCase() === 'ADMIN' || userEmail.includes('admin') || userEmail === 'iamvineetupadhyay@gmail.com';
+        const isAdmin = userEmail === 'vineetk5704@gmail.com';
         const adminLink = isAdmin ? '<a href="admin.html" class="cm-dropdown-item" style="color:var(--accent);font-weight:600;">🔑 Admin Panel</a>' : '';
 
         ddMenu.innerHTML = `
