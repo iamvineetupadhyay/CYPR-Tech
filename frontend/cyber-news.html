@@ -27,6 +27,14 @@
     .mobile-nav a.active{color:var(--lime);font-weight:600;}
     .mobile-nav .mobile-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
     @media(max-width:900px){.navbar{padding:0 20px;}.nav-links,.nav-actions{display:none;}.hamburger{display:flex;}}
+    @keyframes borderFlash {
+      0%, 100% { border-color: var(--border); transform: scale(1); }
+      50% { border-color: var(--accent); box-shadow: 0 0 25px var(--lime-glow); transform: scale(1.02); }
+    }
+    .flash-highlight {
+      animation: borderFlash 2.2s ease-in-out 3;
+      border: 1.8px solid var(--accent) !important;
+    }
   </style>
 </head>
 <body class="grid-bg">
@@ -198,15 +206,43 @@ function renderNews(items) {
     newsGrid.innerHTML = '<div class="news-empty">Could not load RSS news right now. Please refresh in a moment.</div>';
     return;
   }
-  newsGrid.innerHTML = items.map(item => `
-    <a class="card news-card" href="news-article.html?url=${encodeURIComponent(item.link)}">
-      <div class="news-thumb">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='assets/default-news.jpg'; this.onerror=null;">` : '<img src="assets/default-news.jpg" alt="CYPR Tech News" loading="lazy">'}</div>
-      <div class="news-card-top"><span class="badge ${badgeClass(item.tag)}">${escapeHtml(item.source)}</span><span class="news-date">${formatDate(item.date)}</span></div>
-      <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.description)}</p>
-      <div class="news-card-foot"><span class="metric-label">${escapeHtml(item.author || item.source)}</span><span class="feature-link">Read AI Article</span></div>
-    </a>
-  `).join('');
+  
+  const highlightUrl = new URLSearchParams(window.location.search).get('highlight');
+  
+  newsGrid.innerHTML = items.map(item => {
+    let isHighlighted = false;
+    if (highlightUrl) {
+      const decodedUrl = decodeURIComponent(highlightUrl);
+      if (item.link === decodedUrl) {
+        isHighlighted = true;
+      } else if (decodedUrl === 'ransomware' && item.title.toLowerCase().includes('ransomware')) {
+        isHighlighted = true;
+      } else if (decodedUrl === 'windows' && item.title.toLowerCase().includes('windows')) {
+        isHighlighted = true;
+      } else if (decodedUrl === 'phishing' && item.title.toLowerCase().includes('phishing')) {
+        isHighlighted = true;
+      }
+    }
+    
+    return `
+      <a class="card news-card ${isHighlighted ? 'flash-highlight' : ''}" href="news-article.html?url=${encodeURIComponent(item.link)}">
+        <div class="news-thumb">${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='assets/default-news.jpg'; this.onerror=null;">` : '<img src="assets/default-news.jpg" alt="CYPR Tech News" loading="lazy">'}</div>
+        <div class="news-card-top"><span class="badge ${badgeClass(item.tag)}">${escapeHtml(item.source)}</span><span class="news-date">${formatDate(item.date)}</span></div>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.description)}</p>
+        <div class="news-card-foot"><span class="metric-label">${escapeHtml(item.author || item.source)}</span><span class="feature-link">Read AI Article</span></div>
+      </a>
+    `;
+  }).join('');
+
+  if (highlightUrl) {
+    setTimeout(() => {
+      const targetCard = document.querySelector('.news-card.flash-highlight');
+      if (targetCard) {
+        targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 400);
+  }
 }
 
 const fallbackNews = [

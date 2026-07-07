@@ -810,31 +810,68 @@ async function fetchProfileAndActivity() {
   }
 }
 
-async function fetchThreatIntel() {
-  try {
-    const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://www.cisa.gov/cybersecurity-advisories.xml`);
-    if (!res.ok) throw new Error('RSS scrape failed');
-    const data = await res.json();
-    const items = data.items || [];
-    
-    const newsList = document.getElementById('newsList');
-    if (!newsList || items.length === 0) return;
+function stripHtml(value = '') {
+  const div = document.createElement('div');
+  div.innerHTML = value;
+  return (div.textContent || div.innerText || '').replace(/\s+/g, ' ').trim();
+}
 
+function normalizeItem(item, feed) {
+  return {
+    source: feed.name,
+    tag: feed.tag,
+    title: stripHtml(item.title || 'Untitled cyber update'),
+    link: item.link || item.guid || '#',
+    date: item.pubDate || item.isoDate || item.published || item.updated || ''
+  };
+}
+
+async function loadFeed(feed) {
+  const endpoint = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
+  const res = await fetch(endpoint);
+  if (!res.ok) throw new Error('Failed to load ' + feed.name);
+  const data = await res.json();
+  return (data.items || []).slice(0, 4).map(item => normalizeItem(item, feed));
+}
+
+async function fetchThreatIntel() {
+  const feeds = [
+    { name: 'The Hacker News', tag: 'News', url: 'https://feeds.feedburner.com/TheHackersNews' },
+    { name: 'BleepingComputer', tag: 'News', url: 'https://www.bleepingcomputer.com/feed/' },
+    { name: 'KrebsOnSecurity', tag: 'Cybercrime', url: 'https://krebsonsecurity.com/feed/' }
+  ];
+  
+  const newsList = document.getElementById('newsList');
+  if (!newsList) return;
+  
+  try {
+    const results = await Promise.allSettled(feeds.map(loadFeed));
+    const items = results
+      .filter(r => r.status === 'fulfilled')
+      .flatMap(r => r.value)
+      .filter(Boolean)
+      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+      
+    if (items.length === 0) throw new Error('No items fetched');
+    
     newsList.innerHTML = '';
     const activeCount = document.getElementById('intelBadge');
     if (activeCount) activeCount.textContent = `${items.length} Active`;
-
-    items.slice(0, 3).forEach((item, idx) => {
-      const pubDate = new Date(item.pubDate);
+    
+    items.slice(0, 3).forEach(item => {
+      const pubDate = new Date(item.date);
       const timeStr = isNaN(pubDate.getTime()) ? 'Recent' : formatRelativeTime(pubDate);
       
       const div = document.createElement('div');
       div.className = 'news-item';
-      div.addEventListener('click', () => window.open(item.link, '_blank'));
-
+      
+      div.addEventListener('click', () => {
+        window.location.href = `cyber-news.html?highlight=${encodeURIComponent(item.link)}`;
+      });
+      
       div.innerHTML = `
         <div class="news-info">
-          <div class="news-source">CISA · ${timeStr}</div>
+          <div class="news-source">${item.source} · ${timeStr}</div>
           <h4>${item.title}</h4>
         </div>
         <div class="news-arrow">
@@ -844,35 +881,32 @@ async function fetchThreatIntel() {
       newsList.appendChild(div);
     });
   } catch (err) {
-    console.warn("CISA RSS Advisories Scrape failed, holding default placeholders:", err);
-    const newsList = document.getElementById('newsList');
-    if (newsList) {
-      newsList.innerHTML = `
-        <div class="news-item" onclick="window.open('https://www.cisa.gov/cybersecurity-advisories','_blank')">
-          <div class="news-info">
-            <div class="news-source">CISA · 2h ago</div>
-            <h4>Active Phishing Campaign Targeting Indian Banking Users</h4>
-          </div>
-          <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    console.warn("Threat Intel fetch failed, loading offline fallback:", err);
+    newsList.innerHTML = `
+      <div class="news-item" onclick="window.location.href='cyber-news.html?highlight=ransomware'">
+        <div class="news-info">
+          <div class="news-source">The Hacker News · 2h ago</div>
+          <h4>New Ransomware Campaign Targeting Enterprise Systems Worldwide</h4>
         </div>
-        <div class="news-item" onclick="window.open('https://www.cisa.gov/cybersecurity-advisories','_blank')">
-          <div class="news-info">
-            <div class="news-source">CISA · 5h ago</div>
-            <h4>CISA Advisory on Unpatched Router Firmware Vulnerabilities</h4>
-          </div>
-          <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+      <div class="news-item" onclick="window.location.href='cyber-news.html?highlight=windows'">
+        <div class="news-info">
+          <div class="news-source">BleepingComputer · 5h ago</div>
+          <h4>Critical Windows Update Fixes Exploited Kernel Security Flaw</h4>
         </div>
-        <div class="news-item" onclick="window.open('https://www.cisa.gov/cybersecurity-advisories','_blank')">
-          <div class="news-info">
-            <div class="news-source">KrebsOnSecurity · 1d ago</div>
-            <h4>Data Breach Intelligence: 200M Records Exposed</h4>
-          </div>
-          <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+      <div class="news-item" onclick="window.location.href='cyber-news.html?highlight=phishing'">
+        <div class="news-info">
+          <div class="news-source">KrebsOnSecurity · 1d ago</div>
+          <h4>Phishing Campaign Spoofs Financial Institutions via Homoglyphs</h4>
         </div>
-      `;
-      const activeCount = document.getElementById('intelBadge');
-      if (activeCount) activeCount.textContent = `3 Active`;
-    }
+        <div class="news-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>
+    `;
+    const activeCount = document.getElementById('intelBadge');
+    if (activeCount) activeCount.textContent = `3 Active`;
   }
 }
 
