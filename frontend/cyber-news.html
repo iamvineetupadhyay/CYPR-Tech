@@ -35,6 +35,153 @@
       animation: borderFlash 2.2s ease-in-out 3;
       border: 1.8px solid var(--accent) !important;
     }
+
+    /* ── Split Layout for Cyber News ── */
+    .news-layout-wrapper {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+      align-items: start;
+      margin-top: 24px;
+    }
+    
+    /* Feeds Sidebar */
+    .feeds-sidebar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius, 12px);
+      padding: 20px;
+      position: sticky;
+      top: 100px;
+      box-shadow: var(--shadow);
+    }
+    .sidebar-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .feed-filter-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .feed-filter-btn {
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: none;
+      border: 1px solid transparent;
+      color: var(--text2);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.18s ease;
+    }
+    .feed-filter-btn:hover {
+      background: var(--bg2);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .feed-filter-btn.active {
+      background: var(--lime-dim);
+      border-color: var(--lime-glow);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .feed-filter-btn .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text3);
+      display: inline-block;
+      transition: background 0.18s;
+    }
+    .feed-filter-btn.active .dot {
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--lime-glow);
+    }
+    .feed-filter-btn .feed-badge {
+      margin-left: auto;
+      font-size: 0.65rem;
+      font-family: var(--font-mono, monospace);
+      background: var(--bg3);
+      color: var(--text3);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .feed-filter-btn.active .feed-badge {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    /* News Content Area */
+    .news-content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    /* Pagination Styles */
+    .pagination-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 36px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .pagination-btn {
+      min-width: 36px;
+      height: 36px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text2);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .pagination-btn:hover:not(:disabled) {
+      background: var(--bg2);
+      border-color: var(--border2);
+      color: var(--text);
+    }
+    .pagination-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+      font-weight: 700;
+    }
+    .pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    
+    /* Responsive adjustment */
+    @media(max-width: 1024px) {
+      .news-layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .feeds-sidebar {
+        position: relative;
+        top: 0;
+      }
+    }
   </style>
 </head>
 <body class="grid-bg">
@@ -77,27 +224,29 @@
       <h1 class="section-title" style="font-size: 2.2rem; font-weight: 800; color: var(--text);">Cyber News</h1>
     </div>
 
-    <div class="news-controls">
-      <div class="news-status" id="newsStatus">Loading latest cyber news...</div>
-      <button class="btn btn-ghost btn-sm" type="button" id="refreshNews">Refresh Feeds</button>
-    </div>
+    <div class="news-layout-wrapper">
+      <!-- Left Sidebar: Filter Buttons -->
+      <aside class="feeds-sidebar">
+        <h3 class="sidebar-title">News Sources</h3>
+        <div class="feed-filter-list" id="feedFilterList">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </aside>
 
-    <div class="news-grid" id="newsGrid">
-      <div class="news-empty">Fetching latest RSS items...</div>
-    </div>
-  </section>
+      <!-- Right Column: Controls + Grid + Pagination -->
+      <div class="news-content-area">
+        <div class="news-controls">
+          <div class="news-status" id="newsStatus">Loading latest cyber news...</div>
+          <button class="btn btn-ghost btn-sm" type="button" id="refreshNews">Refresh Feeds</button>
+        </div>
 
-  <section class="marketing-section">
-    <div class="section-heading" style="display: block; margin-bottom: 24px;">
-      <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--text);">Feeds included in CYPR Tech News</h2>
-    </div>
-    <div class="feed-grid">
-      <article class="card feed-card"><span class="badge badge-green">News</span><h3>The Hacker News</h3><p class="feed-meta">Breaking cybersecurity news, malware campaigns, vulnerability coverage, and industry analysis.</p><a href="https://thehackernews.com/" target="_blank" rel="noopener">Visit Source</a></article>
-      <article class="card feed-card"><span class="badge badge-green">News</span><h3>BleepingComputer</h3><p class="feed-meta">Security incidents, ransomware, Windows security, data breaches, and technical reporting.</p><a href="https://www.bleepingcomputer.com/news/security/" target="_blank" rel="noopener">Visit Source</a></article>
-      <article class="card feed-card"><span class="badge badge-cybercrime">Cybercrime</span><h3>KrebsOnSecurity</h3><p class="feed-meta">Investigative cybercrime reporting, fraud ecosystem coverage, and breach analysis.</p><a href="https://krebsonsecurity.com/" target="_blank" rel="noopener">Visit Source</a></article>
-      <article class="card feed-card"><span class="badge badge-warn">Advisory</span><h3>CISA Alerts</h3><p class="feed-meta">Cybersecurity advisories and public alerts from CISA.</p><a href="https://www.cisa.gov/news-events/cybersecurity-advisories" target="_blank" rel="noopener">Visit Source</a></article>
-      <article class="card feed-card"><span class="badge badge-warn">Research</span><h3>NIST Cybersecurity</h3><p class="feed-meta">Cybersecurity updates from NIST, including standards, guidance, and research announcements.</p><a href="https://www.nist.gov/cybersecurity" target="_blank" rel="noopener">Visit Source</a></article>
-      <article class="card feed-card"><span class="badge badge-accent">Operations</span><h3>Sophos News</h3><p class="feed-meta">Security operations, threat research, and defender-focused updates from Sophos.</p><a href="https://news.sophos.com/en-us/category/security-operations/" target="_blank" rel="noopener">Visit Source</a></article>
+        <div class="news-grid" id="newsGrid">
+          <div class="news-empty">Fetching latest RSS items...</div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-wrap" id="paginationWrap"></div>
+      </div>
     </div>
   </section>
 </main>
@@ -128,6 +277,15 @@ const feeds = [
 const newsGrid = document.getElementById('newsGrid');
 const newsStatus = document.getElementById('newsStatus');
 const refreshNews = document.getElementById('refreshNews');
+const feedFilterList = document.getElementById('feedFilterList');
+const paginationWrap = document.getElementById('paginationWrap');
+
+// Pagination & Filter State
+let allNewsItems = [];
+let filteredNewsItems = [];
+let currentPage = 1;
+const itemsPerPage = 9; // 3x3 layout
+let activeSourceFilter = 'all';
 
 function stripHtml(value = '') {
   const div = document.createElement('div');
@@ -172,7 +330,7 @@ async function fetchViaRss2Json(feed) {
   if (!response.ok) throw new Error(`Unable to read ${feed.name}`);
   const data = await response.json();
   if (!Array.isArray(data.items)) throw new Error(`No articles found for ${feed.name}`);
-  return data.items.slice(0, 7).map(item => normalizeItem(item, feed));
+  return data.items.slice(0, 15).map(item => normalizeItem(item, feed));
 }
 
 async function fetchViaAllOrigins(feed) {
@@ -181,7 +339,7 @@ async function fetchViaAllOrigins(feed) {
   if (!response.ok) throw new Error(`Unable to read ${feed.name}`);
   const xmlText = await response.text();
   const xml = new DOMParser().parseFromString(xmlText, 'application/xml');
-  return [...xml.querySelectorAll('item, entry')].slice(0, 7).map(node => normalizeItem({
+  return [...xml.querySelectorAll('item, entry')].slice(0, 15).map(node => normalizeItem({
     title: node.querySelector('title')?.textContent,
     link: node.querySelector('link')?.getAttribute('href') || node.querySelector('link')?.textContent,
     pubDate: node.querySelector('pubDate, published, updated')?.textContent,
@@ -203,9 +361,65 @@ function badgeClass(tag) {
   return 'badge-green';
 }
 
+// Render Feeds Left Sidebar filter list
+function renderSidebar() {
+  if (!feedFilterList) return;
+  
+  const countMap = {};
+  allNewsItems.forEach(item => {
+    countMap[item.source] = (countMap[item.source] || 0) + 1;
+  });
+  
+  let html = `
+    <button class="feed-filter-btn ${activeSourceFilter === 'all' ? 'active' : ''}" onclick="applyFilter('all')">
+      <span class="dot"></span>
+      All Sources
+      <span class="feed-badge">${allNewsItems.length}</span>
+    </button>
+  `;
+  
+  feeds.forEach(feed => {
+    const count = countMap[feed.name] || 0;
+    if (count > 0) {
+      html += `
+        <button class="feed-filter-btn ${activeSourceFilter === feed.name ? 'active' : ''}" onclick="applyFilter('${feed.name}')">
+          <span class="dot"></span>
+          ${feed.name}
+          <span class="feed-badge">${count}</span>
+        </button>
+      `;
+    }
+  });
+  
+  feedFilterList.innerHTML = html;
+}
+
+// Filter Action
+function applyFilter(sourceName) {
+  activeSourceFilter = sourceName;
+  if (sourceName === 'all') {
+    filteredNewsItems = allNewsItems;
+  } else {
+    filteredNewsItems = allNewsItems.filter(item => item.source === sourceName);
+  }
+  currentPage = 1;
+  renderSidebar();
+  renderCurrentPage();
+}
+
+// Render current page items inside Grid
+function renderCurrentPage() {
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageItems = filteredNewsItems.slice(start, end);
+  
+  renderNews(pageItems);
+  renderPaginationControls();
+}
+
 function renderNews(items) {
   if (!items.length) {
-    newsGrid.innerHTML = '<div class="news-empty">Could not load RSS news right now. Please refresh in a moment.</div>';
+    newsGrid.innerHTML = '<div class="news-empty">No news articles found for this selection.</div>';
     return;
   }
   
@@ -247,12 +461,54 @@ function renderNews(items) {
   }
 }
 
+// Render dynamic pagination buttons
+function renderPaginationControls() {
+  if (!paginationWrap) return;
+  
+  const totalPages = Math.ceil(filteredNewsItems.length / itemsPerPage) || 1;
+  
+  if (totalPages <= 1) {
+    paginationWrap.innerHTML = '';
+    return;
+  }
+  
+  let html = `
+    <button class="pagination-btn" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+      &larr; Prev
+    </button>
+  `;
+  
+  for (let i = 1; i <= totalPages; i++) {
+    html += `
+      <button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">
+        ${i}
+      </button>
+    `;
+  }
+  
+  html += `
+    <button class="pagination-btn" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+      Next &rarr;
+    </button>
+  `;
+  
+  paginationWrap.innerHTML = html;
+}
+
+function goToPage(page) {
+  const totalPages = Math.ceil(filteredNewsItems.length / itemsPerPage) || 1;
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderCurrentPage();
+  window.scrollTo({ top: newsGrid.offsetTop - 120, behavior: 'smooth' });
+}
+
 const fallbackNews = [
   {
     source: 'The Hacker News',
     tag: 'Advisory',
     title: 'New Ransomware Campaign Targeting Enterprise Systems Worldwide',
-    link: '#',
+    link: 'https://thehackernews.com/ransomware',
     date: new Date().toISOString(),
     description: 'Security researchers have uncovered a highly sophisticated ransomware operation targeting corporate database engines using zero-day vulnerabilities in common database plugins.',
     author: 'Ravie Lakshmanan',
@@ -262,7 +518,7 @@ const fallbackNews = [
     source: 'BleepingComputer',
     tag: 'Operations',
     title: 'Critical Microsoft Windows Update Fixes Exploited Kernel Security Flaw',
-    link: '#',
+    link: 'https://bleepingcomputer.com/windows',
     date: new Date(Date.now() - 86400000).toISOString(),
     description: 'Microsoft has released an out-of-band security patch addressing a critical elevation of privilege vulnerability in Windows Kernel that is currently being exploited in the wild.',
     author: 'Sergei Shevchenko',
@@ -272,7 +528,7 @@ const fallbackNews = [
     source: 'KrebsOnSecurity',
     tag: 'Research',
     title: 'Phishing Campaign Spoofs Major Financial Institutions via Unicode Domain Homoglyphs',
-    link: '#',
+    link: 'https://krebsonsecurity.com/phishing',
     date: new Date(Date.now() - 172800000).toISOString(),
     description: 'A newly detected threat actor group is using lookalike homoglyph domains to bypass standard phishing filters, mimicking major banks and credential authentication services.',
     author: 'Brian Krebs',
@@ -282,7 +538,7 @@ const fallbackNews = [
     source: 'CISA Alerts',
     tag: 'Advisory',
     title: 'CISA Urges Organizations to Patch Active Directory Vulnerabilities Immediately',
-    link: '#',
+    link: 'https://cisa.gov/active-directory',
     date: new Date(Date.now() - 259200000).toISOString(),
     description: 'The Cybersecurity and Infrastructure Security Agency (CISA) has added several new active directory manipulation flaws to its Known Exploited Vulnerabilities catalog.',
     author: 'CISA Gov',
@@ -292,7 +548,7 @@ const fallbackNews = [
     source: 'Sophos News',
     tag: 'Operations',
     title: 'AI-Generated Phishing Templates Increasing in Complexity',
-    link: '#',
+    link: 'https://sophos.com/ai-phishing',
     date: new Date(Date.now() - 345600000).toISOString(),
     description: 'Sophos threat intelligence indicates a sharp spike in personalized phishing emails constructed using large language models, exhibiting perfect grammar and convincing spear-phishing contexts.',
     author: 'John Shier',
@@ -305,51 +561,50 @@ async function loadNews(forceRefresh = false) {
   
   const CACHE_KEY = 'cypr_news_cache';
   const CACHE_TIME_KEY = 'cypr_news_cache_time';
-  const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes cache
+  const CACHE_DURATION = 15 * 60 * 1000;
   
   const cachedData = localStorage.getItem(CACHE_KEY);
   const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
   const now = Date.now();
   
-  if (!forceRefresh && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
-    const items = JSON.parse(cachedData);
-    newsStatus.textContent = `${items.length} articles loaded from cache (auto-refreshes in ${Math.round((CACHE_DURATION - (now - cachedTime)) / 60000)}m)`;
-    renderNews(items);
-    refreshNews.disabled = false;
-    return;
-  }
-  
-  newsStatus.textContent = 'Loading latest cyber news...';
-  newsGrid.innerHTML = '<div class="news-empty">Fetching latest RSS items...</div>';
-  
-  // Construct promises for all feeds individually
-  const feedPromises = feeds.map(async (feed) => {
-    try {
-      return await loadFeed(feed);
-    } catch (err) {
-      console.warn(`Feed ${feed.name} failed:`, err);
-      return null;
-    }
-  });
-
   let items = [];
-  let succeededFeedsCount = 0;
-  try {
-    // Load all feeds concurrently with a 6-second timeout limit
-    const results = await Promise.race([
-      Promise.all(feedPromises),
-      new Promise((resolve) => setTimeout(() => resolve(null), 6000))
-    ]);
+  let fromCache = false;
+  
+  if (!forceRefresh && cachedData && cachedTime && (now - cachedTime < CACHE_DURATION)) {
+    items = JSON.parse(cachedData);
+    fromCache = true;
+  } else {
+    newsStatus.textContent = 'Loading latest cyber news...';
     
-    if (results) {
-      succeededFeedsCount = results.filter(Boolean).length;
-      items = results.filter(Boolean).flat().sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-    } else {
-      // Gather whatever completed in background if possible, otherwise empty
-      console.warn("Feed fetch timed out at 6s limit.");
+    const feedPromises = feeds.map(async (feed) => {
+      try {
+        return await loadFeed(feed);
+      } catch (err) {
+        console.warn(`Feed ${feed.name} failed:`, err);
+        return null;
+      }
+    });
+
+    let succeededFeedsCount = 0;
+    try {
+      const results = await Promise.race([
+        Promise.all(feedPromises),
+        new Promise((resolve) => setTimeout(() => resolve(null), 7000)) // 7s timeout
+      ]);
+      
+      if (results) {
+        succeededFeedsCount = results.filter(Boolean).length;
+        items = results.filter(Boolean).flat().sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+      }
+    } catch (err) {
+      console.error("News load error:", err);
     }
-  } catch (err) {
-    console.error("News load error:", err);
+    
+    if (items && items.length > 0) {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(items));
+      localStorage.setItem(CACHE_TIME_KEY, now.toString());
+      newsStatus.textContent = `${items.length} fresh articles loaded (from ${succeededFeedsCount}/${feeds.length} sources)`;
+    }
   }
   
   if (!items || items.length === 0) {
@@ -361,13 +616,28 @@ async function loadNews(forceRefresh = false) {
       items = fallbackNews;
       newsStatus.textContent = `Loaded offline curated threat intelligence feeds (fallback)`;
     }
-  } else {
-    localStorage.setItem(CACHE_KEY, JSON.stringify(items));
-    localStorage.setItem(CACHE_TIME_KEY, now.toString());
-    newsStatus.textContent = `${items.length} fresh articles loaded (from ${succeededFeedsCount}/${feeds.length} active feeds)`;
+  } else if (fromCache) {
+    newsStatus.textContent = `${items.length} articles loaded from cache (auto-refreshes in ${Math.round((CACHE_DURATION - (now - cachedTime)) / 60000)}m)`;
   }
   
-  renderNews(items);
+  allNewsItems = items;
+  filteredNewsItems = items;
+  
+  // Highlight url check to direct page locking
+  const highlightUrl = new URLSearchParams(window.location.search).get('highlight');
+  if (highlightUrl) {
+    const decodedUrl = decodeURIComponent(highlightUrl);
+    const idx = filteredNewsItems.findIndex(item => item.link === decodedUrl);
+    if (idx !== -1) {
+      currentPage = Math.floor(idx / itemsPerPage) + 1;
+    }
+  } else {
+    currentPage = 1;
+  }
+  
+  renderSidebar();
+  renderCurrentPage();
+  
   refreshNews.disabled = false;
 }
 
