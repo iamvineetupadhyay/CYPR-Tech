@@ -849,7 +849,7 @@ async function fetchProfileData() {
               let cls='safe', txt='Clean', score='85/100';
               if (sLower.includes('malicious')||sLower.includes('phishing')||sLower.includes('danger')||sLower.includes('unsafe')) { cls='danger'; txt='Malicious'; score='10/100'; }
               else if (sLower.includes('weak')||sLower.includes('warning')||sLower.includes('compromised')) { cls='warn'; txt='Warning'; score='45/100'; }
-              const rawTime = new Date(act.scannedAt);
+              const rawTime = new Date(act.timestamp || act.scannedAt);
               const timeStr = isNaN(rawTime.getTime()) ? '—' : formatRelTime(rawTime);
               const url = act.scannedItem||act.inputData||'Scan Target';
               const row = document.createElement('div');
@@ -954,7 +954,7 @@ function renderOverviewChart(acts, malLogs) {
 
   // Group acts (URL check, Password check)
   acts.forEach(act => {
-    const actDate = new Date(act.scannedAt);
+    const actDate = new Date(act.timestamp || act.scannedAt);
     if (isNaN(actDate.getTime())) return;
     if (actDate >= startOf7DaysAgo) {
       const diffDays = Math.floor((now - actDate) / dayMs);
