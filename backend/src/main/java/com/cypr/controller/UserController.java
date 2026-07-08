@@ -133,7 +133,12 @@ public class UserController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Username is already taken! Please choose another.");
             }
-            if (userRepository.findByEmail(email) != null) {
+            User existingUser = userRepository.findByEmail(email);
+            if (existingUser != null) {
+                if (!existingUser.isEnabled()) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT)
+                            .body("Verification pending. Please verify your email address to access CYPR.");
+                }
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Email address is already registered! Please sign in.");
             }

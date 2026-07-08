@@ -799,8 +799,15 @@
                 `;
                 } else {
                     const errorText = await response.text();
-                    showMsg('error', errorText || '⚠ Registration failed. Username might be taken.');
-                    resetSignupBtn();
+                    if (response.status === 409 || errorText.toLowerCase().includes("verification pending") || errorText.toLowerCase().includes("not verified")) {
+                        showMsg('error', 'Email registered but verification is pending. Redirecting...');
+                        setTimeout(() => {
+                            window.location.href = `verify-email.html?email=${encodeURIComponent(step1Data.email)}&pending=true`;
+                        }, 1500);
+                    } else {
+                        showMsg('error', errorText || '⚠ Registration failed. Username might be taken.');
+                        resetSignupBtn();
+                    }
                 }
             } catch (err) {
                 console.error(err);

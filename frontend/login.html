@@ -302,8 +302,15 @@ async function handleLogin() {
 
         } else {
             const errorText = await response.text();
-            showMsg('error', 'Error: ' + errorText);
-            resetBtn();
+            if (response.status === 403 && (errorText.toLowerCase().includes("not verified") || errorText.toLowerCase().includes("verification"))) {
+                showMsg('error', 'Account not verified. Redirecting to verification page...');
+                setTimeout(() => {
+                    window.location.href = `verify-email.html?email=${encodeURIComponent(identifier)}`;
+                }, 1500);
+            } else {
+                showMsg('error', 'Error: ' + errorText);
+                resetBtn();
+            }
         }
     } catch (err) {
         showMsg('error', 'Backend server is offline.');
