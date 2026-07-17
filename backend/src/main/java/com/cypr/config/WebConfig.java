@@ -10,23 +10,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Autowired
-    private AuthInterceptor authInterceptor;
+
 
     @Value("${cypr.allowed.origins:*}")
     private String allowedOrigins;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/api/user/{id}/**")
-                .addPathPatterns("/api/malware/history/{userId}")
-                .excludePathPatterns("/api/user/login")
-                .excludePathPatterns("/api/user/register")
-                .excludePathPatterns("/api/user/check-username")
-                .excludePathPatterns("/api/user/forgot-password")
-                .excludePathPatterns("/api/user/reset-password")
-                .excludePathPatterns("/api/user/verify");
+        // Interceptors removed in favor of Spring Security filters
     }
 
     @Override

@@ -59,7 +59,7 @@ cd backend
 mvn clean install
 mvn spring-boot:run
 ```
-**Backend runs on:** `http://localhost:8080`
+**Backend runs on:** `backend.base-url` (e.g. `http://localhost:8080`)
 
 ### 3️⃣ Frontend Setup
 ```bash
@@ -71,7 +71,7 @@ npm run dev
 
 ### 4️⃣ Test the Engine
 ```bash
-curl -X POST http://localhost:8080/api/phish-check \
+curl -X POST <backend.base-url>/api/phish-check \
   -H "Content-Type: application/json" \
   -d '{"url": "https://paypa1-secure.xyz/login"}'
 ```

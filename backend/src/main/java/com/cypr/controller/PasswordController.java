@@ -19,8 +19,8 @@ public class PasswordController {
     private ScanRepository scanRepository;
 
     @PostMapping
-    public Map<String, Object> checkPassword(@RequestBody Map<String, Object> request) {
-        String password = Optional.ofNullable((String) request.get("password")).orElse("");
+    public Map<String, Object> checkPassword(@RequestBody Map<String, Object> body, jakarta.servlet.http.HttpServletRequest request) {
+        String password = Optional.ofNullable((String) body.get("password")).orElse("");
 
         int score = 0;
         if (password.length() >= 8) score++;
@@ -38,16 +38,7 @@ public class PasswordController {
         String dbResult = (score >= 4) ? "Secure" : "Risky";
 
         // --- STEP 1: User Fetch ---
-        Long currentUserId = null;
-        Object userIdObj = request.get("userId");
-        if (userIdObj != null) {
-            try {
-                currentUserId = Long.valueOf(userIdObj.toString());
-            } catch (NumberFormatException e) {
-                // ignore
-            }
-        }
-
+        Long currentUserId = com.cypr.security.SecurityUtils.getCurrentUserId(request);
         User user = null;
         if (currentUserId != null) {
             user = userRepository.findById(currentUserId).orElse(null);

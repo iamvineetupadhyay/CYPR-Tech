@@ -1,6 +1,6 @@
 # API Reference — CYPR Tech
 
-Complete endpoint documentation for the CYPR Tech Spring Boot REST API. All endpoints are prefixed with the base API URL (e.g. `http://localhost:8080/api`).
+Complete endpoint documentation for the CYPR Tech Spring Boot REST API. All endpoints are prefixed with the base API URL (configured via `backend.base-url`, e.g. `http://localhost:8080/api`).
 
 ## Authentication APIs
 

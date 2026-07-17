@@ -29,7 +29,7 @@ public class EmailService {
     @Value("${brevo.sender.name:CYPR Security}")
     private String senderName;
 
-    @Value("${cypr.frontend.base-url:http://localhost:5500}")
+    @Value("${frontend.base-url:https://cyprtech.vercel.app}")
     private String frontendBaseUrl;
 
     private static final String BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";

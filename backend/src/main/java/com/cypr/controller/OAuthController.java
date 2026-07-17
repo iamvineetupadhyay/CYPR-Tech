@@ -46,7 +46,7 @@ public class OAuthController {
     private String githubRedirectUri;
 
     // ── FRONTEND CALLBACK URL ──────────────────────────────────────────────────
-    @Value("${cypr.frontend.base-url}")
+    @Value("${frontend.base-url}")
     private String frontendBaseUrl;
 
     @Autowired
@@ -88,6 +88,10 @@ public class OAuthController {
             JsonNode profile = fetchGoogleProfile(accessToken);
             String oauthId  = profile.get("id").asText();
             String email    = profile.has("email")   ? profile.get("email").asText()   : "";
+            boolean emailVerified = profile.has("verified_email") && profile.get("verified_email").asBoolean();
+            if (!email.isEmpty() && !emailVerified) {
+                throw new RuntimeException("Google email is not verified. Cannot proceed.");
+            }
             String name     = profile.has("name")    ? profile.get("name").asText()    : "User";
             String avatar   = profile.has("picture") ? profile.get("picture").asText() : "";
 
@@ -260,14 +264,13 @@ public class OAuthController {
         if (email != null && !email.isEmpty()) {
             User existing = userRepository.findByEmail(email);
             if (existing != null) {
-                // Link OAuth to existing account
-                existing.setOauthProvider(provider);
-                existing.setOauthId(oauthId);
-                if (avatar != null && !avatar.isEmpty() && (existing.getProfilePicUrl() == null || existing.getProfilePicUrl().isEmpty())) {
-                    existing.setProfilePicUrl(avatar);
+                // If they are ALREADY linked to this same provider and ID, just return them
+                if (provider.equals(existing.getOauthProvider()) && oauthId.equals(existing.getOauthId())) {
+                    return existing;
                 }
-                existing.setEnabled(true);
-                return userRepository.save(existing);
+                
+                // Do NOT silently auto-link. Reject the login.
+                throw new RuntimeException("An account with this email already exists. Log in with your password, then link " + provider + " from Settings.");
             }
         }
 

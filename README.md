@@ -288,7 +288,7 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-The API is available at `http://localhost:8080`. Serve `frontend/index.html` with any static file server, or via the backend's static resource handler, and point it at the API base URL.
+The API is available at `backend.base-url` (e.g. `http://localhost:8080`). Serve `frontend/index.html` with any static file server, or via the backend's static resource handler, and point it at the API base URL.
 
 ## Docker
 

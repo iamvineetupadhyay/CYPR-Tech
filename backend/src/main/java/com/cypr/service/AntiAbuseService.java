@@ -3,6 +3,10 @@ package com.cypr.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -11,16 +15,28 @@ public class AntiAbuseService {
     private static final Logger log = LoggerFactory.getLogger(AntiAbuseService.class);
 
     // IP -> block expiry timestamp (ms)
-    private final ConcurrentHashMap<String, Long> blockedIps = new ConcurrentHashMap<>();
+    private final Cache<String, Long> blockedIps = Caffeine.newBuilder()
+            .maximumSize(10000)
+            .expireAfterWrite(15, TimeUnit.MINUTES)
+            .build();
 
     // IP/Username -> failed attempts count
-    private final ConcurrentHashMap<String, Integer> failedAttempts = new ConcurrentHashMap<>();
+    private final Cache<String, Integer> failedAttempts = Caffeine.newBuilder()
+            .maximumSize(10000)
+            .expireAfterAccess(1, TimeUnit.HOURS)
+            .build();
 
     // Email -> last email requested timestamp (ms)
-    private final ConcurrentHashMap<String, Long> lastEmailSentTime = new ConcurrentHashMap<>();
+    private final Cache<String, Long> lastEmailSentTime = Caffeine.newBuilder()
+            .maximumSize(10000)
+            .expireAfterWrite(1, TimeUnit.HOURS)
+            .build();
 
     // Email/IP -> hourly count
-    private final ConcurrentHashMap<String, ConcurrentHashMap<Integer, Integer>> hourlyEmailRequestCount = new ConcurrentHashMap<>();
+    private final Cache<String, ConcurrentHashMap<Integer, Integer>> hourlyEmailRequestCount = Caffeine.newBuilder()
+            .maximumSize(10000)
+            .expireAfterAccess(2, TimeUnit.HOURS)
+            .build();
 
     private static final int MAX_FAILED_ATTEMPTS = 5;
     private static final long TEMP_BLOCK_DURATION_MS = 15 * 60 * 1000; // 15 minutes
@@ -31,12 +47,12 @@ public class AntiAbuseService {
 
     public boolean isIpBlocked(String ip) {
         if (ip == null) return false;
-        Long expiry = blockedIps.get(ip);
+        Long expiry = blockedIps.getIfPresent(ip);
         if (expiry == null) return false;
 
         if (System.currentTimeMillis() > expiry) {
-            blockedIps.remove(ip); // Block expired
-            failedAttempts.remove(ip);
+            blockedIps.invalidate(ip); // Block expired
+            failedAttempts.invalidate(ip);
             log.info("[AntiAbuseService] Temporary block expired and removed for IP: {}", ip);
             return false;
         }
@@ -45,7 +61,7 @@ public class AntiAbuseService {
 
     public void registerFailedAttempt(String ip, String username) {
         if (ip != null) {
-            int ipAttempts = failedAttempts.merge(ip, 1, Integer::sum);
+            int ipAttempts = failedAttempts.asMap().merge(ip, 1, Integer::sum);
             log.warn("[AntiAbuseService] Failed attempt registered for IP: {}. Current failed attempts: {}", ip, ipAttempts);
             if (ipAttempts >= MAX_FAILED_ATTEMPTS) {
                 long blockUntil = System.currentTimeMillis() + TEMP_BLOCK_DURATION_MS;
@@ -54,23 +70,23 @@ public class AntiAbuseService {
             }
         }
         if (username != null) {
-            failedAttempts.merge(username, 1, Integer::sum);
+            failedAttempts.asMap().merge(username, 1, Integer::sum);
         }
     }
 
     public void registerSuccess(String ip, String username) {
         if (ip != null) {
-            failedAttempts.remove(ip);
-            blockedIps.remove(ip);
+            failedAttempts.invalidate(ip);
+            blockedIps.invalidate(ip);
         }
         if (username != null) {
-            failedAttempts.remove(username);
+            failedAttempts.invalidate(username);
         }
     }
 
     public boolean shouldRequireCaptcha(String username) {
         if (username == null) return false;
-        Integer attempts = failedAttempts.get(username);
+        Integer attempts = failedAttempts.getIfPresent(username);
         return attempts != null && attempts >= 3;
     }
 
@@ -78,7 +94,7 @@ public class AntiAbuseService {
 
     public boolean checkEmailCooldown(String email) {
         if (email == null) return true;
-        Long lastSent = lastEmailSentTime.get(email);
+        Long lastSent = lastEmailSentTime.getIfPresent(email);
         if (lastSent == null) return true;
 
         long elapsed = System.currentTimeMillis() - lastSent;
@@ -95,7 +111,7 @@ public class AntiAbuseService {
         if (email == null) return false;
         int currentHour = (int) (System.currentTimeMillis() / (3600 * 1000));
         
-        ConcurrentHashMap<Integer, Integer> hourlyMap = hourlyEmailRequestCount.computeIfAbsent(email, k -> new ConcurrentHashMap<>());
+        ConcurrentHashMap<Integer, Integer> hourlyMap = hourlyEmailRequestCount.get(email, k -> new ConcurrentHashMap<>());
         
         // Clean up previous hours
         hourlyMap.keySet().removeIf(hour -> hour < currentHour);
@@ -106,13 +122,13 @@ public class AntiAbuseService {
 
     private void incrementHourlyCount(String email) {
         int currentHour = (int) (System.currentTimeMillis() / (3600 * 1000));
-        ConcurrentHashMap<Integer, Integer> hourlyMap = hourlyEmailRequestCount.computeIfAbsent(email, k -> new ConcurrentHashMap<>());
+        ConcurrentHashMap<Integer, Integer> hourlyMap = hourlyEmailRequestCount.get(email, k -> new ConcurrentHashMap<>());
         hourlyMap.merge(currentHour, 1, Integer::sum);
     }
 
     public long getRemainingCooldownSeconds(String email) {
         if (email == null) return 0;
-        Long lastSent = lastEmailSentTime.get(email);
+        Long lastSent = lastEmailSentTime.getIfPresent(email);
         if (lastSent == null) return 0;
 
         long elapsedMs = System.currentTimeMillis() - lastSent;

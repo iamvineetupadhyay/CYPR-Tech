@@ -19,23 +19,46 @@ public class JwtUtil {
     private int expirationHours;
 
     public String generateToken(Long userId, String email) {
+        return createToken(userId, email, expirationHours * 3600 * 1000L);
+    }
+
+    public String generateRefreshToken(Long userId, String email) {
+        return createToken(userId, email, expirationHours * 3600 * 1000L * 24); // 24x longer for refresh
+    }
+
+    private String createToken(Long userId, String email, long expirationMillis) {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         return JWT.create()
                 .withSubject(email)
                 .withClaim("userId", userId)
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + expirationHours * 3600 * 1000L))
+                .withExpiresAt(new Date(System.currentTimeMillis() + expirationMillis))
                 .sign(algorithm);
     }
 
-    public Long validateTokenAndGetUserId(String token) {
+    public String extractEmail(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            DecodedJWT jwt = verifier.verify(token);
+            return jwt.getSubject();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Long extractUserId(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT jwt = verifier.verify(token);
             return jwt.getClaim("userId").asLong();
         } catch (Exception e) {
-            return null; // Token invalid, expired, or signature verification failed
+            return null;
         }
+    }
+
+    public boolean isTokenValid(String token) {
+        return extractEmail(token) != null;
     }
 }

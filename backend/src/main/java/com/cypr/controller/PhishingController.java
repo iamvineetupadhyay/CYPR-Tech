@@ -32,20 +32,12 @@ public class PhishingController {
     }
 
     @PostMapping
-    public Map<String, Object> checkUrl(@RequestBody Map<String, Object> request) {
-        String raw = Optional.ofNullable((String) request.get("url")).orElse("").trim();
-        boolean isAdvanced = request.get("isAdvanced") != null && (boolean) request.get("isAdvanced");
+    public Map<String, Object> checkUrl(@RequestBody Map<String, Object> body, jakarta.servlet.http.HttpServletRequest request) {
+        String raw = Optional.ofNullable((String) body.get("url")).orElse("").trim();
+        boolean isAdvanced = body.get("isAdvanced") != null && (boolean) body.get("isAdvanced");
 
         // --- STEP 1: User Fetch ---
-        Long currentUserId = null;
-        Object userIdObj = request.get("userId");
-        if (userIdObj != null) {
-            try {
-                currentUserId = Long.valueOf(userIdObj.toString());
-            } catch (NumberFormatException e) {
-                // ignore
-            }
-        }
+        Long currentUserId = com.cypr.security.SecurityUtils.getCurrentUserId(request);
         User user = null;
         if (currentUserId != null) {
             user = userRepository.findById(currentUserId).orElse(null);

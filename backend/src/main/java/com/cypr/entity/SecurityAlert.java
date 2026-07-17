@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "security_alerts")
+@Table(name = "security_alerts", indexes = {
+    @jakarta.persistence.Index(name = "idx_alert_user", columnList = "user_id"),
+    @jakarta.persistence.Index(name = "idx_alert_timestamp", columnList = "timestamp")
+})
 public class SecurityAlert {
 
     @Id

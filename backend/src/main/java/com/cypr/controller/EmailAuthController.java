@@ -23,10 +23,14 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Map;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/user")
 public class EmailAuthController {
+
+    private static final Logger log = LoggerFactory.getLogger(EmailAuthController.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -56,21 +60,25 @@ public class EmailAuthController {
     @GetMapping("/verify")
     @Transactional
     public ResponseEntity<?> verifyEmail(@RequestParam("token") String token) {
+        log.info("[Verification Flow] Incoming verification request.");
         String tokenHash = hashToken(token);
         Optional<VerificationToken> tokenOpt = verificationTokenRepository.findByTokenHash(tokenHash);
 
         if (tokenOpt.isEmpty()) {
+            log.warn("[Verification Flow] Verification failed: Token not found or invalid.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Invalid or expired verification token.");
         }
 
         VerificationToken vt = tokenOpt.get();
         if (vt.isUsed()) {
+            log.warn("[Verification Flow] Verification failed: Token already used for user ID: {}", vt.getUser().getId());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Verification token has already been used.");
         }
 
         if (LocalDateTime.now().isAfter(vt.getExpiryDate())) {
+            log.warn("[Verification Flow] Verification failed: Token expired for user ID: {}", vt.getUser().getId());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Verification token has expired. Please request a new one.");
         }
@@ -81,6 +89,8 @@ public class EmailAuthController {
 
         vt.setUsed(true);
         verificationTokenRepository.save(vt);
+
+        log.info("[Verification Flow] Success: Token validated. User ID {} enabled.", user.getId());
 
         // Send Welcome Message email
         emailService.sendWelcomeEmail(user.getEmail(), user.getName());
@@ -178,6 +188,7 @@ public class EmailAuthController {
         prt.setTokenHash(hashedToken);
         prt.setExpiryDate(LocalDateTime.now().plusMinutes(15)); // 15 minutes recovery window
         passwordResetTokenRepository.save(prt);
+        log.info("[Password Reset Flow] Secure recovery token generated and hashed token securely saved for user ID: {}", user.getId());
 
         // Async email transmission
         emailService.sendPasswordResetEmail(trimmedEmail, user.getName(), rawToken);
@@ -191,6 +202,7 @@ public class EmailAuthController {
     @PostMapping("/reset-password")
     @Transactional
     public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> payload) {
+        log.info("[Password Reset Flow] Incoming password reset request.");
         String token = payload.get("token");
         String newPassword = payload.get("newPassword");
 
@@ -205,17 +217,20 @@ public class EmailAuthController {
         Optional<PasswordResetToken> tokenOpt = passwordResetTokenRepository.findByTokenHash(tokenHash);
 
         if (tokenOpt.isEmpty()) {
+            log.warn("[Password Reset Flow] Reset failed: Token not found or invalid.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Invalid or expired recovery token.");
         }
 
         PasswordResetToken prt = tokenOpt.get();
         if (prt.isUsed()) {
+            log.warn("[Password Reset Flow] Reset failed: Token already used for user ID: {}", prt.getUser().getId());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("This recovery token has already been used.");
         }
 
         if (LocalDateTime.now().isAfter(prt.getExpiryDate())) {
+            log.warn("[Password Reset Flow] Reset failed: Token expired for user ID: {}", prt.getUser().getId());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("This recovery token has expired.");
         }
@@ -228,6 +243,8 @@ public class EmailAuthController {
 
         prt.setUsed(true);
         passwordResetTokenRepository.save(prt);
+        
+        log.info("[Password Reset Flow] Success: Password reset securely for user ID: {}", user.getId());
 
         // Security Advisor Log and Alerts
         String clientIp = getClientIp();
