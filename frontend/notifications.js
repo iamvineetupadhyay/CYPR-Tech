@@ -27,7 +27,7 @@
   async function fetchUserNotifications(userId) {
     try {
       const apiBase = window.CYPR_TECH_API_BASE !== undefined ? window.CYPR_TECH_API_BASE : '';
-      const res = await fetch(`${apiBase}/api/user/${userId}/activity`);
+      const res = await fetch(`${apiBase}/api/user/me/activity`, { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') } });
       if (res.ok) {
         const activities = await res.json();
         if (activities && activities.length > 0) {

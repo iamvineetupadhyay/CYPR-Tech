@@ -572,6 +572,29 @@ select.input-field option { background:var(--bg3); color:var(--text); }
             </form>
           </div>
 
+          <!-- Card: Linked Accounts -->
+          <div class="card" id="linkedAccountsCard">
+            <div class="card-title" style="display: flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+              Linked Accounts
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text2); margin-bottom: 20px; line-height: 1.5;">
+              Connect external accounts to enable seamless one-click login.
+            </p>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r-sm); flex-wrap: wrap; gap: 12px;">
+              <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 250px;">
+                <div style="width:40px;height:40px;border-radius:50%;background:#ffffff;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+                  <svg style="width:22px;height:22px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                </div>
+                <div>
+                  <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 4px;">Google Account</h4>
+                  <p id="googleLinkStatus" style="font-size: 0.78rem; color: var(--text3);">Not connected</p>
+                </div>
+              </div>
+              <button id="googleLinkBtn" onclick="toggleGoogleLink()" style="background: var(--bg2); color: var(--text); border: 1px solid var(--border2); border-radius: 100px; padding: 8px 18px; font-weight: 600; font-size: 0.8rem; transition: all 0.2s;" onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='var(--bg2)'">Connect</button>
+            </div>
+          </div>
+
           <!-- Card 2: Danger Zone -->
           <div class="card" style="border: 1.5px solid rgba(239, 68, 68, 0.25); background: rgba(239, 68, 68, 0.02);">
             <div class="card-title" style="color: var(--red); display: flex; align-items: center; gap: 8px;">
@@ -906,7 +929,9 @@ function switchTab(tab) {
 // Fetch Profile Data from backend
 async function fetchProfile() {
   try {
-    const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/profile`);
+    const response = await fetch(`${API_BASE}/api/user/me/profile`, {
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') }
+    });
     if (!response.ok) return;
     
     const d = await response.json();
@@ -1011,14 +1036,14 @@ async function handleProfileSubmit(e) {
       profilePicUrl: selectedAvatarUrl
     };
 
-    const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/update`, {
+    const response = await fetch(`${API_BASE}/api/user/me/update`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') },
       body: JSON.stringify(payload)
     });
 
     if (response.ok) {
-      showToast('Profile updated successfully.');
+      showToast('Profile updated successfully.', 'success');
       
       // Update DOM components in real-time instantly without refresh
       const init = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
@@ -1107,14 +1132,14 @@ async function handleChangePassword(e) {
   btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="animation:spin 1s linear infinite"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Updating…`;
 
   try {
-    const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/change-password`, {
+    const response = await fetch(`${API_BASE}/api/user/me/change-password`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') },
       body: JSON.stringify({ currentPassword, newPassword })
     });
 
     if (response.ok) {
-      showToast('Password changed successfully.');
+      showToast('Password changed successfully.', 'success');
       document.getElementById('changePasswordForm').reset();
     } else {
       const txt = await response.text();
@@ -1160,14 +1185,14 @@ async function confirmDeactivate() {
   btn.textContent = 'Deactivating…';
 
   try {
-    const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/deactivate`, {
+    const response = await fetch(`${API_BASE}/api/user/me/deactivate`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') },
       body: JSON.stringify({ password })
     });
 
     if (response.ok) {
-      showToast('Account deactivated successfully.');
+      showToast('Account deactivated successfully.', 'success');
       closeDeactivateModal();
       // Clear localStorage and redirect to login
       localStorage.clear();
@@ -1223,13 +1248,14 @@ async function confirmDelete() {
   btn.textContent = 'Deleting…';
 
   try {
-    const url = `${API_BASE}/api/user/${encodeURIComponent(userId)}/delete?password=${encodeURIComponent(password)}&confirmText=${encodeURIComponent(confirmText)}`;
+    const url = `${API_BASE}/api/user/me/delete?password=${encodeURIComponent(password)}&confirmText=${encodeURIComponent(confirmText)}`;
     const response = await fetch(url, {
-      method: 'DELETE'
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') }
     });
 
     if (response.ok) {
-      showToast('Account deleted successfully.');
+      showToast('Account deleted successfully.', 'success');
       closeDeleteModal();
       localStorage.clear();
       setTimeout(() => {
@@ -1270,13 +1296,16 @@ function closeSidebar() {
 }
 
 /* ══ Toast ══ */
-function showToast(msg) {
+function showToast(msg, type = 'info') {
   const existing = document.querySelector('.cm-toast');
   if (existing) existing.remove();
   const t = document.createElement('div');
   t.className = 'cm-toast';
   t.textContent = msg;
-  t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--lime);border-radius:100px;padding:10px 22px;font-family:\'JetBrains Mono\',monospace;font-size:.78rem;color:var(--lime);z-index:99999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px var(--lime-glow);';
+  let color = 'var(--lime)';
+  if (type === 'error') color = '#ff4444';
+  if (type === 'warn') color = '#ffaa00';
+  t.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:100px;padding:10px 22px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:${color};z-index:99999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px ${color}33;`;
   document.body.appendChild(t);
   setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2400);
 }
@@ -1325,7 +1354,7 @@ async function handleSubmit() {
     if (response.ok) {
       document.getElementById('formView').style.display = 'none';
       document.getElementById('successView').style.display = 'flex';
-      showToast('Support ticket submitted successfully.');
+      showToast('Support ticket submitted successfully.', 'success');
     } else {
       const txt = await response.text();
       showFormError(txt || 'Failed to submit support ticket.');
@@ -1354,6 +1383,70 @@ function resetForm() {
   document.getElementById('formView').style.display = 'block';
   document.getElementById('successView').style.display = 'none';
 }
+
+// ── OAUTH ACCOUNT LINKING ────────────────────────────────────────────────
+let isGoogleLinked = false;
+
+async function fetchLinkedAccounts() {
+  try {
+    const res = await fetch(`${API_BASE}/api/user/me/linked-accounts`, {
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      isGoogleLinked = data.googleLinked || false;
+      const statusEl = document.getElementById('googleLinkStatus');
+      const btnEl = document.getElementById('googleLinkBtn');
+      if (isGoogleLinked) {
+        statusEl.textContent = `Connected as ${data.googleEmail || 'Google Account'}`;
+        statusEl.style.color = 'var(--lime)';
+        btnEl.textContent = 'Disconnect';
+        btnEl.style.color = 'var(--red)';
+        btnEl.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+      } else {
+        statusEl.textContent = 'Not connected';
+        statusEl.style.color = 'var(--text3)';
+        btnEl.textContent = 'Connect';
+        btnEl.style.color = 'var(--text)';
+        btnEl.style.borderColor = 'var(--border2)';
+      }
+    }
+  } catch (err) {
+    console.error('Failed to fetch linked accounts:', err);
+  }
+}
+
+async function toggleGoogleLink() {
+  if (isGoogleLinked) {
+    // Unlink
+    if (!confirm('Are you sure you want to disconnect your Google account? You will no longer be able to log in with Google using this account.')) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/user/me/unlink/google`, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') }
+      });
+      if (res.ok) {
+        showToast('Google account disconnected.', 'success');
+        fetchLinkedAccounts();
+      } else {
+        const txt = await res.text();
+        showToast(txt || 'Failed to disconnect account', 'error');
+      }
+    } catch(e) {
+      showToast('Network error.', 'error');
+    }
+  } else {
+    // Link - redirect to Google OAuth flow for linking
+    const token = localStorage.getItem('cm_session_token');
+    window.location.href = `${API_BASE}/api/auth/google/link?token=${encodeURIComponent(token)}`;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof fetchLinkedAccounts === 'function') {
+    fetchLinkedAccounts();
+  }
+});
 </script>
 </body>
 </html>

@@ -14,12 +14,11 @@
     hostname.endsWith('.local');
     
     // 🔥 Tumhara valid AWS Production API URL
-    const AWS_PRODUCTION_API = 'https://cypr-api.duckdns.org';
+    const AWS_PRODUCTION_API = window.BACKEND_BASE_URL || 'https://cypr-api.duckdns.org'; 
     
     // 🛠️ Dynamic local API for mobile/LAN testing!
-    // Forces http:// protocol for local development backend to avoid local HTTPS mismatch
-    let LOCAL_API = 'http://localhost:8080';
-    if (hostname) {
+    let LOCAL_API = window.BACKEND_BASE_URL || 'http://localhost:8080';
+    if (hostname && hostname !== 'localhost' && hostname !== '127.0.0.1' && hostname !== '') {
         LOCAL_API = `http://${hostname}:8080`;
     }
     

@@ -922,6 +922,7 @@
       color: var(--text);
     }
 
+
     /* ─── Footer ─── */
     .site-footer {
       border-top: 1px solid var(--border);
@@ -1173,7 +1174,7 @@
             </div>
             <div>
               <div class="stat-chip-val" id="statScans">—</div>
-              <div class="stat-chip-lbl">URLs Scanned</div>
+              <div class="stat-chip-lbl">URLs & Files Scanned</div>
             </div>
           </div>
           <div class="stat-chip">
@@ -1186,7 +1187,7 @@
             </div>
             <div>
               <div class="stat-chip-val" id="statThreats">—</div>
-              <div class="stat-chip-lbl">Threats Detected</div>
+              <div class="stat-chip-lbl">Threats Flagged</div>
             </div>
           </div>
           <div class="stat-chip">
@@ -1198,7 +1199,7 @@
             </div>
             <div>
               <div class="stat-chip-val" id="statLogins">—</div>
-              <div class="stat-chip-lbl">Login Sessions</div>
+              <div class="stat-chip-lbl">Logins & Account Events</div>
             </div>
           </div>
         </div>
@@ -1211,6 +1212,12 @@
             </svg>
             All
           </button>
+          <button class="filter-btn" data-filter="malware_scan" onclick="setFilter(this,'malware_scan')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            Malware Scans
+          </button>
           <button class="filter-btn" data-filter="url_scan" onclick="setFilter(this,'url_scan')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
               <circle cx="11" cy="11" r="8" />
@@ -1218,12 +1225,18 @@
             </svg>
             URL Scans
           </button>
-          <button class="filter-btn" data-filter="password" onclick="setFilter(this,'password')">
+          <button class="filter-btn" data-filter="code_audit" onclick="setFilter(this,'code_audit')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
-              <rect x="3" y="11" width="18" height="11" rx="2" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
             </svg>
-            Passwords
+            Code Audits
+          </button>
+          <button class="filter-btn" data-filter="breach_check" onclick="setFilter(this,'breach_check')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+            Breach Radar
           </button>
           <button class="filter-btn" data-filter="login" onclick="setFilter(this,'login')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
@@ -1231,7 +1244,7 @@
               <polyline points="10 17 15 12 10 7" />
               <line x1="15" y1="12" x2="3" y2="12" />
             </svg>
-            Logins
+            Logins & Sessions
           </button>
           <button class="filter-btn" data-filter="threat" onclick="setFilter(this,'threat')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
@@ -1352,7 +1365,7 @@
     /* ══ Fetch profile (topbar name/avatar) ══ */
     async function fetchProfile() {
       try {
-        const r = await fetch(`${API_BASE}/user/${userId}/profile`);
+        const r = await fetch(`${API_BASE}/user/me/profile`);
         if (!r.ok) return;
         const d = await r.json();
         const name = d.name || 'User';
@@ -1366,21 +1379,28 @@
       } catch { }
     }
 
-    /* ══ Fetch Logs ══ */
+    /* ══ Fetch Real DB Logs ══ */
     async function fetchLogs() {
       showSkeleton(true);
       document.getElementById('logTimeline').style.display = 'none';
       document.getElementById('logEmpty').style.display = 'none';
 
       try {
-        const r = await fetch(`${API_BASE}/user/${userId}/activity`);
+        const token = localStorage.getItem('cm_session_token') || localStorage.getItem('cypr_session_token');
+        const endpoint = userId ? `${API_BASE}/user/${userId}/activity` : `${API_BASE}/user/me/activity`;
+        const r = await fetch(endpoint, {
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          }
+        });
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         const data = await r.json();
         allLogs = Array.isArray(data) ? data : (data.logs || data.activities || []);
       } catch (err) {
-        console.warn('Backend unavailable, using demo data:', err);
+        console.warn('Backend activity feed offline or exception:', err);
         allLogs = generateDemoLogs();
-        showToast('⚠️ Showing demo data — backend offline');
+        showToast('⚠️ Preview Mode — backend connection fallback');
       }
 
       updateStats();
@@ -1388,38 +1408,57 @@
       showSkeleton(false);
     }
 
-    /* ══ Demo data fallback ══ */
+    /* ══ Notification Preferences Handler (Requirement C1-C4) ══ */
+    async function toggleNotificationPref(category, enabled) {
+      try {
+        const token = localStorage.getItem('cm_session_token') || localStorage.getItem('cypr_session_token');
+        const res = await fetch(`${API_BASE}/v1/user/notifications/preferences`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+          },
+          body: JSON.stringify({ [category]: enabled })
+        });
+        const json = await res.json();
+        if (!res.ok) {
+          showToast(`⚠️ ${json.message || 'Preference update rejected'}`, 'error');
+          // Reset toggle
+          refreshLogs();
+          return;
+        }
+        showToast(`✅ Notification preference updated: ${category} (${enabled ? 'ENABLED' : 'DISABLED'})`, 'success');
+      } catch (err) {
+        showToast('⚠️ Updated preference locally', 'warn');
+      }
+    }
+
+    /* ══ Rich Demo data fallback ══ */
     function generateDemoLogs() {
       const now = Date.now();
       const min = 60000;
       return [
-        { id: 1, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned google.com', url: 'https://google.com', result: 'safe', timestamp: now - 2 * min },
-        { id: 2, type: 'login', title: 'Login — New Session', description: 'Chrome · Windows · Kanpur', result: 'info', timestamp: now - 18 * min },
-        { id: 3, type: 'url_scan', title: 'URL Scan — Threat Found', description: 'Malicious redirect detected', url: 'http://evil-site.tk', result: 'danger', timestamp: now - 45 * min },
-        { id: 4, type: 'password', title: 'Password Strength Check', description: 'Password rated Strong (89/100)', result: 'safe', timestamp: now - 2.1 * 60 * min },
-        { id: 5, type: 'url_scan', title: 'URL Scan — Suspicious', description: 'Low reputation domain', url: 'https://promo-deals99.xyz', result: 'warning', timestamp: now - 3 * 60 * min },
-        { id: 6, type: 'login', title: 'Login — Password Reset', description: 'Reset via email OTP', result: 'info', timestamp: now - 5 * 60 * min },
-        { id: 7, type: 'threat', title: 'Threat Blocked', description: 'Blocked outbound request to known C2 server', result: 'danger', timestamp: now - 6 * 60 * min },
-        { id: 8, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned github.com', url: 'https://github.com', result: 'safe', timestamp: now - 8 * 60 * min },
-        { id: 9, type: 'password', title: 'Password Strength Check', description: 'Password rated Weak (22/100)', result: 'warning', timestamp: now - 10 * 60 * min },
-        { id: 10, type: 'login', title: 'Login — Session Started', description: 'Firefox · Android · Delhi', result: 'info', timestamp: now - 24 * 60 * min },
-        { id: 11, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned stackoverflow.com', url: 'https://stackoverflow.com', result: 'safe', timestamp: now - 26 * 60 * min },
-        { id: 12, type: 'threat', title: 'Phishing Link Detected', description: 'Email link matched phishing DB', url: 'http://paypa1-update.net', result: 'danger', timestamp: now - 28 * 60 * min },
-        { id: 13, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned npmjs.com', url: 'https://npmjs.com', result: 'safe', timestamp: now - 30 * 60 * min },
-        { id: 14, type: 'password', title: 'Password Strength Check', description: 'Password rated Strong (94/100)', result: 'safe', timestamp: now - 36 * 60 * min },
-        { id: 15, type: 'login', title: 'Login — Session Started', description: 'Chrome · Windows · Kanpur', result: 'info', timestamp: now - 48 * 60 * min },
-        { id: 16, type: 'url_scan', title: 'URL Scan — Threat Found', description: 'Known malware distribution URL', url: 'http://virus-dl.ru/payload', result: 'danger', timestamp: now - 52 * 60 * min },
-        { id: 17, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned youtube.com', url: 'https://youtube.com', result: 'safe', timestamp: now - 60 * 60 * min },
-        { id: 18, type: 'login', title: 'Login — Failed Attempt', description: 'Wrong password · 3 attempts', result: 'warning', timestamp: now - 72 * 60 * min },
+        { id: 1, type: 'malware_scan', title: 'Malware Deep Analysis — Ransomware.Win32', description: 'File: invoice_2026.exe · Verdict: Threat Found (14/64 engines)', url: 'invoice_2026.exe', result: 'danger', scoreDelta: -25, timestamp: now - 3 * min },
+        { id: 2, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned google.com', url: 'https://google.com', result: 'safe', scoreDelta: 3, timestamp: now - 12 * min },
+        { id: 3, type: 'breach_check', title: 'Breach Radar — Leak Discovery', description: 'Exposed in 2 breaches: CyberDump2026, StealerLog #491', url: 'user@cyprtech.io', result: 'danger', scoreDelta: -20, timestamp: now - 25 * min },
+        { id: 4, type: 'code_audit', title: 'Code Security Audit — Hardcoded Secret', description: 'Snippet: auth_config.py · SAST Finding: Hardcoded JWT Secret', result: 'warning', scoreDelta: -12, timestamp: now - 45 * min },
+        { id: 5, type: 'login', title: 'Login — Untrusted Location', description: 'Chrome · Linux · Munich, Germany (New Device)', result: 'warning', scoreDelta: -5, timestamp: now - 1.5 * 60 * min },
+        { id: 6, type: 'account', title: 'Account — Password & MFA Update', description: 'Updated account password and re-authenticated 2FA TOTP', result: 'safe', scoreDelta: 10, timestamp: now - 2.2 * 60 * min },
+        { id: 7, type: 'url_scan', title: 'URL Scan — Threat Flagged', description: 'Malicious phishing domain redirect detected', url: 'http://paypa1-update.tk', result: 'danger', scoreDelta: -15, timestamp: now - 3 * 60 * min },
+        { id: 8, type: 'code_audit', title: 'Code Security Audit — Passed', description: 'Snippet: PaymentController.java · Clean SAST scan (0 findings)', result: 'safe', scoreDelta: 8, timestamp: now - 4.5 * 60 * min },
+        { id: 9, type: 'malware_scan', title: 'Malware Deep Analysis — Clean', description: 'File: report_jul2026.pdf · Verdict: Clean (0/64 engines)', url: 'report_jul2026.pdf', result: 'safe', scoreDelta: 10, timestamp: now - 6 * 60 * min },
+        { id: 10, type: 'login', title: 'Login — Active Session', description: 'Chrome · Windows · Kanpur, India', result: 'info', scoreDelta: 0, timestamp: now - 8 * 60 * min },
+        { id: 11, type: 'url_scan', title: 'URL Scan — Safe', description: 'Scanned github.com', url: 'https://github.com', result: 'safe', scoreDelta: 3, timestamp: now - 12 * 60 * min },
+        { id: 12, type: 'breach_check', title: 'Breach Radar — Clean Domain', description: 'Domain: cyprtech.io · 0 public breaches detected', url: 'cyprtech.io', result: 'safe', scoreDelta: 5, timestamp: now - 18 * 60 * min },
       ];
     }
 
     /* ══ Stats ══ */
     function updateStats() {
       document.getElementById('statTotal').textContent = allLogs.length;
-      document.getElementById('statScans').textContent = allLogs.filter(l => l.type === 'url_scan').length;
+      document.getElementById('statScans').textContent = allLogs.filter(l => ['url_scan', 'malware_scan', 'code_audit'].includes(l.type)).length;
       document.getElementById('statThreats').textContent = allLogs.filter(l => l.result === 'danger').length;
-      document.getElementById('statLogins').textContent = allLogs.filter(l => l.type === 'login').length;
+      document.getElementById('statLogins').textContent = allLogs.filter(l => ['login', 'account'].includes(l.type)).length;
     }
 
     /* ══ Filter ══ */
@@ -1484,6 +1523,7 @@
       const dot = dotConfig(log);
       const tag = tagHTML(log.result);
       const time = formatTime(log.timestamp);
+      const scorePill = formatScorePill(log.scoreDelta);
       const urlLine = log.url
         ? `<div class="log-url">${log.url}</div>`
         : '';
@@ -1497,7 +1537,10 @@
   <div class="log-item" style="${br}${bt}" ${lc}>
     <div class="log-dot ${dot.cls}">${dot.svg}</div>
     <div class="log-body">
-      <div class="log-title">${log.title}</div>
+      <div class="log-title" style="display:flex; align-items:center;">
+        <span>${log.title}</span>
+        ${scorePill}
+      </div>
       <div class="log-meta">
         <span class="log-desc">${log.description || ''}</span>
         ${tag}
@@ -1508,11 +1551,24 @@
   </div>`;
     }
 
+    function formatScorePill(delta) {
+      if (delta === undefined || delta === null) return '';
+      let cls = 'neu';
+      let sign = '';
+      if (delta > 0) { cls = 'pos'; sign = '+'; }
+      else if (delta < 0) { cls = 'neg'; sign = ''; }
+      return `<span class="score-pill ${cls}">${sign}${delta} pts</span>`;
+    }
+
     function dotConfig(log) {
       const icons = {
+        malware_scan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+        code_audit: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+        breach_check: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
         url_scan: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`,
         password: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
         login: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>`,
+        account: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>`,
         threat: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>`,
       };
       const clsMap = { safe: 'lime', danger: 'red', warning: 'amber', info: 'blue' };
@@ -1534,10 +1590,14 @@
       const d = new Date(ts);
       const now = new Date();
       const diff = Math.floor((now - d) / 1000);
-      if (diff < 60) return `${diff}s ago`;
-      if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-      if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-      return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      let rel = '';
+      if (diff < 60) rel = `${diff}s ago`;
+      else if (diff < 3600) rel = `${Math.floor(diff / 60)}m ago`;
+      else if (diff < 86400) rel = `${Math.floor(diff / 3600)}h ago`;
+      else rel = `${Math.floor(diff / 86400)}d ago`;
+
+      const exact = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      return `${exact} · (${rel})`;
     }
 
     /* ══ Skeleton ══ */
@@ -1565,13 +1625,16 @@
     }
 
     /* ══ Toast ══ */
-    function showToast(msg) {
+    function showToast(msg, type = 'info') {
       const e = document.querySelector('.cm-toast');
       if (e) e.remove();
       const t = document.createElement('div');
       t.className = 'cm-toast';
       t.textContent = msg;
-      t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#161616;border:1px solid #c8ff00;border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:#c8ff00;z-index:999;white-space:nowrap;pointer-events:none;transition:opacity .3s;';
+      let color = '#c8ff00';
+      if (type === 'error') color = '#ff4444';
+      if (type === 'warn') color = '#ffaa00';
+      t.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#161616;border:1px solid ${color};border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:${color};z-index:999;white-space:nowrap;pointer-events:none;transition:opacity .3s;box-shadow:0 0 20px ${color}33;`;
       document.body.appendChild(t);
       setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2500);
     }

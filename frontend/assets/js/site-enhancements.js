@@ -791,66 +791,86 @@
       cursor: pointer;
       display: flex;
       align-items: center;
+      padding: 2px;
+      border-radius: 50%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .cm-user-trigger:hover {
+      transform: scale(1.05);
     }
     .cm-avatar-small {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--lime), var(--lime2)) !important;
+      background: linear-gradient(135deg, var(--accent), var(--accent2)) !important;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 800;
-      font-size: 0.8rem;
-      color: var(--bg) !important;
-      border: 1.5px solid var(--lime-glow) !important;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #ffffff !important;
+      border: 2px solid var(--surface) !important;
+      box-shadow: 0 0 0 1.5px var(--border-bright), 0 2px 8px rgba(0,0,0,0.12) !important;
       transition: all 0.2s ease;
+      overflow: hidden;
+    }
+    .cm-avatar-small img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
     }
     .cm-avatar-small:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 12px var(--lime-glow);
+      box-shadow: 0 0 0 2px var(--accent), 0 4px 12px var(--lime-glow) !important;
     }
     .cm-dropdown-menu {
       position: absolute;
       top: calc(100% + 10px);
       right: 0;
-      width: 220px;
-      background: var(--bg2) !important;
+      width: 230px;
+      background: var(--surface) !important;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border) !important;
-      border-radius: 12px;
-      padding: 8px;
-      box-shadow: var(--shadow-lg) !important;
-      display: none;
+      border-radius: 14px;
+      padding: 6px;
+      box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+      display: flex;
       flex-direction: column;
-      gap: 4px;
-      z-index: 9999;
-      transform: translateY(-10px);
+      gap: 2px;
+      z-index: 99999;
+      transform: translateY(-8px) scale(0.96);
       opacity: 0;
-      transition: transform 0.2s ease, opacity 0.2s ease;
+      pointer-events: none;
+      visibility: hidden;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s ease;
+      box-sizing: border-box;
     }
     .cm-dropdown-menu.open {
-      display: flex;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
       opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
     }
     .cm-dropdown-header {
-      padding: 10px 12px;
+      padding: 10px 12px 8px 12px;
       border-bottom: 1px solid var(--border) !important;
       margin-bottom: 4px;
       text-align: left;
     }
     .cm-dropdown-header .name {
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       color: var(--text) !important;
       display: block;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      line-height: 1.3;
     }
     .cm-dropdown-header .email {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
+      font-family: 'JetBrains Mono', monospace, sans-serif;
+      font-size: 0.7rem;
       color: var(--text3) !important;
       display: block;
       white-space: nowrap;
@@ -864,27 +884,49 @@
       gap: 10px;
       padding: 8px 12px;
       border-radius: 8px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 500;
       color: var(--text2) !important;
-      transition: all 0.15s;
+      transition: all 0.15s ease;
       cursor: pointer;
       text-decoration: none !important;
+      box-sizing: border-box;
+    }
+    .cm-dropdown-item svg {
+      width: 17px !important;
+      height: 17px !important;
+      min-width: 17px !important;
+      min-height: 17px !important;
+      flex-shrink: 0 !important;
+      color: var(--text3) !important;
+      transition: color 0.15s ease, transform 0.15s ease;
     }
     .cm-dropdown-item:hover {
-      background: var(--bg3) !important;
-      color: var(--lime) !important;
+      background: var(--accent-dim) !important;
+      color: var(--accent) !important;
+    }
+    .cm-dropdown-item:hover svg {
+      color: var(--accent) !important;
+      transform: translateX(2px);
     }
     .cm-dropdown-divider {
       height: 1px;
       background: var(--border) !important;
-      margin: 4px 0;
+      margin: 4px 4px;
     }
     .cm-dropdown-item.logout {
-      color: #ff5555 !important;
+      color: var(--red, #ef4444) !important;
+    }
+    .cm-dropdown-item.logout svg {
+      color: var(--red, #ef4444) !important;
     }
     .cm-dropdown-item.logout:hover {
-      background: rgba(255, 85, 85, 0.08) !important;
-      color: #ff5555 !important;
+      background: var(--red-dim, rgba(239, 68, 68, 0.1)) !important;
+      color: var(--red, #ef4444) !important;
+    }
+    .cm-dropdown-item.logout:hover svg {
+      color: var(--red, #ef4444) !important;
+      transform: translateX(2px);
     }
 
     /* ── HAMBURGER & MOBILE MENU ── */
@@ -1929,9 +1971,8 @@
     logoLink.href = readUserId() ? 'home.html' : 'index.html';
     logoLink.className = 'cm-nav-logo';
     logoLink.innerHTML = `
-      <span class="cm-logo-slot">
-        <img src="assets/logo.png" alt="CM" onerror="const s=document.createElement('span');s.textContent='CM';this.replaceWith(s);">
-      </span>
+      <div class="cm-logo-slot"><img src="assets/favicon.png" alt="CYPR" onerror="this.style.display='none'"></div>
+      <span style="font:800 1.05rem var(--font); letter-spacing:-0.03em; color:var(--text);">CYPR</span>
     `;
     leftGroup.appendChild(logoLink);
 
@@ -1970,24 +2011,47 @@
 
     const mobileSettingsLinkHtml = userId ? `<a href="settings.html" class="${isActive('settings.html')}">Settings</a>` : '';
     const userEmail = localStorage.getItem('cm_user_email') || '';
-    const isAdmin = userEmail === 'vineetk5704@gmail.com';
+    const isAdmin = userEmail === 'vineetk5704@gmail.com' || userEmail === 'admin@cypr.com';
     const mobileAdminLinkHtml = (userId && isAdmin) ? `<a href="admin.html" class="${isActive('admin.html')}" style="color:var(--accent);font-weight:600;">Admin Panel</a>` : '';
 
     const navTabs = document.createElement('div');
     navTabs.className = 'cm-nav-tabs';
     navTabs.innerHTML = `
+      <a href="home.html" class="cm-nav-tab ${isActive('home.html')}"> 
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      Home 
+      </a>
       <a href="tools.html" class="cm-nav-tab ${isActive('tools.html')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         Tools
       </a>
+      <a href="activity-logs.html" class="cm-nav-tab ${isActive('activity-logs.html')}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12a9 9 0 1 0 3-6.7"/>
+        <path d="M3 3v6h6"/>
+        <path d="M12 7v5l3 3"/>
+    </svg>
+    Activity
+      </a>
       <a href="pricing.html" class="cm-nav-tab ${isActive('pricing.html')}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 8v8m-4-4h8"/></svg>
-        Pricing
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <path d="M2 10h20"/>
+        <path d="M6 15h4"/>
+    </svg>
+    Pricing
       </a>
       <a href="cyber-news.html" class="cm-nav-tab ${isActive('cyber-news.html')}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M16 8h2m-2 4h2M6 8h6v8H6z"/></svg>
-        Cyber News
-      </a>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 11a9 9 0 0 1 9 9"/>
+        <path d="M4 4a16 16 0 0 1 16 16"/>
+        <circle cx="5" cy="19" r="1"/>
+    </svg>
+    News
+</a>
       <a href="aboutus.html" class="cm-nav-tab ${isActive('aboutus.html')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
         About Us
@@ -2129,22 +2193,96 @@
         <span class="cm-credit-pill">Credits: ...</span>
         <a href="dashboard.html" class="cm-btn-accent">Dashboard</a>
 
-        <!-- User profile avatar dropdown -->
-        <div class="cm-user-menu">
-          <div class="cm-user-trigger">
-            <div class="cm-avatar-small">?</div>
-          </div>
-          <div class="cm-dropdown-menu">
-            <div class="cm-dropdown-header">
-              <span class="name">Loading Profile...</span>
-              <span class="email">...</span>
-            </div>
-            <a href="dashboard.html" class="cm-dropdown-item">📊 Dashboard</a>
-            ${isAdmin ? '<a href="admin.html" class="cm-dropdown-item" style="color:var(--accent);font-weight:600;">🔑 Admin Panel</a>' : ''}
-            <a href="settings.html" class="cm-dropdown-item">⚙️ Settings</a>
-            <div class="cm-dropdown-divider"></div>
-            <div class="cm-dropdown-item logout">🔒 Sign Out</div>
-          </div>
+        <!-- User Profile Dropdown -->
+<div class="cm-user-menu">
+  <div class="cm-user-trigger">
+    <div class="cm-avatar-small">?</div>
+  </div>
+
+  <div class="cm-dropdown-menu">
+
+    <!-- Profile Header -->
+    <div class="cm-dropdown-header">
+      <span class="name">Loading Profile...</span>
+      <span class="email">...</span>
+    </div>
+
+    <div class="cm-dropdown-divider"></div>
+
+    <!-- Main -->
+    <a href="dashboard.html" class="cm-dropdown-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="14" y="3" width="7" height="5" rx="1.5"/>
+        <rect x="14" y="12" width="7" height="9" rx="1.5"/>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+      </svg>
+      <span>Dashboard</span>
+    </a>
+
+    <a href="activity-logs.html" class="cm-dropdown-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 12a9 9 0 1 0 3-6.7"/>
+        <path d="M3 3v6h6"/>
+        <path d="M12 7v5l3 3"/>
+      </svg>
+      <span>Activity</span>
+    </a>
+
+    <a href="pricing.html" class="cm-dropdown-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <path d="M2 10h20"/>
+        <path d="M6 15h4"/>
+      </svg>
+      <span>Billing & Credits</span>
+    </a>
+
+    ${isAdmin ? `
+    <a href="admin.html" class="cm-dropdown-item admin-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2l7 4v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-4z"/>
+        <path d="M9 12l2 2 4-4"/>
+      </svg>
+      <span>Admin Panel</span>
+    </a>
+    ` : ''}
+
+    <div class="cm-dropdown-divider"></div>
+
+    <!-- Settings -->
+    <a href="settings.html" class="cm-dropdown-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3.09 13H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82A1.65 1.65 0 0 0 20.91 11H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      <span>Settings</span>
+    </a>
+
+    <a href="contact.html" class="cm-dropdown-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9 9h.01"/>
+        <path d="M15 9h.01"/>
+        <path d="M8 13a5 5 0 0 1 8 0"/>
+      </svg>
+      <span>Help & Support</span>
+    </a>
+
+    <div class="cm-dropdown-divider"></div>
+
+    <!-- Logout -->
+    <div class="cm-dropdown-item logout">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+        <path d="M16 17l5-5-5-5"/>
+        <path d="M21 12H9"/>
+      </svg>
+      <span>Sign Out</span>
+    </div>
+
+  </div>
+</div>
         </div>
       `;
 
@@ -2201,7 +2339,11 @@
 
       // Load Profile & credits dynamically
       try {
-        const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/profile`);
+        const response = await fetch(`${API_BASE}/api/user/me/profile`, {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token')
+          }
+        });
         if (response.ok) {
           const d = await response.json();
           const name = d.name || 'User';
@@ -2441,7 +2583,11 @@
   async function loadSearchActivities(userId) {
     if (!userId) return;
     try {
-      const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/activity`);
+      const response = await fetch(`${API_BASE}/api/user/me/activity`, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token')
+        }
+      });
       if (response.ok) {
         cachedActivities = await response.json();
       }
@@ -2786,19 +2932,74 @@
         const ddMenu = document.createElement('div');
         ddMenu.className = 'cm-dropdown-menu';
         const userEmail = localStorage.getItem('cm_user_email') || '';
-        const isAdmin = userEmail === 'vineetk5704@gmail.com';
-        const adminLink = isAdmin ? '<a href="admin.html" class="cm-dropdown-item" style="color:var(--accent);font-weight:600;">🔑 Admin Panel</a>' : '';
+        const isAdmin = userEmail === 'vineetk5704@gmail.com' || userEmail === 'admin@cypr.com';
 
         ddMenu.innerHTML = `
           <div class="cm-dropdown-header">
             <span class="name" id="ddName">Loading profile...</span>
             <span class="email" id="ddEmail">...</span>
           </div>
-          <a href="dashboard.html" class="cm-dropdown-item">📊 Dashboard</a>
-          ${adminLink}
-          <a href="settings.html" class="cm-dropdown-item">⚙️ Settings</a>
           <div class="cm-dropdown-divider"></div>
-          <div class="cm-dropdown-item logout">🔒 Sign Out</div>
+          <a href="dashboard.html" class="cm-dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="3" width="7" height="5" rx="1.5"/>
+              <rect x="14" y="12" width="7" height="9" rx="1.5"/>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+            </svg>
+            <span>Dashboard</span>
+          </a>
+          <a href="activity-logs.html" class="cm-dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 1 0 3-6.7"/>
+              <path d="M3 3v6h6"/>
+              <path d="M12 7v5l3 3"/>
+            </svg>
+            <span>Activity</span>
+          </a>
+          <a href="pricing.html" class="cm-dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="5" width="20" height="14" rx="2"/>
+              <path d="M2 10h20"/>
+              <path d="M6 15h4"/>
+            </svg>
+            <span>Billing & Credits</span>
+          </a>
+          ${isAdmin ? `
+          <a href="admin.html" class="cm-dropdown-item admin-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l7 4v6c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-4z"/>
+              <path d="M9 12l2 2 4-4"/>
+            </svg>
+            <span>Admin Panel</span>
+          </a>
+          ` : ''}
+          <div class="cm-dropdown-divider"></div>
+          <a href="settings.html" class="cm-dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82A1.65 1.65 0 0 0 3.09 13H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33A1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82A1.65 1.65 0 0 0 20.91 11H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span>Settings</span>
+          </a>
+          <a href="contact.html" class="cm-dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9 9h.01"/>
+              <path d="M15 9h.01"/>
+              <path d="M8 13a5 5 0 0 1 8 0"/>
+            </svg>
+            <span>Help & Support</span>
+          </a>
+          <div class="cm-dropdown-divider"></div>
+          <div class="cm-dropdown-item logout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <path d="M16 17l5-5-5-5"/>
+              <path d="M21 12H9"/>
+            </svg>
+            <span>Sign Out</span>
+          </div>
         `;
         tbUser.appendChild(ddMenu);
 
@@ -2816,7 +3017,11 @@
 
     // 3. Load profile data and populate ALL placeholders (sidebar + topbar + dropdown)
     try {
-      const response = await fetch(`${API_BASE}/api/user/${encodeURIComponent(userId)}/profile`);
+      const response = await fetch(`${API_BASE}/api/user/me/profile`, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token')
+        }
+      });
       if (response.ok) {
         const d = await response.json();
         const name = d.name || 'User';
@@ -3158,13 +3363,20 @@
   }
 
   // Toast notifications helper
-  function showToast(msg) {
+  function showToast(msg, type = 'info') {
     const e = document.querySelector('.cm-toast');
     if (e) e.remove();
     const t = document.createElement('div');
     t.className = 'cm-toast';
     t.textContent = msg;
-    t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--lime);border-radius:100px;padding:10px 22px;font-family:\'JetBrains Mono\',monospace;font-size:.78rem;color:var(--lime);z-index:99999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px var(--lime-glow);animation:cm-pulse-glow 2.5s infinite;';
+
+    // Determine color based on type
+    let color = 'var(--lime)';
+    if (type === 'error') color = '#ff4444';
+    if (type === 'success') color = 'var(--lime)';
+    if (type === 'warn') color = '#ffaa00';
+
+    t.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:100px;padding:10px 22px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:${color};z-index:99999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px ${color}33;animation:cm-pulse-glow 2.5s infinite;`;
     document.body.appendChild(t);
     setTimeout(() => {
       t.style.opacity = '0';

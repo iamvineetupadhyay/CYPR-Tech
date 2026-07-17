@@ -801,7 +801,9 @@ function renderGuestState() {
 /* ══ BACKEND FETCH ══ */
 async function fetchProfileData() {
   try {
-    const res = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/${userId}/profile`);
+    const res = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/me/profile`, {
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') }
+    });
     if (res.ok) {
       const d = await res.json();
       profile.fn = d.name.split(' ')[0] || 'User';
@@ -832,7 +834,9 @@ async function fetchProfileData() {
       let urlCount=0, passCount=0, urlThreats=0, exposedPasswords=0;
       let acts = [];
       try {
-        const actRes = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/${userId}/activity`);
+        const actRes = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/me/activity`, {
+          headers: { 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token') }
+        });
         if (actRes.ok) {
           acts = await actRes.json() || [];
           urlCount = acts.filter(a=>(a.type||'').toLowerCase().includes('url')).length;
@@ -899,7 +903,7 @@ async function fetchProfileData() {
       renderTopTools(urlCount, passCount, malCount);
       renderOverviewChart(acts, malLogs);
     }
-  } catch(err) { console.error('Fetch Error:', err); showToast('Connection to server failed.'); }
+  } catch(err) { console.error('Fetch Error:', err); showToast('Connection to server failed.', 'error'); }
 }
 
 /* ══ UI UPDATE ══ */
@@ -1256,9 +1260,9 @@ function closeModal() { document.getElementById('modalOverlay').classList.remove
 async function saveProfile() {
   const upd = { name:document.getElementById('mFN').value.trim()+' '+document.getElementById('mLN').value.trim(), email:document.getElementById('mEM').value.trim(), mobile:document.getElementById('mPH').value.trim(), bio:document.getElementById('mBI').value.trim() };
   try {
-    const res = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/${userId}/update`, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(upd) });
-    if (res.ok) { showToast('Profile updated'); fetchProfileData(); closeModal(); }
-  } catch(e) { showToast('Update failed'); }
+    const res = await fetch(`${window.CYPR_TECH_API_BASE}/api/user/me/update`, { method:'PUT', headers:{'Content-Type':'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('cm_session_token')}, body:JSON.stringify(upd) });
+    if (res.ok) { showToast('Profile updated', 'success'); fetchProfileData(); closeModal(); }
+  } catch(e) { showToast('Update failed', 'error'); }
 }
 function handleAvatar(input) { const file=input.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=e=>{profile.avatarSrc=e.target.result; document.getElementById('modalAv').innerHTML=`<img src="${e.target.result}">`; updateProfileUI();}; reader.readAsDataURL(file); }
 function openDiscoverModal() { renderDiscoverToolsList(); document.getElementById('discoverModalOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
@@ -1278,10 +1282,13 @@ function formatRelTime(date) {
   const hr=Math.floor(min/60); if(hr<24) return `${hr}h ago`;
   return `${Math.floor(hr/24)}d ago`;
 }
-function showToast(msg) {
+function showToast(msg, type = 'info') {
   const e=document.querySelector('.cm-toast'); if(e) e.remove();
   const t=document.createElement('div'); t.className='cm-toast'; t.textContent=msg;
-  t.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--lime);border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:var(--lime);z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px var(--lime-glow);';
+  let color = 'var(--lime)';
+  if (type === 'error') color = '#ff4444';
+  if (type === 'warn') color = '#ffaa00';
+  t.style.cssText=`position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:${color};z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px ${color}33;`;
   document.body.appendChild(t); setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300);},2400);
 }
 </script>

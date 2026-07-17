@@ -980,7 +980,20 @@
 
     function initCarousel() {
       // Prepend custom homepage featured banner if published
-      const fb = JSON.parse(localStorage.getItem('cypr_admin_featured_banner') || 'null');
+      let fb = null;
+      if (window.dbAnnouncements) {
+        const bannerAnn = window.dbAnnouncements
+          .filter(a => a.title === 'SYSTEM_FEATURED_BANNER' && a.active)
+          .sort((x, y) => new Date(y.createdAt) - new Date(x.createdAt))[0];
+        if (bannerAnn) {
+          try {
+            fb = JSON.parse(bannerAnn.content);
+          } catch (e) {}
+        }
+      }
+      if (!fb) {
+        fb = JSON.parse(localStorage.getItem('cypr_admin_featured_banner') || 'null');
+      }
       if (fb && fb.active) {
         slides.unshift({
           tag: fb.tag || 'ANNOUNCEMENT',
@@ -1061,7 +1074,20 @@
       const banner = document.getElementById('announceBanner');
       if (!banner) return;
 
-      const b = JSON.parse(localStorage.getItem('cypr_admin_announcement') || 'null');
+      let b = null;
+      if (window.dbAnnouncements) {
+        const bannerAnn = window.dbAnnouncements
+          .filter(a => a.title === 'SYSTEM_WARNING_BANNER' && a.active)
+          .sort((x, y) => new Date(y.createdAt) - new Date(x.createdAt))[0];
+        if (bannerAnn) {
+          try {
+            b = JSON.parse(bannerAnn.content);
+          } catch (e) {}
+        }
+      }
+      if (!b) {
+        b = JSON.parse(localStorage.getItem('cypr_admin_announcement') || 'null');
+      }
       
       // Check if dismissed
       const currentBnrId = (b && b.active) ? String(b.publishedAt) : 'default';
@@ -1189,9 +1215,25 @@
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
       setGreeting();
       setFactOfTheDay();
+
+      // Fetch public announcements from backend database
+      try {
+        const token = localStorage.getItem('cm_session_token');
+        const apiBase = window.CYPR_TECH_API_BASE || '';
+        const r = await fetch(apiBase + '/api/v1/communication/announcements', {
+          headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+        });
+        if (r.ok) {
+          const res = await r.json();
+          window.dbAnnouncements = res.data && res.data.content ? res.data.content : [];
+        }
+      } catch (e) {
+        console.error("Failed to fetch announcements:", e);
+      }
+
       initCarousel();
       updateHelpline();
       loadAnnounceBanner();
@@ -1224,7 +1266,7 @@
 
     async function fetchProfileAndActivity() {
       try {
-        const profileRes = await fetch(`${API}/user/${userId}/profile`);
+        const profileRes = await fetch(`${API}/user/me/profile`);
         if (profileRes.ok) {
           const profileData = await profileRes.json();
           const name = profileData.name || 'User';
@@ -1398,10 +1440,13 @@
       }
     }
 
-    function showToast(msg) {
+    function showToast(msg, type = 'info') {
       const e = document.querySelector('.cm-toast'); if (e) e.remove();
       const t = document.createElement('div'); t.className = 'cm-toast'; t.textContent = msg;
-      t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--lime);border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:var(--lime);z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px var(--lime-glow);';
+      let color = 'var(--lime)';
+      if (type === 'error') color = '#ff4444';
+      if (type === 'warn') color = '#ffaa00';
+      t.style.cssText = `position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid ${color};border-radius:100px;padding:10px 22px;font-family:var(--mono);font-size:.78rem;color:${color};z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 0 20px ${color}33;`;
       document.body.appendChild(t); setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 2400);
     }
   </script>
