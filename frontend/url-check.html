@@ -1192,16 +1192,17 @@
     document.getElementById("urlInput").addEventListener("keydown", e => { if (e.key === 'Enter') scan(); });
 
     async function scan() {
-      if (!userId) {
-        window.showGuestRestrictionModal();
-        return;
-      }
       const urlInput = document.getElementById("urlInput");
       const url = urlInput.value.trim();
       const result = document.getElementById("result");
 
       // 1. Toggle ki value yahan pakdo
       const isAdvanced = document.getElementById('scanModeToggle').checked;
+
+      if (isAdvanced && !userId) {
+        window.showGuestRestrictionModal();
+        return;
+      }
 
       if (!url) {
         result.innerHTML = `<div class="alert-error"><span>❗</span> Please enter a valid URL to scan.</div>`;
