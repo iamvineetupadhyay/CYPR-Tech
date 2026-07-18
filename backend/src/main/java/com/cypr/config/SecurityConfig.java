@@ -50,6 +50,7 @@ public class SecurityConfig {
                                 "/api/user/forgot-password", "/api/user/reset-password", "/api/user/verify",
                                 "/api/user/contact", "/api/phish-check", "/api/password-check",
                                 "/api/malware/scan", "/api/malware/feed", "/api/malware/health").permitAll()
+                        .requestMatchers("/ws-builds/**", "/api/v1/builds/**").permitAll()
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
