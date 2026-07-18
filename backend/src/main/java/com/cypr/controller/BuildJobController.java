@@ -31,7 +31,12 @@ public class BuildJobController {
                                  @RequestParam String branch,
                                  @RequestParam(required = false) String commitSha,
                                  jakarta.servlet.http.HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
+        // Temporary debug log for production proxy audit
+        String rawXff = request.getHeader("X-Forwarded-For");
+        System.out.println("🚩 [CYPR AUDIT] RAW XFF HEADER: [" + rawXff + "]");
+        System.out.println("🚩 [CYPR AUDIT] DIRECT REMOTE ADDR: [" + request.getRemoteAddr() + "]");
+
+        String ip = rawXff;
         if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
         }
