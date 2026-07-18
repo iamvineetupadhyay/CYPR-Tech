@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="assets/js/config.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — CYPR Tech</title>
+  <script src="assets/js/site-enhancements.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: var(--font, 'Outfit', sans-serif);
+      background: var(--bg, #0b0f19);
+      color: var(--text, #ffffff);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 100px auto 40px;
+      padding: 0 24px;
+      flex: 1;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      border-bottom: 1px solid var(--border, #222222);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      color: var(--lime, #e05a00);
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 40px;
+      margin-bottom: 16px;
+      border-bottom: 1px dashed var(--border, #222222);
+      padding-bottom: 8px;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 24px;
+      color: var(--text2, #cccccc);
+    }
+    p, li {
+      font-size: 0.92rem;
+      color: var(--text2, #cccccc);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+    ul, ol {
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+    .legal-date {
+      font-family: var(--mono, monospace);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text3, #888888);
+      margin-bottom: 32px;
+    }
+    .policy-box {
+      background: var(--bg2, #111111);
+      border: 1px solid var(--border, #222222);
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    .policy-box strong {
+      color: var(--lime, #e05a00);
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--lime, #e05a00);
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="back-btn" onclick="window.history.back()">← Back</div>
+    <h1>Privacy Policy & Data Architecture</h1>
+    <div class="legal-date">Last Updated: July 18, 2026</div>
+
+    <p>CYPR Tech ("Company", "we", "us", or "our") is dedicated to protecting user privacy, minimizing data exposure, and enforcing secure data governance models under applicable data privacy laws, including the General Data Protection Regulation (GDPR) and the California Consumer Privacy Act (CCPA). This document outlines our technical data architecture, telemetry scopes, and volatile processing policies.</p>
+
+    <h2>Section 1: Zero-Knowledge Password Isolation Architecture</h2>
+    <div class="policy-box">
+      <strong>Technical Declaration:</strong> The Platform does not ingest, log, or persist raw plain-text credentials in any permanent storage layer. 
+    </div>
+    <p>To ensure maximum data protection during Password Leak Analysis scans:</p>
+    <ul>
+      <li><strong>In-Flight Isolation:</strong> Submitted passwords are processed temporarily within transient active memory (RAM) segments of the Java Spring Boot runtime to calculate length, casing patterns, special character distributions, and overall entropy.</li>
+      <li><strong>Masking & Hashing:</strong> Before the database writes any execution records to the Scan History logs in PostgreSQL, the plain-text input is dynamically masked and replaced with non-reversible masked characters (e.g., <code>Password Check: ********</code>).</li>
+      <li><strong>Permanent Isolation:</strong> Under no circumstances are raw, unhashed user passwords recorded in application trace files, system logs, or PostgreSQL databases. Registered user credentials used for logging in are asymmetrically encrypted using Bcrypt cryptographic hashing algorithms.</li>
+    </ul>
+
+    <h2>Section 2: Volatile In-Memory File Processing Sandbox Policy</h2>
+    <p>When files are submitted to the Malware Analysis Gateway, the following Zero-Disk Persistence policy is strictly enforced:</p>
+    <ol>
+      <li><strong>Transient Buffers:</strong> Uploaded binaries, scripts, or documents are streamed directly into volatile Spring Boot RAM buffers. No local files are written to hard drives or persistent block storage.</li>
+      <li><strong>Feature Extraction:</strong> The heuristics engine evaluates entropy levels, section layouts, imports, and metadata inside this volatile container space.</li>
+      <li><strong>Immediate Purge:</strong> As soon as the analysis reports are compiled and sent as a JSON response, the RAM allocation is terminated, and the file data is purged completely from the server memory using system garbage collection routines. The only data persisted is the metadata (hash values, detected threat types, and size metrics) required to maintain your account's dashboard history.</li>
+    </ol>
+
+    <h2>Section 3: Log Analytics & Telemetry Scope</h2>
+    <p>We collect and store technical telemetry metrics (including IP addresses, connection location, client User-Agent strings, and timestamp structures) strictly for security auditing, rate limiting verification, and concurrent session tracking.</p>
+    <div class="policy-box">
+      <strong>DATA MONETIZATION GUARANTEE:</strong> CYPR Tech does not sell, lease, commercialize, license, or trade your telemetry logs, usage metadata, or account profiles with third-party data brokers, advertising networks, or any other commercial entities.
+    </div>
+
+    <h2>Section 4: User Data Access, Modification & Erasure Rights (GDPR / CCPA)</h2>
+    <p>We respect the legal rights of individuals over their personal data. If you are registered on the Platform, you have the right to request:
+      <ul>
+        <li><strong>Access and Export:</strong> Access to all personal profile details, settings preferences, and scan history logs.</li>
+        <li><strong>Modification:</strong> Real-time correction of incorrect email addresses, usernames, or phone numbers in your Settings drawer.</li>
+        <li><strong>Absolute Erasure ("Right to be Forgotten"):</strong> Upon initiating a profile delete request, all corresponding user tables, audit trace logs, and session tokens in our PostgreSQL databases are permanently purged within 7 business days, save for records required for compliance or rate limit abuse enforcement.</li>
+      </ul>
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <script src="assets/js/config.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service — CYPR Tech</title>
+  <script src="assets/js/site-enhancements.js"></script>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: var(--font, 'Outfit', sans-serif);
+      background: var(--bg, #0b0f19);
+      color: var(--text, #ffffff);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 100px auto 40px;
+      padding: 0 24px;
+      flex: 1;
+    }
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      border-bottom: 1px solid var(--border, #222222);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      color: var(--lime, #e05a00);
+    }
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 40px;
+      margin-bottom: 16px;
+      border-bottom: 1px dashed var(--border, #222222);
+      padding-bottom: 8px;
+    }
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 24px;
+      color: var(--text2, #cccccc);
+    }
+    p, li {
+      font-size: 0.92rem;
+      color: var(--text2, #cccccc);
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+    ul, ol {
+      padding-left: 24px;
+      margin-bottom: 20px;
+    }
+    .legal-date {
+      font-family: var(--mono, monospace);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text3, #888888);
+      margin-bottom: 32px;
+    }
+    .highlight-clause {
+      background: var(--bg2, #111111);
+      border-left: 4px solid var(--lime, #e05a00);
+      border-radius: 0 12px 12px 0;
+      padding: 20px;
+      margin: 24px 0;
+    }
+    .highlight-clause strong {
+      color: var(--lime, #e05a00);
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--lime, #e05a00);
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+    .back-btn:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="back-btn" onclick="window.history.back()">← Back</div>
+    <h1>Terms of Service</h1>
+    <div class="legal-date">Last Updated: July 18, 2026</div>
+
+    <p>Welcome to CYPR ("Platform"), a live security diagnostics, vulnerability assessment, and phishing analysis utility operated by CYPR Tech ("Company", "we", "us", or "our"). These Terms of Service ("Terms") constitute a legally binding agreement between you ("User", "you", or "your") and the Company governing your access to and use of the Platform, including any associated backend APIs, diagnostics tools, and heuristic engines.</p>
+
+    <div class="highlight-clause">
+      <strong>IMPORTANT LEGAL NOTICE:</strong> PLEASE READ THESE TERMS CAREFULLY. BY ACCESSING OR USING THE PLATFORM, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY ALL CLAUSES HEREOF, INCLUDING THE ACCEPTABLE USE RESTRICTIONS AND EXHAUSTIVE LIMITATIONS OF LIABILITY. IF YOU DO NOT AGREE TO THESE TERMS, ACCESS TO THE PLATFORM IS STRICTLY PROHIBITED.
+    </div>
+
+    <h2>Section 1: Acceptable Use Policy (AUP) & Scope of Authorization</h2>
+    <p>The Platform provides passive and active technical diagnostics including phishing analysis, credentials entropy verification, and malware heuristic evaluation. Your use of these features is subject to the following absolute boundaries:</p>
+    <ol>
+      <li><strong>Ownership and Authorization:</strong> You represent and warrant that you possess explicit, verified ownership or have obtained valid, prior written authorization from the owner of any technical assets, domains, URLs, or files submitted to the Platform for scanning. Scanning, probing, or testing targets without appropriate authorization constitutes a material breach of these Terms and may violate applicable cybersecurity laws, including the Computer Fraud and Abuse Act (CFAA).</li>
+      <li><strong>Prohibited Activities:</strong> Under no circumstances shall you use the Platform, its API endpoints, or underlying infrastructure to:
+        <ul>
+          <li>Conduct malicious scans, unauthorized vulnerability probing, port scanning, or system enumeration;</li>
+          <li>Distribute, test, or execute functional malware payloads with intent to compromise remote assets;</li>
+          <li>Automate scraping, harvesting, or bulk query operations using headless browsers, scrapers, or scripts;</li>
+          <li>Impersonate any corporate entity or security agency to leverage threat reports for social engineering or extortion.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h2>Section 2: Fair Usage, Quota Enforcement & Rate Limiting</h2>
+    <p>To preserve system integrity, prevent denial of service (DoS), and protect hardware resources, the Company implements strict IP-based sliding window rate-limiting metrics managed via in-memory cache buckets (Caffeine Cache):</p>
+    <ul>
+      <li><strong>Phishing URL Analysis Gateway:</strong> Unauthenticated anonymous guest users are restricted to a maximum of <strong>twenty (20) basic lookups</strong> per rolling sixty (60) minute window. Advanced developer features, third-party sandboxed scans, and historical metrics require account registration.</li>
+      <li><strong>Password Leak Analyzer:</strong> Submission requests to the password validation engine are strictly capped at a maximum of <strong>thirty (30) executions</strong> per rolling sixty (60) minute window.</li>
+      <li><strong>Malware Gateway Scanner:</strong> Uploads of executable binaries or scripts are restricted to a maximum of <strong>ten (10) scan executions</strong> per rolling sixty (60) minute window.</li>
+    </ul>
+    <p>Any attempt to circumvent these limitations via proxy networks, IP rotation, automated tor routing, or HTTP header spoofing (including manipulating <code>X-Forwarded-For</code> tags) constitutes a security violation and will trigger automatic IP address blocking.</p>
+
+    <h2>Section 3: Limitation of Liability, Diagnostics Disclaimer & Hold Harmless</h2>
+    <p>All diagnostics, heuristic insights, threat scores, and status flags generated by CYPR are provided on an "As-Is" and "As-Available" basis without warranties of any kind, whether express or implied.</p>
+    <div class="highlight-clause">
+      <strong>LIMITATION OF LIABILITY WAIVER:</strong> THE COMPANY DISCLAIMS ALL WARRANTIES, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. HEURISTIC SECURITY SCANS ARE PROBABILISTIC DIAGNOSTICS ONLY. WE DO NOT GUARANTEE THAT CYPR WILL DETECT ALL ACTIVE MALWARE, PHISHING VECTOR SHIFTS, OR ZERO-DAY EXPLOITS. 
+      <br><br>
+      IN NO EVENT SHALL CYPR TECH, ITS DEVELOPERS, OR DISTRIBUTORS BE LIABLE FOR ANY CONSEQUENTIAL, INCIDENTAL, INDIRECT, SPECIAL, OR PUNITIVE DAMAGES—INCLUDING BUT NOT LIMITED TO OPERATIONAL DOWNTIME, DATA LOSS, COMPROMISED ACCOUNTS, FINANCIAL LOSSES, OR CYBERSECURITY INCIDENTS—ARISING OUT OF OR RELATED TO YOUR RELIANCE ON APPLICATION DIAGNOSTIC VERDICTS.
+    </div>
+    <p>You agree to indemnify, defend, and hold harmless CYPR Tech, its directors, employees, and software engineers from and against any third-party claims, liability, damages, and costs (including legal fees) arising from your unauthorized scanning of assets or breach of this agreement.</p>
+
+    <h2>Section 4: Termination & Access Revocation</h2>
+    <p>The Company reserves the right, in its sole discretion and without prior notice, to restrict, suspend, or permanently terminate your session tokens, API keys, registered credentials, and IP routing pathways to the Platform if your usage patterns suggest API abuse, credential harvesting, or actions inconsistent with these Terms.</p>
+  </div>
+</body>
+</html>
