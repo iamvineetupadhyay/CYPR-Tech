@@ -15,6 +15,9 @@
     rel="stylesheet">
   <!-- Shared site stylesheet for consistent theme/colors/fonts -->
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- WebSocket STOMP Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
   <!-- Site-wide enhancements: dynamic navbar, logo injection, theme toggle -->
   <script>window.IS_ADMIN_PAGE = true;</script>
   <script src="assets/js/site-enhancements.js"></script>
@@ -53,6 +56,22 @@
   </script>
   <script src="notifications.js"></script>
   <style>
+    /* CI/CD Terminal Console Styling overrides */
+    @keyframes consolePulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
+    }
+    .pulse-active {
+      background: #22c55e !important;
+      box-shadow: 0 0 8px #22c55e;
+      animation: consolePulse 1.2s infinite;
+    }
+    #cicdTerminalConsole div {
+      font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+      font-size: 0.78rem;
+    }
+
     /* ─────────────────────────────────────────────────────────
        ADMIN PANEL — CSS VARIABLE OVERRIDES
        style.css already defines shared vars for light mode.
@@ -2361,6 +2380,7 @@
           <div class="sb-item" id="si-dev-integrations" onclick="go('dev-integrations')">Integrations</div>
           <div class="sb-item" id="si-dev-api-logs" onclick="go('dev-api-logs')">API Logs</div>
           <div class="sb-item" id="si-dev-request-logs" onclick="go('dev-request-logs')">Request Logs</div>
+          <div class="sb-item" id="si-dev-cicd" onclick="go('dev-cicd')">CI/CD Orchestrator</div>
           <div class="sb-item" id="si-dev-uikit" onclick="go('dev-uikit')">UI Components</div>
         </div>
       </div>
@@ -7166,6 +7186,76 @@
         </div>
       </div>
 
+      <!-- CI/CD ORCHESTRATOR -->
+      <div class="panel" id="panel-dev-cicd">
+        <div class="pg-hdr">
+          <h1>CI/CD Orchestrator</h1>
+          <p>Monitor git checkouts, clone pipelines, and stream live execution process output logs.</p>
+        </div>
+        
+        <div style="display:grid; grid-template-columns: 2fr 3fr; gap:20px;">
+          <!-- Left Side: Trigger & Job List -->
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <!-- Trigger Build Card -->
+            <div class="card" style="margin:0;">
+              <div class="card-hdr">
+                <div class="card-ttl">🚀 Trigger Custom Pipeline</div>
+              </div>
+              <div class="frow" style="flex-direction:column; gap:12px;">
+                <div class="fg" style="margin:0; width:100%;">
+                  <label class="fl">Repository URL</label>
+                  <input type="text" id="cicdRepoUrl" class="fi" placeholder="https://github.com/org/repo.git">
+                </div>
+                <div class="fg" style="margin:0; width:100%;">
+                  <label class="fl">Branch</label>
+                  <input type="text" id="cicdBranch" class="fi" placeholder="main" value="main">
+                </div>
+                <div class="fg" style="margin:0; width:100%;">
+                  <label class="fl">Commit SHA (Optional)</label>
+                  <input type="text" id="cicdCommit" class="fi" placeholder="HEAD">
+                </div>
+                <button class="btn btn-p" onclick="triggerBuildJob()" style="margin-top:10px; width:100%; min-height:38px; font-weight:700; background:var(--accent); color:#fff; border-radius:6px; cursor:pointer;">Run Build</button>
+              </div>
+            </div>
+            
+            <!-- Historical Builds Card -->
+            <div class="card" style="margin:0; flex:1; display:flex; flex-direction:column;">
+              <div class="card-hdr">
+                <div class="card-ttl">📋 Execution History</div>
+              </div>
+              <div style="overflow-y:auto; max-height:360px; flex:1;">
+                <table class="tbl" style="width:100%; font-size:0.8rem;" id="cicdHistoryTable">
+                  <thead>
+                    <tr>
+                      <th>Job ID</th>
+                      <th>Branch</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right Side: Real-time Live Log Terminal -->
+          <div class="card" style="margin:0; display:flex; flex-direction:column; height:600px; background:#05070a; border-color:#1c1d24;">
+            <div class="card-hdr" style="border-bottom:1px solid #1c1d24;">
+              <div class="card-ttl" style="color:#f3f4f6; display:flex; align-items:center; gap:8px;">
+                <span class="pulse-indicator" id="cicdConsolePulse" style="width:8px; height:8px; border-radius:50%; background:#718096; display:inline-block;"></span>
+                <span>Live Output Stream Console</span>
+              </div>
+              <div style="color:#9ca3af; font-size:0.75rem; font-family:var(--font-mono);" id="cicdActiveJobId">No active session</div>
+            </div>
+            <div id="cicdTerminalConsole" style="flex:1; overflow-y:auto; padding:20px; font-family:var(--font-mono); font-size:0.78rem; line-height:1.6; color:#a7b2c4; background:#020406; display:flex; flex-direction:column; gap:4px; margin:0; border-radius:0 0 12px 12px;">
+              <div style="color:#4b5563;">&gt; Select an execution job from the left or trigger a new build to inspect logs...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- UI KIT & REUSABLE COMPONENTS -->
       <div class="panel" id="panel-dev-uikit">
         <style>
@@ -8012,7 +8102,8 @@
         'backups-schedules': 'Backup Schedules',
         'backups-storage': 'Storage Usage',
         'backups-downloads': 'Backup Downloads',
-        'settings-config': 'Platform Configurations'
+        'settings-config': 'Platform Configurations',
+        'dev-cicd': 'CI/CD Custom Orchestrator'
       };
 
       const titleEl = document.getElementById('breadcrumb-title');
@@ -8029,6 +8120,7 @@
       }
 
       if (id === 'users') loadUsers();
+      if (id === 'dev-cicd') loadCicdBuilds();
     }
 
     function toggleGroup(groupName) {
@@ -9934,6 +10026,155 @@
       { time: '12:04:22', method: 'POST', path: '/v2/auth/token/refresh', status: '200', latency: '31ms', fullTime: '07/10 12:04:22', ip: '198.51.100.99', key: '—', reqBody: '{"refresh_token":"rt_f229d918c"}', resBody: '{"access_token":"at_b8a1c92a","expires_in":3600}' },
       { time: '12:01:08', method: 'GET', path: '/v2/analytics/summary', status: '500', latency: '—', fullTime: '07/10 12:01:08', ip: '203.0.113.4', key: '…3a78', reqBody: '{}', resBody: '{"error":"Internal server error","trace_id":"trc_a928f"}' }
     ];
+
+    // ── CI/CD Custom Orchestrator Logic ──
+    let activeStompSubscription = null;
+    let stompClientInstance = null;
+
+    async function loadCicdBuilds() {
+      try {
+        const res = await fetch(CYPR_TECH_API_BASE + '/api/v1/builds');
+        const jobs = await res.json();
+        const tbody = document.querySelector('#cicdHistoryTable tbody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        
+        jobs.forEach(job => {
+          const tr = document.createElement('tr');
+          tr.style.cursor = 'pointer';
+          tr.onclick = () => watchBuildJob(job.jobId);
+          
+          let badgeClass = 'free'; // gray
+          if (job.status === 'RUNNING') badgeClass = 'pro'; // orange/accent
+          if (job.status === 'SUCCESS') badgeClass = 'lime'; // green
+          if (job.status === 'FAILED') badgeClass = 'red'; // red
+          
+          tr.innerHTML = `
+            <td style="font-family:var(--font-mono); font-size:0.75rem;">${job.jobId.substring(0, 8)}...</td>
+            <td>${escapeHtml(job.branch)}</td>
+            <td><span class="ubadge ${badgeClass}">${job.status}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Failed to load build jobs:", err);
+      }
+    }
+
+    async function triggerBuildJob() {
+      const repoUrl = document.getElementById('cicdRepoUrl').value;
+      const branch = document.getElementById('cicdBranch').value;
+      const commitSha = document.getElementById('cicdCommit').value;
+      
+      if (!repoUrl) {
+        alert("Please enter a Repository URL");
+        return;
+      }
+      
+      try {
+        const formData = new URLSearchParams();
+        formData.append('repositoryUrl', repoUrl);
+        formData.append('branch', branch);
+        if (commitSha) formData.append('commitSha', commitSha);
+        
+        const res = await fetch(CYPR_TECH_API_BASE + '/api/v1/builds/trigger', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          body: formData
+        });
+        
+        const job = await res.json();
+        loadCicdBuilds();
+        watchBuildJob(job.jobId);
+      } catch (err) {
+        console.error("Failed to trigger build job:", err);
+      }
+    }
+
+    function watchBuildJob(jobId) {
+      const consoleEl = document.getElementById('cicdTerminalConsole');
+      if (consoleEl) {
+        consoleEl.innerHTML = `<div style="color:#6b7280;">&gt; Connecting to real-time build stream for job: ${jobId}...</div>`;
+      }
+      
+      document.getElementById('cicdActiveJobId').textContent = jobId;
+      const pulseEl = document.getElementById('cicdConsolePulse');
+      if (pulseEl) {
+        pulseEl.className = 'pulse-indicator pulse-active';
+      }
+
+      if (activeStompSubscription) {
+        activeStompSubscription.unsubscribe();
+        activeStompSubscription = null;
+      }
+
+      if (stompClientInstance && stompClientInstance.connected) {
+        subscribeToJobTopic(jobId);
+      } else {
+        const socket = new SockJS(CYPR_TECH_API_BASE + '/ws-builds');
+        stompClientInstance = Stomp.over(socket);
+        stompClientInstance.debug = null;
+        
+        stompClientInstance.connect({}, function (frame) {
+          subscribeToJobTopic(jobId);
+        }, function (error) {
+          console.error('STOMP Error:', error);
+          if (consoleEl) {
+            consoleEl.innerHTML += `<div style="color:var(--red);">&gt; Connection error to build socket server: ${error}</div>`;
+          }
+        });
+      }
+    }
+
+    function subscribeToJobTopic(jobId) {
+      const consoleEl = document.getElementById('cicdTerminalConsole');
+      activeStompSubscription = stompClientInstance.subscribe('/topic/builds/' + jobId, function (message) {
+        const body = JSON.parse(message.body);
+        if (body.type === 'LOG') {
+          appendTerminalLine(body.payload);
+        } else if (body.type === 'STATUS') {
+          appendTerminalLine(`[STATUS UPDATE] Pipeline changed to state: ${body.payload}`);
+          if (body.payload === 'SUCCESS' || body.payload === 'FAILED') {
+            const pulseEl = document.getElementById('cicdConsolePulse');
+            if (pulseEl) pulseEl.className = 'pulse-indicator';
+          }
+          loadCicdBuilds();
+        }
+      });
+      if (consoleEl) {
+        consoleEl.innerHTML += `<div style="color:var(--lime);">&gt; Subscribed to topic: /topic/builds/${jobId}. Awaiting execution stdout...</div>`;
+      }
+    }
+
+    function appendTerminalLine(text) {
+      const consoleEl = document.getElementById('cicdTerminalConsole');
+      if (!consoleEl) return;
+      const line = document.createElement('div');
+      line.style.borderBottom = '1px solid rgba(255,255,255,0.02)';
+      line.style.paddingBottom = '2px';
+      line.textContent = text;
+      
+      if (text.includes('[CYPR BUILD ENGINE] ERROR') || text.includes('failed') || text.includes('FAILED')) {
+        line.style.color = 'var(--red)';
+      } else if (text.includes('[CYPR BUILD ENGINE]') || text.includes('success') || text.includes('SUCCESS')) {
+        line.style.color = 'var(--lime)';
+      }
+      
+      consoleEl.appendChild(line);
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
 
     async function loadApiKeys() {
       try {
