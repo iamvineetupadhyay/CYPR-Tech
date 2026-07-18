@@ -18,10 +18,10 @@ public class PasswordController {
     @Autowired
     private ScanRepository scanRepository;
 
-    private final com.github.benmanes.caffeine.cache.Cache<String, Integer> anonymousIpPasswordCheckCount = 
+    private final com.github.benmanes.caffeine.cache.Cache<String, List<Long>> anonymousIpPasswordCheckTimestamps = 
         com.github.benmanes.caffeine.cache.Caffeine.newBuilder()
             .maximumSize(10000)
-            .expireAfterWrite(1, java.util.concurrent.TimeUnit.HOURS)
+            .expireAfterAccess(2, java.util.concurrent.TimeUnit.HOURS)
             .build();
 
     @PostMapping
@@ -38,15 +38,19 @@ public class PasswordController {
             if ("0:0:0:0:0:0:0:1".equals(clientIp)) {
                 clientIp = "127.0.0.1";
             }
-            int currentCount = anonymousIpPasswordCheckCount.asMap().getOrDefault(clientIp, 0);
-            if (currentCount >= 30) {
-                return Map.of(
-                        "status", "Error: Rate Limit Exceeded",
-                        "error", "Unauthenticated users are limited to 30 password checks per hour.",
-                        "strength", "Weak"
-                );
+            List<Long> timestamps = anonymousIpPasswordCheckTimestamps.get(clientIp, k -> java.util.Collections.synchronizedList(new java.util.ArrayList<>()));
+            long now = System.currentTimeMillis();
+            synchronized (timestamps) {
+                timestamps.removeIf(t -> t < now - 3600000);
+                if (timestamps.size() >= 30) {
+                    return Map.of(
+                            "status", "Error: Rate Limit Exceeded",
+                            "error", "Unauthenticated users are limited to 30 password checks per hour.",
+                            "strength", "Weak"
+                    );
+                }
+                timestamps.add(now);
             }
-            anonymousIpPasswordCheckCount.put(clientIp, currentCount + 1);
         }
 
         int score = 0;

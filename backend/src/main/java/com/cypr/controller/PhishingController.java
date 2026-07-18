@@ -21,10 +21,10 @@ public class PhishingController {
     private final ScanRepository scanRepository;
     private final PhishingDetectionEngine detectionEngine = new PhishingDetectionEngine();
 
-    private final com.github.benmanes.caffeine.cache.Cache<String, Integer> anonymousIpScanCount = 
+    private final com.github.benmanes.caffeine.cache.Cache<String, List<Long>> anonymousIpScanTimestamps = 
         com.github.benmanes.caffeine.cache.Caffeine.newBuilder()
             .maximumSize(10000)
-            .expireAfterWrite(1, java.util.concurrent.TimeUnit.HOURS)
+            .expireAfterAccess(2, java.util.concurrent.TimeUnit.HOURS)
             .build();
 
     public PhishingController(PhishingListService phishingListService,
@@ -65,13 +65,17 @@ public class PhishingController {
             if ("0:0:0:0:0:0:0:1".equals(clientIp)) {
                 clientIp = "127.0.0.1";
             }
-            int currentCount = anonymousIpScanCount.asMap().getOrDefault(clientIp, 0);
-            if (currentCount >= 20) {
-                result.put("status", "Error: Anonymous Rate Limit Exceeded!");
-                result.put("reasons", List.of("Unauthenticated users are limited to 20 scans per hour. Please sign up for a free account to continue scanning."));
-                return result;
+            List<Long> timestamps = anonymousIpScanTimestamps.get(clientIp, k -> java.util.Collections.synchronizedList(new java.util.ArrayList<>()));
+            long now = System.currentTimeMillis();
+            synchronized (timestamps) {
+                timestamps.removeIf(t -> t < now - 3600000);
+                if (timestamps.size() >= 20) {
+                    result.put("status", "Error: Anonymous Rate Limit Exceeded!");
+                    result.put("reasons", List.of("Unauthenticated users are limited to 20 scans per hour. Please sign up for a free account to continue scanning."));
+                    return result;
+                }
+                timestamps.add(now);
             }
-            anonymousIpScanCount.put(clientIp, currentCount + 1);
         }
 
         // --- STEP 2: Real-time Feed Check ---
