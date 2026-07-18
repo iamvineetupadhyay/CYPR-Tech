@@ -1944,6 +1944,9 @@
 
   // Dynamic public header implementation (GitHub-Style Two-Tier Navbar)
   async function enhancePublicHeader() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const forceGuestHeader = ['terms.html', 'privacy.html'].some(page => currentPage.includes(page));
+
     // Check if we already injected our header wrapper
     let headerContainer = document.querySelector('.cm-header-container');
     if (headerContainer) return;
@@ -1968,7 +1971,7 @@
 
     // Brand logo link
     const logoLink = document.createElement('a');
-    logoLink.href = readUserId() ? 'home.html' : 'index.html';
+    logoLink.href = (readUserId() && !forceGuestHeader) ? 'home.html' : 'index.html';
     logoLink.className = 'cm-nav-logo';
     logoLink.innerHTML = `
       <div class="cm-logo-slot"><img src="assets/favicon.png" alt="CYPR" onerror="this.style.display='none'"></div>
@@ -1978,17 +1981,19 @@
 
     topTier.appendChild(leftGroup);
 
-    // Center Search box
-    const searchContainer = document.createElement('div');
-    searchContainer.className = 'cm-nav-search-container';
-    searchContainer.innerHTML = `
-      <span class="cm-nav-search-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      </span>
-      <input id="searchBox" placeholder="Type / to search..." autocomplete="off">
-      <div class="cm-nav-search-kbd">/</div>
-    `;
-    topTier.appendChild(searchContainer);
+    // Center Search box (only shown for non-forced guest headers)
+    if (!forceGuestHeader) {
+      const searchContainer = document.createElement('div');
+      searchContainer.className = 'cm-nav-search-container';
+      searchContainer.innerHTML = `
+        <span class="cm-nav-search-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </span>
+        <input id="searchBox" placeholder="Type / to search..." autocomplete="off">
+        <div class="cm-nav-search-kbd">/</div>
+      `;
+      topTier.appendChild(searchContainer);
+    }
 
     // Right Actions Block
     const rightGroup = document.createElement('div');
@@ -2001,7 +2006,7 @@
     const bottomTier = document.createElement('div');
     bottomTier.className = 'cm-bottom-tier';
 
-    const userId = readUserId();
+    const userId = forceGuestHeader ? null : readUserId();
     const settingsTabHtml = userId ? `
       <a href="settings.html" class="cm-nav-tab ${isActive('settings.html')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -3509,7 +3514,7 @@
 
     const userId = readUserId();
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const noHeaderPages = ['login.html', 'signup.html', 'forgotpassword.html', 'terms.html', 'privacy.html'];
+    const noHeaderPages = ['login.html', 'signup.html', 'forgotpassword.html'];
     const isNoHeaderPage = noHeaderPages.some(page => currentPage.includes(page));
 
     if (!isNoHeaderPage) {
