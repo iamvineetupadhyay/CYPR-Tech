@@ -4038,6 +4038,17 @@
       #legalModal ul {
         padding-left: 20px; margin-bottom: 14px;
       }
+      #legalModal .btn-ghost-modal {
+        border: 1px solid var(--border, #222222);
+        color: var(--text, #ffffff);
+        background: transparent;
+        transition: all 0.2s ease;
+      }
+      #legalModal .btn-ghost-modal:hover {
+        border-color: var(--lime, #e05a00);
+        color: var(--lime, #e05a00);
+        background: rgba(224, 90, 0, 0.05);
+      }
     `;
     
     const existingStyle = document.getElementById('legalModalStyle');
@@ -4086,8 +4097,9 @@
         <div style="margin-top: 18px;">
           ${content}
         </div>
-        <div style="margin-top: 24px; text-align: right;">
-          <button class="btn btn-primary" onclick="window.closeLegalModal()" style="min-height:38px; padding: 8px 24px; font-size:0.8rem; background:var(--lime); color:#000000; font-weight:700; border-radius:8px; cursor:pointer;">Acknowledge & Close</button>
+        <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px; align-items: center;">
+          <button class="btn btn-ghost-modal" onclick="window.location.href='${type}.html'" style="min-height:38px; padding: 8px 20px; font-size:0.8rem; font-weight:600; border-radius:8px; cursor:pointer;">Read Full Policy</button>
+          <button class="btn btn-primary" onclick="window.closeLegalModal()" style="min-height:38px; padding: 8px 24px; font-size:0.8rem; background:var(--lime); color:#000000; font-weight:700; border-radius:8px; cursor:pointer; border:none;">Acknowledge & Close</button>
         </div>
       </div>
     `;
