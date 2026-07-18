@@ -232,6 +232,32 @@ public class EmailService {
         executeWithRetryAndLog(email, subject, htmlContent);
     }
 
+    @Async("emailExecutor")
+    public void sendBuildFailedAlert(String adminEmail, String jobId, String repositoryUrl, String branch, String reason) {
+        String subject = "🚨 CRITICAL: CYPR Build Execution Failed";
+        String htmlContent = "<html>" +
+                "<body style=\"margin:0;padding:0;background-color:#030407;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#f3f4f6;\">" +
+                "  <div style=\"max-width:600px;margin:40px auto;background-color:#090a10;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:40px;box-shadow:0 10px 30px rgba(0,0,0,0.5);\">" +
+                "    <h2 style=\"font-size:22px;font-weight:800;color:#e05a00;margin:0 0 16px 0;text-align:center;\">🚨 CYPR Pipeline Failure Alert</h2>" +
+                "    <p style=\"font-size:14px;color:#9ca3af;line-height:1.6;margin:0 0 24px 0;\">An automated execution has failed in your Custom CI/CD Orchestrator.</p>" +
+                "    <div style=\"background-color:#12141d;border:1px solid rgba(255,255,255,0.05);border-radius:8px;padding:20px;margin-bottom:24px;font-family:monospace;font-size:13px;line-height:1.6;\">" +
+                "      <strong style=\"color:#e05a00;\">Job Details:</strong><br>" +
+                "      • <strong>Job ID:</strong> " + jobId + "<br>" +
+                "      • <strong>Repository:</strong> " + repositoryUrl + "<br>" +
+                "      • <strong>Branch:</strong> " + branch + "<br>" +
+                "      • <strong>Failed At:</strong> " + LocalDateTime.now().toString() + "<br><br>" +
+                "      <strong style=\"color:#ef4444;\">Error Reason:</strong><br>" +
+                "      <span style=\"color:#f3f4f6;\">" + reason + "</span>" +
+                "    </div>" +
+                "    <p style=\"font-size:13px;color:#9ca3af;line-height:1.6;margin:0 0 24px 0;\">Please review the execution log output directly in the admin panel to diagnose compile/clone exceptions.</p>" +
+                "    <div style=\"margin:32px 0;border-top:1px solid rgba(255,255,255,0.08);\"></div>" +
+                "    <p style=\"font-size:11px;color:#6b7280;margin:0;\">&copy; 2026 CYPR Security. All rights reserved.</p>" +
+                "  </div>" +
+                "</body>" +
+                "</html>";
+        executeWithRetryAndLog(adminEmail, subject, htmlContent);
+    }
+
     // ── INTERNAL HTTP SENDER & RETRY ENGINE ───────────────────────────────────
 
     private void executeWithRetryAndLog(String to, String subject, String htmlContent) {

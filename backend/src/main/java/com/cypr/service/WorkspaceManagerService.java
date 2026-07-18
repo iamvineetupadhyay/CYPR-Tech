@@ -22,12 +22,14 @@ public class WorkspaceManagerService {
 
     private final BuildJobRepository buildJobRepository;
     private final SimpMessagingTemplate messagingTemplate;
+    private final EmailService emailService;
     private final ExecutorService executorService;
 
     @Autowired
-    public WorkspaceManagerService(BuildJobRepository buildJobRepository, SimpMessagingTemplate messagingTemplate) {
+    public WorkspaceManagerService(BuildJobRepository buildJobRepository, SimpMessagingTemplate messagingTemplate, EmailService emailService) {
         this.buildJobRepository = buildJobRepository;
         this.messagingTemplate = messagingTemplate;
+        this.emailService = emailService;
         this.executorService = Executors.newCachedThreadPool();
     }
 
@@ -92,6 +94,15 @@ public class WorkspaceManagerService {
         buildJobRepository.save(job);
         sendStatusUpdate(job.getJobId(), BuildJobStatus.FAILED);
         sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] ERROR: " + reason);
+
+        // Send automated notifications to administrators on failure
+        try {
+            emailService.sendBuildFailedAlert("vineetk5704@gmail.com", job.getJobId(), job.getRepositoryUrl(), job.getBranch(), reason);
+            emailService.sendBuildFailedAlert("admin@cypr.com", job.getJobId(), job.getRepositoryUrl(), job.getBranch(), reason);
+            sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] Notification email alerts successfully dispatched.");
+        } catch (Exception e) {
+            sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] WARNING: Failed to dispatch alert emails: " + e.getMessage());
+        }
     }
 
     public boolean executeNativeCommand(String jobId, List<String> command, File workingDirectory) {
