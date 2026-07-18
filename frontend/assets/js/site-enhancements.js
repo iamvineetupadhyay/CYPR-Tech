@@ -3980,74 +3980,124 @@
     modalStyle.textContent = `
       #legalModal {
         position: fixed; inset: 0;
-        background: rgba(15, 23, 42, 0.4);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        background: rgba(10, 14, 26, 0.45);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         display: flex; align-items: center; justify-content: center;
         z-index: 999999; opacity: 0;
-        transition: opacity 0.25s ease;
+        transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         padding: 20px;
       }
       #legalModal.open {
         opacity: 1;
       }
       #legalModal .modal {
-        background: var(--surface, #111111);
-        border: 1px solid var(--border, #222222);
-        border-radius: 20px; padding: 36px;
-        width: 100%; max-width: 580px;
-        max-height: 80vh; overflow-y: auto;
-        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
-        transform: scale(0.96);
-        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        background: rgba(15, 22, 42, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 24px; padding: 40px;
+        width: 100%; max-width: 600px;
+        max-height: 82vh; overflow-y: auto;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+        transform: scale(0.93) translateY(20px);
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         position: relative;
-        color: var(--text, #ffffff);
+        color: #f1f5f9;
       }
       #legalModal.open .modal {
-        transform: scale(1);
+        transform: scale(1) translateY(0);
+      }
+      /* Custom Premium Scrollbar */
+      #legalModal .modal::-webkit-scrollbar {
+        width: 6px;
+      }
+      #legalModal .modal::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      #legalModal .modal::-webkit-scrollbar-thumb {
+        background: rgba(224, 90, 0, 0.3);
+        border-radius: 10px;
+      }
+      #legalModal .modal::-webkit-scrollbar-thumb:hover {
+        background: rgba(224, 90, 0, 0.6);
       }
       #legalModal .modal-close {
-        position: absolute; top: 20px; right: 20px;
-        font-size: 1.1rem; color: var(--text3, #888888);
-        cursor: pointer; transition: all 0.18s;
-        width: 32px; height: 32px;
+        position: absolute; top: 24px; right: 24px;
+        font-size: 1.1rem; color: #94a3b8;
+        cursor: pointer; transition: all 0.2s ease;
+        width: 36px; height: 36px;
         display: flex; align-items: center; justify-content: center;
-        border-radius: 50%; border: none; background: transparent;
+        border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.05); 
+        background: rgba(255, 255, 255, 0.02);
       }
       #legalModal .modal-close:hover {
         color: #ffffff;
         background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+        transform: rotate(90deg);
       }
       #legalModal h2 {
         font-family: var(--font, 'Outfit', sans-serif);
-        font-size: 1.5rem; font-weight: 800;
-        margin-bottom: 12px; color: var(--lime, #e05a00);
+        font-size: 1.65rem; font-weight: 800;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, #ff6a00, #ff9452);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         display: flex; align-items: center; gap: 10px;
       }
       #legalModal h3 {
         font-family: var(--font, 'Outfit', sans-serif);
         font-size: 0.95rem; font-weight: 700;
-        margin-top: 20px; margin-bottom: 6px;
+        margin-top: 24px; margin-bottom: 8px;
         color: #ffffff;
+        border-left: 3px solid #ff6a00;
+        padding-left: 12px;
       }
       #legalModal p, #legalModal li {
         font-family: var(--font, 'Outfit', sans-serif);
-        font-size: 0.85rem; color: var(--text2, #cccccc);
-        line-height: 1.6; margin-bottom: 10px;
+        font-size: 0.88rem; color: #94a3b8;
+        line-height: 1.7; margin-bottom: 12px;
       }
       #legalModal ul {
-        padding-left: 20px; margin-bottom: 14px;
+        padding-left: 20px; margin-bottom: 16px;
       }
       #legalModal .btn-ghost-modal {
-        border: 1px solid var(--border, #222222);
-        color: var(--text, #ffffff);
-        background: transparent;
-        transition: all 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #e2e8f0;
+        background: rgba(255, 255, 255, 0.03);
+        transition: all 0.25s ease;
+        padding: 10px 22px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-family: var(--font, 'Outfit', sans-serif);
+        cursor: pointer;
+        min-height: 42px;
       }
       #legalModal .btn-ghost-modal:hover {
-        border-color: var(--lime, #e05a00);
-        color: var(--lime, #e05a00);
-        background: rgba(224, 90, 0, 0.05);
+        border-color: #ff6a00;
+        color: #ff9452;
+        background: rgba(255, 106, 0, 0.06);
+        transform: translateY(-1px);
+      }
+      #legalModal .btn-primary-modal {
+        background: linear-gradient(135deg, #ff6a00, #ff843d);
+        border: none;
+        color: #0b0f19;
+        font-weight: 700;
+        padding: 10px 26px;
+        border-radius: 10px;
+        font-family: var(--font, 'Outfit', sans-serif);
+        cursor: pointer;
+        transition: all 0.25s ease;
+        box-shadow: 0 4px 15px rgba(255, 106, 0, 0.35);
+        min-height: 42px;
+      }
+      #legalModal .btn-primary-modal:hover {
+        opacity: 0.95;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(255, 106, 0, 0.5);
       }
     `;
     
@@ -4097,9 +4147,9 @@
         <div style="margin-top: 18px;">
           ${content}
         </div>
-        <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px; align-items: center;">
-          <button class="btn btn-ghost-modal" onclick="window.location.href='${type}.html'" style="min-height:38px; padding: 8px 20px; font-size:0.8rem; font-weight:600; border-radius:8px; cursor:pointer;">Read Full Policy</button>
-          <button class="btn btn-primary" onclick="window.closeLegalModal()" style="min-height:38px; padding: 8px 24px; font-size:0.8rem; background:var(--lime); color:#000000; font-weight:700; border-radius:8px; cursor:pointer; border:none;">Acknowledge & Close</button>
+        <div style="margin-top: 32px; display: flex; justify-content: flex-end; gap: 14px; align-items: center;">
+          <button class="btn-ghost-modal" onclick="window.location.href='${type}.html'">Read Full Policy</button>
+          <button class="btn-primary-modal" onclick="window.closeLegalModal()">Acknowledge & Close</button>
         </div>
       </div>
     `;
