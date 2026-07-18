@@ -2529,8 +2529,8 @@
         <div class="cm-footer-col">
           <h3>Legal</h3>
           <div class="cm-footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
             <a href="#">Cookie Policy</a>
             <a href="#">GDPR</a>
             <a href="#">SOC 2</a>
