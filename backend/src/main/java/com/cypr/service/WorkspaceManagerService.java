@@ -3,6 +3,8 @@ package com.cypr.service;
 import com.cypr.entity.BuildJob;
 import com.cypr.entity.BuildJobStatus;
 import com.cypr.repository.BuildJobRepository;
+import com.cypr.exception.QueueFullException;
+import com.cypr.exception.RateLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -41,12 +43,13 @@ public class WorkspaceManagerService {
     }
 
     public BuildJob triggerBuild(String repositoryUrl, String branch, String commitSha, String clientIp) {
-        // Parse the first IP if X-Forwarded-For contains a proxy chain (e.g. "client, proxy1, proxy2")
+        // Parse the last IP (trustworthy, proxy-appended) if X-Forwarded-For contains a proxy chain
         String cleanIp = clientIp;
         if (clientIp != null && clientIp.contains(",")) {
-            cleanIp = clientIp.split(",")[0].trim();
+            String[] ips = clientIp.split(",");
+            cleanIp = ips[ips.length - 1].trim(); // last hop = proxy itself
         }
-        if (cleanIp == null) {
+        if (cleanIp == null || cleanIp.isBlank()) {
             cleanIp = "unknown";
         }
 
@@ -55,7 +58,7 @@ public class WorkspaceManagerService {
         List<Long> requestTimes = rateLimits.computeIfAbsent(cleanIp, k -> new java.util.concurrent.CopyOnWriteArrayList<>());
         requestTimes.removeIf(t -> now - t > 60000);
         if (requestTimes.size() >= 3) {
-            throw new IllegalStateException("Rate limit exceeded. Maximum 3 build triggers per minute allowed.");
+            throw new RateLimitExceededException("Rate limit exceeded. Maximum 3 build triggers per minute allowed.");
         }
         requestTimes.add(now);
 
@@ -97,7 +100,7 @@ public class WorkspaceManagerService {
             job.setStatus(BuildJobStatus.FAILED);
             job.setCompletedAt(LocalDateTime.now());
             buildJobRepository.save(job);
-            throw new IllegalStateException("CI/CD pipeline queue is currently full (maximum capacity reached). Please try again later.");
+            throw new QueueFullException("CI/CD pipeline queue is currently full (maximum capacity reached). Please try again later.");
         }
 
         return job;
