@@ -18,9 +18,36 @@ public class PasswordController {
     @Autowired
     private ScanRepository scanRepository;
 
+    private final com.github.benmanes.caffeine.cache.Cache<String, Integer> anonymousIpPasswordCheckCount = 
+        com.github.benmanes.caffeine.cache.Caffeine.newBuilder()
+            .maximumSize(10000)
+            .expireAfterWrite(1, java.util.concurrent.TimeUnit.HOURS)
+            .build();
+
     @PostMapping
     public Map<String, Object> checkPassword(@RequestBody Map<String, Object> body, jakarta.servlet.http.HttpServletRequest request) {
         String password = Optional.ofNullable((String) body.get("password")).orElse("");
+
+        // --- STEP 0: Rate Limiting for Anonymous Requests ---
+        Long currentUserId = com.cypr.security.SecurityUtils.getCurrentUserId(request);
+        if (currentUserId == null) {
+            String clientIp = request.getHeader("X-Forwarded-For");
+            if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
+                clientIp = request.getRemoteAddr();
+            }
+            if ("0:0:0:0:0:0:0:1".equals(clientIp)) {
+                clientIp = "127.0.0.1";
+            }
+            int currentCount = anonymousIpPasswordCheckCount.asMap().getOrDefault(clientIp, 0);
+            if (currentCount >= 30) {
+                return Map.of(
+                        "status", "Error: Rate Limit Exceeded",
+                        "error", "Unauthenticated users are limited to 30 password checks per hour.",
+                        "strength", "Weak"
+                );
+            }
+            anonymousIpPasswordCheckCount.put(clientIp, currentCount + 1);
+        }
 
         int score = 0;
         if (password.length() >= 8) score++;
@@ -38,7 +65,6 @@ public class PasswordController {
         String dbResult = (score >= 4) ? "Secure" : "Risky";
 
         // --- STEP 1: User Fetch ---
-        Long currentUserId = com.cypr.security.SecurityUtils.getCurrentUserId(request);
         User user = null;
         if (currentUserId != null) {
             user = userRepository.findById(currentUserId).orElse(null);
