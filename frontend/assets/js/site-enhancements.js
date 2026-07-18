@@ -3971,4 +3971,139 @@
     initResponsiveNav();
   }
 
+  function showLegalModal(type) {
+    let modal = document.getElementById('legalModal');
+    if (modal) modal.remove();
+
+    const modalStyle = document.createElement('style');
+    modalStyle.id = 'legalModalStyle';
+    modalStyle.textContent = `
+      #legalModal {
+        position: fixed; inset: 0;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 999999; opacity: 0;
+        transition: opacity 0.25s ease;
+        padding: 20px;
+      }
+      #legalModal.open {
+        opacity: 1;
+      }
+      #legalModal .modal {
+        background: var(--surface, #111111);
+        border: 1px solid var(--border, #222222);
+        border-radius: 20px; padding: 36px;
+        width: 100%; max-width: 580px;
+        max-height: 80vh; overflow-y: auto;
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+        transform: scale(0.96);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        color: var(--text, #ffffff);
+      }
+      #legalModal.open .modal {
+        transform: scale(1);
+      }
+      #legalModal .modal-close {
+        position: absolute; top: 20px; right: 20px;
+        font-size: 1.1rem; color: var(--text3, #888888);
+        cursor: pointer; transition: all 0.18s;
+        width: 32px; height: 32px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 50%; border: none; background: transparent;
+      }
+      #legalModal .modal-close:hover {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.08);
+      }
+      #legalModal h2 {
+        font-family: var(--font, 'Outfit', sans-serif);
+        font-size: 1.5rem; font-weight: 800;
+        margin-bottom: 12px; color: var(--lime, #e05a00);
+        display: flex; align-items: center; gap: 10px;
+      }
+      #legalModal h3 {
+        font-family: var(--font, 'Outfit', sans-serif);
+        font-size: 0.95rem; font-weight: 700;
+        margin-top: 20px; margin-bottom: 6px;
+        color: #ffffff;
+      }
+      #legalModal p, #legalModal li {
+        font-family: var(--font, 'Outfit', sans-serif);
+        font-size: 0.85rem; color: var(--text2, #cccccc);
+        line-height: 1.6; margin-bottom: 10px;
+      }
+      #legalModal ul {
+        padding-left: 20px; margin-bottom: 14px;
+      }
+    `;
+    
+    const existingStyle = document.getElementById('legalModalStyle');
+    if (existingStyle) existingStyle.remove();
+    document.head.appendChild(modalStyle);
+
+    let title = '';
+    let content = '';
+
+    if (type === 'terms') {
+      title = '📜 Terms of Service';
+      content = `
+        <p>Welcome to CYPR Tech. By using our platform, scanning files, or checking credentials, you agree to comply with the following Terms of Service:</p>
+        
+        <h3>1. Acceptable Use Policy</h3>
+        <p>You agree to use CYPR Tech strictly for legitimate security analysis. You must not attempt to bypass rate limits, perform denial-of-service (DDoS) attacks, or scan resources belonging to third parties without prior authorization.</p>
+        
+        <h3>2. Service Limitations & Disclaimers</h3>
+        <p>CYPR Tech uses the local VAJRA Heuristics Engine and integrated threat intelligence streams (including VirusTotal) to evaluate security risks. All scan outcomes are probabilistic assessments. We do not guarantee 100% detection rates or absolute immunity from zero-day threats.</p>
+        
+        <h3>3. System Quotas & Rate Limits</h3>
+        <p>To preserve resources, unauthenticated guest users are limited to 20 URL checks, 30 password checks, and 10 file scans per hour. Registered users consume daily credits. Circumventing these limits using script proxies will result in immediate IP suspension.</p>
+      `;
+    } else {
+      title = '🔒 Privacy & Data Retention Policy';
+      content = `
+        <p>At CYPR Tech, your privacy is our highest priority. We operate under a strict zero-leak telemetry model:</p>
+        
+        <h3>1. Zero Password Storage</h3>
+        <p>We do not store or log raw passwords checked on our platform. The password check calculation runs temporarily in active memory to calculate length and entropy, and is immediately discarded. Only masked logs (e.g. <code>Password Check: ********</code>) are saved for your history.</p>
+        
+        <h3>2. Safe Malware Sandbox Scans</h3>
+        <p>Files uploaded for malware heuristics scan are processed inside secure, temporary memory buffers. We calculate the file entropy, analyze imports/sections, and calculate hashes. The actual file contents are <strong>never written to disk</strong> and are permanently discarded instantly upon scan completion.</p>
+        
+        <h3>3. Telemetry & Analytics</h3>
+        <p>We collect browser user-agent, simple client types, and approximate location/IP addresses strictly for active session logs, security audits, and rate-limit verification. We do <strong>NOT</strong> track you across other websites, and we <strong>NEVER</strong> sell or distribute your data to advertisers or third parties.</p>
+      `;
+    }
+
+    modal = document.createElement('div');
+    modal.id = 'legalModal';
+    modal.innerHTML = `
+      <div class="modal">
+        <button class="modal-close" onclick="window.closeLegalModal()">✕</button>
+        <h2>${title}</h2>
+        <div style="margin-top: 18px;">
+          ${content}
+        </div>
+        <div style="margin-top: 24px; text-align: right;">
+          <button class="btn btn-primary" onclick="window.closeLegalModal()" style="min-height:38px; padding: 8px 24px; font-size:0.8rem; background:var(--lime); color:#000000; font-weight:700; border-radius:8px; cursor:pointer;">Acknowledge & Close</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('open'), 10);
+  }
+
+  window.showLegalModal = showLegalModal;
+  window.closeLegalModal = function() {
+    const modal = document.getElementById('legalModal');
+    if (modal) {
+      modal.classList.remove('open');
+      setTimeout(() => modal.remove(), 250);
+    }
+  }
+
 })();
