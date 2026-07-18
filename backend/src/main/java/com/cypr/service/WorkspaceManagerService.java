@@ -95,13 +95,12 @@ public class WorkspaceManagerService {
         sendStatusUpdate(job.getJobId(), BuildJobStatus.FAILED);
         sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] ERROR: " + reason);
 
-        // Send automated notifications to administrators on failure
+        // Send automated notification to administrator on failure
         try {
             emailService.sendBuildFailedAlert("vineetk5704@gmail.com", job.getJobId(), job.getRepositoryUrl(), job.getBranch(), reason);
-            emailService.sendBuildFailedAlert("admin@cypr.com", job.getJobId(), job.getRepositoryUrl(), job.getBranch(), reason);
-            sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] Notification email alerts successfully dispatched.");
+            sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] Notification email alert successfully dispatched.");
         } catch (Exception e) {
-            sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] WARNING: Failed to dispatch alert emails: " + e.getMessage());
+            sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] WARNING: Failed to dispatch alert email: " + e.getMessage());
         }
     }
 
