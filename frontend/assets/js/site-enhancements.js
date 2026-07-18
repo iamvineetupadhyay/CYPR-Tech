@@ -2019,9 +2019,7 @@
     const isAdmin = userEmail === 'vineetk5704@gmail.com' || userEmail === 'admin@cypr.com';
     const mobileAdminLinkHtml = (userId && isAdmin) ? `<a href="admin.html" class="${isActive('admin.html')}" style="color:var(--accent);font-weight:600;">Admin Panel</a>` : '';
 
-    const navTabs = document.createElement('div');
-    navTabs.className = 'cm-nav-tabs';
-    navTabs.innerHTML = `
+    const homeTabHtml = userId ? `
       <a href="home.html" class="cm-nav-tab ${isActive('home.html')}"> 
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
@@ -2029,10 +2027,9 @@
       </svg>
       Home 
       </a>
-      <a href="tools.html" class="cm-nav-tab ${isActive('tools.html')}">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        Tools
-      </a>
+    ` : '';
+
+    const activityTabHtml = userId ? `
       <a href="activity-logs.html" class="cm-nav-tab ${isActive('activity-logs.html')}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 12a9 9 0 1 0 3-6.7"/>
@@ -2041,6 +2038,17 @@
     </svg>
     Activity
       </a>
+    ` : '';
+
+    const navTabs = document.createElement('div');
+    navTabs.className = 'cm-nav-tabs';
+    navTabs.innerHTML = `
+      ${homeTabHtml}
+      <a href="tools.html" class="cm-nav-tab ${isActive('tools.html')}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Tools
+      </a>
+      ${activityTabHtml}
       <a href="pricing.html" class="cm-nav-tab ${isActive('pricing.html')}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="2" y="5" width="20" height="14" rx="2"/>
@@ -2092,7 +2100,9 @@
     }
     drawer.innerHTML = `
       <div class="cm-mobile-links">
+        ${userId ? `<a href="home.html" class="${isActive('home.html')}">Home</a>` : ''}
         <a href="tools.html" class="${isActive('tools.html')}">Tools</a>
+        ${userId ? `<a href="activity-logs.html" class="${isActive('activity-logs.html')}">Activity</a>` : ''}
         <a href="pricing.html" class="${isActive('pricing.html')}">Pricing</a>
         <a href="cyber-news.html" class="${isActive('cyber-news.html')}">Cyber News</a>
         <a href="aboutus.html" class="${isActive('aboutus.html')}">About Us</a>
