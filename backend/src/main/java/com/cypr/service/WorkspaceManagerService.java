@@ -36,14 +36,23 @@ public class WorkspaceManagerService {
         this.executorService = new java.util.concurrent.ThreadPoolExecutor(
             2, 2, 60L, java.util.concurrent.TimeUnit.SECONDS,
             new java.util.concurrent.LinkedBlockingQueue<>(10),
-            new java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy()
+            new java.util.concurrent.ThreadPoolExecutor.AbortPolicy()
         );
     }
 
     public BuildJob triggerBuild(String repositoryUrl, String branch, String commitSha, String clientIp) {
+        // Parse the first IP if X-Forwarded-For contains a proxy chain (e.g. "client, proxy1, proxy2")
+        String cleanIp = clientIp;
+        if (clientIp != null && clientIp.contains(",")) {
+            cleanIp = clientIp.split(",")[0].trim();
+        }
+        if (cleanIp == null) {
+            cleanIp = "unknown";
+        }
+
         // 1. Sliding Window Rate Limiting (Max 3 build triggers per minute per client IP)
         long now = System.currentTimeMillis();
-        List<Long> requestTimes = rateLimits.computeIfAbsent(clientIp, k -> new java.util.concurrent.CopyOnWriteArrayList<>());
+        List<Long> requestTimes = rateLimits.computeIfAbsent(cleanIp, k -> new java.util.concurrent.CopyOnWriteArrayList<>());
         requestTimes.removeIf(t -> now - t > 60000);
         if (requestTimes.size() >= 3) {
             throw new IllegalStateException("Rate limit exceeded. Maximum 3 build triggers per minute allowed.");
@@ -80,9 +89,16 @@ public class WorkspaceManagerService {
         BuildJob job = new BuildJob(jobId, cleanUrl, cleanBranch, cleanCommit, BuildJobStatus.PENDING, LocalDateTime.now());
         buildJobRepository.save(job);
 
-        executorService.submit(() -> {
-            executeBuildWorkflow(job);
-        });
+        try {
+            executorService.submit(() -> {
+                executeBuildWorkflow(job);
+            });
+        } catch (java.util.concurrent.RejectedExecutionException e) {
+            job.setStatus(BuildJobStatus.FAILED);
+            job.setCompletedAt(LocalDateTime.now());
+            buildJobRepository.save(job);
+            throw new IllegalStateException("CI/CD pipeline queue is currently full (maximum capacity reached). Please try again later.");
+        }
 
         return job;
     }
