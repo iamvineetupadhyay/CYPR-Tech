@@ -21,6 +21,12 @@ public class PhishingController {
     private final ScanRepository scanRepository;
     private final PhishingDetectionEngine detectionEngine = new PhishingDetectionEngine();
 
+    private final com.github.benmanes.caffeine.cache.Cache<String, Integer> anonymousIpScanCount = 
+        com.github.benmanes.caffeine.cache.Caffeine.newBuilder()
+            .maximumSize(10000)
+            .expireAfterWrite(1, java.util.concurrent.TimeUnit.HOURS)
+            .build();
+
     public PhishingController(PhishingListService phishingListService,
                               VirusTotalService virusTotalService,
                               UserRepository userRepository,
@@ -44,6 +50,29 @@ public class PhishingController {
         }
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("url", raw);
+
+        // --- STEP 1b: Rate Limiting & Access Rules for Anonymous Scans ---
+        if (user == null) {
+            if (isAdvanced) {
+                result.put("status", "Error: Advanced Scan requires a logged-in account!");
+                result.put("reasons", List.of("Please log in or sign up to use the advanced sandbox features."));
+                return result;
+            }
+            String clientIp = request.getHeader("X-Forwarded-For");
+            if (clientIp == null || clientIp.isEmpty() || "unknown".equalsIgnoreCase(clientIp)) {
+                clientIp = request.getRemoteAddr();
+            }
+            if ("0:0:0:0:0:0:0:1".equals(clientIp)) {
+                clientIp = "127.0.0.1";
+            }
+            int currentCount = anonymousIpScanCount.asMap().getOrDefault(clientIp, 0);
+            if (currentCount >= 20) {
+                result.put("status", "Error: Anonymous Rate Limit Exceeded!");
+                result.put("reasons", List.of("Unauthenticated users are limited to 20 scans per hour. Please sign up for a free account to continue scanning."));
+                return result;
+            }
+            anonymousIpScanCount.put(clientIp, currentCount + 1);
+        }
 
         // --- STEP 2: Real-time Feed Check ---
         String urlLower = raw.toLowerCase();
