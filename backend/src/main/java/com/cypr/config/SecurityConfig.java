@@ -49,7 +49,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/login", "/api/user/register", "/api/user/check-username",
                                 "/api/user/forgot-password", "/api/user/reset-password", "/api/user/verify",
                                 "/api/user/contact", "/api/phish-check", "/api/password-check",
-                                "/api/malware/scan", "/api/malware/feed", "/api/malware/health").permitAll()
+                                "/api/malware/scan", "/api/malware/feed", "/api/malware/health",
+                                "/api/oauth/**").permitAll()
                         .requestMatchers("/ws-builds/**").permitAll()
                         .requestMatchers("/api/v1/builds/**").hasRole("ADMIN")
                         .requestMatchers(
