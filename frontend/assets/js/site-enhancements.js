@@ -3509,10 +3509,10 @@
 
     const userId = readUserId();
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    const authPages = ['login.html', 'signup.html', 'forgotpassword.html'];
-    const isAuthPage = authPages.some(page => currentPage.includes(page));
+    const noHeaderPages = ['login.html', 'signup.html', 'forgotpassword.html', 'terms.html', 'privacy.html'];
+    const isNoHeaderPage = noHeaderPages.some(page => currentPage.includes(page));
 
-    if (!isAuthPage) {
+    if (!isNoHeaderPage) {
       enhancePublicHeader();
       enhancePublicFooter();
     }
