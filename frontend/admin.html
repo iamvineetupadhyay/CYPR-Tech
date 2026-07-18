@@ -10085,11 +10085,18 @@
           body: formData
         });
         
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          alert("Failed to trigger build: " + (errData.message || "Security validation failed or Rate limit exceeded."));
+          return;
+        }
+        
         const job = await res.json();
         loadCicdBuilds();
         watchBuildJob(job.jobId);
       } catch (err) {
         console.error("Failed to trigger build job:", err);
+        alert("Network error trying to trigger build.");
       }
     }
 

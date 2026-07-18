@@ -24,18 +24,60 @@ public class WorkspaceManagerService {
     private final SimpMessagingTemplate messagingTemplate;
     private final EmailService emailService;
     private final ExecutorService executorService;
+    private final Map<String, List<Long>> rateLimits = new java.util.concurrent.ConcurrentHashMap<>();
 
     @Autowired
     public WorkspaceManagerService(BuildJobRepository buildJobRepository, SimpMessagingTemplate messagingTemplate, EmailService emailService) {
         this.buildJobRepository = buildJobRepository;
         this.messagingTemplate = messagingTemplate;
         this.emailService = emailService;
-        this.executorService = Executors.newCachedThreadPool();
+        
+        // Bounded ThreadPoolExecutor: Core size 2, Max size 2, keepAlive 60s, queue capacity 10
+        this.executorService = new java.util.concurrent.ThreadPoolExecutor(
+            2, 2, 60L, java.util.concurrent.TimeUnit.SECONDS,
+            new java.util.concurrent.LinkedBlockingQueue<>(10),
+            new java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy()
+        );
     }
 
-    public BuildJob triggerBuild(String repositoryUrl, String branch, String commitSha) {
+    public BuildJob triggerBuild(String repositoryUrl, String branch, String commitSha, String clientIp) {
+        // 1. Sliding Window Rate Limiting (Max 3 build triggers per minute per client IP)
+        long now = System.currentTimeMillis();
+        List<Long> requestTimes = rateLimits.computeIfAbsent(clientIp, k -> new java.util.concurrent.CopyOnWriteArrayList<>());
+        requestTimes.removeIf(t -> now - t > 60000);
+        if (requestTimes.size() >= 3) {
+            throw new IllegalStateException("Rate limit exceeded. Maximum 3 build triggers per minute allowed.");
+        }
+        requestTimes.add(now);
+
+        // 2. Strict Whitelist Validations
+        if (repositoryUrl == null || branch == null) {
+            throw new IllegalArgumentException("Repository URL and branch must not be null.");
+        }
+
+        String cleanUrl = repositoryUrl.trim();
+        String cleanBranch = branch.trim();
+        String cleanCommit = (commitSha != null) ? commitSha.trim() : null;
+
+        // Host Whitelist: github.com and gitlab.com allowed only
+        if (!cleanUrl.matches("^https:\\/\\/(github\\.com|gitlab\\.com)\\/[a-zA-Z0-9\\.\\-_]+\\/[a-zA-Z0-9\\.\\-_]+\\.git$")) {
+            throw new IllegalArgumentException("Repository URL must be a valid GitHub or GitLab HTTPS clone endpoint.");
+        }
+
+        // Branch Validation (no leading dash, safe characters only)
+        if (cleanBranch.startsWith("-") || !cleanBranch.matches("^[a-zA-Z0-9\\.\\-_/]+$")) {
+            throw new IllegalArgumentException("Branch name must be a valid git branch name and cannot start with a dash.");
+        }
+
+        // Commit SHA Validation (optional - strictly 7 to 40 hex characters, no leading dash)
+        if (cleanCommit != null && !cleanCommit.isEmpty()) {
+            if (cleanCommit.startsWith("-") || !cleanCommit.matches("^[a-f0-9]{7,40}$")) {
+                throw new IllegalArgumentException("Commit SHA must be a valid hex digest string (7 to 40 characters) and cannot start with a dash.");
+            }
+        }
+
         String jobId = UUID.randomUUID().toString();
-        BuildJob job = new BuildJob(jobId, repositoryUrl, branch, commitSha, BuildJobStatus.PENDING, LocalDateTime.now());
+        BuildJob job = new BuildJob(jobId, cleanUrl, cleanBranch, cleanCommit, BuildJobStatus.PENDING, LocalDateTime.now());
         buildJobRepository.save(job);
 
         executorService.submit(() -> {
@@ -67,7 +109,7 @@ public class WorkspaceManagerService {
             }
 
             if (job.getCommitSha() != null && !job.getCommitSha().trim().isEmpty()) {
-                List<String> checkoutCmd = List.of("git", "checkout", job.getCommitSha());
+                List<String> checkoutCmd = List.of("git", "checkout", "--", job.getCommitSha());
                 boolean checkoutSuccess = executeNativeCommand(jobId, checkoutCmd, tempDir);
                 if (!checkoutSuccess) {
                     failJob(job, "Git checkout commit SHA failed.");
@@ -97,7 +139,7 @@ public class WorkspaceManagerService {
 
         // Send automated notification to administrator on failure
         try {
-            emailService.sendBuildFailedAlert("vineetk5704@gmail.com", job.getJobId(), job.getRepositoryUrl(), job.getBranch(), reason);
+            emailService.sendBuildFailedAlert("vineetk5704@gmail.com", job.getJobId(), maskSecrets(job.getRepositoryUrl()), job.getBranch(), reason);
             sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] Notification email alert successfully dispatched.");
         } catch (Exception e) {
             sendLogLine(job.getJobId(), "[CYPR BUILD ENGINE] WARNING: Failed to dispatch alert email: " + e.getMessage());
@@ -105,7 +147,11 @@ public class WorkspaceManagerService {
     }
 
     public boolean executeNativeCommand(String jobId, List<String> command, File workingDirectory) {
-        sendLogLine(jobId, "[CYPR BUILD ENGINE] Running command: " + String.join(" ", command));
+        List<String> maskedCommand = new java.util.ArrayList<>();
+        for (String arg : command) {
+            maskedCommand.add(maskSecrets(arg));
+        }
+        sendLogLine(jobId, "[CYPR BUILD ENGINE] Running command: " + String.join(" ", maskedCommand));
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(command);
             processBuilder.directory(workingDirectory);
@@ -130,10 +176,17 @@ public class WorkspaceManagerService {
     }
 
     private void sendLogLine(String jobId, String logLine) {
+        String maskedLine = maskSecrets(logLine);
         messagingTemplate.convertAndSend("/topic/builds/" + jobId, Map.of(
             "type", "LOG",
-            "payload", logLine
+            "payload", maskedLine
         ));
+    }
+
+    private String maskSecrets(String text) {
+        if (text == null) return null;
+        // Mask HTTPS basic authentication credentials (e.g. https://token@github.com -> https://[REDACTED_SECRET]@github.com)
+        return text.replaceAll("https://[^@\\s]+@", "https://[REDACTED_SECRET]@");
     }
 
     private void sendStatusUpdate(String jobId, BuildJobStatus status) {

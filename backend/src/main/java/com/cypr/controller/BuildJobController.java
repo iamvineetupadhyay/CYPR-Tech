@@ -29,7 +29,12 @@ public class BuildJobController {
     @PostMapping("/trigger")
     public BuildJob triggerBuild(@RequestParam String repositoryUrl,
                                  @RequestParam String branch,
-                                 @RequestParam(required = false) String commitSha) {
-        return workspaceManagerService.triggerBuild(repositoryUrl, branch, commitSha);
+                                 @RequestParam(required = false) String commitSha,
+                                 jakarta.servlet.http.HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return workspaceManagerService.triggerBuild(repositoryUrl, branch, commitSha, ip);
     }
 }
